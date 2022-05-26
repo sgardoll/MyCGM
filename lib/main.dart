@@ -51,7 +51,7 @@ class Album {
     return Album(
       sgv: json['sgv'],
       direction: json['direction'],
-      mmol:1,
+      mmol:0.1,
     );
   }
 }
@@ -90,9 +90,9 @@ class _MyAppState extends State<MyApp> {
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                double mmol = (snapshot.data!.sgv.toDouble())/18;
+                var mmol = (snapshot.data!.sgv.toDouble())/18;
 
-                return Text(mmol.toString() + ' ' + snapshot.data!.direction);
+                return Text(mmol.toStringAsFixed(1) + ' ' + snapshot.data!.direction);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
