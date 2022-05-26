@@ -37,8 +37,10 @@ Future<Album> fetchAlbum() async {
 
 class Album {
   final String direction;
-  final double sgv;
-  const Album({required this.direction, required this.sgv});
+  final int sgv;
+  final double mmol;
+
+  const Album({required this.direction, required this.sgv, required this.mmol});
 
   factory Album.fromJson(Map<String, dynamic> json) {
     //factory Album.fromJson(List<dynamic> json) {
@@ -49,6 +51,7 @@ class Album {
     return Album(
       sgv: json['sgv'],
       direction: json['direction'],
+      mmol:1,
     );
   }
 }
@@ -87,9 +90,9 @@ class _MyAppState extends State<MyApp> {
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var mmol = snapshot.data!.sgv/18;
+                double mmol = (snapshot.data!.sgv.toDouble())/18;
 
-                return Text(snapshot.data!.direction);
+                return Text(mmol.toString() + ' ' + snapshot.data!.direction);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
