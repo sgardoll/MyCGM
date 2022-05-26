@@ -16,7 +16,8 @@ Future<Album> fetchAlbum() async {
   };
 
   var query = params.entries.map((p) => '${p.key}=${p.value}').join('&');
-  var url = Uri.parse('https://stucgm.herokuapp.com/api/v1/entries/current.json?$query');
+  var url = Uri.parse(
+      'https://stucgm.herokuapp.com/api/v1/entries/current.json?$query');
   var res = await http.get(url, headers: headers);
 
   if (res.statusCode == 200) {
@@ -30,27 +31,17 @@ Future<Album> fetchAlbum() async {
   // return c
 }
 
-
 //   var response = await http.get(
 //       Uri.parse('https://stucgm.herokuapp.com/api/v1/entries/sgv?token=mycgm-4eed72c0613bed6d'));
 //
 
-
-
-
-
-
 class Album {
-  final int sgv;
   final String direction;
-
-  const Album({
-    required this.sgv,
-    required this.direction
-  });
+  final double sgv;
+  const Album({required this.direction, required this.sgv});
 
   factory Album.fromJson(Map<String, dynamic> json) {
-  //factory Album.fromJson(List<dynamic> json) {
+    //factory Album.fromJson(List<dynamic> json) {
 
     //var j=json;
     //var d=json['direction'];
@@ -59,7 +50,6 @@ class Album {
       sgv: json['sgv'],
       direction: json['direction'],
     );
-
   }
 }
 
@@ -97,7 +87,9 @@ class _MyAppState extends State<MyApp> {
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(snapshot.data!.sgv.toString());
+                var mmol = snapshot.data!.sgv/18;
+
+                return Text(snapshot.data!.direction);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
