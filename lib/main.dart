@@ -8,6 +8,7 @@ Future<Album> fetchAlbum() async {
   var headers = {
     'accept': 'application/json',
     'api-secret': 'Thisisnotadrill',
+    'access-control-allow-origin': '*',
   };
 
   var params = {
@@ -15,11 +16,13 @@ Future<Album> fetchAlbum() async {
   };
 
   var query = params.entries.map((p) => '${p.key}=${p.value}').join('&');
-  var url = Uri.parse('https://stucgm.herokuapp.com/api/v1/entries/current.json$query');
+  var url = Uri.parse('https://stucgm.herokuapp.com/api/v1/entries/current.json?$query');
   var res = await http.get(url, headers: headers);
 
   if (res.statusCode == 200) {
-    return Album.fromJson(jsonDecode(res.body));
+    return Album.fromJson((jsonDecode(res.body) as List)[0]);
+    //return Album.fromJson(jsonDecode(res.body[0]));
+    //return Album.fromJson(jsonDecode(res.body));
   } else {
     throw Exception('Failed to load album');
   }
@@ -47,9 +50,14 @@ class Album {
   });
 
   factory Album.fromJson(Map<String, dynamic> json) {
+  //factory Album.fromJson(List<dynamic> json) {
+
+    //var j=json;
+    //var d=json['direction'];
+
     return Album(
       sgv: json['sgv'],
-      direction: json['direction']
+      direction: json['direction'],
     );
 
   }
