@@ -1,8 +1,40 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+// class _TextStyleItem extends StatelessWidget {
+//   const _TextStyleItem({
+//     Key? key,
+//     required this.name,
+//     required this.style,
+//     required this.text,
+//   }) : super(key: key);
+//
+//   final String name;
+//   final TextStyle style;
+//   final String text;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           SizedBox(
+//             width: 72,
+//             child: Text(name, style: Theme.of(context).textTheme.caption),
+//           ),
+//           Expanded(
+//             child: Text(text, style: style),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 Future<Album> fetchAlbum() async {
   var headers = {
@@ -25,7 +57,7 @@ Future<Album> fetchAlbum() async {
     //return Album.fromJson(jsonDecode(res.body[0]));
     //return Album.fromJson(jsonDecode(res.body));
   } else {
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load glucose data');
   }
   // if (res.statusCode != 200) throw Exception('http.get error: statusCode= ${res.statusCode}');
   // return c
@@ -51,7 +83,7 @@ class Album {
     return Album(
       sgv: json['sgv'],
       direction: json['direction'],
-      mmol:0.1,
+      mmol: 0.1,
     );
   }
 }
@@ -78,21 +110,19 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'StuCGM',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.green),
+      darkTheme: ThemeData(primarySwatch: Colors.grey),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('StuCGM'),
-        ),
-        body: Center(
+        body: SafeArea(
+          minimum: EdgeInsets.all(20),
           child: FutureBuilder<Album>(
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                var mmol = (snapshot.data!.sgv.toDouble())/18;
+                var mmol = (snapshot.data!.sgv.toDouble()) / 18;
 
-                return Text(mmol.toStringAsFixed(1) + ' ' + snapshot.data!.direction);
+                return Text(
+                    mmol.toStringAsFixed(1) + ' ' + snapshot.data!.direction);
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
@@ -102,7 +132,11 @@ class _MyAppState extends State<MyApp> {
             },
           ),
         ),
+        backgroundColor: Colors.lightBlue[50],
       ),
+
     );
+
+
   }
 }
