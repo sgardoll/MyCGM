@@ -38,24 +38,18 @@ class Album {
       sgv: json['sgv'],
       direction: json['direction'],
       mmol: 1.0,
-
     );
   }
 }
 
-
-
-
-
-
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
-   const MyApp({super.key});
+  const MyApp({super.key});
 
-   @override
-   _MyAppState createState() => _MyAppState();
- }
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
 class _MyAppState extends State<MyApp> {
   late Future<Album> futureAlbum;
@@ -64,41 +58,52 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
-
   }
 
-@override
-Widget build(BuildContext context) {
-  return MaterialApp(
-       title: 'My CGM',
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'My CGM',
       theme: ThemeData(
-          colorSchemeSeed: const Color(0xff6750a4), useMaterial3: true),
-  home: Scaffold(
-  //appBar: AppBar(
- // title: const Text('Fetch Data Example'),
- // ),
-  body: Center(
-  child: FutureBuilder<Album>(
-        future: futureAlbum,
-        builder: (context, snapshot) {
-          if (snapshot.hasData)  {
-            double mmol=(snapshot.data!.sgv/18);
-            return
-              Card(
-                child: SizedBox(
-                  width: 300,
-                  height: 100,
-                  child: Center(child: Text('${mmol.toStringAsPrecision(2)}+${snapshot.data!.direction}')),
-                ),
-              );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
-        },
-      ),),),);}
+        brightness: Brightness.light,
+      ),
+      darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
+
+      home: Scaffold(
+        //appBar: AppBar(
+        // title: const Text('Fetch Data Example'),
+        // ),
+        body: Center(
+          child: FutureBuilder<Album>(
+            future: futureAlbum,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                double mmol = (snapshot.data!.sgv / 18);
+                return Card(
+                  child: SizedBox(
+                    width: 300,
+                    height: 100,
+                    child: Center(
+                        child: Text(
+                            '${mmol.toStringAsPrecision(2)} mmol/L ${snapshot.data!.direction} as of x minutes ago')),
+                  ),
+                  margin: EdgeInsets.all(20),
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.white)),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              // By default, show a loading spinner.
+              return const CircularProgressIndicator();
+            },
+          ),
+        ),
+      ),
+    );
   }
+}
 
 // class ElevatedCard extends StatelessWidget {
 //   const ElevatedCard({Key? key}) : super(key: key);
