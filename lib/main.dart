@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_fonts/google_fonts.dart';
 
 Future<Album> fetchAlbum() async {
   var headers = {
@@ -65,6 +66,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'My CGM',
       theme: ThemeData(
+        fontFamily: 'Raleway',
         brightness: Brightness.light,
       ),
       darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
