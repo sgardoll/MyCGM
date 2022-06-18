@@ -37,7 +37,8 @@ class Album {
     return Album(
       sgv: json['sgv'],
       direction: json['direction'],
-      mmol: 0.1,
+      mmol: 1.0,
+
     );
   }
 }
@@ -63,6 +64,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
+
   }
 
 @override
@@ -79,10 +81,16 @@ Widget build(BuildContext context) {
   child: FutureBuilder<Album>(
         future: futureAlbum,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var mmol = (snapshot.data!.sgv.toDouble()) / 18;
-            return Text(
-              '${mmol}+${snapshot.data!.direction}');
+          if (snapshot.hasData)  {
+            double mmol=(snapshot.data!.sgv/18);
+            return
+              Card(
+                child: SizedBox(
+                  width: 300,
+                  height: 100,
+                  child: Center(child: Text('${mmol.toStringAsPrecision(2)}+${snapshot.data!.direction}')),
+                ),
+              );
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
@@ -91,3 +99,19 @@ Widget build(BuildContext context) {
         },
       ),),),);}
   }
+
+// class ElevatedCard extends StatelessWidget {
+//   const ElevatedCard({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//
+//     return const Center(
+//       child:
+//     );
+//   }
+// }
+//
+//
+//   ///Add the below to ElevatedCard()
+// ///Text('${mmol}+${snapshot.data!.direction}');
