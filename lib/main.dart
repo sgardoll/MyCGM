@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
 
 Future<Album> fetchAlbum() async {
   var headers = {
@@ -31,14 +30,23 @@ class Album {
   final String direction;
   final int sgv;
   final double mmol;
+  final String dateString;
+  final double delta;
 
-  const Album({required this.direction, required this.sgv, required this.mmol});
+  const Album(
+      {required this.direction,
+      required this.sgv,
+      required this.mmol,
+      required this.dateString,
+      required this.delta});
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
       sgv: json['sgv'],
       direction: json['direction'],
       mmol: 1.0,
+      dateString: json['dateString'],
+      delta: json['delta']
     );
   }
 }
@@ -48,46 +56,51 @@ class MyCardItem extends StatelessWidget {
   String description;
   String timeCode;
   IconData iconData;
+  double delta=0.5;
 
   MyCardItem(this.title, this.description, this.iconData, this.timeCode);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              color: Colors.blue.withOpacity(0.2),
-              elevation: 3,
-              margin: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: TextStyle(color: Colors.black)),
-                  Text(
-                    description,
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                  Row(
-                    children: [
-                      Icon(iconData, size: 30, color: Colors.blueGrey.shade900),
-                      Text(
-                        timeCode,
-                        style: TextStyle(color: Colors.blueGrey.shade900),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Card(
+          color: Theme.of(context).colorScheme.primary,
+          // color: Colors.blue.withOpacity(0.2),
+          elevation: 3,
+          margin: const EdgeInsets.all(20),
+          child: Container(
+            padding: new EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(title, style: const TextStyle(color: Colors.black)),
+                Text(
+                  description,
+                  style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                Row(
+                  children: [
+                    Transform.rotate(angle: this.delta, child: Container(child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ))
+                    ),
+                    Text(
+                      timeCode,
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.blueGrey.shade900),
+                    )
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -117,7 +130,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         fontFamily: 'Roboto',
         useMaterial3: true,
-        brightness: Brightness.light,
+        visualDensity: VisualDensity.comfortable,
       ),
       home: Center(
         child: Scaffold(
@@ -126,11 +139,18 @@ class _MyAppState extends State<MyApp> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 double mmol = (snapshot.data!.sgv / 18);
-                return MyCardItem("Your blood glucose is", "${mmol.toStringAsPrecision(2)} mmol/L",
-                    Icons.done, "${snapshot.data!.direction} as of x minutes ago");
+                var dateMmol = DateTime.parse(snapshot.data!.dateString);
+                var howRecent = DateTime.now().difference(dateMmol);
+                int inMinutes = howRecent.inMinutes;
+
+                return MyCardItem(
+                    "Your blood glucose is",
+                    "${mmol.toStringAsPrecision(2)} mmol/L",
+                    Icons.arrow_upward,
+                    "as of ${inMinutes} minutes ago");
                 // return Card(
                 //   elevation: 0,
-                //   color: Theme.of(context).colorScheme.primary,
+                //
                 //   child: Center(
                 //     child: Container(
                 //
