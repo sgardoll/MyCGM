@@ -43,6 +43,55 @@ class Album {
   }
 }
 
+class MyCardItem extends StatelessWidget {
+  String title;
+  String description;
+  String timeCode;
+  IconData iconData;
+
+  MyCardItem(this.title, this.description, this.iconData, this.timeCode);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Card(
+              color: Colors.blue.withOpacity(0.2),
+              elevation: 3,
+              margin: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: TextStyle(color: Colors.black)),
+                  Text(
+                    description,
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  Row(
+                    children: [
+                      Icon(iconData, size: 30, color: Colors.blueGrey.shade900),
+                      Text(
+                        timeCode,
+                        style: TextStyle(color: Colors.blueGrey.shade900),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
@@ -66,34 +115,63 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'My CGM',
       theme: ThemeData(
-        fontFamily: 'Raleway',
+        fontFamily: 'Roboto',
+        useMaterial3: true,
         brightness: Brightness.light,
       ),
-      darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: true),
-
-      home: Scaffold(
-        //appBar: AppBar(
-        // title: const Text('Fetch Data Example'),
-        // ),
-        body: Center(
-          child: FutureBuilder<Album>(
+      home: Center(
+        child: Scaffold(
+          body: FutureBuilder<Album>(
             future: futureAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 double mmol = (snapshot.data!.sgv / 18);
-                return Card(
-                  child: SizedBox(
-                    width: 300,
-                    height: 100,
-                    child: Center(
-                        child: Text(
-                            '${mmol.toStringAsPrecision(2)} mmol/L ${snapshot.data!.direction} as of x minutes ago')),
-                  ),
-                  margin: EdgeInsets.all(20),
-                  shape: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.white)),
-                );
+                return MyCardItem("Your blood glucose is", "${mmol.toStringAsPrecision(2)} mmol/L",
+                    Icons.done, "${snapshot.data!.direction} as of x minutes ago");
+                // return Card(
+                //   elevation: 0,
+                //   color: Theme.of(context).colorScheme.primary,
+                //   child: Center(
+                //     child: Container(
+                //
+                //       alignment: Alignment.centerLeft,
+                //       child: Row(
+                //
+                //
+                //         children: [
+                //           Text(
+                //
+                //
+                //
+                //             'Your blood glucose is\n',
+                //             style: TextStyle(
+                //               fontSize: 18.0,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black),
+                //           ),
+                //
+                //
+                //
+                //         Text(
+                //           'x mmol/L\n',
+                //           style: TextStyle(
+                //               fontSize: 18.0,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black),
+                //         ),
+                //
+                //           Text(
+                //             'as of x minutes ago',
+                //             style: TextStyle(
+                //                 fontSize: 18.0,
+                //                 fontWeight: FontWeight.bold,
+                //                 color: Colors.black),
+                //           ),
+                //         ],
+                //       ),
+                //   ),
+                //   ),
+                // );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
@@ -106,19 +184,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-// class ElevatedCard extends StatelessWidget {
-//   const ElevatedCard({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//
-//     return const Center(
-//       child:
-//     );
-//   }
-// }
-//
-//
-//   ///Add the below to ElevatedCard()
-// ///Text('${mmol}+${snapshot.data!.direction}');
