@@ -27,12 +27,13 @@ Future<Album> fetchAlbum() async {
   }
 }
 
+
 class Album {
   final String direction;
   final int sgv;
   final double mmol;
   final String dateString;
-  final double delta;
+  final num delta;
 
   const Album(
       {required this.direction,
@@ -48,6 +49,8 @@ class Album {
       mmol: 1.0,
       dateString: json['dateString'],
       delta: json['delta']
+
+
     );
   }
 }
@@ -57,9 +60,11 @@ class MyCardItem extends StatelessWidget {
   String description;
   String timeCode;
   IconData iconData;
-  double delta=15;
+  num delta=15;
 
   MyCardItem(this.title, this.description, this.iconData, this.timeCode);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +72,7 @@ class MyCardItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Card(
-          color: Theme.of(context).colorScheme.primary,
-          // color: Colors.blue.withOpacity(0.2),
+         color: Theme.of(context).colorScheme.primary,
           elevation: 3,
           margin: const EdgeInsets.all(20),
           child: Container(
@@ -77,7 +81,7 @@ class MyCardItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(title, style: const TextStyle(color: Colors.black)),
+                Text(title),
                 Text(
                   description,
                   style: const TextStyle(
@@ -89,7 +93,7 @@ class MyCardItem extends StatelessWidget {
                   children: [
                     Container(
                       child: Transform.rotate(
-                          angle: this.delta, child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ),)),
+                          angle: this.delta.toDouble(), child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ),)),
                     Text(
                       timeCode,
                       style: TextStyle(
@@ -125,13 +129,15 @@ class _MyAppState extends State<MyApp> {
     futureAlbum = fetchAlbum();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My CGM',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen),
-          scaffoldBackgroundColor: Colors.lightGreen.shade100,
+        scaffoldBackgroundColor: Colors.lightGreen.shade100,
         textTheme: GoogleFonts.robotoTextTheme(),
         useMaterial3: true,
         visualDensity: VisualDensity.comfortable,
@@ -144,15 +150,22 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.hasData) {
                 double mmol = (snapshot.data!.sgv / 18);
                 var dateMmol = DateTime.parse(snapshot.data!.dateString);
-
                 var howRecent = DateTime.now().difference(dateMmol);
                 var inMinutes = howRecent.inMinutes;
 
-                return MyCardItem(
-                    "Your blood glucose is",
-                    "${mmol.toStringAsPrecision(2)} mmol/L",
-                    Icons.arrow_right_alt,
-                    "as of ${inMinutes} minutes ago");
+
+
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                   MyCardItem(
+                          "Your blood glucose is",
+                          "${mmol.toStringAsPrecision(2)} mmol/L",
+                          Icons.arrow_right_alt,
+                          "as of ${inMinutes} minutes ago"),
+
+                  ],
+                );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
@@ -165,3 +178,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
