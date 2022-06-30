@@ -151,7 +151,7 @@ class _MyAppState extends State<MyApp> {
                     "Your blood glucose is",
                     "${mmol.toStringAsPrecision(2)} mmol/L",
                     Icons.arrow_right_alt,
-                    "as of x minutes ago");
+                    "as of ${inMinutes} minutes ago");
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
