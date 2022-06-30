@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum() async {
@@ -56,7 +57,7 @@ class MyCardItem extends StatelessWidget {
   String description;
   String timeCode;
   IconData iconData;
-  double delta=0.5;
+  double delta=15;
 
   MyCardItem(this.title, this.description, this.iconData, this.timeCode);
 
@@ -86,8 +87,9 @@ class MyCardItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Transform.rotate(angle: this.delta, child: Container(child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ))
-                    ),
+                    Container(
+                      child: Transform.rotate(
+                          angle: this.delta, child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ),)),
                     Text(
                       timeCode,
                       style: TextStyle(
@@ -128,7 +130,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'My CGM',
       theme: ThemeData(
-        fontFamily: 'Roboto',
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen),
+        textTheme: GoogleFonts.robotoTextTheme(),
         useMaterial3: true,
         visualDensity: VisualDensity.comfortable,
       ),
@@ -140,58 +143,15 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.hasData) {
                 double mmol = (snapshot.data!.sgv / 18);
                 var dateMmol = DateTime.parse(snapshot.data!.dateString);
+
                 var howRecent = DateTime.now().difference(dateMmol);
-                int inMinutes = howRecent.inMinutes;
+                var inMinutes = howRecent.inMinutes;
 
                 return MyCardItem(
                     "Your blood glucose is",
                     "${mmol.toStringAsPrecision(2)} mmol/L",
-                    Icons.arrow_upward,
-                    "as of ${inMinutes} minutes ago");
-                // return Card(
-                //   elevation: 0,
-                //
-                //   child: Center(
-                //     child: Container(
-                //
-                //       alignment: Alignment.centerLeft,
-                //       child: Row(
-                //
-                //
-                //         children: [
-                //           Text(
-                //
-                //
-                //
-                //             'Your blood glucose is\n',
-                //             style: TextStyle(
-                //               fontSize: 18.0,
-                //               fontWeight: FontWeight.bold,
-                //               color: Colors.black),
-                //           ),
-                //
-                //
-                //
-                //         Text(
-                //           'x mmol/L\n',
-                //           style: TextStyle(
-                //               fontSize: 18.0,
-                //               fontWeight: FontWeight.bold,
-                //               color: Colors.black),
-                //         ),
-                //
-                //           Text(
-                //             'as of x minutes ago',
-                //             style: TextStyle(
-                //                 fontSize: 18.0,
-                //                 fontWeight: FontWeight.bold,
-                //                 color: Colors.black),
-                //           ),
-                //         ],
-                //       ),
-                //   ),
-                //   ),
-                // );
+                    Icons.arrow_right_alt,
+                    "as of x minutes ago");
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
