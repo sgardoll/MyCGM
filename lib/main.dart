@@ -131,6 +131,7 @@ class _MyAppState extends State<MyApp> {
       title: 'My CGM',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen),
+          scaffoldBackgroundColor: Colors.lightGreen.shade100,
         textTheme: GoogleFonts.robotoTextTheme(),
         useMaterial3: true,
         visualDensity: VisualDensity.comfortable,
