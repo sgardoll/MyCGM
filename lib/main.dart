@@ -3,7 +3,94 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'FAB.dart';
 
+void main() => runApp(const MyApp());
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  late Future<Album> futureAlbum;
+
+  @override
+  void initState() {
+    super.initState();
+    futureAlbum = fetchAlbum();
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'My CGM',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen),
+        scaffoldBackgroundColor: Colors.lightGreen.shade100,
+        textTheme: GoogleFonts.robotoTextTheme(),
+        useMaterial3: true,
+        visualDensity: VisualDensity.comfortable,
+      ),
+      home: Center(
+        child: Scaffold(
+          // floatingActionButton: const ExampleExpandableFab(),
+          floatingActionButton: ExpandableFab(
+            distance: 75.0,
+            children: [
+              ActionButton(
+                onPressed: () => showAction(context, 0),
+                icon: const Icon(Icons.browse_gallery),
+              ),
+              ActionButton(
+                onPressed: () => showAction(context, 1),
+                icon: const Icon(Icons.query_builder),
+              ),
+            ],
+          ),
+          body: FutureBuilder<Album>(
+            future: futureAlbum,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                double mmol = (snapshot.data!.sgv / 18);
+                var dateMmol = DateTime.parse(snapshot.data!.dateString);
+                var howRecent = DateTime.now().difference(dateMmol);
+                var inMinutes = howRecent.inMinutes;
+
+                return
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MyCardItem(
+                          "Your blood glucose is",
+                          "${mmol.toStringAsPrecision(2)} mmol/L",
+                          Icons.arrow_right_alt,
+                          "as of ${inMinutes} minutes ago"),
+
+                    ],
+                  );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              // By default, show a loading spinner.
+              return const CircularProgressIndicator();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+// Make the GET request and store it as var res
 Future<Album> fetchAlbum() async {
   var headers = {
     'accept': 'application/json',
@@ -111,72 +198,5 @@ class MyCardItem extends StatelessWidget {
   }
 }
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late Future<Album> futureAlbum;
-
-  @override
-  void initState() {
-    super.initState();
-    futureAlbum = fetchAlbum();
-  }
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My CGM',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen),
-        scaffoldBackgroundColor: Colors.lightGreen.shade100,
-        textTheme: GoogleFonts.robotoTextTheme(),
-        useMaterial3: true,
-        visualDensity: VisualDensity.comfortable,
-      ),
-      home: Center(
-        child: Scaffold(
-          body: FutureBuilder<Album>(
-            future: futureAlbum,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                double mmol = (snapshot.data!.sgv / 18);
-                var dateMmol = DateTime.parse(snapshot.data!.dateString);
-                var howRecent = DateTime.now().difference(dateMmol);
-                var inMinutes = howRecent.inMinutes;
-
-
-
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                   MyCardItem(
-                          "Your blood glucose is",
-                          "${mmol.toStringAsPrecision(2)} mmol/L",
-                          Icons.arrow_right_alt,
-                          "as of ${inMinutes} minutes ago"),
-
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 
