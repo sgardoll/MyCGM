@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 
   // const ExampleExpandableFab({super.key});
 
-  void showAction(BuildContext context, int index) {
+showAction(BuildContext context, int index) {
     const _actionTitles = ['Add Optisulin', 'Add NovoRapid'];
     showDialog<void>(
       context: context,
@@ -47,26 +47,25 @@ import 'package:flutter/material.dart';
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-
-      // floatingActionButton: ExpandableFab(
-      //   distance: 75.0,
-      //   children: [
-      //     ActionButton(
-      //       onPressed: () => _showAction(context, 0),
-      //       icon: const Icon(Icons.browse_gallery),
-      //     ),
-      //     ActionButton(
-      //       onPressed: () => _showAction(context, 1),
-      //       icon: const Icon(Icons.query_builder),
-      //     ),
-      //   ],
-      // ),
-  //   );
-  // }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: ExpandableFab(
+        distance: 75.0,
+        children: [
+          ActionButton(
+            onPressed: () => _showAction(context, 0),
+            icon: const Icon(Icons.browse_gallery),
+          ),
+          ActionButton(
+            onPressed: () => _showAction(context, 1),
+            icon: const Icon(Icons.query_builder),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 @immutable
 class FAB extends StatefulWidget {
@@ -83,6 +82,7 @@ class FAB extends StatefulWidget {
 
   @override
   State<FAB> createState() => _ExpandableFabState();
+
 }
 
 class _ExpandableFabState extends State<FAB>
@@ -131,6 +131,15 @@ class _ExpandableFabState extends State<FAB>
         alignment: Alignment.bottomRight,
         clipBehavior: Clip.none,
         children: [
+            ActionButton(
+              onPressed: () => showAction(context, 0),
+              icon: const Icon(Icons.browse_gallery),
+            ),
+            ActionButton(
+              onPressed: () => showAction(context, 1),
+              icon: const Icon(Icons.query_builder),
+            ),
+          ],
           _buildTapToCloseFab(),
           ..._buildExpandingActionButtons(),
           _buildTapToOpenFab(),
