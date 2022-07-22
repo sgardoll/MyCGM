@@ -12,21 +12,22 @@ import 'package:flutter/material.dart';
 //
 // @immutable
 // class ExampleExpandableFab extends StatelessWidget {
-  const _actionTitles = ['Add Optisulin', 'Add NovoRapid'];
+
 
   // const ExampleExpandableFab({super.key});
 
   void showAction(BuildContext context, int index) {
+    const _actionTitles = ['Add Optisulin', 'Add NovoRapid'];
     showDialog<void>(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(_actionTitles[index]),
           content: TextField(
-     //       controller: _controller,
+//            controller: _controller,
             focusNode: FocusNode(),
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Value',
               hintText: 'Enter the units administered'),
             autofocus: true,
@@ -68,8 +69,8 @@ import 'package:flutter/material.dart';
 // }
 
 @immutable
-class ExpandableFab extends StatefulWidget {
-  const ExpandableFab({
+class FAB extends StatefulWidget {
+  const FAB({
     super.key,
     this.initialOpen,
     required this.distance,
@@ -81,10 +82,10 @@ class ExpandableFab extends StatefulWidget {
   final List<Widget> children;
 
   @override
-  State<ExpandableFab> createState() => _ExpandableFabState();
+  State<FAB> createState() => _ExpandableFabState();
 }
 
-class _ExpandableFabState extends State<ExpandableFab>
+class _ExpandableFabState extends State<FAB>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _expandAnimation;

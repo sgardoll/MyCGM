@@ -21,12 +21,12 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
+
   }
-
-
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'My CGM',
       theme: ThemeData(
@@ -39,7 +39,7 @@ class MyAppState extends State<MyApp> {
       home: Center(
         child: Scaffold(
           // floatingActionButton: const ExampleExpandableFab(),
-          floatingActionButton: ExpandableFab(
+          floatingActionButton: FAB(
             distance: 75.0,
             children: [
               ActionButton(
@@ -70,7 +70,7 @@ class MyAppState extends State<MyApp> {
                           "Your blood glucose is",
                           "${mmol.toStringAsPrecision(2)} mmol/L",
                           Icons.arrow_right_alt,
-                          "as of ${inMinutes} minutes ago"),
+                          "as of $inMinutes minutes ago"),
 
                     ],
                   );
@@ -163,7 +163,7 @@ class MyCardItem extends StatelessWidget {
           elevation: 3,
           margin: const EdgeInsets.all(20),
           child: Container(
-            padding: new EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -178,9 +178,8 @@ class MyCardItem extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Container(
-                      child: Transform.rotate(
-                          angle: this.delta.toDouble(), child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ),)),
+                    Transform.rotate(
+                        angle: this.delta.toDouble(), child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ),),
                     Text(
                       timeCode,
                       style: TextStyle(
