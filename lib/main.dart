@@ -3,31 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'FAB.dart';
+import 'dart:math' as math;
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  MyAppState createState() => MyAppState();
+void main() {
+  runApp(const MyApp());
 }
 
-class MyAppState extends State<MyApp> {
-  late Future<Album> futureAlbum;
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  @override
-  void initState() {
-    super.initState();
-    futureAlbum = fetchAlbum();
-  }
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      title: 'My CGM',
+      //  title: 'My CGM',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen),
         scaffoldBackgroundColor: Colors.lightGreen.shade100,
@@ -35,53 +24,99 @@ class MyAppState extends State<MyApp> {
         useMaterial3: true,
         visualDensity: VisualDensity.comfortable,
       ),
-      home: Center(
-        child: Scaffold(
-          // floatingActionButton: const ExampleExpandableFab(),
-          floatingActionButton: FAB(
-            distance: 75.0,
-            children: [
-              ActionButton(
-                onPressed: () => showAction(context, 0),
-                icon: const Icon(Icons.browse_gallery),
-              ),
-              ActionButton(
-                onPressed: () => showAction(context, 1),
-                icon: const Icon(Icons.query_builder),
-              ),
-            ],
-          ),
-          body: FutureBuilder<Album>(
-            future: futureAlbum,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                double mmol = (snapshot.data!.sgv / 18);
-                var dateMmol = DateTime.parse(snapshot.data!.dateString);
-                var howRecent = DateTime.now().difference(dateMmol);
-                var inMinutes = howRecent.inMinutes;
-                return
+      home: const MyHomePage(title: 'My CGM'),
+    );
+  }
+}
 
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      MyCardItem(
-                          "Your blood glucose is",
-                          "${mmol.toStringAsPrecision(2)} mmol/L",
-                          Icons.arrow_right_alt,
-                          "as of $inMinutes minutes ago"),
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-                    ],
-                  );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          ),
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  late Future<Album> futureAlbum;
+
+  void initState() {
+    super.initState();
+    futureAlbum = fetchAlbum();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      floatingActionButton: ExampleExpandableFab(),
+      // appBar: AppBar(
+      //   // Here we take the value from the MyHomePage object that was created by
+      //   // the App.build method, and use it to set our appbar title.
+      //   title: Text(widget.title),
+      // ),
+      body:
+      Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Invoke "debug painting" (press "p" in the console, choose the
+          // "Toggle Debug Paint" action from the Flutter Inspector in Android
+          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+          // to see the wireframe for each widget.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:
+          <Widget>[
+
+            FutureBuilder<Album>(
+
+              future: futureAlbum,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  double mmol = (snapshot.data!.sgv / 18);
+                  var dateMmol = DateTime.parse(snapshot.data!.dateString);
+                  var howRecent = DateTime.now().difference(dateMmol);
+                  var inMinutes = howRecent.inMinutes;
+
+                  return
+                    MyCardItem(
+                        "Your blood glucose is",
+                        "${mmol.toStringAsPrecision(2)} mmol/L",
+                        Icons.arrow_right_alt,
+                        "as of $inMinutes minutes ago");
+                  // );
+                  // );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                // By default, show a loading spinner.
+                return const CircularProgressIndicator();
+              },
+            ),
+          ],
         ),
       ),
     );
+    // ),
+    // ),
+
   }
 }
 
@@ -112,7 +147,6 @@ Future<Album> fetchAlbum() async {
   }
 }
 
-
 class Album {
   final String direction;
   final int sgv;
@@ -122,18 +156,18 @@ class Album {
 
   const Album(
       {required this.direction,
-      required this.sgv,
-      required this.mmol,
-      required this.dateString,
-      required this.delta});
+        required this.sgv,
+        required this.mmol,
+        required this.dateString,
+        required this.delta});
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
-      sgv: json['sgv'],
-      direction: json['direction'],
-      mmol: 1.0,
-      dateString: json['dateString'],
-      delta: json['delta']
+        sgv: json['sgv'],
+        direction: json['direction'],
+        mmol: 1.0,
+        dateString: json['dateString'],
+        delta: json['delta']
 
 
     );
@@ -151,13 +185,13 @@ class MyCardItem extends StatelessWidget {
 
 
 
-  @override
+  // @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Card(
-         color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.primary,
           elevation: 3,
           margin: const EdgeInsets.all(20),
           child: Container(
@@ -177,7 +211,7 @@ class MyCardItem extends StatelessWidget {
                 Row(
                   children: [
                     Transform.rotate(
-                        angle: this.delta.toDouble(), child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ),),
+                      angle: this.delta.toDouble(), child: Icon(iconData, size: 30, color: Colors.blueGrey.shade700 ),),
                     Text(
                       timeCode,
                       style: TextStyle(
@@ -197,10 +231,7 @@ class MyCardItem extends StatelessWidget {
 
 
 
-<<<<<<< Updated upstream
-=======
-//FAB
-
+//BELOW IS THE FAB
 @immutable
 class ExampleExpandableFab extends StatelessWidget {
   static const _actionTitles = ['Add Optisulin', 'Add NovoRapid'];
@@ -214,7 +245,7 @@ class ExampleExpandableFab extends StatelessWidget {
         return AlertDialog(
           title: Text(_actionTitles[index]),
           content: TextField(
-          //         controller: _controller,
+            //         controller: _controller,
             focusNode: FocusNode(),
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
@@ -475,4 +506,5 @@ class ActionButton extends StatelessWidget {
     );
   }
 }
->>>>>>> Stashed changes
+
+
