@@ -11,6 +11,10 @@ double sgvToMmol(double sgv) {
   return sgv / 18;
 }
 
+double sgvToProgressInd(double sgv) {
+  return sgv / 180;
+}
+
 String minutesAgo(String dateString) {
   var dateMmol = DateTime.parse(dateString);
   var howRecent = DateTime.now().difference(dateMmol);
