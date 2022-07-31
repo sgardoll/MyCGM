@@ -104,6 +104,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 1,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).primaryBackground,
+              ),
+            ),
             Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -467,13 +474,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   ),
                 ),
               ],
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 1,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).primaryBackground,
-              ),
             ),
           ],
         ),
