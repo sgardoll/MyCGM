@@ -38,11 +38,11 @@ String setBgByMmol(double sgvToMmol) {
   // change image link based on the value of sgvToMmol
   var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
   if (sgvToMmol >= 9.4) {
-    i = "https://connectio.com.au/MyCGM/assets/image/SecBGDark.png";
+    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
     return i;
   }
   if (sgvToMmol <= 3.9) {
-    i = "https://connectio.com.au/MyCGM/assets/image/AltBGDark.png";
+    i = "https://connectio.com.au/MyCGM/assets/AltBGDark.png";
     return i;
   } else {
     return i;
