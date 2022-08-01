@@ -4,6 +4,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -18,6 +19,38 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
   final animationsMap = {
+    'imageOnPageLoadAnimation1': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+    'imageOnPageLoadAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
     'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
@@ -99,18 +132,83 @@ class _HomePageWidgetState extends State<HomePageWidget>
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: FlutterFlowTheme.of(context).richBlackFOGRA29,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 1,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).primaryBackground,
+            if (!(Theme.of(context).brightness == Brightness.light))
+              FutureBuilder<ApiCallResponse>(
+                future: GetBloodGlucoseCall.call(),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: CircularProgressIndicator(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                        ),
+                      ),
+                    );
+                  }
+                  final bGImageDarkModeGetBloodGlucoseResponse = snapshot.data!;
+                  return CachedNetworkImage(
+                    imageUrl: valueOrDefault<String>(
+                      functions.setBgByMmol(valueOrDefault<double>(
+                        functions.sgvToMmol(valueOrDefault<double>(
+                          GetBloodGlucoseCall.sgv(
+                            bGImageDarkModeGetBloodGlucoseResponse.jsonBody,
+                          ),
+                          5.0,
+                        )),
+                        5.0,
+                      )),
+                      'https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png',
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 1,
+                    fit: BoxFit.cover,
+                  ).animated([animationsMap['imageOnPageLoadAnimation1']!]);
+                },
               ),
-            ),
+            if ((Theme.of(context).brightness == Brightness.light))
+              FutureBuilder<ApiCallResponse>(
+                future: GetBloodGlucoseCall.call(),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 25,
+                        height: 25,
+                        child: CircularProgressIndicator(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                        ),
+                      ),
+                    );
+                  }
+                  final bGImageGetBloodGlucoseResponse = snapshot.data!;
+                  return CachedNetworkImage(
+                    imageUrl: valueOrDefault<String>(
+                      functions.setBgByMmol(valueOrDefault<double>(
+                        functions.sgvToMmol(valueOrDefault<double>(
+                          GetBloodGlucoseCall.sgv(
+                            bGImageGetBloodGlucoseResponse.jsonBody,
+                          ),
+                          5.0,
+                        )),
+                        5.0,
+                      )),
+                      'https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png',
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 1,
+                    fit: BoxFit.cover,
+                  ).animated([animationsMap['imageOnPageLoadAnimation2']!]);
+                },
+              ),
             Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
