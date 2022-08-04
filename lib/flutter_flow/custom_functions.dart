@@ -7,16 +7,11 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'lat_lng.dart';
 import 'place.dart';
 
-double sgvToMmol(double sgvDouble) {
-  var i = (sgvDouble / 18);
-  return double.parse((i).toStringAsFixed(2));
-}
-
-double sgvToProgressInd(double sgv) {
-  if (sgv > 180) {
+double sgvToProgressInd(double sgvToDoubleMmol) {
+  if (sgvToDoubleMmol > 10) {
     return 1;
   } else {
-    return sgv / 180;
+    return sgvToDoubleMmol / 180;
   }
 }
 
@@ -35,14 +30,14 @@ bool showDownArrow(double delta) {
   return delta <= -1;
 }
 
-String setBgByMmol(double sgvToMmol) {
+String setBgByMmol(double sgvToDoubleMmol) {
   // change image link based on the value of sgvToMmol
   var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
-  if (sgvToMmol >= 9.4) {
+  if (sgvToDoubleMmol >= 9.4) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
     return i;
   }
-  if (sgvToMmol <= 3.9) {
+  if (sgvToDoubleMmol <= 3.9) {
     i = "https://connectio.com.au/MyCGM/assets/AltBGDark.png";
     return i;
   } else {
@@ -50,14 +45,14 @@ String setBgByMmol(double sgvToMmol) {
   }
 }
 
-String setColByMmol(double sgvToMmol) {
+String setColByMmol(double sgvToDoubleMmol) {
   // change image link based on the value of sgvToMmol
   var i = "https://connectio.com.au/MyCGM/assets/Pri.png";
-  if (sgvToMmol >= 9.4) {
+  if (sgvToDoubleMmol >= 9.4) {
     i = "https://connectio.com.au/MyCGM/assets/Sec.png";
     return i;
   }
-  if (sgvToMmol <= 3.9) {
+  if (sgvToDoubleMmol <= 3.9) {
     i = "https://connectio.com.au/MyCGM/assets/Alt.png";
     return i;
   } else {
@@ -65,14 +60,14 @@ String setColByMmol(double sgvToMmol) {
   }
 }
 
-String setBgByMmolLight(double sgvToMmol) {
+String setBgByMmolLight(double sgvToDoubleMmol) {
   // change image link based on the value of sgvToMmol
   var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png";
-  if (sgvToMmol >= 9.4) {
+  if (sgvToDoubleMmol >= 9.4) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGLight.png";
     return i;
   }
-  if (sgvToMmol <= 3.9) {
+  if (sgvToDoubleMmol <= 3.9) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
     return i;
   } else {
@@ -80,13 +75,9 @@ String setBgByMmolLight(double sgvToMmol) {
   }
 }
 
-double sgvToDouble(String sgv) {
-  // convert sgv from a String into a double
-  double sgvDouble;
-  try {
-    sgvDouble = (double.parse((sgv)));
-  } catch (e) {
-    sgvDouble = 0.0;
-  }
-  return sgvDouble;
+double sgvToDoubleMmol(String sgv) {
+  // convert sgv from a String into a double and divide it by 18 to get mmol
+  var x = (double.parse((sgv))) / 18;
+  var y = double.parse((x).toStringAsFixed(2));
+  return y;
 }

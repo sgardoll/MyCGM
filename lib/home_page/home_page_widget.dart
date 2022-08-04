@@ -235,16 +235,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               center: Text(
                                                 valueOrDefault<String>(
                                                   functions
-                                                      .sgvToMmol(valueOrDefault<
-                                                          double>(
+                                                      .sgvToDoubleMmol(
+                                                          valueOrDefault<
+                                                              String>(
                                                         GetBloodGlucoseCall.sgv(
                                                           progressBarGetBloodGlucoseResponse
                                                               .jsonBody,
-                                                        ),
-                                                        1.0,
+                                                        ).toString(),
+                                                        '5',
                                                       ))
                                                       .toString(),
-                                                  '1.1',
+                                                  '5',
                                                 ),
                                                 style:
                                                     FlutterFlowTheme.of(context)

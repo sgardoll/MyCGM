@@ -48,7 +48,7 @@ class _BGDarkWidgetState extends State<BGDarkWidget>
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: !(Theme.of(context).brightness == Brightness.light),
+      visible: Theme.of(context).brightness == Brightness.dark,
       child: FutureBuilder<ApiCallResponse>(
         future: GetBloodGlucoseCall.call(),
         builder: (context, snapshot) {
@@ -68,12 +68,9 @@ class _BGDarkWidgetState extends State<BGDarkWidget>
           return CachedNetworkImage(
             imageUrl: valueOrDefault<String>(
               functions.setBgByMmol(valueOrDefault<double>(
-                functions.sgvToMmol(valueOrDefault<double>(
-                  GetBloodGlucoseCall.sgv(
-                    bGImageDarkModeGetBloodGlucoseResponse.jsonBody,
-                  ),
-                  5.0,
-                )),
+                GetBloodGlucoseCall.sgv(
+                  bGImageDarkModeGetBloodGlucoseResponse.jsonBody,
+                ),
                 5.0,
               )),
               'https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png',
