@@ -173,7 +173,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   ).animated([animationsMap['imageOnPageLoadAnimation1']!]);
                 },
               ),
-            if ((Theme.of(context).brightness == Brightness.light))
+            if (Theme.of(context).brightness == Brightness.light)
               FutureBuilder<ApiCallResponse>(
                 future: GetBloodGlucoseCall.call(),
                 builder: (context, snapshot) {
@@ -192,13 +192,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   final bGImageGetBloodGlucoseResponse = snapshot.data!;
                   return CachedNetworkImage(
                     imageUrl: valueOrDefault<String>(
-                      functions.setBgByMmol(valueOrDefault<double>(
-                        functions.sgvToMmol(valueOrDefault<double>(
-                          GetBloodGlucoseCall.sgv(
-                            bGImageGetBloodGlucoseResponse.jsonBody,
-                          ),
-                          5.0,
-                        )),
+                      functions.setBgByMmolLight(valueOrDefault<double>(
+                        GetBloodGlucoseCall.sgv(
+                          bGImageGetBloodGlucoseResponse.jsonBody,
+                        ),
                         5.0,
                       )),
                       'https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png',
@@ -216,278 +213,327 @@ class _HomePageWidgetState extends State<HomePageWidget>
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 200, 20, 20),
-                  child: Material(
-                    color: Colors.transparent,
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).primaryColor,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 5,
-                            color: Color(0x23000000),
-                            offset: Offset(0, 2),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Your blood glucose is',
-                                    style: FlutterFlowTheme.of(context)
-                                        .title3
-                                        .override(
-                                          fontFamily: 'Outfit',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                  ),
-                                  Row(
+                  child: FutureBuilder<ApiCallResponse>(
+                    future: GetBloodGlucoseCall.call(),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                              color: FlutterFlowTheme.of(context)
+                                  .primaryBackground,
+                            ),
+                          ),
+                        );
+                      }
+                      final dashboardMainCardGetBloodGlucoseResponse =
+                          snapshot.data!;
+                      return Material(
+                        color: Colors.transparent,
+                        elevation: 6,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: CachedNetworkImageProvider(
+                                valueOrDefault<String>(
+                                  functions.setColByMmol(valueOrDefault<double>(
+                                    GetBloodGlucoseCall.sgv(
+                                      dashboardMainCardGetBloodGlucoseResponse
+                                          .jsonBody,
+                                    ),
+                                    5.0,
+                                  )),
+                                  'https://connectio.com.au/MyCGM/assets/Pri.png',
+                                ),
+                              ),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 5,
+                                color: Color(0x23000000),
+                                offset: Offset(0, 2),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Column(
                                     mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      if ((functions.showUpArrow(1.0) == false))
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 5, 0),
-                                          child: FutureBuilder<ApiCallResponse>(
-                                            future: GetBloodGlucoseCall.call(),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 25,
-                                                    height: 25,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .primaryBackground,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              final iconGetBloodGlucoseResponse =
-                                                  snapshot.data!;
-                                              return Icon(
-                                                Icons.trending_up,
-                                                color: Color(0x9AFFFFFF),
-                                                size: 24,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      if ((functions.showDownArrow(-1.0) ==
-                                          false))
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 5, 0),
-                                          child: FutureBuilder<ApiCallResponse>(
-                                            future: GetBloodGlucoseCall.call(),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 25,
-                                                    height: 25,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .primaryBackground,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              final iconGetBloodGlucoseResponse =
-                                                  snapshot.data!;
-                                              return Icon(
-                                                Icons.trending_down,
-                                                color: Color(0x9AFFFFFF),
-                                                size: 24,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      if ((functions.showUpArrow(1.0) ==
-                                          functions.showDownArrow(-1.0)))
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 5, 0),
-                                          child: FutureBuilder<ApiCallResponse>(
-                                            future: GetBloodGlucoseCall.call(),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 25,
-                                                    height: 25,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .primaryBackground,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              final iconGetBloodGlucoseResponse =
-                                                  snapshot.data!;
-                                              return Icon(
-                                                Icons.trending_flat,
-                                                color: Color(0x9AFFFFFF),
-                                                size: 24,
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 0, 0),
-                                        child: FutureBuilder<ApiCallResponse>(
-                                          future: GetBloodGlucoseCall.call(),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 25,
-                                                  height: 25,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryBackground,
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                            final textGetBloodGlucoseResponse =
-                                                snapshot.data!;
-                                            return Text(
-                                              valueOrDefault<String>(
-                                                functions.minutesAgo(
-                                                    GetBloodGlucoseCall
-                                                        .dateString(
-                                                  textGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ).toString()),
-                                                'as of some time ago',
-                                              ),
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .subtitle2
-                                                  .override(
-                                                    fontFamily: 'Outfit',
+                                      Text(
+                                        'Your blood glucose is',
+                                        style: FlutterFlowTheme.of(context)
+                                            .title3
+                                            .override(
+                                              fontFamily: 'Outfit',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          if (functions.showUpArrow(1.0) ==
+                                              false)
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 5, 0),
+                                              child: FutureBuilder<
+                                                  ApiCallResponse>(
+                                                future:
+                                                    GetBloodGlucoseCall.call(),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 25,
+                                                        height: 25,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryBackground,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final iconGetBloodGlucoseResponse =
+                                                      snapshot.data!;
+                                                  return Icon(
+                                                    Icons.trending_up,
                                                     color: Color(0x9AFFFFFF),
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
+                                                    size: 24,
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          if (functions.showDownArrow(-1.0) ==
+                                              false)
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 5, 0),
+                                              child: FutureBuilder<
+                                                  ApiCallResponse>(
+                                                future:
+                                                    GetBloodGlucoseCall.call(),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 25,
+                                                        height: 25,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryBackground,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final iconGetBloodGlucoseResponse =
+                                                      snapshot.data!;
+                                                  return Icon(
+                                                    Icons.trending_down,
+                                                    color: Color(0x9AFFFFFF),
+                                                    size: 24,
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          if (functions.showUpArrow(1.0) ==
+                                              functions.showDownArrow(-1.0))
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 5, 0),
+                                              child: FutureBuilder<
+                                                  ApiCallResponse>(
+                                                future:
+                                                    GetBloodGlucoseCall.call(),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 25,
+                                                        height: 25,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryBackground,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final iconGetBloodGlucoseResponse =
+                                                      snapshot.data!;
+                                                  return Icon(
+                                                    Icons.trending_flat,
+                                                    color: Color(0x9AFFFFFF),
+                                                    size: 24,
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 4, 0, 0),
+                                            child:
+                                                FutureBuilder<ApiCallResponse>(
+                                              future:
+                                                  GetBloodGlucoseCall.call(),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 25,
+                                                      height: 25,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .primaryBackground,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                final textGetBloodGlucoseResponse =
+                                                    snapshot.data!;
+                                                return Text(
+                                                  valueOrDefault<String>(
+                                                    functions.minutesAgo(
+                                                        GetBloodGlucoseCall
+                                                            .dateString(
+                                                      textGetBloodGlucoseResponse
+                                                          .jsonBody,
+                                                    ).toString()),
+                                                    'as of some time ago',
                                                   ),
-                                            );
-                                          },
-                                        ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .subtitle2
+                                                      .override(
+                                                        fontFamily: 'Outfit',
+                                                        color:
+                                                            Color(0x9AFFFFFF),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            FutureBuilder<ApiCallResponse>(
-                              future: GetBloodGlucoseCall.call(),
-                              builder: (context, snapshot) {
-                                // Customize what your widget looks like when it's loading.
-                                if (!snapshot.hasData) {
-                                  return Center(
-                                    child: SizedBox(
-                                      width: 25,
-                                      height: 25,
-                                      child: CircularProgressIndicator(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
-                                      ),
-                                    ),
-                                  );
-                                }
-                                final progressBarGetBloodGlucoseResponse =
-                                    snapshot.data!;
-                                return CircularPercentIndicator(
-                                  percent: valueOrDefault<double>(
-                                    functions.sgvToProgressInd(
-                                        valueOrDefault<double>(
-                                      GetBloodGlucoseCall.sgv(
-                                        progressBarGetBloodGlucoseResponse
-                                            .jsonBody,
-                                      ),
-                                      1.0,
-                                    )),
-                                    1.0,
-                                  ),
-                                  radius: 45,
-                                  lineWidth: 4,
-                                  animation: true,
-                                  progressColor:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  backgroundColor: Color(0x2B202529),
-                                  center: Text(
-                                    valueOrDefault<String>(
-                                      formatNumber(
-                                        functions
-                                            .sgvToMmol(valueOrDefault<double>(
+                                ),
+                                FutureBuilder<ApiCallResponse>(
+                                  future: GetBloodGlucoseCall.call(),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 25,
+                                          height: 25,
+                                          child: CircularProgressIndicator(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryBackground,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    final progressBarGetBloodGlucoseResponse =
+                                        snapshot.data!;
+                                    return CircularPercentIndicator(
+                                      percent: valueOrDefault<double>(
+                                        functions.sgvToProgressInd(
+                                            valueOrDefault<double>(
                                           GetBloodGlucoseCall.sgv(
                                             progressBarGetBloodGlucoseResponse
                                                 .jsonBody,
                                           ),
                                           1.0,
                                         )),
-                                        formatType: FormatType.custom,
-                                        format: '#0.0',
-                                        locale: '',
+                                        1.0,
                                       ),
-                                      '1.1',
-                                    ),
-                                    style: FlutterFlowTheme.of(context)
-                                        .title3
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: FlutterFlowTheme.of(context)
+                                      radius: 45,
+                                      lineWidth: 4,
+                                      animation: true,
+                                      progressColor:
+                                          FlutterFlowTheme.of(context)
                                               .primaryText,
-                                          fontSize: 28,
+                                      backgroundColor: Color(0x2B202529),
+                                      center: Text(
+                                        valueOrDefault<String>(
+                                          formatNumber(
+                                            functions.sgvToMmol(
+                                                valueOrDefault<double>(
+                                              GetBloodGlucoseCall.sgv(
+                                                progressBarGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ),
+                                              1.0,
+                                            )),
+                                            formatType: FormatType.custom,
+                                            format: '#0.0',
+                                            locale: '',
+                                          ),
+                                          '1.1',
                                         ),
-                                  ),
-                                  startAngle: 1,
-                                ).animated([
-                                  animationsMap[
-                                      'progressBarOnPageLoadAnimation']!
-                                ]);
-                              },
+                                        style: FlutterFlowTheme.of(context)
+                                            .title3
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                              fontSize: 28,
+                                            ),
+                                      ),
+                                      startAngle: 1,
+                                    ).animated([
+                                      animationsMap[
+                                          'progressBarOnPageLoadAnimation']!
+                                    ]);
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ).animated([animationsMap['containerOnPageLoadAnimation']!]),
+                      ).animated(
+                          [animationsMap['containerOnPageLoadAnimation']!]);
+                    },
+                  ),
                 ),
                 Expanded(
                   child: Padding(

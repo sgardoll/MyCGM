@@ -48,3 +48,33 @@ String setBgByMmol(double sgvToMmol) {
     return i;
   }
 }
+
+String setColByMmol(double sgvToMmol) {
+  // change image link based on the value of sgvToMmol
+  var i = "https://connectio.com.au/MyCGM/assets/Pri.png";
+  if (sgvToMmol >= 9.4) {
+    i = "https://connectio.com.au/MyCGM/assets/Sec.png";
+    return i;
+  }
+  if (sgvToMmol <= 3.9) {
+    i = "https://connectio.com.au/MyCGM/assets/Alt.png";
+    return i;
+  } else {
+    return i;
+  }
+}
+
+String setBgByMmolLight(double sgvToMmol) {
+  // change image link based on the value of sgvToMmol
+  var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png";
+  if (sgvToMmol >= 9.4) {
+    i = "https://connectio.com.au/MyCGM/assets/SecBGLight.png";
+    return i;
+  }
+  if (sgvToMmol <= 3.9) {
+    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
+    return i;
+  } else {
+    return i;
+  }
+}
