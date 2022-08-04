@@ -96,7 +96,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
             BGLightWidget(),
             Column(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
@@ -428,19 +428,50 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     },
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 50),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        FFButtonWidget(
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 50),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FFButtonWidget(
+                        onPressed: () async {
+                          context.pushNamed('NovoRapid');
+                        },
+                        text: 'NovoRapid',
+                        icon: Icon(
+                          Icons.add_circle,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 15,
+                        ),
+                        options: FFButtonOptions(
+                          width: 150,
+                          height: 50,
+                          color: Color(0x7FFFFFFF),
+                          textStyle: FlutterFlowTheme.of(context)
+                              .subtitle2
+                              .override(
+                                fontFamily: 'Poppins',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                          elevation: 0,
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            width: 2,
+                          ),
+                        ),
+                      ).animated(
+                          [animationsMap['buttonOnPageLoadAnimation1']!]),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                        child: FFButtonWidget(
                           onPressed: () async {
-                            context.pushNamed('NovoRapid');
+                            context.pushNamed('Optisulin');
                           },
-                          text: 'NovoRapid',
+                          text: 'Optisulin',
                           icon: Icon(
                             Icons.add_circle,
                             color: FlutterFlowTheme.of(context).primaryText,
@@ -466,43 +497,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             ),
                           ),
                         ).animated(
-                            [animationsMap['buttonOnPageLoadAnimation1']!]),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              context.pushNamed('Optisulin');
-                            },
-                            text: 'Optisulin',
-                            icon: Icon(
-                              Icons.add_circle,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 15,
-                            ),
-                            options: FFButtonOptions(
-                              width: 150,
-                              height: 50,
-                              color: Color(0x7FFFFFFF),
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .subtitle2
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                              elevation: 0,
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                width: 2,
-                              ),
-                            ),
-                          ).animated(
-                              [animationsMap['buttonOnPageLoadAnimation2']!]),
-                        ),
-                      ],
-                    ),
+                            [animationsMap['buttonOnPageLoadAnimation2']!]),
+                      ),
+                    ],
                   ),
                 ),
               ],

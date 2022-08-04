@@ -77,7 +77,7 @@ class _BGLightWidgetState extends State<BGLightWidget>
             ),
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 1,
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           ).animated([animationsMap['imageOnPageLoadAnimation']!]);
         },
       ),
