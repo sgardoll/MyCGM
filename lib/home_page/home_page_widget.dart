@@ -44,8 +44,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
       hideBeforeAnimating: false,
       fadeIn: true,
       initialState: AnimationState(
-        offset: Offset(-50, 0),
-        scale: 0.7,
+        offset: Offset(0, 0),
+        scale: 1,
         opacity: 0,
       ),
       finalState: AnimationState(

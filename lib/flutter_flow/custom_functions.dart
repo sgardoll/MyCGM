@@ -13,7 +13,7 @@ double sgvToMmol(double sgv) {
 
 double sgvToProgressInd(double sgv) {
   if (sgv > 180) {
-    return 1.0;
+    return 1;
   } else {
     return sgv / 180;
   }
