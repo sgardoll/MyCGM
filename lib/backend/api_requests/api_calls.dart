@@ -33,3 +33,67 @@ class GetBloodGlucoseCall {
         r'''$..delta''',
       );
 }
+
+class PostNovorapidCall {
+  static Future<ApiCallResponse> call({
+    String? enteredBy = 'MyCGM',
+    int? insulin = 0,
+    String? insulinInjections =
+        '[{\\\"insulin\\\":\\\"Novorapid\\\",\\\"units\\\":0.0}]',
+  }) {
+    final body = '''
+{
+  "enteredBy": "${enteredBy}",
+  "insulin": "${insulin}",
+  "insulinInjections": "[{\"insulin\":\"Novorapid\",\"units\":${insulin}.0}]"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'PostNovorapid',
+      apiUrl:
+          'https://stucgm.herokuapp.com/api/v1/treatments?token=mycgm-4eed72c0613bed6d',
+      callType: ApiCallType.POST,
+      headers: {
+        'accept': 'application/json',
+        'api-secret': 'Thisisnotadrill',
+      },
+      params: {
+        'enteredBy': enteredBy,
+        'insulin': insulin,
+        'insulinInjections': insulinInjections,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+}
+
+class PostOptisulinCall {
+  static Future<ApiCallResponse> call({
+    String? enteredBy = 'MyCGM',
+    int? insulin = 1,
+  }) {
+    final body = '''
+{
+  "enteredBy": "${enteredBy}",
+  "insulin": "${insulin}"
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'PostOptisulin',
+      apiUrl:
+          'https://stucgm.herokuapp.com/api/v1/treatments?token=mycgm-4eed72c0613bed6d',
+      callType: ApiCallType.POST,
+      headers: {
+        'accept': 'application/json',
+        'api-secret': 'Thisisnotadrill',
+      },
+      params: {
+        'enteredBy': enteredBy,
+        'insulin': insulin,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+}
