@@ -38,22 +38,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
         opacity: 1,
       ),
     ),
-    'progressBarOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: false,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
     'buttonOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
@@ -250,20 +234,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   Color(0x2B202529),
                                               center: Text(
                                                 valueOrDefault<String>(
-                                                  formatNumber(
-                                                    functions.sgvToMmol(
-                                                        valueOrDefault<double>(
-                                                      GetBloodGlucoseCall.sgv(
-                                                        progressBarGetBloodGlucoseResponse
-                                                            .jsonBody,
-                                                      ),
-                                                      1.0,
-                                                    )),
-                                                    formatType:
-                                                        FormatType.custom,
-                                                    format: '#0.0',
-                                                    locale: '',
-                                                  ),
+                                                  functions
+                                                      .sgvToMmol(valueOrDefault<
+                                                          double>(
+                                                        GetBloodGlucoseCall.sgv(
+                                                          progressBarGetBloodGlucoseResponse
+                                                              .jsonBody,
+                                                        ),
+                                                        1.0,
+                                                      ))
+                                                      .toString(),
                                                   '1.1',
                                                 ),
                                                 style:
@@ -278,10 +258,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                         ),
                                               ),
                                               startAngle: 1,
-                                            ).animated([
-                                              animationsMap[
-                                                  'progressBarOnPageLoadAnimation']!
-                                            ]);
+                                            );
                                           },
                                         ),
                                       ),

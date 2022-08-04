@@ -7,8 +7,9 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'lat_lng.dart';
 import 'place.dart';
 
-double sgvToMmol(double sgv) {
-  return sgv / 18;
+double sgvToMmol(double sgvDouble) {
+  var i = (sgvDouble / 18);
+  return double.parse((i).toStringAsFixed(2));
 }
 
 double sgvToProgressInd(double sgv) {
@@ -77,4 +78,15 @@ String setBgByMmolLight(double sgvToMmol) {
   } else {
     return i;
   }
+}
+
+double sgvToDouble(String sgv) {
+  // convert sgv from a String into a double
+  double sgvDouble;
+  try {
+    sgvDouble = (double.parse((sgv)));
+  } catch (e) {
+    sgvDouble = 0.0;
+  }
+  return sgvDouble;
 }
