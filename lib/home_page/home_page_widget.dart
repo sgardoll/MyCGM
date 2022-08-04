@@ -234,17 +234,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   Color(0x2B202529),
                                               center: Text(
                                                 valueOrDefault<String>(
-                                                  functions
-                                                      .sgvToDoubleMmol(
-                                                          valueOrDefault<
-                                                              String>(
-                                                        GetBloodGlucoseCall.sgv(
-                                                          progressBarGetBloodGlucoseResponse
-                                                              .jsonBody,
-                                                        ).toString(),
-                                                        '5',
-                                                      ))
-                                                      .toString(),
+                                                  functions.mmolToString(
+                                                      valueOrDefault<double>(
+                                                    GetBloodGlucoseCall.sgv(
+                                                      progressBarGetBloodGlucoseResponse
+                                                          .jsonBody,
+                                                    ),
+                                                    5.0,
+                                                  )),
                                                   '5',
                                                 ),
                                                 style:
