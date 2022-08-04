@@ -60,7 +60,7 @@ String setColByMmol(double sgvToMmol) {
     i = "https://connectio.com.au/MyCGM/assets/Alt.png";
     return i;
   } else {
-    return i;
+    return i = "https://connectio.com.au/MyCGM/assets/Pri.png";
   }
 }
 
