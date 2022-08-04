@@ -548,7 +548,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 ),
                             elevation: 0,
                             borderSide: BorderSide(
-                              color: Color(0x80FFFFFF),
+                              color: FlutterFlowTheme.of(context).primaryText,
                               width: 2,
                             ),
                           ),
@@ -581,7 +581,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   ),
                               elevation: 0,
                               borderSide: BorderSide(
-                                color: Color(0x80FFFFFF),
+                                color: FlutterFlowTheme.of(context).primaryText,
                                 width: 2,
                               ),
                             ),

@@ -45,7 +45,7 @@ String setBgByMmol(double sgvToMmol) {
     i = "https://connectio.com.au/MyCGM/assets/AltBGDark.png";
     return i;
   } else {
-    return i;
+    return i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
   }
 }
 
