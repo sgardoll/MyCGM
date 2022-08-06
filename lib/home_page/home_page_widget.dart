@@ -189,77 +189,80 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 20, 0),
-                                        child: FutureBuilder<ApiCallResponse>(
-                                          future: GetBloodGlucoseCall.call(),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 25,
-                                                  height: 25,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryBackground,
+                                      if (isiOS)
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 20, 0),
+                                          child: FutureBuilder<ApiCallResponse>(
+                                            future: GetBloodGlucoseCall.call(),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 25,
+                                                    height: 25,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: FlutterFlowTheme
+                                                              .of(context)
+                                                          .primaryBackground,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            }
-                                            final progressBarGetBloodGlucoseResponse =
-                                                snapshot.data!;
-                                            return CircularPercentIndicator(
-                                              percent: valueOrDefault<double>(
-                                                functions.sgvToProgressInd(
-                                                    valueOrDefault<double>(
-                                                  GetBloodGlucoseCall.sgv(
-                                                    progressBarGetBloodGlucoseResponse
-                                                        .jsonBody,
-                                                  ),
-                                                  1.0,
-                                                )),
-                                                1.0,
-                                              ),
-                                              radius: 45,
-                                              lineWidth: 4,
-                                              animation: true,
-                                              progressColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                              backgroundColor:
-                                                  Color(0x2B202529),
-                                              center: Text(
-                                                valueOrDefault<String>(
-                                                  functions.mmolToString(
+                                                );
+                                              }
+                                              final progressBarGetBloodGlucoseResponse =
+                                                  snapshot.data!;
+                                              return CircularPercentIndicator(
+                                                percent: valueOrDefault<double>(
+                                                  functions.sgvToProgressInd(
                                                       valueOrDefault<double>(
                                                     GetBloodGlucoseCall.sgv(
                                                       progressBarGetBloodGlucoseResponse
                                                           .jsonBody,
                                                     ),
-                                                    5.0,
+                                                    1.0,
                                                   )),
-                                                  '5',
+                                                  1.0,
                                                 ),
-                                                style:
+                                                radius: 45,
+                                                lineWidth: 4,
+                                                animation: true,
+                                                progressColor:
                                                     FlutterFlowTheme.of(context)
-                                                        .title3
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          fontSize: 28,
-                                                        ),
-                                              ),
-                                              startAngle: 1,
-                                            );
-                                          },
+                                                        .primaryText,
+                                                backgroundColor:
+                                                    Color(0x2B202529),
+                                                center: Text(
+                                                  valueOrDefault<String>(
+                                                    functions.mmolToString(
+                                                        valueOrDefault<double>(
+                                                      GetBloodGlucoseCall.sgv(
+                                                        progressBarGetBloodGlucoseResponse
+                                                            .jsonBody,
+                                                      ),
+                                                      5.0,
+                                                    )),
+                                                    '5',
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .title3
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        fontSize: 28,
+                                                      ),
+                                                ),
+                                                startAngle: 1,
+                                              );
+                                            },
+                                          ),
                                         ),
-                                      ),
                                     ],
                                   ),
                                 ),
