@@ -192,12 +192,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   .primaryText,
                                           backgroundColor: Color(0x2B202529),
                                           center: Text(
-                                            valueOrDefault<String>(
-                                              functions.mmolToString(
-                                                  progressBarGetBloodGlucoseResponse
-                                                      .jsonBody),
-                                              '5',
-                                            ),
+                                            functions
+                                                .sgvToDoubleMmol(
+                                                    valueOrDefault<int>(
+                                                  GetBloodGlucoseCall.sgv(
+                                                    progressBarGetBloodGlucoseResponse
+                                                        .jsonBody,
+                                                  ),
+                                                  161,
+                                                ))
+                                                .toString(),
                                             style: FlutterFlowTheme.of(context)
                                                 .title3
                                                 .override(
