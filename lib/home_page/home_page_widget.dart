@@ -1,4 +1,5 @@
 import '../backend/api_requests/api_calls.dart';
+import '../components/b_g_dark_widget.dart';
 import '../components/b_g_light_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -97,6 +98,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
           children: [
             if (Theme.of(context).brightness == Brightness.light)
               BGLightWidget(),
+            if (Theme.of(context).brightness == Brightness.dark) BGDarkWidget(),
             Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
