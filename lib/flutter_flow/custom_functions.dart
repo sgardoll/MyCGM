@@ -74,7 +74,7 @@ String setBgBySgvLight(int sgv) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
     return i;
   }
-  if (sgv >= 70 && sgv < 169) {
+  if (sgv >= 169) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGLight.png";
     return i;
   } else {
