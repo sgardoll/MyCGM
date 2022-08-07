@@ -7,11 +7,18 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'lat_lng.dart';
 import 'place.dart';
 
-double sgvToProgressInd(double sgvToDoubleMmol) {
-  if (sgvToDoubleMmol > 10) {
-    return 1;
+double sgvToProgressInd(int sgv) {
+  double i = 1.0;
+  if (sgv < 61) {
+    i = 0.1;
+    return i;
+  }
+  if (sgv > 169) {
+    i = 1.0;
+    return i;
   } else {
-    return sgvToDoubleMmol / 180;
+    i = sgv / 180;
+    return i;
   }
 }
 
@@ -80,9 +87,4 @@ double sgvToDoubleMmol(int sgv) {
   num x = sgv / 18;
   var y = double.parse((x).toStringAsFixed(1));
   return y;
-}
-
-String mmolToString(double sgvToDoubleMmol) {
-  String mmolToString = sgvToDoubleMmol.toString();
-  return mmolToString;
 }

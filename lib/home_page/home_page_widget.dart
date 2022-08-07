@@ -175,12 +175,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         return CircularPercentIndicator(
                                           percent: valueOrDefault<double>(
                                             functions.sgvToProgressInd(
-                                                valueOrDefault<double>(
+                                                valueOrDefault<int>(
                                               GetBloodGlucoseCall.sgv(
                                                 progressBarGetBloodGlucoseResponse
                                                     .jsonBody,
                                               ),
-                                              1.0,
+                                              1,
                                             )),
                                             1.0,
                                           ),
