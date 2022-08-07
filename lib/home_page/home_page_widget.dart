@@ -92,8 +92,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
-            BGDarkWidget(),
-            BGLightWidget(),
+            if (Theme.of(context).brightness == Brightness.dark) BGDarkWidget(),
+            if (Theme.of(context).brightness == Brightness.light)
+              BGLightWidget(),
             Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

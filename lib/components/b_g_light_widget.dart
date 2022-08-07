@@ -2,6 +2,7 @@ import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,32 +47,37 @@ class _BGLightWidgetState extends State<BGLightWidget>
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: Theme.of(context).brightness == Brightness.light,
-      child: FutureBuilder<ApiCallResponse>(
-        future: GetBloodGlucoseCall.call(),
-        builder: (context, snapshot) {
-          // Customize what your widget looks like when it's loading.
-          if (!snapshot.hasData) {
-            return Center(
-              child: SizedBox(
-                width: 25,
-                height: 25,
-                child: CircularProgressIndicator(
-                  color: FlutterFlowTheme.of(context).primaryBackground,
-                ),
+    return FutureBuilder<ApiCallResponse>(
+      future: GetBloodGlucoseCall.call(),
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Center(
+            child: SizedBox(
+              width: 25,
+              height: 25,
+              child: CircularProgressIndicator(
+                color: FlutterFlowTheme.of(context).primaryBackground,
               ),
-            );
-          }
-          final bGImageGetBloodGlucoseResponse = snapshot.data!;
-          return CachedNetworkImage(
-            imageUrl: '',
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 1,
-            fit: BoxFit.fill,
-          ).animated([animationsMap['imageOnPageLoadAnimation']!]);
-        },
-      ),
+            ),
+          );
+        }
+        final bGImageGetBloodGlucoseResponse = snapshot.data!;
+        return CachedNetworkImage(
+          imageUrl: valueOrDefault<String>(
+            functions.setBgByMmolLight(valueOrDefault<double>(
+              GetBloodGlucoseCall.sgv(
+                bGImageGetBloodGlucoseResponse.jsonBody,
+              ),
+              181.0,
+            )),
+            '5',
+          ),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 1,
+          fit: BoxFit.fill,
+        ).animated([animationsMap['imageOnPageLoadAnimation']!]);
+      },
     );
   }
 }
