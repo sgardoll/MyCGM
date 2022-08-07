@@ -75,9 +75,9 @@ String setBgByMmolLight(double sgvToDoubleMmol) {
   }
 }
 
-double sgvToDoubleMmol(String sgv) {
+double sgvToDoubleMmol(int sgv) {
   // convert sgv from a String into a double and divide it by 18 to get mmol
-  var x = (int.parse((sgv))) / 18;
+  num x = sgv / 18;
   var y = double.parse((x).toStringAsFixed(1));
   return y;
 }
