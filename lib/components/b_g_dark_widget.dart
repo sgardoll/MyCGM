@@ -67,11 +67,11 @@ class _BGDarkWidgetState extends State<BGDarkWidget>
           final bGImageDarkModeGetBloodGlucoseResponse = snapshot.data!;
           return CachedNetworkImage(
             imageUrl: valueOrDefault<String>(
-              functions.setBgByMmol(valueOrDefault<double>(
+              functions.setBgBySgvDark(valueOrDefault<int>(
                 GetBloodGlucoseCall.sgv(
                   bGImageDarkModeGetBloodGlucoseResponse.jsonBody,
                 ),
-                5.0,
+                100,
               )),
               'https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png',
             ),

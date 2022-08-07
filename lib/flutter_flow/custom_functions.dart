@@ -82,6 +82,21 @@ String setBgBySgvLight(int sgv) {
   }
 }
 
+String setBgBySgvDark(int sgv) {
+  // change image link based on the value of sgv
+  var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
+  if (sgv < 70) {
+    i = "https://connectio.com.au/MyCGM/assets/AltBGDark.png";
+    return i;
+  }
+  if (sgv >= 169) {
+    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
+    return i;
+  } else {
+    return i;
+  }
+}
+
 double sgvToDoubleMmol(int sgv) {
   // convert sgv from a String into a double and divide it by 18 to get mmol
   num x = sgv / 18;
