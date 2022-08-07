@@ -2,7 +2,6 @@ import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,15 +65,7 @@ class _BGLightWidgetState extends State<BGLightWidget>
           }
           final bGImageGetBloodGlucoseResponse = snapshot.data!;
           return CachedNetworkImage(
-            imageUrl: valueOrDefault<String>(
-              functions.setBgByMmolLight(valueOrDefault<double>(
-                GetBloodGlucoseCall.sgv(
-                  bGImageGetBloodGlucoseResponse.jsonBody,
-                ),
-                5.0,
-              )),
-              'https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png',
-            ),
+            imageUrl: '',
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 1,
             fit: BoxFit.fill,
