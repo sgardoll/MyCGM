@@ -57,7 +57,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'HomePage',
               path: 'homePage',
-              builder: (context, params) => HomePageWidget(),
+              builder: (context, params) => HomePageWidget(
+                sgv: params.getParam('sgv', ParamType.int),
+              ),
             ),
             FFRoute(
               name: 'NovoRapid',

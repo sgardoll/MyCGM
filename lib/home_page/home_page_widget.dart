@@ -1,4 +1,5 @@
 import '../backend/api_requests/api_calls.dart';
+import '../components/b_g_light_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -11,7 +12,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+  const HomePageWidget({
+    Key? key,
+    this.sgv,
+  }) : super(key: key);
+
+  final int? sgv;
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
@@ -89,6 +95,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
+            if (Theme.of(context).brightness == Brightness.light)
+              BGLightWidget(),
             Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -65,13 +65,13 @@ class _BGLightWidgetState extends State<BGLightWidget>
         final bGImageGetBloodGlucoseResponse = snapshot.data!;
         return CachedNetworkImage(
           imageUrl: valueOrDefault<String>(
-            functions.setBgByMmolLight(valueOrDefault<double>(
+            functions.setBgBySgvLight(valueOrDefault<int>(
               GetBloodGlucoseCall.sgv(
                 bGImageGetBloodGlucoseResponse.jsonBody,
               ),
-              181.0,
+              100,
             )),
-            '5',
+            'https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png',
           ),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 1,

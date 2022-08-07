@@ -67,15 +67,15 @@ String setColByMmol(double sgvToDoubleMmol) {
   }
 }
 
-String setBgByMmolLight(double sgvToDoubleMmol) {
-  // change image link based on the value of sgvToMmol
+String setBgBySgvLight(int sgv) {
+  // change image link based on the value of sgv
   var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png";
-  if (sgvToDoubleMmol >= 9.4) {
-    i = "https://connectio.com.au/MyCGM/assets/SecBGLight.png";
+  if (sgv < 70) {
+    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
     return i;
   }
-  if (sgvToDoubleMmol <= 3.9) {
-    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
+  if (sgv >= 70 && sgv < 169) {
+    i = "https://connectio.com.au/MyCGM/assets/SecBGLight.png";
     return i;
   } else {
     return i;
