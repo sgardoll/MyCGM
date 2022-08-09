@@ -7,34 +7,46 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'lat_lng.dart';
 import 'place.dart';
 
-double sgvToProgressInd(int sgv) {
+double sgvToProgressInd(int? latestSGV) {
   double i = 1.0;
-  if (sgv < 61) {
+  if (latestSGV == null) {
     i = 0.1;
     return i;
   }
-  if (sgv > 169) {
+  if (latestSGV < 61) {
+    i = 0.1;
+    return i;
+  }
+  if (latestSGV > 169) {
     i = 1.0;
     return i;
   } else {
-    i = sgv / 180;
+    i = latestSGV / 180;
     return i;
   }
 }
 
-String minutesAgo(String dateString) {
-  var dateMmol = DateTime.parse(dateString);
+String minutesAgo(String? latestDate) {
+  if (latestDate == null) {
+    return "a long time ago";
+  }
+
+  var dateMmol = DateTime.parse(latestDate);
   var howRecent = DateTime.now().difference(dateMmol);
   var inMinutes = howRecent.inMinutes;
-  return "as of $inMinutes minutes ago";
+  if (inMinutes > 60) {
+    return "over an hour ago";
+  } else {
+    return "as of $inMinutes minutes ago";
+  }
 }
 
-bool showUpArrow(double delta) {
-  return delta >= 1;
+bool showUpArrow(double? latestDelta) {
+  return latestDelta! >= 0.5;
 }
 
-bool showDownArrow(double delta) {
-  return delta <= -1;
+bool showDownArrow(double? latestDelta) {
+  return latestDelta! <= -0.5;
 }
 
 String setBgByMmol(double sgvToDoubleMmol) {
@@ -67,14 +79,14 @@ String setColByMmol(double sgvToDoubleMmol) {
   }
 }
 
-String setBgBySgvLight(int sgv) {
+String setBgBySgvLight(int latestSGV) {
   // change image link based on the value of sgv
   var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png";
-  if (sgv < 70) {
+  if (latestSGV < 70) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
     return i;
   }
-  if (sgv >= 169) {
+  if (latestSGV >= 169) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGLight.png";
     return i;
   } else {
@@ -82,14 +94,14 @@ String setBgBySgvLight(int sgv) {
   }
 }
 
-String setBgBySgvDark(int sgv) {
+String setBgBySgvDark(int latestSGV) {
   // change image link based on the value of sgv
   var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
-  if (sgv < 70) {
+  if (latestSGV < 70) {
     i = "https://connectio.com.au/MyCGM/assets/AltBGDark.png";
     return i;
   }
-  if (sgv >= 169) {
+  if (latestSGV >= 169) {
     i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
     return i;
   } else {
@@ -97,9 +109,9 @@ String setBgBySgvDark(int sgv) {
   }
 }
 
-double sgvToDoubleMmol(int sgv) {
+double sgvToDoubleMmol(int latestSGV) {
   // convert sgv from a String into a double and divide it by 18 to get mmol
-  num x = sgv / 18;
+  num x = latestSGV / 18;
   var y = double.parse((x).toStringAsFixed(1));
   return y;
 }

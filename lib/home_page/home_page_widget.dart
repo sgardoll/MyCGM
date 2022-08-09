@@ -2,6 +2,7 @@ import '../backend/api_requests/api_calls.dart';
 import '../components/b_g_dark_widget.dart';
 import '../components/b_g_light_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -9,6 +10,7 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -26,6 +28,8 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
+  ApiCallResponse? apiGET;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -76,11 +80,33 @@ class _HomePageWidgetState extends State<HomePageWidget>
       ),
     ),
   };
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      apiGET = await GetBloodGlucoseCall.call();
+      setState(() => FFAppState().latestSGV = valueOrDefault<int>(
+            GetBloodGlucoseCall.sgv(
+              (apiGET?.jsonBody ?? ''),
+            ),
+            160,
+          ));
+      setState(() => FFAppState().latestDate = valueOrDefault<String>(
+            GetBloodGlucoseCall.dateString(
+              (apiGET?.jsonBody ?? ''),
+            ).toString(),
+            'null',
+          ));
+      setState(() => FFAppState().latestDelta = valueOrDefault<double>(
+            GetBloodGlucoseCall.delta(
+              (apiGET?.jsonBody ?? ''),
+            ),
+            0.0,
+          ));
+    });
+
     startPageLoadAnimations(
       animationsMap.values
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
@@ -92,6 +118,28 @@ class _HomePageWidgetState extends State<HomePageWidget>
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+        automaticallyImplyLeading: false,
+        actions: [
+          FlutterFlowIconButton(
+            borderColor: Colors.transparent,
+            borderRadius: 30,
+            borderWidth: 1,
+            buttonSize: 60,
+            icon: Icon(
+              Icons.refresh,
+              color: FlutterFlowTheme.of(context).primaryText,
+              size: 30,
+            ),
+            onPressed: () async {
+              context.pushNamed('HomePage');
+            },
+          ),
+        ],
+        centerTitle: true,
+        elevation: 4,
+      ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
