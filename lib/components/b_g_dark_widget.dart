@@ -1,4 +1,3 @@
-import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -49,38 +48,15 @@ class _BGDarkWidgetState extends State<BGDarkWidget>
   Widget build(BuildContext context) {
     return Visibility(
       visible: Theme.of(context).brightness == Brightness.dark,
-      child: FutureBuilder<ApiCallResponse>(
-        future: GetBloodGlucoseCall.call(),
-        builder: (context, snapshot) {
-          // Customize what your widget looks like when it's loading.
-          if (!snapshot.hasData) {
-            return Center(
-              child: SizedBox(
-                width: 25,
-                height: 25,
-                child: CircularProgressIndicator(
-                  color: FlutterFlowTheme.of(context).primaryBackground,
-                ),
-              ),
-            );
-          }
-          final bGImageDarkModeGetBloodGlucoseResponse = snapshot.data!;
-          return CachedNetworkImage(
-            imageUrl: valueOrDefault<String>(
-              functions.setBgBySgvDark(valueOrDefault<int>(
-                GetBloodGlucoseCall.sgv(
-                  bGImageDarkModeGetBloodGlucoseResponse.jsonBody,
-                ),
-                100,
-              )),
-              'https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png',
-            ),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 1,
-            fit: BoxFit.fill,
-          ).animated([animationsMap['imageOnPageLoadAnimation']!]);
-        },
-      ),
+      child: CachedNetworkImage(
+        imageUrl: valueOrDefault<String>(
+          functions.setBgBySgvDark(FFAppState().latestSGV),
+          'https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png',
+        ),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 1,
+        fit: BoxFit.fill,
+      ).animated([animationsMap['imageOnPageLoadAnimation']!]),
     );
   }
 }

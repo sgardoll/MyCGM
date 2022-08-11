@@ -1,6 +1,5 @@
 import '../backend/api_requests/api_calls.dart';
-import '../components/b_g_dark_widget.dart';
-import '../components/b_g_light_widget.dart';
+import '../components/b_g_container_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -31,7 +30,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).secondaryText,
+        backgroundColor: Color(0x82FFFFFF),
         automaticallyImplyLeading: false,
         title: Text(
           'Add NovoRapid',
@@ -59,15 +58,13 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
           ),
         ],
         centerTitle: false,
-        elevation: 0,
+        elevation: 4,
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
-            if (Theme.of(context).brightness == Brightness.dark) BGDarkWidget(),
-            if (Theme.of(context).brightness == Brightness.light)
-              BGLightWidget(),
+            BGContainerWidget(),
             Form(
               key: formKey,
               autovalidateMode: AutovalidateMode.disabled,
@@ -142,27 +139,13 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                             );
                             if (buttonPostNovorapidResponse.succeeded) {
                               context.pushNamed('HomePage');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Post successful',
-                                    style: TextStyle(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                    ),
-                                  ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor: Color(0x00000000),
-                                ),
-                              );
                             } else {
                               await showDialog(
                                 context: context,
                                 builder: (alertDialogContext) {
                                   return AlertDialog(
-                                    title: Text('Post not successful'),
-                                    content: Text(
-                                        'Unfortunately that was not successful. Please try again.'),
+                                    title: Text('Not successful'),
+                                    content: Text('Not successful'),
                                     actions: [
                                       TextButton(
                                         onPressed: () =>

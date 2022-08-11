@@ -57,19 +57,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'HomePage',
               path: 'homePage',
-              builder: (context, params) => HomePageWidget(
-                sgv: params.getParam('sgv', ParamType.int),
-              ),
-            ),
-            FFRoute(
-              name: 'NovoRapid',
-              path: 'novoRapid',
-              builder: (context, params) => NovoRapidWidget(),
+              builder: (context, params) => HomePageWidget(),
             ),
             FFRoute(
               name: 'Optisulin',
               path: 'optisulin',
               builder: (context, params) => OptisulinWidget(),
+            ),
+            FFRoute(
+              name: 'NovoRapid',
+              path: 'novoRapid',
+              builder: (context, params) => NovoRapidWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

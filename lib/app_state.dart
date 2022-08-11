@@ -17,6 +17,7 @@ class FFAppState {
     _latestSGV = prefs.getInt('ff_latestSGV') ?? _latestSGV;
     _latestDate = prefs.getString('ff_latestDate') ?? _latestDate;
     _latestDelta = prefs.getDouble('ff_latestDelta') ?? _latestDelta;
+    _background = prefs.getString('ff_background') ?? _background;
   }
 
   late SharedPreferences prefs;
@@ -40,6 +41,14 @@ class FFAppState {
   set latestDelta(double _value) {
     _latestDelta = _value;
     prefs.setDouble('ff_latestDelta', _value);
+  }
+
+  String _background =
+      'https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png';
+  String get background => _background;
+  set background(String _value) {
+    _background = _value;
+    prefs.setString('ff_background', _value);
   }
 }
 

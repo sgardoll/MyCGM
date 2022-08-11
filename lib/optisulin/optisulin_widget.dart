@@ -1,6 +1,5 @@
 import '../backend/api_requests/api_calls.dart';
-import '../components/b_g_dark_widget.dart';
-import '../components/b_g_light_widget.dart';
+import '../components/b_g_container_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -31,7 +30,7 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).secondaryText,
+        backgroundColor: Color(0x83FFFFFF),
         automaticallyImplyLeading: false,
         title: Text(
           'Add Optisulin',
@@ -59,15 +58,13 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
           ),
         ],
         centerTitle: false,
-        elevation: 0,
+        elevation: 4,
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
-            if (Theme.of(context).brightness == Brightness.dark) BGDarkWidget(),
-            if (Theme.of(context).brightness == Brightness.light)
-              BGLightWidget(),
+            BGContainerWidget(),
             Form(
               key: formKey,
               autovalidateMode: AutovalidateMode.disabled,

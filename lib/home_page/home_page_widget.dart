@@ -2,10 +2,10 @@ import '../backend/api_requests/api_calls.dart';
 import '../components/b_g_dark_widget.dart';
 import '../components/b_g_light_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../custom_code/widgets/index.dart' as custom_widgets;
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,12 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({
-    Key? key,
-    this.sgv,
-  }) : super(key: key);
-
-  final int? sgv;
+  const HomePageWidget({Key? key}) : super(key: key);
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
@@ -105,6 +100,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
             ),
             0.0,
           ));
+      if (Theme.of(context).brightness == Brightness.dark) {
+        setState(() => FFAppState().background =
+            functions.setBgBySgvDark(FFAppState().latestSGV));
+      } else {
+        setState(() => FFAppState().background =
+            functions.setBgBySgvLight(FFAppState().latestSGV));
+      }
     });
 
     startPageLoadAnimations(
@@ -121,23 +123,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: false,
-        actions: [
-          FlutterFlowIconButton(
-            borderColor: Colors.transparent,
-            borderRadius: 30,
-            borderWidth: 1,
-            buttonSize: 60,
-            icon: Icon(
-              Icons.refresh,
-              color: FlutterFlowTheme.of(context).primaryText,
-              size: 30,
-            ),
-            onPressed: () async {
-              context.pushNamed('HomePage');
-            },
-          ),
-        ],
-        centerTitle: true,
+        title: Text(
+          'My CGM',
+          style: FlutterFlowTheme.of(context).title2.override(
+                fontFamily: 'Poppins',
+                color: Colors.white,
+                fontSize: 22,
+              ),
+        ),
+        actions: [],
+        centerTitle: false,
         elevation: 4,
       ),
       body: GestureDetector(
@@ -211,68 +206,38 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 20, 0),
-                                    child: FutureBuilder<ApiCallResponse>(
-                                      future: GetBloodGlucoseCall.call(),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 25,
-                                              height: 25,
-                                              child: CircularProgressIndicator(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryBackground,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        final progressBarGetBloodGlucoseResponse =
-                                            snapshot.data!;
-                                        return CircularPercentIndicator(
-                                          percent: valueOrDefault<double>(
-                                            functions.sgvToProgressInd(
-                                                valueOrDefault<int>(
-                                              GetBloodGlucoseCall.sgv(
-                                                progressBarGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ),
-                                              1,
-                                            )),
-                                            1.0,
-                                          ),
-                                          radius: 45,
-                                          lineWidth: 4,
-                                          animation: true,
-                                          progressColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primaryText,
-                                          backgroundColor: Color(0x2B202529),
-                                          center: Text(
-                                            functions
-                                                .sgvToDoubleMmol(
-                                                    valueOrDefault<int>(
-                                                  GetBloodGlucoseCall.sgv(
-                                                    progressBarGetBloodGlucoseResponse
-                                                        .jsonBody,
-                                                  ),
-                                                  161,
-                                                ))
-                                                .toString(),
-                                            style: FlutterFlowTheme.of(context)
-                                                .title3
-                                                .override(
-                                                  fontFamily: 'Poppins',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
+                                    child: CircularPercentIndicator(
+                                      percent: valueOrDefault<double>(
+                                        functions.sgvToProgressInd(
+                                            FFAppState().latestSGV),
+                                        1.0,
+                                      ),
+                                      radius: 45,
+                                      lineWidth: 4,
+                                      animation: true,
+                                      progressColor:
+                                          FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                      backgroundColor: Color(0x2B202529),
+                                      center: Text(
+                                        valueOrDefault<String>(
+                                          functions
+                                              .sgvToDoubleMmol(
+                                                  FFAppState().latestSGV)
+                                              .toString(),
+                                          '5.0',
+                                        ),
+                                        style: FlutterFlowTheme.of(context)
+                                            .title3
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
                                                       .primaryText,
-                                                  fontSize: 28,
-                                                ),
-                                          ),
-                                          startAngle: 1,
-                                        );
-                                      },
+                                              fontSize: 28,
+                                            ),
+                                      ),
+                                      startAngle: 1,
                                     ),
                                   ),
                                 ],
@@ -287,141 +252,35 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                if (functions.showUpArrow(1.0) == false)
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 5, 0),
-                                    child: FutureBuilder<ApiCallResponse>(
-                                      future: GetBloodGlucoseCall.call(),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 25,
-                                              height: 25,
-                                              child: CircularProgressIndicator(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryBackground,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        final iconGetBloodGlucoseResponse =
-                                            snapshot.data!;
-                                        return Icon(
-                                          Icons.trending_up,
-                                          color: Color(0x9AFFFFFF),
-                                          size: 24,
-                                        );
-                                      },
-                                    ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 10, 0),
+                                  child: custom_widgets.DeltaIcon(
+                                    width: 24,
+                                    height: 24,
+                                    latestDelta: FFAppState().latestDelta,
                                   ),
-                                if (functions.showDownArrow(-1.0) == false)
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 5, 0),
-                                    child: FutureBuilder<ApiCallResponse>(
-                                      future: GetBloodGlucoseCall.call(),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 25,
-                                              height: 25,
-                                              child: CircularProgressIndicator(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryBackground,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        final iconGetBloodGlucoseResponse =
-                                            snapshot.data!;
-                                        return Icon(
-                                          Icons.trending_down,
-                                          color: Color(0x9AFFFFFF),
-                                          size: 24,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                if (functions.showUpArrow(1.0) ==
-                                    functions.showDownArrow(-1.0))
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 5, 0),
-                                    child: FutureBuilder<ApiCallResponse>(
-                                      future: GetBloodGlucoseCall.call(),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 25,
-                                              height: 25,
-                                              child: CircularProgressIndicator(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryBackground,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        final iconGetBloodGlucoseResponse =
-                                            snapshot.data!;
-                                        return Icon(
-                                          Icons.trending_flat,
-                                          color: Color(0x9AFFFFFF),
-                                          size: 24,
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                ),
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 4, 0, 0),
-                                  child: FutureBuilder<ApiCallResponse>(
-                                    future: GetBloodGlucoseCall.call(),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 25,
-                                            height: 25,
-                                            child: CircularProgressIndicator(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryBackground,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      final textGetBloodGlucoseResponse =
-                                          snapshot.data!;
-                                      return Text(
-                                        valueOrDefault<String>(
-                                          functions.minutesAgo(
-                                              GetBloodGlucoseCall.dateString(
-                                            textGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ).toString()),
-                                          'as of some time ago',
+                                  child: Text(
+                                    valueOrDefault<String>(
+                                      functions
+                                          .minutesAgo(valueOrDefault<String>(
+                                        FFAppState().latestDate,
+                                        'as of some time ago',
+                                      )),
+                                      'as of some time ago',
+                                    ),
+                                    style: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0x9AFFFFFF),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .subtitle2
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Color(0x9AFFFFFF),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      );
-                                    },
                                   ),
                                 ),
                               ],
