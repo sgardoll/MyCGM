@@ -45,7 +45,8 @@ class _MyAppState extends State<MyApp> {
         () => setState(() => _appStateNotifier.stopShowingSplashImage()));
   }
 
-  void setLocale(Locale value) => setState(() => _locale = value);
+  void setLocale(String language) =>
+      setState(() => _locale = createLocale(language));
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
         FlutterFlowTheme.saveThemeMode(mode);

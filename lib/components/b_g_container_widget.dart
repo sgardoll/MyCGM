@@ -13,6 +13,13 @@ class BGContainerWidget extends StatefulWidget {
 
 class _BGContainerWidgetState extends State<BGContainerWidget> {
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
