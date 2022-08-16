@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shake/shake.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
   ApiCallResponse? apiGET;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  late ShakeDetector shakeDetector;
+  var shakeActionInProgress = false;
   final animationsMap = {
     'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -110,6 +113,22 @@ class _HomePageWidgetState extends State<HomePageWidget>
       }
     });
 
+    // On shake action.
+    shakeDetector = ShakeDetector.autoStart(
+      onPhoneShake: () async {
+        if (shakeActionInProgress) {
+          return;
+        }
+        shakeActionInProgress = true;
+        try {
+          await GetBloodGlucoseCall.call();
+        } finally {
+          shakeActionInProgress = false;
+        }
+      },
+      shakeThresholdGravity: 1.5,
+    );
+
     startPageLoadAnimations(
       animationsMap.values
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
@@ -120,42 +139,48 @@ class _HomePageWidgetState extends State<HomePageWidget>
   }
 
   @override
+  void dispose() {
+    shakeDetector.stopListening();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Title(
         title: 'HomePage',
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          appBar: AppBar(
-            backgroundColor: FlutterFlowTheme.of(context).secondaryText,
-            automaticallyImplyLeading: false,
-            title: Text(
-              'My CGM',
-              style: FlutterFlowTheme.of(context).title2.override(
-                    fontFamily: 'Poppins',
-                    color: FlutterFlowTheme.of(context).primaryText,
-                    fontSize: 22,
+          appBar: isAndroid == true
+              ? AppBar(
+                  backgroundColor: FlutterFlowTheme.of(context).secondaryText,
+                  automaticallyImplyLeading: false,
+                  title: Text(
+                    'My CGM',
+                    style: FlutterFlowTheme.of(context).title2.override(
+                          fontFamily: 'Poppins',
+                          color: FlutterFlowTheme.of(context).primaryText,
+                        ),
                   ),
-            ),
-            actions: [
-              FlutterFlowIconButton(
-                borderColor: Colors.transparent,
-                borderRadius: 30,
-                borderWidth: 1,
-                buttonSize: 60,
-                icon: Icon(
-                  Icons.refresh,
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  size: 30,
-                ),
-                onPressed: () async {
-                  context.pushNamed('HomePage');
-                },
-              ),
-            ],
-            centerTitle: false,
-            elevation: 4,
-          ),
+                  actions: [
+                    FlutterFlowIconButton(
+                      borderColor: Colors.transparent,
+                      borderWidth: 1,
+                      buttonSize: 60,
+                      icon: Icon(
+                        Icons.refresh,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        size: 30,
+                      ),
+                      onPressed: () async {
+                        context.pushNamed('HomePage');
+                      },
+                    ),
+                  ],
+                  centerTitle: false,
+                  elevation: 4,
+                )
+              : null,
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Stack(
