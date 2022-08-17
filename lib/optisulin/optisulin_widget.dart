@@ -15,6 +15,7 @@ class OptisulinWidget extends StatefulWidget {
 }
 
 class _OptisulinWidgetState extends State<OptisulinWidget> {
+  ApiCallResponse? postOptiResponse;
   TextEditingController? unitsOptiController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,7 +35,7 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
         child: Scaffold(
           key: scaffoldKey,
           appBar: AppBar(
-            backgroundColor: Color(0x83FFFFFF),
+            backgroundColor: FlutterFlowTheme.of(context).secondaryText,
             automaticallyImplyLeading: false,
             title: Text(
               'Add Optisulin',
@@ -114,75 +115,67 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                           textAlign: TextAlign.start,
                           maxLines: 1,
                           keyboardType: TextInputType.number,
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return 'Field is required';
+                            }
+
+                            return null;
+                          },
                         ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
-                        child: FutureBuilder<ApiCallResponse>(
-                          future: PostOptisulinCall.call(),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 25,
-                                  height: 25,
-                                  child: CircularProgressIndicator(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                  ),
-                                ),
+                        child: FFButtonWidget(
+                          onPressed: () async {
+                            postOptiResponse = await PostOptisulinCall.call(
+                              insulin: valueOrDefault<int>(
+                                int.parse(unitsOptiController!.text),
+                                1,
+                              ),
+                              enteredBy: 'MyCGM_Opti',
+                            );
+                            if ((postOptiResponse?.succeeded ?? true) == true) {
+                              context.pushNamed('HomePage');
+                            } else {
+                              await showDialog(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Not successful'),
+                                    content: Text('Not successful'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(alertDialogContext),
+                                        child: Text('Ok'),
+                                      ),
+                                    ],
+                                  );
+                                },
                               );
                             }
-                            final buttonPostOptisulinResponse = snapshot.data!;
-                            return FFButtonWidget(
-                              onPressed: () async {
-                                await PostOptisulinCall.call(
-                                  insulin: int.parse(unitsOptiController!.text),
-                                  enteredBy: 'MyCGM',
-                                );
-                                if (buttonPostOptisulinResponse.succeeded) {
-                                  context.pushNamed('HomePage');
-                                } else {
-                                  await showDialog(
-                                    context: context,
-                                    builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: Text('Not successful'),
-                                        content: Text('Not successful'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(
-                                                alertDialogContext),
-                                            child: Text('Ok'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              text: 'Submit',
-                              options: FFButtonOptions(
-                                width: 270,
-                                height: 50,
-                                color: Color(0x7FFFFFFF),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                    ),
-                                elevation: 3,
-                                borderSide: BorderSide(
+
+                            setState(() {});
+                          },
+                          text: 'Submit',
+                          options: FFButtonOptions(
+                            width: 270,
+                            height: 50,
+                            color: Color(0x7FFFFFFF),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .subtitle1
+                                .override(
+                                  fontFamily: 'Poppins',
                                   color:
                                       FlutterFlowTheme.of(context).primaryText,
-                                  width: 2,
                                 ),
-                              ),
-                            );
-                          },
+                            elevation: 3,
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              width: 2,
+                            ),
+                          ),
                         ),
                       ),
                     ],

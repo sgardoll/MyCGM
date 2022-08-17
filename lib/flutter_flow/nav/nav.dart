@@ -27,32 +27,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, _) => appStateNotifier.showSplashImage
-          ? Container(
-              color: Colors.transparent,
-              child: Builder(
-                builder: (context) => Image.asset(
-                  'assets/images/Icon.png',
-                  fit: BoxFit.scaleDown,
-                ),
-              ),
-            )
-          : HomePageWidget(),
+      errorBuilder: (context, _) => HomePageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.showSplashImage
-              ? Container(
-                  color: Colors.transparent,
-                  child: Builder(
-                    builder: (context) => Image.asset(
-                      'assets/images/Icon.png',
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                )
-              : HomePageWidget(),
+          builder: (context, _) => HomePageWidget(),
           routes: [
             FFRoute(
               name: 'HomePage',
@@ -60,14 +40,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => HomePageWidget(),
             ),
             FFRoute(
-              name: 'Optisulin',
-              path: 'optisulin',
-              builder: (context, params) => OptisulinWidget(),
-            ),
-            FFRoute(
               name: 'NovoRapid',
               path: 'novoRapid',
               builder: (context, params) => NovoRapidWidget(),
+            ),
+            FFRoute(
+              name: 'Optisulin',
+              path: 'optisulin',
+              builder: (context, params) => OptisulinWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

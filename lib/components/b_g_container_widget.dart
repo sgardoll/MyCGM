@@ -1,3 +1,5 @@
+import '../components/b_g_dark_widget.dart';
+import '../components/b_g_light_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +22,11 @@ class _BGContainerWidgetState extends State<BGContainerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 1,
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width,
-        maxHeight: MediaQuery.of(context).size.height * 1,
-      ),
-      decoration: BoxDecoration(),
+    return Stack(
+      children: [
+        if (Theme.of(context).brightness == Brightness.light) BGLightWidget(),
+        if (Theme.of(context).brightness == Brightness.dark) BGDarkWidget(),
+      ],
     );
   }
 }
