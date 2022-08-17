@@ -73,29 +73,37 @@ class PostNovorapidCall {
   }
 }
 
-class PostOptisulinCall {
+class PostOptiCall {
   static Future<ApiCallResponse> call({
-    String? enteredBy = 'MyCGM_Opti',
-    int? insulin = 1,
+    String? enteredBy = 'MyCGM_Novo',
+    String? insulin = '1',
+    String? insulinInjections = 'Opti',
   }) {
     final body = '''
-{
-  "enteredBy": "${enteredBy}",
-  "insulin": ${insulin},
-  "insulinInjections": "[{\"insulin\":\"Toujeo\",\"units\":${insulin}.0}]"
-}''';
+[
+  {
+    "enteredBy": "${enteredBy}",
+    "insulin": "${insulin}",
+    "insulinInjections": [
+      {
+        "insulin": "Toujeo",
+        "units": "${insulin}.0"
+      }
+    ]
+  }
+]''';
     return ApiManager.instance.makeApiCall(
-      callName: 'PostOptisulin',
+      callName: 'PostOpti',
       apiUrl:
           'https://stucgm.herokuapp.com/api/v1/treatments?token=mycgm-4eed72c0613bed6d',
       callType: ApiCallType.POST,
       headers: {
-        'accept': 'application/json',
         'api-secret': 'Thisisnotadrill',
       },
       params: {
         'enteredBy': enteredBy,
         'insulin': insulin,
+        'insulinInjections': insulinInjections,
       },
       body: body,
       bodyType: BodyType.JSON,

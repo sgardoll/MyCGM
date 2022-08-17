@@ -72,7 +72,7 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                 BGContainerWidget(),
                 Form(
                   key: formKey,
-                  autovalidateMode: AutovalidateMode.disabled,
+                  autovalidateMode: AutovalidateMode.always,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -128,33 +128,52 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            postOptiResponse = await PostOptisulinCall.call(
-                              insulin: valueOrDefault<int>(
-                                int.parse(unitsOptiController!.text),
-                                1,
-                              ),
+                            setState(() => FFAppState().OptiUnitsEntered =
+                                unitsOptiController!.text);
+                            postOptiResponse = await PostOptiCall.call(
+                              insulin: FFAppState().OptiUnitsEntered,
                               enteredBy: 'MyCGM_Opti',
+                              insulinInjections: 'Opti',
                             );
                             if ((postOptiResponse?.succeeded ?? true) == true) {
-                              context.pushNamed('HomePage');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Submission to Nightscout Successful',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText2
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                        ),
+                                  ),
+                                  duration: Duration(milliseconds: 4000),
+                                  backgroundColor: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                ),
+                              );
                             } else {
-                              await showDialog(
-                                context: context,
-                                builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    title: Text('Not successful'),
-                                    content: Text('Not successful'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        child: Text('Ok'),
-                                      ),
-                                    ],
-                                  );
-                                },
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Post Was Unsuccessful',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText2
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color:
+                                              FlutterFlowTheme.of(context).rust,
+                                        ),
+                                  ),
+                                  duration: Duration(milliseconds: 4000),
+                                  backgroundColor: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                ),
                               );
                             }
+
+                            context.pushNamed('HomePage');
 
                             setState(() {});
                           },

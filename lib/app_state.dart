@@ -34,6 +34,8 @@ class FFAppState {
   double latestDelta = 0.0;
 
   String NovoUnitsEntered = '1';
+
+  String OptiUnitsEntered = '';
 }
 
 LatLng? _latLngFromString(String? val) {
