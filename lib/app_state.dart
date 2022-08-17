@@ -36,6 +36,8 @@ class FFAppState {
   String NovoUnitsEntered = '1';
 
   String OptiUnitsEntered = '';
+
+  bool recordInsulinWithCarbs = true;
 }
 
 LatLng? _latLngFromString(String? val) {

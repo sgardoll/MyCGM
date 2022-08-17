@@ -74,13 +74,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
         opacity: 1,
       ),
     ),
-    'rowOnActionTriggerAnimation': AnimationInfo(
+    'wrapOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
-      duration: 200,
+      duration: 600,
       hideBeforeAnimating: true,
       fadeIn: true,
       initialState: AnimationState(
-        offset: Offset(0, 50),
+        offset: Offset(0, 150),
         scale: 1,
         opacity: 0,
       ),
@@ -149,10 +149,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
                 .parent as AnimationController)
             .forward(from: 0.0);
 
-        if (animationsMap['rowOnActionTriggerAnimation'] == null) {
+        if (animationsMap['wrapOnActionTriggerAnimation'] == null) {
           return;
         }
-        await (animationsMap['rowOnActionTriggerAnimation']!
+        await (animationsMap['wrapOnActionTriggerAnimation']!
                 .curvedAnimation
                 .parent as AnimationController)
             .forward(from: 0.0);
@@ -371,11 +371,18 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 0, 10, 0),
-                                          child: custom_widgets.DeltaIcon(
+                                          child: Container(
                                             width: 24,
                                             height: 24,
-                                            latestDelta:
+                                            child: custom_widgets.DeltaIcon(
+                                              width: 24,
+                                              height: 24,
+                                              latestDelta:
+                                                  valueOrDefault<double>(
                                                 FFAppState().latestDelta,
+                                                0.1,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         Padding(
@@ -408,45 +415,20 @@ class _HomePageWidgetState extends State<HomePageWidget>
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 100),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 100),
+                      child: Wrap(
+                        spacing: 0,
+                        runSpacing: 0,
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        direction: Axis.horizontal,
+                        runAlignment: WrapAlignment.start,
+                        verticalDirection: VerticalDirection.down,
+                        clipBehavior: Clip.none,
                         children: [
-                          FFButtonWidget(
-                            onPressed: () async {
-                              context.pushNamed('NovoRapid');
-                            },
-                            text: 'NovoRapid',
-                            icon: Icon(
-                              Icons.add_circle,
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              size: 15,
-                            ),
-                            options: FFButtonOptions(
-                              width: 150,
-                              height: 50,
-                              color: Color(0x7FFFFFFF),
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .subtitle2
-                                  .override(
-                                    fontFamily: 'Poppins',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                              elevation: 0,
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                width: 2,
-                              ),
-                            ),
-                          ),
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
                                 context.pushNamed('Optisulin');
@@ -479,9 +461,76 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               ),
                             ),
                           ),
+                          FFButtonWidget(
+                            onPressed: () async {
+                              context.pushNamed('NovoRapid');
+                            },
+                            text: 'NovoRapid',
+                            icon: Icon(
+                              Icons.add_circle,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 15,
+                            ),
+                            options: FFButtonOptions(
+                              width: 150,
+                              height: 50,
+                              color: Color(0x7FFFFFFF),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .subtitle2
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                              elevation: 0,
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                setState(() =>
+                                    FFAppState().recordInsulinWithCarbs = true);
+                                context.pushNamed('Carbs');
+                              },
+                              text: 'Carbs',
+                              icon: Icon(
+                                Icons.fastfood,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 15,
+                              ),
+                              options: FFButtonOptions(
+                                width: 150,
+                                height: 50,
+                                color: Color(0x7FFFFFFF),
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                elevation: 0,
+                                borderSide: BorderSide(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ).animated(
-                          [animationsMap['rowOnActionTriggerAnimation']!]),
+                          [animationsMap['wrapOnActionTriggerAnimation']!]),
                     ),
                   ],
                 ),

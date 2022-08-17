@@ -41,14 +41,6 @@ String minutesAgo(String? latestDate) {
   }
 }
 
-bool showUpArrow(double? latestDelta) {
-  return latestDelta! >= 0.5;
-}
-
-bool showDownArrow(double? latestDelta) {
-  return latestDelta! <= -0.5;
-}
-
 String setBgByMmol(double sgvToDoubleMmol) {
   // change image link based on the value of sgvToMmol
   var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";

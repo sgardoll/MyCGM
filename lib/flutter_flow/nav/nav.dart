@@ -76,6 +76,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'Optisulin',
               path: 'optisulin',
               builder: (context, params) => OptisulinWidget(),
+            ),
+            FFRoute(
+              name: 'Carbs',
+              path: 'carbs',
+              builder: (context, params) => CarbsWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

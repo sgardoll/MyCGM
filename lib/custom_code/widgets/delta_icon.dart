@@ -28,7 +28,7 @@ class DeltaIcon extends StatelessWidget {
       );
       return x;
     }
-    if (latestDelta! >= 0.5) {
+    if (latestDelta! >= 0.75) {
       const x = Icon(
         Icons.trending_up,
         color: Color(0x9AFFFFFF),
@@ -36,7 +36,7 @@ class DeltaIcon extends StatelessWidget {
       );
       return x;
     }
-    if (latestDelta! <= -0.5) {
+    if (latestDelta! <= -0.75) {
       const x = Icon(
         Icons.trending_down,
         color: Color(0x9AFFFFFF),

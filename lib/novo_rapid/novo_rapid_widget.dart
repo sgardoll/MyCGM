@@ -81,6 +81,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
                         child: TextFormField(
                           controller: unitsNovorapidController,
+                          autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
                             labelStyle:

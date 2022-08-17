@@ -111,3 +111,47 @@ class PostOptiCall {
     );
   }
 }
+
+class PostCarbsCall {
+  static Future<ApiCallResponse> call({
+    String? enteredBy = 'MyCGM_Carbs',
+    String? eventType = 'Meal Bolus',
+    String? carbs = 'null',
+    String? insulinInjections = 'null',
+    String? insulin = 'null',
+  }) {
+    final body = '''
+[
+  {
+    "enteredBy": "${enteredBy}",
+    "eventType": "${eventType}",
+    "carbs": "${carbs}",
+    "insulinInjections": [
+      {
+        "insulin": "Novorapid",
+        "units": "${insulin}.0"
+      }
+    ]
+  }
+]''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'PostCarbs',
+      apiUrl:
+          'https://stucgm.herokuapp.com/api/v1/treatments?token=mycgm-4eed72c0613bed6d',
+      callType: ApiCallType.POST,
+      headers: {
+        'api-secret': 'Thisisnotadrill',
+      },
+      params: {
+        'enteredBy': enteredBy,
+        'eventType': eventType,
+        'carbs': carbs,
+        'insulinInjections': insulinInjections,
+        'insulin': insulin,
+      },
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+    );
+  }
+}
