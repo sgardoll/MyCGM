@@ -1,6 +1,5 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,14 +27,7 @@ class _BGContainerWidgetState extends State<BGContainerWidget> {
         maxWidth: MediaQuery.of(context).size.width,
         maxHeight: MediaQuery.of(context).size.height * 1,
       ),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: CachedNetworkImageProvider(
-            FFAppState().background,
-          ),
-        ),
-      ),
+      decoration: BoxDecoration(),
     );
   }
 }

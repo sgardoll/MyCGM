@@ -9,7 +9,6 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../custom_code/widgets/index.dart' as custom_widgets;
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,10 +29,40 @@ class _HomePageWidgetState extends State<HomePageWidget>
   late ShakeDetector shakeDetector;
   var shakeActionInProgress = false;
   final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
+    'bGLightOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      duration: 0,
+      hideBeforeAnimating: true,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+    'bGDarkOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      duration: 0,
       hideBeforeAnimating: false,
+      initialState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        scale: 1,
+        opacity: 1,
+      ),
+    ),
+    'containerOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      duration: 600,
+      hideBeforeAnimating: true,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 50),
@@ -111,6 +140,30 @@ class _HomePageWidgetState extends State<HomePageWidget>
         setState(() => FFAppState().background =
             functions.setBgBySgvLight(FFAppState().latestSGV));
       }
+
+      if (animationsMap['containerOnActionTriggerAnimation'] == null) {
+        return;
+      }
+      await (animationsMap['containerOnActionTriggerAnimation']!
+              .curvedAnimation
+              .parent as AnimationController)
+          .forward(from: 0.0);
+
+      if (animationsMap['bGLightOnActionTriggerAnimation'] == null) {
+        return;
+      }
+      await (animationsMap['bGLightOnActionTriggerAnimation']!
+              .curvedAnimation
+              .parent as AnimationController)
+          .forward(from: 0.0);
+
+      if (animationsMap['bGDarkOnActionTriggerAnimation'] == null) {
+        return;
+      }
+      await (animationsMap['bGDarkOnActionTriggerAnimation']!
+              .curvedAnimation
+              .parent as AnimationController)
+          .forward(from: 0.0);
     });
 
     // On shake action.
@@ -132,6 +185,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
     startPageLoadAnimations(
       animationsMap.values
           .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
+      this,
+    );
+    setupTriggerAnimations(
+      animationsMap.values
+          .where((anim) => anim.trigger == AnimationTrigger.onActionTrigger),
       this,
     );
 
@@ -186,160 +244,170 @@ class _HomePageWidgetState extends State<HomePageWidget>
             child: Stack(
               children: [
                 if (Theme.of(context).brightness == Brightness.light)
-                  BGLightWidget(),
+                  BGLightWidget().animated(
+                      [animationsMap['bGLightOnActionTriggerAnimation']!]),
                 if (Theme.of(context).brightness == Brightness.dark)
-                  BGDarkWidget(),
+                  BGDarkWidget().animated(
+                      [animationsMap['bGDarkOnActionTriggerAnimation']!]),
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 200, 20, 20),
-                      child: Material(
-                        color: Colors.transparent,
-                        elevation: 6,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 5,
-                                color: Color(0x23000000),
-                                offset: Offset(0, 2),
-                              )
-                            ],
+                    if ((apiGET?.succeeded ?? true) == true)
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(20, 200, 20, 20),
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 6,
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 20, 0, 0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
+                          child: Container(
+                            width: double.infinity,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 5,
+                                  color: Color(0x23000000),
+                                  offset: Offset(0, 2),
+                                )
+                              ],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 20, 0, 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    20, 0, 0, 0),
+                                            child: AutoSizeText(
+                                              'Your blood glucose is',
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .title3
+                                                  .override(
+                                                    fontFamily: 'Poppins',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
-                                                  20, 0, 0, 0),
-                                          child: AutoSizeText(
-                                            'Your blood glucose is',
-                                            textAlign: TextAlign.center,
-                                            maxLines: 2,
-                                            style: FlutterFlowTheme.of(context)
-                                                .title3
-                                                .override(
-                                                  fontFamily: 'Poppins',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                                  0, 0, 20, 0),
+                                          child: CircularPercentIndicator(
+                                            percent: valueOrDefault<double>(
+                                              functions.sgvToProgressInd(
+                                                  FFAppState().latestSGV),
+                                              1.0,
+                                            ),
+                                            radius: 45,
+                                            lineWidth: 4,
+                                            animation: true,
+                                            progressColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primaryText,
+                                            backgroundColor: Color(0x2B202529),
+                                            center: Text(
+                                              valueOrDefault<String>(
+                                                functions
+                                                    .sgvToDoubleMmol(
+                                                        FFAppState().latestSGV)
+                                                    .toString(),
+                                                '5.0',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .title3
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        fontSize: 28,
+                                                      ),
+                                            ),
+                                            startAngle: 1,
                                           ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 0, 20),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 10, 0),
+                                        child: custom_widgets.DeltaIcon(
+                                          width: 24,
+                                          height: 24,
+                                          latestDelta: FFAppState().latestDelta,
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 20, 0),
-                                        child: CircularPercentIndicator(
-                                          percent: valueOrDefault<double>(
-                                            functions.sgvToProgressInd(
-                                                FFAppState().latestSGV),
-                                            1.0,
+                                            0, 4, 0, 0),
+                                        child: Text(
+                                          valueOrDefault<String>(
+                                            functions.minutesAgo(
+                                                valueOrDefault<String>(
+                                              FFAppState().latestDate,
+                                              'as of some time ago',
+                                            )),
+                                            'as of some time ago',
                                           ),
-                                          radius: 45,
-                                          lineWidth: 4,
-                                          animation: true,
-                                          progressColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primaryText,
-                                          backgroundColor: Color(0x2B202529),
-                                          center: Text(
-                                            valueOrDefault<String>(
-                                              functions
-                                                  .sgvToDoubleMmol(
-                                                      FFAppState().latestSGV)
-                                                  .toString(),
-                                              '5.0',
-                                            ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .title3
-                                                .override(
-                                                  fontFamily: 'Poppins',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryText,
-                                                  fontSize: 28,
-                                                ),
-                                          ),
-                                          startAngle: 1,
+                                          style: FlutterFlowTheme.of(context)
+                                              .subtitle2
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color: Color(0x9AFFFFFF),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 10, 0),
-                                      child: custom_widgets.DeltaIcon(
-                                        width: 24,
-                                        height: 24,
-                                        latestDelta: FFAppState().latestDelta,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 4, 0, 0),
-                                      child: Text(
-                                        valueOrDefault<String>(
-                                          functions.minutesAgo(
-                                              valueOrDefault<String>(
-                                            FFAppState().latestDate,
-                                            'as of some time ago',
-                                          )),
-                                          'as of some time ago',
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .subtitle2
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Color(0x9AFFFFFF),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ).animated(
-                          [animationsMap['containerOnPageLoadAnimation']!]),
-                    ),
+                        ).animated([
+                          animationsMap['containerOnActionTriggerAnimation']!
+                        ]),
+                      ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 50),
                       child: Row(
