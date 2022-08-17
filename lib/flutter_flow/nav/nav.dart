@@ -29,7 +29,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) => appStateNotifier.showSplashImage
           ? Container(
-              color: Colors.transparent,
+              color: Color(0xCBFFFFFF),
               child: Center(
                 child: Builder(
                   builder: (context) => Image.asset(
@@ -48,7 +48,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/',
           builder: (context, _) => appStateNotifier.showSplashImage
               ? Container(
-                  color: Colors.transparent,
+                  color: Color(0xCBFFFFFF),
                   child: Center(
                     child: Builder(
                       builder: (context) => Image.asset(

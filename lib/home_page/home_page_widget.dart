@@ -1,6 +1,5 @@
 import '../backend/api_requests/api_calls.dart';
-import '../components/b_g_dark_widget.dart';
-import '../components/b_g_light_widget.dart';
+import '../components/b_g_container_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:shake/shake.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -26,27 +24,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
   ApiCallResponse? apiGET;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late ShakeDetector shakeDetector;
-  var shakeActionInProgress = false;
   final animationsMap = {
-    'bGLightOnActionTriggerAnimation': AnimationInfo(
-      curve: Curves.linear,
-      trigger: AnimationTrigger.onActionTrigger,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-    'bGDarkOnActionTriggerAnimation': AnimationInfo(
+    'bGContainerOnActionTriggerAnimation': AnimationInfo(
       curve: Curves.linear,
       trigger: AnimationTrigger.onActionTrigger,
       duration: 600,
@@ -145,6 +124,14 @@ class _HomePageWidgetState extends State<HomePageWidget>
             functions.setBgBySgvLight(FFAppState().latestSGV));
       }
 
+      if (animationsMap['bGContainerOnActionTriggerAnimation'] == null) {
+        return;
+      }
+      await (animationsMap['bGContainerOnActionTriggerAnimation']!
+              .curvedAnimation
+              .parent as AnimationController)
+          .forward(from: 0.0);
+
       if ((apiGET?.succeeded ?? true)) {
         if (animationsMap['containerOnActionTriggerAnimation'] == null) {
           return;
@@ -188,22 +175,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
       }
     });
 
-    // On shake action.
-    shakeDetector = ShakeDetector.autoStart(
-      onPhoneShake: () async {
-        if (shakeActionInProgress) {
-          return;
-        }
-        shakeActionInProgress = true;
-        try {
-          await GetBloodGlucoseCall.call();
-        } finally {
-          shakeActionInProgress = false;
-        }
-      },
-      shakeThresholdGravity: 1.5,
-    );
-
     setupTriggerAnimations(
       animationsMap.values
           .where((anim) => anim.trigger == AnimationTrigger.onActionTrigger),
@@ -211,12 +182,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
-  }
-
-  @override
-  void dispose() {
-    shakeDetector.stopListening();
-    super.dispose();
   }
 
   @override
@@ -261,12 +226,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
             onTap: () => FocusScope.of(context).unfocus(),
             child: Stack(
               children: [
-                if (Theme.of(context).brightness == Brightness.light)
-                  BGLightWidget().animated(
-                      [animationsMap['bGLightOnActionTriggerAnimation']!]),
-                if (Theme.of(context).brightness == Brightness.dark)
-                  BGDarkWidget().animated(
-                      [animationsMap['bGDarkOnActionTriggerAnimation']!]),
+                BGContainerWidget().animated(
+                    [animationsMap['bGContainerOnActionTriggerAnimation']!]),
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
