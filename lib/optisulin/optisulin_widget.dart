@@ -173,7 +173,7 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                               );
                             }
 
-                            context.pushNamed('HomePage');
+                            Navigator.pop(context);
 
                             setState(() {});
                           },

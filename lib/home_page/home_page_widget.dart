@@ -30,9 +30,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
   var shakeActionInProgress = false;
   final animationsMap = {
     'bGLightOnActionTriggerAnimation': AnimationInfo(
+      curve: Curves.linear,
       trigger: AnimationTrigger.onActionTrigger,
-      duration: 0,
+      duration: 600,
       hideBeforeAnimating: true,
+      fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 0),
         scale: 1,
@@ -45,9 +47,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
       ),
     ),
     'bGDarkOnActionTriggerAnimation': AnimationInfo(
+      curve: Curves.linear,
       trigger: AnimationTrigger.onActionTrigger,
-      duration: 0,
-      hideBeforeAnimating: false,
+      duration: 600,
+      hideBeforeAnimating: true,
+      fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 0),
         scale: 1,
@@ -61,7 +65,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
     ),
     'containerOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
-      duration: 600,
+      duration: 200,
       hideBeforeAnimating: true,
       fadeIn: true,
       initialState: AnimationState(
@@ -75,13 +79,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
         opacity: 1,
       ),
     ),
-    'buttonOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: false,
-      fadeIn: true,
+    'progressBarOnActionTriggerAnimation': AnimationInfo(
+      curve: Curves.linear,
+      trigger: AnimationTrigger.onActionTrigger,
+      duration: 0,
+      hideBeforeAnimating: true,
       initialState: AnimationState(
-        offset: Offset(0, 50),
+        offset: Offset(0, 0),
         scale: 1,
         opacity: 0,
       ),
@@ -91,10 +95,10 @@ class _HomePageWidgetState extends State<HomePageWidget>
         opacity: 1,
       ),
     ),
-    'buttonOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      duration: 600,
-      hideBeforeAnimating: false,
+    'rowOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      duration: 200,
+      hideBeforeAnimating: true,
       fadeIn: true,
       initialState: AnimationState(
         offset: Offset(0, 50),
@@ -141,29 +145,47 @@ class _HomePageWidgetState extends State<HomePageWidget>
             functions.setBgBySgvLight(FFAppState().latestSGV));
       }
 
-      if (animationsMap['containerOnActionTriggerAnimation'] == null) {
-        return;
-      }
-      await (animationsMap['containerOnActionTriggerAnimation']!
-              .curvedAnimation
-              .parent as AnimationController)
-          .forward(from: 0.0);
+      if ((apiGET?.succeeded ?? true)) {
+        if (animationsMap['containerOnActionTriggerAnimation'] == null) {
+          return;
+        }
+        await (animationsMap['containerOnActionTriggerAnimation']!
+                .curvedAnimation
+                .parent as AnimationController)
+            .forward(from: 0.0);
 
-      if (animationsMap['bGLightOnActionTriggerAnimation'] == null) {
-        return;
-      }
-      await (animationsMap['bGLightOnActionTriggerAnimation']!
-              .curvedAnimation
-              .parent as AnimationController)
-          .forward(from: 0.0);
+        if (animationsMap['progressBarOnActionTriggerAnimation'] == null) {
+          return;
+        }
+        await (animationsMap['progressBarOnActionTriggerAnimation']!
+                .curvedAnimation
+                .parent as AnimationController)
+            .forward(from: 0.0);
 
-      if (animationsMap['bGDarkOnActionTriggerAnimation'] == null) {
-        return;
+        if (animationsMap['rowOnActionTriggerAnimation'] == null) {
+          return;
+        }
+        await (animationsMap['rowOnActionTriggerAnimation']!
+                .curvedAnimation
+                .parent as AnimationController)
+            .forward(from: 0.0);
+      } else {
+        await showDialog(
+          context: context,
+          builder: (alertDialogContext) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Was not able to load Nightscout data'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(alertDialogContext),
+                  child: Text('Ok'),
+                ),
+              ],
+            );
+          },
+        );
       }
-      await (animationsMap['bGDarkOnActionTriggerAnimation']!
-              .curvedAnimation
-              .parent as AnimationController)
-          .forward(from: 0.0);
     });
 
     // On shake action.
@@ -182,11 +204,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
       shakeThresholdGravity: 1.5,
     );
 
-    startPageLoadAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onPageLoad),
-      this,
-    );
     setupTriggerAnimations(
       animationsMap.values
           .where((anim) => anim.trigger == AnimationTrigger.onActionTrigger),
@@ -239,7 +256,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   elevation: 4,
                 )
               : null,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Color(0xCBFFFFFF),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Stack(
@@ -255,111 +272,130 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if ((apiGET?.succeeded ?? true) == true)
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(20, 200, 20, 20),
-                        child: Material(
-                          color: Colors.transparent,
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Container(
-                            width: double.infinity,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 5,
-                                  color: Color(0x23000000),
-                                  offset: Offset(0, 2),
-                                )
-                              ],
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(20, 200, 20, 20),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: GetBloodGlucoseCall.call(),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 25,
+                                height: 25,
+                                child: CircularProgressIndicator(
+                                  color: FlutterFlowTheme.of(context)
+                                      .primaryBackground,
+                                ),
+                              ),
+                            );
+                          }
+                          final dashboardMainCardGetBloodGlucoseResponse =
+                              snapshot.data!;
+                          return Material(
+                            color: Colors.transparent,
+                            elevation: 6,
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 20, 0, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
+                            child: Container(
+                              width: double.infinity,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 5,
+                                    color: Color(0x23000000),
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 20, 0, 0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(20, 0, 0, 0),
+                                              child: AutoSizeText(
+                                                'Your blood glucose is',
+                                                textAlign: TextAlign.center,
+                                                maxLines: 2,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .title3
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    20, 0, 0, 0),
-                                            child: AutoSizeText(
-                                              'Your blood glucose is',
-                                              textAlign: TextAlign.center,
-                                              maxLines: 2,
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .title3
-                                                  .override(
-                                                    fontFamily: 'Poppins',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryText,
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 20, 0),
-                                          child: CircularPercentIndicator(
-                                            percent: valueOrDefault<double>(
-                                              functions.sgvToProgressInd(
-                                                  FFAppState().latestSGV),
-                                              1.0,
-                                            ),
-                                            radius: 45,
-                                            lineWidth: 4,
-                                            animation: true,
-                                            progressColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .primaryText,
-                                            backgroundColor: Color(0x2B202529),
-                                            center: Text(
-                                              valueOrDefault<String>(
-                                                functions
-                                                    .sgvToDoubleMmol(
-                                                        FFAppState().latestSGV)
-                                                    .toString(),
-                                                '5.0',
+                                                    0, 0, 20, 0),
+                                            child: CircularPercentIndicator(
+                                              percent: valueOrDefault<double>(
+                                                functions.sgvToProgressInd(
+                                                    FFAppState().latestSGV),
+                                                1.0,
                                               ),
-                                              style:
+                                              radius: 45,
+                                              lineWidth: 4,
+                                              animation: true,
+                                              progressColor:
                                                   FlutterFlowTheme.of(context)
-                                                      .title3
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                        fontSize: 28,
-                                                      ),
-                                            ),
-                                            startAngle: 1,
+                                                      .primaryText,
+                                              backgroundColor:
+                                                  Color(0x2B202529),
+                                              center: Text(
+                                                valueOrDefault<String>(
+                                                  functions
+                                                      .sgvToDoubleMmol(
+                                                          FFAppState()
+                                                              .latestSGV)
+                                                      .toString(),
+                                                  '5.0',
+                                                ),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .title3
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                          fontSize: 28,
+                                                        ),
+                                              ),
+                                              startAngle: 1,
+                                            ).animated([
+                                              animationsMap[
+                                                  'progressBarOnActionTriggerAnimation']!
+                                            ]),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                if ((apiGET?.succeeded ?? true) == true)
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 0, 20),
@@ -401,13 +437,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                       ],
                                     ),
                                   ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ).animated([
-                          animationsMap['containerOnActionTriggerAnimation']!
-                        ]),
+                          ).animated([
+                            animationsMap['containerOnActionTriggerAnimation']!
+                          ]);
+                        },
                       ),
+                    ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 100),
                       child: Row(
@@ -444,8 +482,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 width: 2,
                               ),
                             ),
-                          ).animated(
-                              [animationsMap['buttonOnPageLoadAnimation1']!]),
+                          ),
                           Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
@@ -479,11 +516,11 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                   width: 2,
                                 ),
                               ),
-                            ).animated(
-                                [animationsMap['buttonOnPageLoadAnimation2']!]),
+                            ),
                           ),
                         ],
-                      ),
+                      ).animated(
+                          [animationsMap['rowOnActionTriggerAnimation']!]),
                     ),
                   ],
                 ),

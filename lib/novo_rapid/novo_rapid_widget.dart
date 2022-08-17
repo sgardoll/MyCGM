@@ -177,7 +177,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                               );
                             }
 
-                            context.pushNamed('HomePage');
+                            Navigator.pop(context);
 
                             setState(() {});
                           },

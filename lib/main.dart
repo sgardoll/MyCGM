@@ -33,11 +33,16 @@ class _MyAppState extends State<MyApp> {
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
 
+  bool displaySplashImage = true;
+
   @override
   void initState() {
     super.initState();
     _appStateNotifier = AppStateNotifier();
     _router = createRouter(_appStateNotifier);
+
+    Future.delayed(Duration(seconds: 1),
+        () => setState(() => _appStateNotifier.stopShowingSplashImage()));
   }
 
   void setLocale(String language) =>
