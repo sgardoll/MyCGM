@@ -15,6 +15,7 @@ class FFAppState {
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
     _background = prefs.getString('ff_background') ?? _background;
+    _ratio = prefs.getInt('ff_ratio') ?? _ratio;
   }
 
   late SharedPreferences prefs;
@@ -38,6 +39,15 @@ class FFAppState {
   String OptiUnitsEntered = '';
 
   bool recordInsulinWithCarbs = true;
+
+  String carbValuForCalc = '';
+
+  int _ratio = 20;
+  int get ratio => _ratio;
+  set ratio(int _value) {
+    _ratio = _value;
+    prefs.setInt('ff_ratio', _value);
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

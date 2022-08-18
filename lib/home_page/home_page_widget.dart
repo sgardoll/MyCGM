@@ -246,7 +246,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 height: 25,
                                 child: CircularProgressIndicator(
                                   color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
+                                      .richBlackFOGRA29,
                                 ),
                               ),
                             );
@@ -426,41 +426,6 @@ class _HomePageWidgetState extends State<HomePageWidget>
                         verticalDirection: VerticalDirection.down,
                         clipBehavior: Clip.none,
                         children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                context.pushNamed('Optisulin');
-                              },
-                              text: 'Optisulin',
-                              icon: Icon(
-                                Icons.add_circle,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 15,
-                              ),
-                              options: FFButtonOptions(
-                                width: 150,
-                                height: 50,
-                                color: Color(0x7FFFFFFF),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                elevation: 0,
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  width: 2,
-                                ),
-                              ),
-                            ),
-                          ),
                           FFButtonWidget(
                             onPressed: () async {
                               context.pushNamed('NovoRapid');
@@ -469,7 +434,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             icon: Icon(
                               Icons.add_circle,
                               color: FlutterFlowTheme.of(context).primaryText,
-                              size: 15,
+                              size: 24,
                             ),
                             options: FFButtonOptions(
                               width: 150,
@@ -493,6 +458,41 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           ),
                           Padding(
                             padding:
+                                EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                context.pushNamed('Optisulin');
+                              },
+                              text: 'Optisulin',
+                              icon: Icon(
+                                Icons.add_circle,
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                size: 24,
+                              ),
+                              options: FFButtonOptions(
+                                width: 150,
+                                height: 50,
+                                color: Color(0x7FFFFFFF),
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                elevation: 0,
+                                borderSide: BorderSide(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
                                 EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
@@ -502,9 +502,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               },
                               text: 'Carbs',
                               icon: Icon(
-                                Icons.fastfood,
+                                Icons.restaurant_menu,
                                 color: FlutterFlowTheme.of(context).primaryText,
-                                size: 15,
+                                size: 24,
                               ),
                               options: FFButtonOptions(
                                 width: 150,
