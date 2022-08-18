@@ -34,37 +34,42 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          appBar: AppBar(
-            backgroundColor: FlutterFlowTheme.of(context).secondaryText,
-            automaticallyImplyLeading: false,
-            title: Text(
-              'Add Optisulin',
-              style: FlutterFlowTheme.of(context).title2.override(
-                    fontFamily: 'Poppins',
-                    color: FlutterFlowTheme.of(context).primaryText,
+          appBar: responsiveVisibility(
+            context: context,
+            desktop: false,
+          )
+              ? AppBar(
+                  backgroundColor: FlutterFlowTheme.of(context).secondaryText,
+                  automaticallyImplyLeading: false,
+                  title: Text(
+                    'Add Optisulin',
+                    style: FlutterFlowTheme.of(context).title2.override(
+                          fontFamily: 'Poppins',
+                          color: FlutterFlowTheme.of(context).primaryText,
+                        ),
                   ),
-            ),
-            actions: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                child: FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30,
-                  buttonSize: 48,
-                  icon: Icon(
-                    Icons.close_rounded,
-                    color: FlutterFlowTheme.of(context).primaryText,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ],
-            centerTitle: false,
-            elevation: 4,
-          ),
+                  actions: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                      child: FlutterFlowIconButton(
+                        borderColor: Colors.transparent,
+                        borderRadius: 30,
+                        buttonSize: 48,
+                        icon: Icon(
+                          Icons.close_rounded,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 30,
+                        ),
+                        onPressed: () async {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                  centerTitle: false,
+                  elevation: 4,
+                )
+              : null,
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Stack(
@@ -75,22 +80,15 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                   autovalidateMode: AutovalidateMode.always,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(16, 125, 16, 0),
                         child: TextFormField(
                           controller: unitsOptiController,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelStyle:
-                                FlutterFlowTheme.of(context).title3.override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontWeight: FontWeight.normal,
-                                    ),
                             hintText: 'add units',
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -111,7 +109,7 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                           ),
                           style: FlutterFlowTheme.of(context).title3.override(
                                 fontFamily: 'Poppins',
-                                color: Color(0x80FFFFFF),
+                                color: Color(0x99001219),
                               ),
                           textAlign: TextAlign.start,
                           maxLines: 1,
