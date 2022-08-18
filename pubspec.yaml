@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  audio_session: 0.1.10
   auto_size_text: 3.0.0
   cached_network_image: 3.2.1
   easy_debounce: 2.0.1
@@ -34,6 +35,9 @@ dependencies:
   google_fonts: 3.0.1
   intl: 0.17.0
   json_path: 0.4.1
+  just_audio: 0.9.28
+  just_audio_platform_interface: 4.2.0
+  just_audio_web: 0.4.7
   page_transition: 2.0.9
   percent_indicator: 4.2.2
   shared_preferences: 2.0.15

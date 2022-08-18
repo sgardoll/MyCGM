@@ -11,6 +11,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomePageWidget extends StatefulWidget {
@@ -23,6 +24,7 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
   ApiCallResponse? apiGET;
+  AudioPlayer? soundPlayer;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
     'bGContainerOnActionTriggerAnimation': AnimationInfo(
@@ -98,6 +100,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       apiGET = await GetBloodGlucoseCall.call();
+      if ((apiGET?.succeeded ?? true) != true) {
+        soundPlayer ??= AudioPlayer();
+        if (soundPlayer!.playing) {
+          await soundPlayer!.stop();
+        }
+
+        soundPlayer!
+            .setAsset(
+                'assets/audios/Computer_Error_Alert-SoundBible.com-783113881.mp3')
+            .then((_) => soundPlayer!.play());
+      }
       setState(() => FFAppState().latestSGV = valueOrDefault<int>(
             GetBloodGlucoseCall.sgv(
               (apiGET?.jsonBody ?? ''),
@@ -132,47 +145,29 @@ class _HomePageWidgetState extends State<HomePageWidget>
               .parent as AnimationController)
           .forward(from: 0.0);
 
-      if ((apiGET?.succeeded ?? true)) {
-        if (animationsMap['containerOnActionTriggerAnimation'] == null) {
-          return;
-        }
-        await (animationsMap['containerOnActionTriggerAnimation']!
-                .curvedAnimation
-                .parent as AnimationController)
-            .forward(from: 0.0);
-
-        if (animationsMap['progressBarOnActionTriggerAnimation'] == null) {
-          return;
-        }
-        await (animationsMap['progressBarOnActionTriggerAnimation']!
-                .curvedAnimation
-                .parent as AnimationController)
-            .forward(from: 0.0);
-
-        if (animationsMap['wrapOnActionTriggerAnimation'] == null) {
-          return;
-        }
-        await (animationsMap['wrapOnActionTriggerAnimation']!
-                .curvedAnimation
-                .parent as AnimationController)
-            .forward(from: 0.0);
-      } else {
-        await showDialog(
-          context: context,
-          builder: (alertDialogContext) {
-            return AlertDialog(
-              title: Text('Error'),
-              content: Text('Was not able to load Nightscout data'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(alertDialogContext),
-                  child: Text('Ok'),
-                ),
-              ],
-            );
-          },
-        );
+      if (animationsMap['containerOnActionTriggerAnimation'] == null) {
+        return;
       }
+      await (animationsMap['containerOnActionTriggerAnimation']!
+              .curvedAnimation
+              .parent as AnimationController)
+          .forward(from: 0.0);
+
+      if (animationsMap['progressBarOnActionTriggerAnimation'] == null) {
+        return;
+      }
+      await (animationsMap['progressBarOnActionTriggerAnimation']!
+              .curvedAnimation
+              .parent as AnimationController)
+          .forward(from: 0.0);
+
+      if (animationsMap['wrapOnActionTriggerAnimation'] == null) {
+        return;
+      }
+      await (animationsMap['wrapOnActionTriggerAnimation']!
+              .curvedAnimation
+              .parent as AnimationController)
+          .forward(from: 0.0);
     });
 
     setupTriggerAnimations(
@@ -231,7 +226,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(20, 200, 20, 20),
@@ -260,8 +255,12 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Container(
-                              width: double.infinity,
+                              width: MediaQuery.of(context).size.width * 0.8,
                               height: 200,
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.8,
+                              ),
                               decoration: BoxDecoration(
                                 boxShadow: [
                                   BoxShadow(
@@ -273,95 +272,95 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Column(
-                                mainAxisSize: MainAxisSize.max,
+                                mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 20, 0, 0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(20, 0, 0, 0),
-                                              child: AutoSizeText(
-                                                'Your blood glucose is',
-                                                textAlign: TextAlign.center,
-                                                maxLines: 2,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .title3
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        20, 20, 20, 20),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          flex: 2,
+                                          child: Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    0, 0, 20, 0),
-                                            child: CircularPercentIndicator(
-                                              percent: valueOrDefault<double>(
-                                                functions.sgvToProgressInd(
-                                                    FFAppState().latestSGV),
-                                                1.0,
-                                              ),
-                                              radius: 45,
-                                              lineWidth: 4,
-                                              animation: true,
-                                              progressColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                              backgroundColor:
-                                                  Color(0x2B202529),
-                                              center: Text(
-                                                valueOrDefault<String>(
-                                                  functions
-                                                      .sgvToDoubleMmol(
-                                                          FFAppState()
-                                                              .latestSGV)
-                                                      .toString(),
-                                                  '5.0',
-                                                ),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .title3
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          fontSize: 28,
-                                                        ),
-                                              ),
-                                              startAngle: 1,
-                                            ).animated([
-                                              animationsMap[
-                                                  'progressBarOnActionTriggerAnimation']!
-                                            ]),
+                                                    20, 0, 20, 0),
+                                            child: AutoSizeText(
+                                              'Your blood glucose is',
+                                              textAlign: TextAlign.center,
+                                              maxLines: 3,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .title3
+                                                  .override(
+                                                    fontFamily: 'Poppins',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: CircularPercentIndicator(
+                                            percent: valueOrDefault<double>(
+                                              functions.sgvToProgressInd(
+                                                  FFAppState().latestSGV),
+                                              1.0,
+                                            ),
+                                            radius: 45,
+                                            lineWidth: 4,
+                                            animation: true,
+                                            progressColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primaryText,
+                                            backgroundColor: Color(0x2B202529),
+                                            center: Text(
+                                              valueOrDefault<String>(
+                                                functions
+                                                    .sgvToDoubleMmol(
+                                                        FFAppState().latestSGV)
+                                                    .toString(),
+                                                '5.0',
+                                              ).maybeHandleOverflow(
+                                                maxChars: 20,
+                                                replacement: '…',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .title3
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                        fontSize: 28,
+                                                        lineHeight: 3,
+                                                      ),
+                                            ),
+                                            startAngle: 1,
+                                          ).animated([
+                                            animationsMap[
+                                                'progressBarOnActionTriggerAnimation']!
+                                          ]),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 0, 20),
                                     child: Row(
-                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
@@ -417,8 +416,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 100),
                       child: Wrap(
-                        spacing: 0,
-                        runSpacing: 0,
+                        spacing: 20,
+                        runSpacing: 20,
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         direction: Axis.horizontal,
@@ -491,40 +490,35 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               ),
                             ),
                           ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                setState(() =>
-                                    FFAppState().recordInsulinWithCarbs = true);
-                                context.pushNamed('Carbs');
-                              },
-                              text: 'Carbs',
-                              icon: Icon(
-                                Icons.restaurant_menu,
+                          FFButtonWidget(
+                            onPressed: () async {
+                              setState(() =>
+                                  FFAppState().recordInsulinWithCarbs = true);
+                              context.pushNamed('Carbs');
+                            },
+                            text: 'Carbs',
+                            icon: Icon(
+                              Icons.restaurant_menu,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 24,
+                            ),
+                            options: FFButtonOptions(
+                              width: 150,
+                              height: 50,
+                              color: Color(0x7FFFFFFF),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .subtitle2
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                              elevation: 0,
+                              borderSide: BorderSide(
                                 color: FlutterFlowTheme.of(context).primaryText,
-                                size: 24,
-                              ),
-                              options: FFButtonOptions(
-                                width: 150,
-                                height: 50,
-                                color: Color(0x7FFFFFFF),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                elevation: 0,
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  width: 2,
-                                ),
+                                width: 2,
                               ),
                             ),
                           ),
