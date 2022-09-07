@@ -109,18 +109,17 @@ double sgvToDoubleMmol(int latestSGV) {
 }
 
 String? novoCalcBasedOnRatio(
-  int? ratio,
+  String? ratio,
   String? carbValuForCalc,
 ) {
   //check if either ratio or carbValueForCalc is null
-  if (ratio == null || carbValuForCalc == null) {
-    return null;
-  } else {
-    // convert carbValueForCalc to a number
-    double carbValue = double.parse(carbValuForCalc);
-    // calculate the amount of insulin based on the current ratio
-    double carbs = carbValue * ratio;
-    // return the carbs as a string
-    return carbs.toString();
-  }
+//  if (ratio == null || carbValuForCalc == null) {
+//    return "-";
+//  } else {
+  // convert carbValueForCalc to a number
+  double carbValue = double.parse(carbValuForCalc ??= "");
+  // calculate the amount of insulin based on the current ratio
+  double carbs = carbValue / double.parse(ratio ??= "");
+  // return the carbs as a string
+  return carbs.toStringAsFixed(1);
 }

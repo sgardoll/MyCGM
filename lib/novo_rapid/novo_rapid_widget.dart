@@ -70,147 +70,155 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                   elevation: 4,
                 )
               : null,
-          body: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Stack(
-              children: [
-                BGContainerWidget(),
-                Form(
-                  key: formKey,
-                  autovalidateMode: AutovalidateMode.always,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(16, 125, 16, 0),
-                        child: TextFormField(
-                          controller: unitsNovorapidController,
-                          autofocus: true,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelStyle:
-                                FlutterFlowTheme.of(context).title3.override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                            hintText: 'add units',
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            contentPadding:
-                                EdgeInsetsDirectional.fromSTEB(20, 32, 20, 12),
-                          ),
-                          style: FlutterFlowTheme.of(context).title3.override(
-                                fontFamily: 'Poppins',
-                                color: Color(0x99001219),
-                              ),
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          keyboardType: TextInputType.number,
-                          validator: (val) {
-                            if (val == null || val.isEmpty) {
-                              return 'Field is required';
-                            }
-
-                            return null;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            setState(() => FFAppState().NovoUnitsEntered =
-                                unitsNovorapidController!.text);
-                            postNovoResponse = await PostNovorapidCall.call(
-                              insulin: valueOrDefault<String>(
-                                FFAppState().NovoUnitsEntered,
-                                '1',
-                              ),
-                              enteredBy: 'MyCGM_Novo',
-                              insulinInjections:
-                                  '[{\\\"insulin\\\":\\\"Novorapid\\\",\\\"units\\\":XX.0}]',
-                            );
-                            if ((postNovoResponse?.succeeded ?? true) == true) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Submission to Nightscout Successful',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText2
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryText,
-                                        ),
-                                  ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Post Was Unsuccessful',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText2
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color:
-                                              FlutterFlowTheme.of(context).rust,
-                                        ),
-                                  ),
-                                  duration: Duration(milliseconds: 4000),
-                                  backgroundColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                ),
-                              );
-                            }
-
-                            Navigator.pop(context);
-
-                            setState(() {});
-                          },
-                          text: 'Submit',
-                          options: FFButtonOptions(
-                            width: 270,
-                            height: 50,
-                            color: Color(0x7FFFFFFF),
-                            textStyle: FlutterFlowTheme.of(context)
-                                .subtitle1
-                                .override(
-                                  fontFamily: 'Poppins',
+          body: SafeArea(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Stack(
+                children: [
+                  BGContainerWidget(),
+                  Form(
+                    key: formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(16, 125, 16, 0),
+                          child: TextFormField(
+                            controller: unitsNovorapidController,
+                            autofocus: true,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelStyle:
+                                  FlutterFlowTheme.of(context).title3.override(
+                                        fontFamily: 'Poppins',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                              hintText: 'add units',
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
                                   color:
                                       FlutterFlowTheme.of(context).primaryText,
+                                  width: 2,
                                 ),
-                            elevation: 3,
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              width: 2,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                  20, 32, 20, 12),
+                            ),
+                            style: FlutterFlowTheme.of(context).title3.override(
+                                  fontFamily: 'Poppins',
+                                  color: Color(0x99001219),
+                                ),
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            validator: (val) {
+                              if (val == null || val.isEmpty) {
+                                return 'Field is required';
+                              }
+
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              setState(() => FFAppState().NovoUnitsEntered =
+                                  unitsNovorapidController!.text);
+                              postNovoResponse = await PostNovorapidCall.call(
+                                insulin: valueOrDefault<String>(
+                                  FFAppState().NovoUnitsEntered,
+                                  '1',
+                                ),
+                                enteredBy: 'MyCGM_Novo',
+                                insulinInjections:
+                                    '[{\\\"insulin\\\":\\\"Novorapid\\\",\\\"units\\\":XX.0}]',
+                              );
+                              if ((postNovoResponse?.succeeded ?? true) ==
+                                  true) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Submission to Nightscout Successful',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                          ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Post Was Unsuccessful',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: FlutterFlowTheme.of(context)
+                                                .rust,
+                                          ),
+                                    ),
+                                    duration: Duration(milliseconds: 4000),
+                                    backgroundColor:
+                                        FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                  ),
+                                );
+                              }
+
+                              Navigator.pop(context);
+
+                              setState(() {});
+                            },
+                            text: 'Submit',
+                            options: FFButtonOptions(
+                              width: 270,
+                              height: 50,
+                              color: Color(0x7FFFFFFF),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .subtitle1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                              elevation: 3,
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                width: 2,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ));
