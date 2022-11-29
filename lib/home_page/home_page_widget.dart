@@ -8,7 +8,6 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -21,7 +20,6 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  ApiCallResponse? apiResults;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -29,43 +27,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if ((valueOrDefault(currentUserDocument?.token, '') != null &&
+      if (!((valueOrDefault(currentUserDocument?.token, '') != null &&
               valueOrDefault(currentUserDocument?.token, '') != '') &&
           (valueOrDefault(currentUserDocument?.nightscout, '') != null &&
               valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
           (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
-              valueOrDefault(currentUserDocument?.apiKey, '') != '')) {
-        apiResults = await GetBloodGlucoseCall.call(
-          token: valueOrDefault(currentUserDocument?.token, ''),
-          apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
-          nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
-        );
-        if ((apiResults?.succeeded ?? true)) {
-          setState(
-              () => FFAppState().mmol = functions.mmolListToLatestMmol(functions
-                  .sgvToMmolList(GetBloodGlucoseCall.sgv(
-                    (apiResults?.jsonBody ?? ''),
-                  ).toList())
-                  .toList()));
-        } else {
-          HapticFeedback.heavyImpact();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                getJsonField(
-                  (apiResults?.jsonBody ?? ''),
-                  r'''$.detail''',
-                ).toString(),
-                style: TextStyle(
-                  color: FlutterFlowTheme.of(context).primaryText,
-                ),
-              ),
-              duration: Duration(milliseconds: 4000),
-              backgroundColor: Color(0x00000000),
-            ),
-          );
-        }
-      } else {
+              valueOrDefault(currentUserDocument?.apiKey, '') != ''))) {
         context.pushNamed('Settings');
       }
     });
@@ -208,20 +175,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   .dateStringToTimestamp(
                                                       (GetBloodGlucoseCall
                                                               .dateString(
-                                                (apiResults?.jsonBody ?? ''),
-                                              ) as List)
+                                                    homePageGetBloodGlucoseResponse
+                                                        .jsonBody,
+                                                  ) as List)
                                                           .map<String>((s) =>
                                                               s.toString())
-                                                          .toList()),
+                                                          .toList())
+                                                  .map((e) => e)
+                                                  .toList(),
                                               yData: functions
                                                   .stringListToDoubleList(
                                                       functions
                                                           .sgvToMmolList(
                                                               GetBloodGlucoseCall
                                                                   .sgv(
-                                                            (apiResults
-                                                                    ?.jsonBody ??
-                                                                ''),
+                                                            homePageGetBloodGlucoseResponse
+                                                                .jsonBody,
                                                           ).toList())
                                                           .toList()),
                                               settings: LineChartBarData(
@@ -285,7 +254,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   alignment: AlignmentDirectional(0, 0.1),
                                   child: Text(
                                     'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
-                                      (apiResults?.jsonBody ?? ''),
+                                      homePageGetBloodGlucoseResponse.jsonBody,
                                     ) as List).map<String>((s) => s.toString()).toList())}',
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
