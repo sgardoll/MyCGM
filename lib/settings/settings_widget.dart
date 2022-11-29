@@ -28,9 +28,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   @override
   void initState() {
     super.initState();
-    aPISecretController = TextEditingController();
-    nightscoutController = TextEditingController();
-    tokenController = TextEditingController();
+    aPISecretController = TextEditingController(
+        text: valueOrDefault(currentUserDocument?.apiKey, ''));
+    nightscoutController = TextEditingController(
+        text: valueOrDefault(currentUserDocument?.nightscout, ''));
+    tokenController = TextEditingController(
+        text: valueOrDefault(currentUserDocument?.token, ''));
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -157,62 +160,64 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                               ),
                             ),
                             Expanded(
-                              child: TextFormField(
-                                controller: nightscoutController,
-                                onChanged: (_) => EasyDebounce.debounce(
-                                  'nightscoutController',
-                                  Duration(milliseconds: 2000),
-                                  () => setState(() {}),
+                              child: AuthUserStreamWidget(
+                                child: TextFormField(
+                                  controller: nightscoutController,
+                                  onChanged: (_) => EasyDebounce.debounce(
+                                    'nightscoutController',
+                                    Duration(milliseconds: 2000),
+                                    () => setState(() {}),
+                                  ),
+                                  autofocus: true,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .richBlackFOGRA29,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .richBlackFOGRA29,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    suffixIcon:
+                                        nightscoutController!.text.isNotEmpty
+                                            ? InkWell(
+                                                onTap: () async {
+                                                  nightscoutController?.clear();
+                                                  setState(() {});
+                                                },
+                                                child: Icon(
+                                                  Icons.clear,
+                                                  color: Color(0xFF757575),
+                                                  size: 22,
+                                                ),
+                                              )
+                                            : null,
+                                  ),
+                                  style: FlutterFlowTheme.of(context).bodyText1,
                                 ),
-                                autofocus: true,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  suffixIcon:
-                                      nightscoutController!.text.isNotEmpty
-                                          ? InkWell(
-                                              onTap: () async {
-                                                nightscoutController?.clear();
-                                                setState(() {});
-                                              },
-                                              child: Icon(
-                                                Icons.clear,
-                                                color: Color(0xFF757575),
-                                                size: 22,
-                                              ),
-                                            )
-                                          : null,
-                                ),
-                                style: FlutterFlowTheme.of(context).bodyText1,
                               ),
                             ),
                             Padding(
@@ -251,62 +256,64 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                controller: aPISecretController,
-                                onChanged: (_) => EasyDebounce.debounce(
-                                  'aPISecretController',
-                                  Duration(milliseconds: 2000),
-                                  () => setState(() {}),
+                              child: AuthUserStreamWidget(
+                                child: TextFormField(
+                                  controller: aPISecretController,
+                                  onChanged: (_) => EasyDebounce.debounce(
+                                    'aPISecretController',
+                                    Duration(milliseconds: 2000),
+                                    () => setState(() {}),
+                                  ),
+                                  autofocus: true,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .richBlackFOGRA29,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .richBlackFOGRA29,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    suffixIcon:
+                                        aPISecretController!.text.isNotEmpty
+                                            ? InkWell(
+                                                onTap: () async {
+                                                  aPISecretController?.clear();
+                                                  setState(() {});
+                                                },
+                                                child: Icon(
+                                                  Icons.clear,
+                                                  color: Color(0xFF757575),
+                                                  size: 22,
+                                                ),
+                                              )
+                                            : null,
+                                  ),
+                                  style: FlutterFlowTheme.of(context).bodyText1,
                                 ),
-                                autofocus: true,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  suffixIcon:
-                                      aPISecretController!.text.isNotEmpty
-                                          ? InkWell(
-                                              onTap: () async {
-                                                aPISecretController?.clear();
-                                                setState(() {});
-                                              },
-                                              child: Icon(
-                                                Icons.clear,
-                                                color: Color(0xFF757575),
-                                                size: 22,
-                                              ),
-                                            )
-                                          : null,
-                                ),
-                                style: FlutterFlowTheme.of(context).bodyText1,
                               ),
                             ),
                           ],
@@ -331,61 +338,63 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                controller: tokenController,
-                                onChanged: (_) => EasyDebounce.debounce(
-                                  'tokenController',
-                                  Duration(milliseconds: 2000),
-                                  () => setState(() {}),
+                              child: AuthUserStreamWidget(
+                                child: TextFormField(
+                                  controller: tokenController,
+                                  onChanged: (_) => EasyDebounce.debounce(
+                                    'tokenController',
+                                    Duration(milliseconds: 2000),
+                                    () => setState(() {}),
+                                  ),
+                                  autofocus: true,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .richBlackFOGRA29,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .richBlackFOGRA29,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    suffixIcon: tokenController!.text.isNotEmpty
+                                        ? InkWell(
+                                            onTap: () async {
+                                              tokenController?.clear();
+                                              setState(() {});
+                                            },
+                                            child: Icon(
+                                              Icons.clear,
+                                              color: Color(0xFF757575),
+                                              size: 22,
+                                            ),
+                                          )
+                                        : null,
+                                  ),
+                                  style: FlutterFlowTheme.of(context).bodyText1,
                                 ),
-                                autofocus: true,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  suffixIcon: tokenController!.text.isNotEmpty
-                                      ? InkWell(
-                                          onTap: () async {
-                                            tokenController?.clear();
-                                            setState(() {});
-                                          },
-                                          child: Icon(
-                                            Icons.clear,
-                                            color: Color(0xFF757575),
-                                            size: 22,
-                                          ),
-                                        )
-                                      : null,
-                                ),
-                                style: FlutterFlowTheme.of(context).bodyText1,
                               ),
                             ),
                           ],
@@ -406,24 +415,27 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Expanded(
-                              child: FlutterFlowRadioButton(
-                                options: ['mmol/L', 'mg/dL'].toList(),
-                                onChanged: (val) =>
-                                    setState(() => catagoryFiltersValue = val),
-                                optionHeight: 36,
-                                textStyle:
-                                    FlutterFlowTheme.of(context).bodyText2,
-                                selectedTextStyle:
-                                    FlutterFlowTheme.of(context).bodyText1,
-                                buttonPosition: RadioButtonPosition.left,
-                                direction: Axis.vertical,
-                                radioButtonColor:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                                inactiveRadioButtonColor:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                toggleable: false,
-                                horizontalAlignment: WrapAlignment.start,
-                                verticalAlignment: WrapCrossAlignment.start,
+                              child: AuthUserStreamWidget(
+                                child: FlutterFlowRadioButton(
+                                  options: ['mmol/L', 'mg/dL'].toList(),
+                                  onChanged: (val) => setState(
+                                      () => catagoryFiltersValue = val),
+                                  optionHeight: 36,
+                                  textStyle:
+                                      FlutterFlowTheme.of(context).bodyText2,
+                                  selectedTextStyle:
+                                      FlutterFlowTheme.of(context).bodyText1,
+                                  buttonPosition: RadioButtonPosition.left,
+                                  direction: Axis.vertical,
+                                  radioButtonColor:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  inactiveRadioButtonColor:
+                                      FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                  toggleable: false,
+                                  horizontalAlignment: WrapAlignment.start,
+                                  verticalAlignment: WrapCrossAlignment.start,
+                                ),
                               ),
                             ),
                           ],
@@ -460,7 +472,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       backgroundColor: Color(0x00000000),
                                     ),
                                   );
-                                  context.pop();
+
+                                  context.pushNamed('HomePage');
                                 },
                                 text: 'Save Changes',
                                 icon: Icon(

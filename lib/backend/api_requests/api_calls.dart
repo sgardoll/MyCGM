@@ -8,11 +8,22 @@ export 'api_manager.dart' show ApiCallResponse;
 
 const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
+/// Start Nightscout Group Code
+
+class NightscoutGroup {
+  static String baseUrl = 'https://[nightscout].herokuapp.com/api/v1/';
+  static Map<String, String> headers = {
+    'api-secret': '[api_key]',
+  };
+}
+
+/// End Nightscout Group Code
+
 class GetBloodGlucoseCall {
   static Future<ApiCallResponse> call({
-    String? token = '',
     String? apiKey = '',
     String? nightscout = '',
+    String? token = 'mycgm-4eed72c0613bed6d',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GetBloodGlucose',
@@ -27,7 +38,7 @@ class GetBloodGlucoseCall {
         'token': token,
       },
       returnBody: true,
-      cache: true,
+      cache: false,
     );
   }
 

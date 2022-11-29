@@ -12,7 +12,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:local_auth/local_auth.dart';
 
 class LoginPageWidget extends StatefulWidget {
   const LoginPageWidget({Key? key}) : super(key: key);
@@ -118,6 +117,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
         ),
       ],
     ),
+    'rowOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        VisibilityEffect(duration: 1.ms),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
     'tabBarOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
@@ -143,36 +155,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   TextEditingController? passwordCreateConfirmController;
 
   late bool passwordCreateConfirmVisibility;
-  bool biometric = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      final _localAuth = LocalAuthentication();
-      bool _isBiometricSupported = await _localAuth.isDeviceSupported();
-
-      if (_isBiometricSupported) {
-        biometric = await _localAuth.authenticate(
-            localizedReason: 'Please use biometric login to proceed');
-        setState(() {});
-      }
-
-      if (biometric!) {
-        context.pushNamed('HomePage');
-      }
-    });
-
-    emailAddressController = TextEditingController();
-    passwordController = TextEditingController();
-    passwordVisibility = false;
-    emailAddressCreateController = TextEditingController();
-    passwordCreateController = TextEditingController();
-    passwordCreateVisibility = false;
-    passwordCreateConfirmController = TextEditingController();
-    passwordCreateConfirmVisibility = false;
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -184,6 +171,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       animationsMap['tabBarOnPageLoadAnimation']!.controller.forward(from: 0.0);
     });
 
+    emailAddressController = TextEditingController();
+    passwordController = TextEditingController();
+    passwordVisibility = false;
+    emailAddressCreateController = TextEditingController();
+    passwordCreateController = TextEditingController();
+    passwordCreateVisibility = false;
+    passwordCreateConfirmController = TextEditingController();
+    passwordCreateConfirmVisibility = false;
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -364,7 +359,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                           ],
                                         ),
                                       ],
-                                    ),
+                                    ).animateOnPageLoad(animationsMap[
+                                        'rowOnPageLoadAnimation']!),
                                   ),
                                   Expanded(
                                     child: Align(
@@ -711,6 +707,31 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           if (user ==
                                                                               null) {
                                                                             return;
+                                                                          }
+
+                                                                          if (animationsMap['containerOnActionTriggerAnimation1'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation1']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          if (animationsMap['containerOnActionTriggerAnimation2'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation2']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          if (animationsMap['containerOnActionTriggerAnimation3'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation3']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          if (animationsMap['containerOnActionTriggerAnimation4'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation4']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          if (animationsMap['containerOnActionTriggerAnimation5'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation5']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          if (animationsMap['tabBarOnActionTriggerAnimation'] !=
+                                                                              null) {
+                                                                            animationsMap['tabBarOnActionTriggerAnimation']!.controller.forward(from: 0.0);
                                                                           }
 
                                                                           context.goNamedAuth(
@@ -1289,133 +1310,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           BorderRadius.circular(
                                                                               50),
                                                                     ),
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          20,
-                                                                          0,
-                                                                          20,
-                                                                          0),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            0,
-                                                                            12,
-                                                                            0,
-                                                                            0),
-                                                                        child:
-                                                                            Text(
-                                                                          'Sign up using a social account',
-                                                                          style:
-                                                                              FlutterFlowTheme.of(context).bodyText2,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          4,
-                                                                          0,
-                                                                          0),
-                                                                  child: Row(
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            8,
-                                                                            8,
-                                                                            8,
-                                                                            8),
-                                                                        child:
-                                                                            FlutterFlowIconButton(
-                                                                          borderColor:
-                                                                              FlutterFlowTheme.of(context).lineColor,
-                                                                          borderRadius:
-                                                                              12,
-                                                                          borderWidth:
-                                                                              1,
-                                                                          buttonSize:
-                                                                              44,
-                                                                          icon:
-                                                                              FaIcon(
-                                                                            FontAwesomeIcons.google,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                            size:
-                                                                                16,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () async {
-                                                                            GoRouter.of(context).prepareAuthEvent();
-                                                                            final user =
-                                                                                await signInWithGoogle(context);
-                                                                            if (user ==
-                                                                                null) {
-                                                                              return;
-                                                                            }
-
-                                                                            context.goNamedAuth('HomePage',
-                                                                                mounted);
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                      Padding(
-                                                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                                                            8,
-                                                                            8,
-                                                                            8,
-                                                                            8),
-                                                                        child:
-                                                                            FlutterFlowIconButton(
-                                                                          borderColor:
-                                                                              FlutterFlowTheme.of(context).lineColor,
-                                                                          borderRadius:
-                                                                              12,
-                                                                          borderWidth:
-                                                                              1,
-                                                                          buttonSize:
-                                                                              44,
-                                                                          icon:
-                                                                              Icon(
-                                                                            Icons.supervisor_account_outlined,
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                            size:
-                                                                                20,
-                                                                          ),
-                                                                          onPressed:
-                                                                              () async {
-                                                                            GoRouter.of(context).prepareAuthEvent();
-                                                                            final user =
-                                                                                await signInAnonymously(context);
-                                                                            if (user ==
-                                                                                null) {
-                                                                              return;
-                                                                            }
-
-                                                                            context.goNamedAuth('HomePage',
-                                                                                mounted);
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                    ],
                                                                   ),
                                                                 ),
                                                               ],
