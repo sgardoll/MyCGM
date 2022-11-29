@@ -112,6 +112,16 @@ double mmolListToLatestMmol(List<String>? sgvToMmolList) {
   return double.parse(sgvToMmolList.first);
 }
 
+double mmolListToLatestMmolFirebase(List<double>? sgvToMmolList) {
+  if (sgvToMmolList == null) {
+    return 0.0;
+  }
+  if (sgvToMmolList.isEmpty) {
+    return 0.0;
+  }
+  return sgvToMmolList.first;
+}
+
 List<DateTime> dateStringToTimestamp(List<String> date) {
   // convert a list of dateStrings to a list of timestamp
   // dateStrings are in the format of "2022-11-22T07:30:53.000Z"

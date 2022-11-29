@@ -37,6 +37,7 @@ class _CarbsWidgetState extends State<CarbsWidget> {
       FFAppState().ratio,
       '20',
     ));
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Carbs'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -93,6 +94,9 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                           size: 30,
                         ),
                         onPressed: () async {
+                          logFirebaseEvent(
+                              'CARBS_PAGE_close_rounded_ICN_ON_TAP');
+                          logFirebaseEvent('IconButton_navigate_back');
                           context.pop();
                         },
                       ),
@@ -470,12 +474,20 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                                       size: 30,
                                     ),
                                     onPressed: () async {
+                                      logFirebaseEvent(
+                                          'CARBS_PAGE_refresh_ICN_ON_TAP');
+                                      logFirebaseEvent(
+                                          'IconButton_update_local_state');
                                       setState(() => FFAppState().ratio =
                                           overrideRatioTextFieldController!
                                               .text);
+                                      logFirebaseEvent(
+                                          'IconButton_update_local_state');
                                       setState(() =>
                                           FFAppState().carbValuForCalc =
                                               gramsCarbsController!.text);
+                                      logFirebaseEvent(
+                                          'IconButton_validate_form');
                                       if (formKey.currentState == null ||
                                           !formKey.currentState!.validate()) {
                                         return;
@@ -573,6 +585,8 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
                           child: FFButtonWidget(
                             onPressed: () async {
+                              logFirebaseEvent('CARBS_PAGE_SUBMIT_BTN_ON_TAP');
+                              logFirebaseEvent('Button_backend_call');
                               postCarbsResponse = await PostCarbsCall.call(
                                 enteredBy: 'MyCGM_Carbs',
                                 eventType: 'Meal Bolus',
@@ -583,6 +597,7 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                               );
                               if ((postCarbsResponse?.succeeded ?? true) ==
                                   true) {
+                                logFirebaseEvent('Button_show_snack_bar');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
@@ -602,6 +617,7 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                                   ),
                                 );
                               } else {
+                                logFirebaseEvent('Button_show_snack_bar');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
@@ -622,6 +638,8 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                                 );
                               }
 
+                              logFirebaseEvent(
+                                  'Button_close_dialog,_drawer,_etc');
                               Navigator.pop(context);
 
                               setState(() {});

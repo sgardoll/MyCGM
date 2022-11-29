@@ -24,6 +24,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
   @override
   void initState() {
     super.initState();
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'NovoRapid'});
     unitsNovorapidController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -79,6 +80,10 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                           size: 30,
                         ),
                         onPressed: () async {
+                          logFirebaseEvent(
+                              'NOVO_RAPID_PAGE_close_rounded_ICN_ON_TAP');
+                          logFirebaseEvent(
+                              'IconButton_close_dialog,_drawer,_etc');
                           Navigator.pop(context);
                         },
                       ),
@@ -167,6 +172,9 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent(
+                                'NOVO_RAPID_PAGE_SUBMIT_BTN_ON_TAP');
+                            logFirebaseEvent('Button_backend_call');
                             postNovoResponse = await PostNovorapidCall.call(
                               insulin: valueOrDefault<String>(
                                 functions.novoTo1DecimalPlace(
@@ -178,6 +186,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                                   '[{\\\"insulin\\\":\\\"Novorapid\\\",\\\"units\\\":XX.0}]',
                             );
                             if ((postNovoResponse?.succeeded ?? true) == true) {
+                              logFirebaseEvent('Button_show_snack_bar');
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -196,6 +205,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                                 ),
                               );
                             } else {
+                              logFirebaseEvent('Button_show_snack_bar');
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -215,6 +225,8 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                               );
                             }
 
+                            logFirebaseEvent(
+                                'Button_close_dialog,_drawer,_etc');
                             Navigator.pop(context);
 
                             setState(() {});

@@ -15,6 +15,7 @@ const kDocumentReferenceField = 'Document__Reference__Field';
 @SerializersFor(const [
   ChartItemsRecord,
   UsersRecord,
+  DataStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

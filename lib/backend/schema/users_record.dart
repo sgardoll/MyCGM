@@ -34,6 +34,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   String? get token;
 
+  DataStruct get data;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -47,7 +49,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..nightscout = ''
     ..apiKey = ''
     ..units = ''
-    ..token = '';
+    ..token = ''
+    ..data = DataStructBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -81,6 +84,7 @@ Map<String, dynamic> createUsersRecordData({
   String? apiKey,
   String? units,
   String? token,
+  DataStruct? data,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -95,9 +99,13 @@ Map<String, dynamic> createUsersRecordData({
         ..nightscout = nightscout
         ..apiKey = apiKey
         ..units = units
-        ..token = token,
+        ..token = token
+        ..data = DataStructBuilder(),
     ),
   );
+
+  // Handle nested data for "data" field.
+  addDataStructData(firestoreData, data, 'data');
 
   return firestoreData;
 }

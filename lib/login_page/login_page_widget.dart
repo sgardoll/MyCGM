@@ -60,26 +60,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 1210.ms,
-          begin: 1,
-          end: 0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 1210.ms,
-          begin: 1,
-          end: 5,
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation4': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
         ShakeEffect(
           curve: Curves.easeInOut,
           delay: 640.ms,
@@ -94,26 +74,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           duration: 2000.ms,
           begin: 1,
           end: 0,
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation5': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 1,
-          end: 5,
-        ),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0,
-          end: 1,
         ),
       ],
     ),
@@ -179,6 +139,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     passwordCreateVisibility = false;
     passwordCreateConfirmController = TextEditingController();
     passwordCreateConfirmVisibility = false;
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -253,8 +214,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                           color: FlutterFlowTheme.of(context).primaryColor,
                           shape: BoxShape.circle,
                         ),
-                      ).animateOnActionTrigger(
-                        animationsMap['containerOnActionTriggerAnimation3']!,
                       ),
                     ),
                   if (responsiveVisibility(
@@ -272,7 +231,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                           shape: BoxShape.circle,
                         ),
                       ).animateOnActionTrigger(
-                        animationsMap['containerOnActionTriggerAnimation4']!,
+                        animationsMap['containerOnActionTriggerAnimation3']!,
                       ),
                     ),
                   if (responsiveVisibility(
@@ -289,8 +248,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                           color: FlutterFlowTheme.of(context).secondaryColor,
                           shape: BoxShape.circle,
                         ),
-                      ).animateOnActionTrigger(
-                        animationsMap['containerOnActionTriggerAnimation5']!,
                       ),
                     ),
                   Align(
@@ -695,6 +652,34 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       FFButtonWidget(
                                                                         onPressed:
                                                                             () async {
+                                                                          logFirebaseEvent(
+                                                                              'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
+                                                                          logFirebaseEvent(
+                                                                              'Button-Login_widget_animation');
+                                                                          if (animationsMap['containerOnActionTriggerAnimation1'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation1']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          logFirebaseEvent(
+                                                                              'Button-Login_widget_animation');
+                                                                          if (animationsMap['containerOnActionTriggerAnimation2'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation2']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          logFirebaseEvent(
+                                                                              'Button-Login_widget_animation');
+                                                                          if (animationsMap['containerOnActionTriggerAnimation3'] !=
+                                                                              null) {
+                                                                            animationsMap['containerOnActionTriggerAnimation3']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          logFirebaseEvent(
+                                                                              'Button-Login_widget_animation');
+                                                                          if (animationsMap['tabBarOnActionTriggerAnimation'] !=
+                                                                              null) {
+                                                                            animationsMap['tabBarOnActionTriggerAnimation']!.controller.forward(from: 0.0);
+                                                                          }
+                                                                          logFirebaseEvent(
+                                                                              'Button-Login_auth');
                                                                           GoRouter.of(context)
                                                                               .prepareAuthEvent();
 
@@ -709,32 +694,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                             return;
                                                                           }
 
-                                                                          if (animationsMap['containerOnActionTriggerAnimation1'] !=
-                                                                              null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation1']!.controller.forward(from: 0.0);
+                                                                          logFirebaseEvent(
+                                                                              'Button-Login_navigate_to');
+                                                                          if (Navigator.of(context)
+                                                                              .canPop()) {
+                                                                            context.pop();
                                                                           }
-                                                                          if (animationsMap['containerOnActionTriggerAnimation2'] !=
-                                                                              null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation2']!.controller.forward(from: 0.0);
-                                                                          }
-                                                                          if (animationsMap['containerOnActionTriggerAnimation3'] !=
-                                                                              null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation3']!.controller.forward(from: 0.0);
-                                                                          }
-                                                                          if (animationsMap['containerOnActionTriggerAnimation4'] !=
-                                                                              null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation4']!.controller.forward(from: 0.0);
-                                                                          }
-                                                                          if (animationsMap['containerOnActionTriggerAnimation5'] !=
-                                                                              null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation5']!.controller.forward(from: 0.0);
-                                                                          }
-                                                                          if (animationsMap['tabBarOnActionTriggerAnimation'] !=
-                                                                              null) {
-                                                                            animationsMap['tabBarOnActionTriggerAnimation']!.controller.forward(from: 0.0);
-                                                                          }
-
-                                                                          context.goNamedAuth(
+                                                                          context.pushNamedAuth(
                                                                               'HomePage',
                                                                               mounted);
                                                                         },
@@ -842,6 +808,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           ),
                                                                           onPressed:
                                                                               () async {
+                                                                            logFirebaseEvent('LOGIN_PAGE_PAGE_google_ICN_ON_TAP');
+                                                                            logFirebaseEvent('IconButton_auth');
                                                                             GoRouter.of(context).prepareAuthEvent();
                                                                             final user =
                                                                                 await signInWithGoogle(context);
@@ -881,6 +849,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           ),
                                                                           onPressed:
                                                                               () async {
+                                                                            logFirebaseEvent('LOGIN_PAGE_PAGE_apple_ICN_ON_TAP');
+                                                                            logFirebaseEvent('IconButton_auth');
                                                                             GoRouter.of(context).prepareAuthEvent();
                                                                             final user =
                                                                                 await signInWithApple(context);
@@ -1227,6 +1197,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       FFButtonWidget(
                                                                     onPressed:
                                                                         () async {
+                                                                      logFirebaseEvent(
+                                                                          'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
+                                                                      logFirebaseEvent(
+                                                                          'Button-Login_auth');
                                                                       GoRouter.of(
                                                                               context)
                                                                           .prepareAuthEvent();

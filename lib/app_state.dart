@@ -17,6 +17,13 @@ class FFAppState {
     secureStorage = FlutterSecureStorage();
     _ratio = await secureStorage.getString('ff_ratio') ?? _ratio;
     _mmol = await secureStorage.getDouble('ff_mmol') ?? _mmol;
+    _count = (await secureStorage.getStringList('ff_count'))
+            ?.map(int.parse)
+            .toList() ??
+        _count;
+    _token = await secureStorage.getString('ff_token') ?? _token;
+    _apikey = await secureStorage.getString('ff_apikey') ?? _apikey;
+    _nightscout = await secureStorage.getString('ff_nightscout') ?? _nightscout;
   }
 
   late FlutterSecureStorage secureStorage;
@@ -61,6 +68,94 @@ class FFAppState {
 
   void deleteMmol() {
     secureStorage.delete(key: 'ff_mmol');
+  }
+
+  List<int> _count = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ];
+  List<int> get count => _count;
+  set count(List<int> _value) {
+    _count = _value;
+    secureStorage.setStringList(
+        'ff_count', _value.map((x) => x.toString()).toList());
+  }
+
+  void deleteCount() {
+    secureStorage.delete(key: 'ff_count');
+  }
+
+  void addToCount(int _value) {
+    _count.add(_value);
+    secureStorage.setStringList(
+        'ff_count', _count.map((x) => x.toString()).toList());
+  }
+
+  void removeFromCount(int _value) {
+    _count.remove(_value);
+    secureStorage.setStringList(
+        'ff_count', _count.map((x) => x.toString()).toList());
+  }
+
+  String _token = '';
+  String get token => _token;
+  set token(String _value) {
+    _token = _value;
+    secureStorage.setString('ff_token', _value);
+  }
+
+  void deleteToken() {
+    secureStorage.delete(key: 'ff_token');
+  }
+
+  String _apikey = '';
+  String get apikey => _apikey;
+  set apikey(String _value) {
+    _apikey = _value;
+    secureStorage.setString('ff_apikey', _value);
+  }
+
+  void deleteApikey() {
+    secureStorage.delete(key: 'ff_apikey');
+  }
+
+  String _nightscout = '';
+  String get nightscout => _nightscout;
+  set nightscout(String _value) {
+    _nightscout = _value;
+    secureStorage.setString('ff_nightscout', _value);
+  }
+
+  void deleteNightscout() {
+    secureStorage.delete(key: 'ff_nightscout');
   }
 }
 

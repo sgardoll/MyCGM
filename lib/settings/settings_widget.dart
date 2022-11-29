@@ -34,6 +34,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         text: valueOrDefault(currentUserDocument?.nightscout, ''));
     tokenController = TextEditingController(
         text: valueOrDefault(currentUserDocument?.token, ''));
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Settings'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -91,6 +92,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           size: 30,
                         ),
                         onPressed: () async {
+                          logFirebaseEvent(
+                              'SETTINGS_PAGE_close_rounded_ICN_ON_TAP');
+                          logFirebaseEvent('IconButton_navigate_back');
                           context.pop();
                         },
                       ),
@@ -451,6 +455,11 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
                               child: FFButtonWidget(
                                 onPressed: () async {
+                                  logFirebaseEvent(
+                                      'SETTINGS_PAGE_ButtonSaveChanges_ON_TAP');
+                                  logFirebaseEvent(
+                                      'ButtonSaveChanges_backend_call');
+
                                   final usersUpdateData = createUsersRecordData(
                                     token: tokenController!.text,
                                     units: catagoryFiltersValue,
@@ -459,6 +468,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   );
                                   await currentUserReference!
                                       .update(usersUpdateData);
+                                  logFirebaseEvent(
+                                      'ButtonSaveChanges_show_snack_bar');
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
@@ -472,6 +483,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       backgroundColor: Color(0x00000000),
                                     ),
                                   );
+                                  logFirebaseEvent(
+                                      'ButtonSaveChanges_navigate_to');
 
                                   context.pushNamed('HomePage');
                                 },
@@ -504,6 +517,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
                               child: FFButtonWidget(
                                 onPressed: () async {
+                                  logFirebaseEvent(
+                                      'SETTINGS_PAGE_ButtonSaveChanges_ON_TAP');
+                                  logFirebaseEvent('ButtonSaveChanges_auth');
                                   GoRouter.of(context).prepareAuthEvent();
                                   await signOut();
 

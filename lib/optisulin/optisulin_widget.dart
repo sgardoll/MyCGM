@@ -23,6 +23,7 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
   @override
   void initState() {
     super.initState();
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Optisulin'});
     unitsOptiController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -78,6 +79,10 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                           size: 30,
                         ),
                         onPressed: () async {
+                          logFirebaseEvent(
+                              'OPTISULIN_PAGE_close_rounded_ICN_ON_TAP');
+                          logFirebaseEvent(
+                              'IconButton_close_dialog,_drawer,_etc');
                           Navigator.pop(context);
                         },
                       ),
@@ -172,14 +177,19 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 16),
                         child: FFButtonWidget(
                           onPressed: () async {
+                            logFirebaseEvent(
+                                'OPTISULIN_PAGE_SUBMIT_BTN_ON_TAP');
+                            logFirebaseEvent('Button_update_local_state');
                             setState(() => FFAppState().OptiUnitsEntered =
                                 unitsOptiController!.text);
+                            logFirebaseEvent('Button_backend_call');
                             postOptiResponse = await PostOptiCall.call(
                               insulin: FFAppState().OptiUnitsEntered,
                               enteredBy: 'MyCGM_Opti',
                               insulinInjections: 'Opti',
                             );
                             if ((postOptiResponse?.succeeded ?? true) == true) {
+                              logFirebaseEvent('Button_show_snack_bar');
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -198,6 +208,7 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                                 ),
                               );
                             } else {
+                              logFirebaseEvent('Button_show_snack_bar');
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -217,6 +228,8 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                               );
                             }
 
+                            logFirebaseEvent(
+                                'Button_close_dialog,_drawer,_etc');
                             Navigator.pop(context);
 
                             setState(() {});

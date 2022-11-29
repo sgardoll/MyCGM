@@ -21,8 +21,8 @@ class NightscoutGroup {
 
 class GetBloodGlucoseCall {
   static Future<ApiCallResponse> call({
-    String? apiKey = '',
-    String? nightscout = '',
+    String? apiKey = 'Thisisnotadrill',
+    String? nightscout = 'stucgm',
     String? token = 'mycgm-4eed72c0613bed6d',
   }) {
     return ApiManager.instance.makeApiCall(
