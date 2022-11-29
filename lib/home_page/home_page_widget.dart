@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import 'dart:ui';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           ),
         );
         await currentUserReference!.update(usersUpdateData);
+        logFirebaseEvent('HomePage_update_local_state');
+        setState(() => FFAppState().mmol =
+            functions.mmolListToLatestMmolFirebase(
+                currentUserDocument!.data.mmol?.toList()?.toList()));
       }
     });
 
@@ -199,6 +204,54 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                 ),
                               ),
+                              ClipRect(
+                                child: ImageFiltered(
+                                  imageFilter: ImageFilter.blur(
+                                    sigmaX: 4,
+                                    sigmaY: 4,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 60, 0, 0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      child: FlutterFlowLineChart(
+                                        data: [
+                                          FFLineChartData(
+                                            xData: bGContainerUsersRecord!
+                                                .data.date!
+                                                .toList(),
+                                            yData: bGContainerUsersRecord!
+                                                .data.mmol!
+                                                .toList(),
+                                            settings: LineChartBarData(
+                                              color: Color(0x7FFFFFFF),
+                                              barWidth: 6,
+                                              isCurved: true,
+                                            ),
+                                          )
+                                        ],
+                                        chartStylingInfo: ChartStylingInfo(
+                                          enableTooltip: true,
+                                          tooltipBackgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .gray600,
+                                          backgroundColor: Color(0x00FFFFFF),
+                                          showBorder: false,
+                                        ),
+                                        axisBounds: AxisBounds(
+                                          maxY: 18,
+                                        ),
+                                        xAxisLabelInfo: AxisLabelInfo(),
+                                        yAxisLabelInfo: AxisLabelInfo(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 60, 0, 0),
@@ -239,40 +292,59 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ),
                               Align(
                                 alignment: AlignmentDirectional(0, -0.5),
-                                child: CircularPercentIndicator(
-                                  percent: functions.sgvToProgressInd(
-                                      functions.mmolListToLatestMmolFirebase(
-                                          bGContainerUsersRecord!.data.mmol
-                                              ?.toList()
-                                              ?.toList())),
-                                  radius:
-                                      MediaQuery.of(context).size.width * 0.375,
-                                  lineWidth: 40,
-                                  animation: true,
-                                  progressColor: Color(0x80FFFFFF),
-                                  backgroundColor: Color(0x7F202529),
-                                  center: Text(
-                                    functions
-                                        .mmolListToLatestMmolFirebase(
+                                child: InkWell(
+                                  onLongPress: () async {
+                                    logFirebaseEvent(
+                                        'HOME_ProgressBar_sl699txg_ON_LONG_PRESS');
+                                    logFirebaseEvent('ProgressBar_navigate_to');
+
+                                    context.goNamed(
+                                      'HomePage',
+                                      extra: <String, dynamic>{
+                                        kTransitionInfoKey: TransitionInfo(
+                                          hasTransition: true,
+                                          transitionType:
+                                              PageTransitionType.fade,
+                                          duration: Duration(milliseconds: 0),
+                                        ),
+                                      },
+                                    );
+                                  },
+                                  child: CircularPercentIndicator(
+                                    percent: functions.sgvToProgressInd(
+                                        functions.mmolListToLatestMmolFirebase(
                                             bGContainerUsersRecord!.data.mmol
                                                 ?.toList()
-                                                ?.toList())
-                                        .toString()
-                                        .maybeHandleOverflow(
-                                          maxChars: 20,
-                                          replacement: '…',
-                                        ),
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.of(context)
-                                        .title1
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                          fontSize: 90,
-                                        ),
+                                                ?.toList())),
+                                    radius: MediaQuery.of(context).size.width *
+                                        0.375,
+                                    lineWidth: 40,
+                                    animation: true,
+                                    progressColor: Color(0x80FFFFFF),
+                                    backgroundColor: Color(0x7F202529),
+                                    center: Text(
+                                      functions
+                                          .mmolListToLatestMmolFirebase(
+                                              bGContainerUsersRecord!.data.mmol
+                                                  ?.toList()
+                                                  ?.toList())
+                                          .toString()
+                                          .maybeHandleOverflow(
+                                            maxChars: 20,
+                                            replacement: '…',
+                                          ),
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .title1
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            fontSize: 90,
+                                          ),
+                                    ),
+                                    startAngle: 30,
                                   ),
-                                  startAngle: 30,
                                 ),
                               ),
                               Align(
