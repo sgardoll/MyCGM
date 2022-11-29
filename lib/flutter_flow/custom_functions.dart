@@ -6,53 +6,64 @@ import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'lat_lng.dart';
 import 'place.dart';
+import '../backend/backend.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../auth/auth_util.dart';
 
-double sgvToProgressInd(int? latestSGV) {
+double sgvToProgressInd(double? mmol) {
   double i = 1.0;
-  if (latestSGV == null) {
+  if (mmol == null) {
     i = 0.1;
     return i;
   }
-  if (latestSGV < 61) {
+  if (mmol < 3.9) {
     i = 0.1;
     return i;
   }
-  if (latestSGV > 169) {
+  if (mmol > 9.4) {
     i = 1.0;
     return i;
   } else {
-    i = latestSGV / 180;
-    return i;
+    return (mmol - 3.9) / (9.4 - 3.9);
   }
 }
 
-String minutesAgo(String? latestDate) {
-  if (latestDate == null) {
-    return "a long time ago";
-  }
+String? minutesAgo(List<String>? latestDate) {
+// calculate the difference between the latest date and now. The dateString is in the "2022-11-22T09:30:53.000Z" format
+  final difference = DateTime.now().difference(DateTime.parse(latestDate![0]));
+  final minutes = difference.inMinutes;
+  final hours = difference.inHours;
+  final days = difference.inDays;
+  final weeks = (days / 7).floor();
+  final months = (days / 30).floor();
+  final years = (days / 365).floor();
 
-  var dateMmol = DateTime.parse(latestDate);
-  var howRecent = DateTime.now().difference(dateMmol);
-  var inMinutes = howRecent.inMinutes;
-  if (inMinutes > 60) {
-    return "over an hour ago";
+  if (minutes < 1) {
+    return 'Just now';
+  } else if (minutes == 1) {
+    return '1 minute ago';
+  } else if (minutes < 60) {
+    return '$minutes minutes ago';
+  } else if (hours == 1) {
+    return '1 hour ago';
+  } else if (hours < 24) {
+    return '$hours hours ago';
+  } else if (days == 1) {
+    return '1 day ago';
+  } else if (days < 7) {
+    return '$days days ago';
+  } else if (weeks == 1) {
+    return '1 week ago';
+  } else if (weeks < 4) {
+    return '$weeks weeks ago';
+  } else if (months == 1) {
+    return '1 month ago';
+  } else if (months < 12) {
+    return '$months months ago';
+  } else if (years == 1) {
+    return '1 year ago';
   } else {
-    return "as of $inMinutes minutes ago";
-  }
-}
-
-String setBgByMmol(double sgvToDoubleMmol) {
-  // change image link based on the value of sgvToMmol
-  var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
-  if (sgvToDoubleMmol >= 9.4) {
-    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
-    return i;
-  }
-  if (sgvToDoubleMmol <= 3.9) {
-    i = "https://connectio.com.au/MyCGM/assets/AltBGDark.png";
-    return i;
-  } else {
-    return i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
+    return '$years years ago';
   }
 }
 
@@ -71,41 +82,8 @@ String setColByMmol(double sgvToDoubleMmol) {
   }
 }
 
-String setBgBySgvLight(int latestSGV) {
-  // change image link based on the value of sgv
-  var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png";
-  if (latestSGV < 70) {
-    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
-    return i;
-  }
-  if (latestSGV >= 169) {
-    i = "https://connectio.com.au/MyCGM/assets/SecBGLight.png";
-    return i;
-  } else {
-    return i;
-  }
-}
-
-String setBgBySgvDark(int latestSGV) {
-  // change image link based on the value of sgv
-  var i = "https://connectio.com.au/MyCGM/assets/PrimaryBGDark.png";
-  if (latestSGV < 70) {
-    i = "https://connectio.com.au/MyCGM/assets/AltBGDark.png";
-    return i;
-  }
-  if (latestSGV >= 169) {
-    i = "https://connectio.com.au/MyCGM/assets/SecBGDark-AltBGLight.png";
-    return i;
-  } else {
-    return i;
-  }
-}
-
-double sgvToDoubleMmol(int latestSGV) {
-  // convert sgv from a String into a double and divide it by 18 to get mmol
-  num x = latestSGV / 18;
-  var y = double.parse((x).toStringAsFixed(1));
-  return y;
+List<String> sgvToMmolList(List<int> sgv) {
+  return sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
 }
 
 String? novoCalcBasedOnRatio(
@@ -122,4 +100,42 @@ String? novoCalcBasedOnRatio(
   double carbs = carbValue / double.parse(ratio ??= "");
   // return the carbs as a string
   return carbs.toStringAsFixed(1);
+}
+
+double mmolListToLatestMmol(List<String>? sgvToMmolList) {
+  if (sgvToMmolList == null) {
+    return 0.0;
+  }
+  if (sgvToMmolList.isEmpty) {
+    return 0.0;
+  }
+  return double.parse(sgvToMmolList.first);
+}
+
+List<DateTime> dateStringToTimestamp(List<String> date) {
+  // convert a list of dateStrings to a list of timestamp
+  // dateStrings are in the format of "2022-11-22T07:30:53.000Z"
+
+  List<DateTime> timestamp = [];
+  for (var i = 0; i < date.length; i++) {
+    timestamp.add(DateTime.parse(date[i]));
+  }
+  return timestamp;
+}
+
+List<double> stringListToDoubleList(List<String>? sgvToMmolList) {
+  // parse a list of Strings to a list of doubles
+  var lst = <double>[];
+  sgvToMmolList?.forEach((element) {
+    lst.add(double.parse(element));
+  });
+  return lst;
+}
+
+String novoTo1DecimalPlace(String units) {
+  // if units is a number without a decimal place add .0 to it
+  if (units.contains('.'))
+    return units;
+  else
+    return units + '.0';
 }

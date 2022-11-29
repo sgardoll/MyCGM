@@ -15,18 +15,19 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="MyCGM">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   
 
   <!-- Favicon -->
+  <link rel="icon" href="Icon.png" sizes="any"/>
   <link rel="icon" type="image/png" href="Icon.png" />
+  <link rel="apple-touch-icon" href="Icon.png">
+  
 
   <!-- Open Graph & SEO tags -->
   <meta property="og:title" content="My CGM" />
@@ -53,6 +54,27 @@
         navigator.serviceWorker.register('flutter_service_worker.js');
       });
     }
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  
+  
+  
+  
+
+  <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyBF7QV3KZx77envM0rRdn5mglfAonHIt7I",
+      authDomain: "pc-api-6683764265058024430-989.firebaseapp.com",
+      projectId: "pc-api-6683764265058024430-989",
+      storageBucket: "pc-api-6683764265058024430-989.appspot.com",
+      messagingSenderId: "988337456155",
+      appId: "1:988337456155:web:a63be4ea1b83a27a59a4be",
+      measurementId: "G-LDKGTE0EE7"
+    }
+    firebase.initializeApp(firebaseConfig);
   </script>
   
   

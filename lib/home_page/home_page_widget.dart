@@ -1,15 +1,16 @@
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
+import '../flutter_flow/flutter_flow_charts.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../custom_code/actions/index.dart' as actions;
 import '../flutter_flow/custom_functions.dart' as functions;
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -22,142 +23,152 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
-  ApiCallResponse? apiGET;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   final animationsMap = {
-    'containerOnActionTriggerAnimation': AnimationInfo(
+    'containerOnActionTriggerAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
-      duration: 200,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 50),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      applyInitialState: true,
+      effects: [
+        VisibilityEffect(duration: 1.ms),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
+    'stackOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
+    'containerOnActionTriggerAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
+      effects: [
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(1, -200),
+          end: Offset(0, 0),
+        ),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
     ),
     'progressBarOnActionTriggerAnimation': AnimationInfo(
-      curve: Curves.linear,
       trigger: AnimationTrigger.onActionTrigger,
-      duration: 0,
-      hideBeforeAnimating: true,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      applyInitialState: true,
+      effects: [
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 260.ms,
+          duration: 600.ms,
+          begin: Offset(1, -200),
+          end: Offset(0, 0),
+        ),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 260.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
     ),
-    'wrapOnActionTriggerAnimation': AnimationInfo(
+    'textOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
-      duration: 600,
-      hideBeforeAnimating: true,
-      fadeIn: true,
-      initialState: AnimationState(
-        offset: Offset(0, 150),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
+      applyInitialState: true,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 440.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
     ),
   };
+  ApiCallResponse? apiResults;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await actions.lockOrientation();
-      apiGET = await GetBloodGlucoseCall.call();
-      if ((apiGET?.succeeded ?? true) == true) {
+      setState(() {
+        FFAppState().deleteMmol();
+        FFAppState().mmol = 0.0;
+      });
+      apiResults = await GetBloodGlucoseCall.call();
+      if ((apiResults?.succeeded ?? true)) {
+        if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
+          animationsMap['containerOnActionTriggerAnimation1']!
+              .controller
+              .forward(from: 0.0);
+        }
+        setState(
+            () => FFAppState().mmol = functions.mmolListToLatestMmol(functions
+                .sgvToMmolList(GetBloodGlucoseCall.sgv(
+                  (apiResults?.jsonBody ?? ''),
+                ).toList())
+                .toList()));
+        if (animationsMap['containerOnActionTriggerAnimation2'] != null) {
+          animationsMap['containerOnActionTriggerAnimation2']!
+              .controller
+              .forward(from: 0.0);
+        }
+        if (animationsMap['progressBarOnActionTriggerAnimation'] != null) {
+          animationsMap['progressBarOnActionTriggerAnimation']!
+              .controller
+              .forward(from: 0.0);
+        }
+        if (animationsMap['textOnActionTriggerAnimation'] != null) {
+          animationsMap['textOnActionTriggerAnimation']!
+              .controller
+              .forward(from: 0.0);
+        }
+      } else {
+        HapticFeedback.heavyImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Data refreshed successfully',
+              getJsonField(
+                (apiResults?.jsonBody ?? ''),
+                r'''$.detail''',
+              ).toString(),
               style: TextStyle(
                 color: FlutterFlowTheme.of(context).primaryText,
               ),
             ),
             duration: Duration(milliseconds: 4000),
-            backgroundColor: Color(0xCC000000),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              (apiGET?.statusCode ?? 200).toString(),
-              style: TextStyle(
-                color: FlutterFlowTheme.of(context).primaryText,
-              ),
-            ),
-            duration: Duration(milliseconds: 8000),
-            backgroundColor: FlutterFlowTheme.of(context).rubyRed,
+            backgroundColor: Color(0x00000000),
           ),
         );
       }
-
-      setState(() => FFAppState().latestSGV = valueOrDefault<int>(
-            GetBloodGlucoseCall.sgv(
-              (apiGET?.jsonBody ?? ''),
-            ),
-            160,
-          ));
-      setState(() => FFAppState().latestDate = valueOrDefault<String>(
-            GetBloodGlucoseCall.dateString(
-              (apiGET?.jsonBody ?? ''),
-            ).toString(),
-            'null',
-          ));
-      if (Theme.of(context).brightness == Brightness.dark) {
-        setState(() => FFAppState().background =
-            functions.setBgBySgvDark(FFAppState().latestSGV));
-      } else {
-        setState(() => FFAppState().background =
-            functions.setBgBySgvLight(FFAppState().latestSGV));
-      }
-
-      if (animationsMap['containerOnActionTriggerAnimation'] == null) {
-        return;
-      }
-      await (animationsMap['containerOnActionTriggerAnimation']!
-              .curvedAnimation
-              .parent as AnimationController)
-          .forward(from: 0.0);
-
-      if (animationsMap['progressBarOnActionTriggerAnimation'] == null) {
-        return;
-      }
-      await (animationsMap['progressBarOnActionTriggerAnimation']!
-              .curvedAnimation
-              .parent as AnimationController)
-          .forward(from: 0.0);
-
-      if (animationsMap['wrapOnActionTriggerAnimation'] == null) {
-        return;
-      }
-      await (animationsMap['wrapOnActionTriggerAnimation']!
-              .curvedAnimation
-              .parent as AnimationController)
-          .forward(from: 0.0);
     });
 
-    setupTriggerAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onActionTrigger),
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
       this,
     );
 
@@ -171,363 +182,336 @@ class _HomePageWidgetState extends State<HomePageWidget>
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          appBar: isAndroid == true
-              ? responsiveVisibility(
-                  context: context,
-                  desktop: false,
-                )
-                  ? AppBar(
-                      backgroundColor:
-                          FlutterFlowTheme.of(context).secondaryText,
-                      automaticallyImplyLeading: false,
-                      title: Text(
-                        'My CGM',
-                        style: FlutterFlowTheme.of(context).title2.override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                            ),
-                      ),
-                      actions: [
-                        FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderWidth: 1,
-                          buttonSize: 60,
-                          icon: Icon(
-                            Icons.refresh,
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            size: 30,
-                          ),
-                          onPressed: () async {
-                            context.pushNamed('HomePage');
-                          },
-                        ),
-                      ],
-                      centerTitle: false,
-                      elevation: 6,
-                    )
-                  : null
-              : null,
-          backgroundColor: Color(0xCBFFFFFF),
+          backgroundColor: FlutterFlowTheme.of(context).black600,
           body: SafeArea(
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
-              child: Stack(
-                children: [
-                  Hero(
-                    tag: valueOrDefault<String>(
-                      FFAppState().background,
-                      'https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png',
-                    ),
-                    transitionOnUserGestures: true,
-                    child: CachedNetworkImage(
-                      imageUrl: valueOrDefault<String>(
-                        FFAppState().background,
-                        'https://connectio.com.au/MyCGM/assets/PrimaryBGLight.png',
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 1,
-                      fit: BoxFit.cover,
-                    ),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 1,
+                decoration: BoxDecoration(
+                  color: valueOrDefault<Color>(
+                    () {
+                      if (FFAppState().mmol < 3.9) {
+                        return FlutterFlowTheme.of(context).tertiaryColor;
+                      } else if (FFAppState().mmol > 9.4) {
+                        return FlutterFlowTheme.of(context).secondaryColor;
+                      } else {
+                        return FlutterFlowTheme.of(context).primaryColor;
+                      }
+                    }(),
+                    FlutterFlowTheme.of(context).richBlackFOGRA29,
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.65,
+                  child: Stack(
                     children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(20, 125, 20, 20),
-                          child: FutureBuilder<ApiCallResponse>(
-                            future: GetBloodGlucoseCall.call(),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 25,
-                                    height: 25,
-                                    child: CircularProgressIndicator(
-                                      color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
+                      Material(
+                        color: Colors.transparent,
+                        elevation: 30,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(100),
+                            bottomRight: Radius.circular(100),
+                            topLeft: Radius.circular(0),
+                            topRight: Radius.circular(0),
+                          ),
+                        ),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          decoration: BoxDecoration(
+                            color: valueOrDefault<Color>(
+                              () {
+                                if (FFAppState().mmol < 3.9) {
+                                  return FlutterFlowTheme.of(context)
+                                      .tertiaryColor;
+                                } else if (FFAppState().mmol > 9.4) {
+                                  return FlutterFlowTheme.of(context)
+                                      .secondaryColor;
+                                } else {
+                                  return FlutterFlowTheme.of(context)
+                                      .primaryColor;
+                                }
+                              }(),
+                              FlutterFlowTheme.of(context).richBlackFOGRA29,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 16,
+                                color: Color(0x7F202529),
+                                offset: Offset(2, 4),
+                              )
+                            ],
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(100),
+                              bottomRight: Radius.circular(100),
+                              topLeft: Radius.circular(0),
+                              topRight: Radius.circular(0),
+                            ),
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 24, 0, 200),
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: FlutterFlowLineChart(
+                                data: [
+                                  FFLineChartData(
+                                    xData: GetBloodGlucoseCall.delta(
+                                      (apiResults?.jsonBody ?? ''),
                                     ),
-                                  ),
-                                );
-                              }
-                              final dashboardMainCardGetBloodGlucoseResponse =
-                                  snapshot.data!;
-                              return Material(
-                                color: Colors.transparent,
-                                elevation: 6,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                    yData: functions.stringListToDoubleList(
+                                        functions
+                                            .sgvToMmolList(
+                                                GetBloodGlucoseCall.sgv(
+                                              (apiResults?.jsonBody ?? ''),
+                                            ).toList())
+                                            .toList()),
+                                    settings: LineChartBarData(
+                                      color: Color(0x37FFFFFF),
+                                      barWidth: 5,
+                                      isCurved: true,
+                                    ),
+                                  )
+                                ],
+                                chartStylingInfo: ChartStylingInfo(
+                                  enableTooltip: true,
+                                  tooltipBackgroundColor: Color(0xC9FFFFFF),
+                                  backgroundColor: Color(0x00FFFFFF),
+                                  showBorder: false,
                                 ),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  height: 200,
-                                  constraints: BoxConstraints(
-                                    maxWidth:
-                                        MediaQuery.of(context).size.width * 0.8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        blurRadius: 5,
-                                        color: Color(0x23000000),
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            20, 20, 20, 20),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Expanded(
-                                              flex: 2,
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 0, 20, 0),
-                                                child: AutoSizeText(
-                                                  'Your blood glucose is',
-                                                  textAlign: TextAlign.center,
-                                                  maxLines: 2,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title3
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: CircularPercentIndicator(
-                                                percent: valueOrDefault<double>(
-                                                  functions.sgvToProgressInd(
-                                                      FFAppState().latestSGV),
-                                                  180.0,
-                                                ),
-                                                radius: 45,
-                                                lineWidth: 4,
-                                                animation: true,
-                                                progressColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                backgroundColor:
-                                                    Color(0x2B202529),
-                                                center: Text(
-                                                  functions
-                                                      .sgvToDoubleMmol(
-                                                          FFAppState()
-                                                              .latestSGV)
-                                                      .toString()
-                                                      .maybeHandleOverflow(
-                                                        maxChars: 20,
-                                                        replacement: '…',
-                                                      ),
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title3
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                        fontSize: 28,
-                                                      ),
-                                                ),
-                                                startAngle: 1,
-                                              ).animated([
-                                                animationsMap[
-                                                    'progressBarOnActionTriggerAnimation']!
-                                              ]),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 0, 20),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 4, 0, 0),
-                                              child: Text(
-                                                functions.minutesAgo(
-                                                    FFAppState().latestDate),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .subtitle2
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color:
-                                                              Color(0x9AFFFFFF),
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                axisBounds: AxisBounds(
+                                  minY: 3,
+                                  maxY: 25,
                                 ),
-                              ).animated([
-                                animationsMap[
-                                    'containerOnActionTriggerAnimation']!
-                              ]);
+                                xAxisLabelInfo: AxisLabelInfo(),
+                                yAxisLabelInfo: AxisLabelInfo(),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ).animateOnActionTrigger(
+                        animationsMap['containerOnActionTriggerAnimation2']!,
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(0, -0.5),
+                        child: CircularPercentIndicator(
+                          percent:
+                              functions.sgvToProgressInd(FFAppState().mmol),
+                          radius: MediaQuery.of(context).size.width * 0.375,
+                          lineWidth: 40,
+                          animation: true,
+                          progressColor: Color(0x80FFFFFF),
+                          backgroundColor: Color(0x7F202529),
+                          center: Text(
+                            FFAppState().mmol.toString().maybeHandleOverflow(
+                                  maxChars: 20,
+                                  replacement: '…',
+                                ),
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context).title1.override(
+                                  fontFamily: 'Poppins',
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  fontSize: 90,
+                                ),
+                          ),
+                          startAngle: 30,
+                        ).animateOnActionTrigger(
+                          animationsMap['progressBarOnActionTriggerAnimation']!,
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(0, 0.1),
+                        child: Text(
+                          'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
+                            (apiResults?.jsonBody ?? ''),
+                          ) as List).map<String>((s) => s.toString()).toList())}',
+                          textAlign: TextAlign.center,
+                          style: FlutterFlowTheme.of(context).title3.override(
+                                fontFamily: 'Poppins',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                              ),
+                        ).animateOnActionTrigger(
+                          animationsMap['textOnActionTriggerAnimation']!,
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(1, 1),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 24, 24),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              context.pushNamed('NovoRapid');
                             },
+                            text: 'NovoRapid',
+                            icon: Icon(
+                              Icons.add,
+                              size: 15,
+                            ),
+                            options: FFButtonOptions(
+                              width: 150,
+                              height: 50,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (FFAppState().mmol < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else if (FFAppState().mmol > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryBackground;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryBackground;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).richBlackFOGRA29,
+                              ),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    letterSpacing: 1.4,
+                                  ),
+                              elevation: 8,
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 100),
-                        child: Wrap(
-                          spacing: 20,
-                          runSpacing: 20,
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          direction: Axis.horizontal,
-                          runAlignment: WrapAlignment.start,
-                          verticalDirection: VerticalDirection.down,
-                          clipBehavior: Clip.none,
-                          children: [
-                            FFButtonWidget(
-                              onPressed: () async {
-                                context.pushNamed('NovoRapid');
-                              },
-                              text: 'NovoRapid',
-                              icon: Icon(
-                                Icons.add_circle,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 24,
-                              ),
-                              options: FFButtonOptions(
-                                width: 150,
-                                height: 50,
-                                color: Color(0x7FFFFFFF),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                elevation: 0,
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  width: 2,
-                                ),
-                              ),
+                      Align(
+                        alignment: AlignmentDirectional(1, 1),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 24, 84),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              context.pushNamed('Optisulin');
+                            },
+                            text: 'Optisulin',
+                            icon: Icon(
+                              Icons.add,
+                              size: 15,
                             ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                              child: FFButtonWidget(
-                                onPressed: () async {
-                                  context.pushNamed('Optisulin');
-                                },
-                                text: 'Optisulin',
-                                icon: Icon(
-                                  Icons.add_circle,
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  size: 24,
-                                ),
-                                options: FFButtonOptions(
-                                  width: 150,
-                                  height: 50,
-                                  color: Color(0x7FFFFFFF),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                  elevation: 0,
-                                  borderSide: BorderSide(
+                            options: FFButtonOptions(
+                              width: 150,
+                              height: 50,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (FFAppState().mmol < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else if (FFAppState().mmol > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryBackground;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryBackground;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).richBlackFOGRA29,
+                              ),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
                                     color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    width: 2,
+                                        .secondaryText,
+                                    letterSpacing: 1.4,
                                   ),
-                                ),
+                              elevation: 8,
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1,
                               ),
+                              borderRadius: BorderRadius.circular(100),
                             ),
-                            FFButtonWidget(
-                              onPressed: () async {
-                                context.pushNamed('Carbs');
-                              },
-                              text: 'Carbs',
-                              icon: Icon(
-                                Icons.restaurant_menu,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 24,
-                              ),
-                              options: FFButtonOptions(
-                                width: 150,
-                                height: 50,
-                                color: Color(0x7FFFFFFF),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                elevation: 0,
-                                borderSide: BorderSide(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  width: 2,
-                                ),
-                              ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(1, 1),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 24, 144),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              context.pushNamed('Carbs');
+                            },
+                            text: 'Carbs',
+                            icon: Icon(
+                              Icons.fastfood_outlined,
+                              size: 15,
                             ),
-                          ],
-                        ).animated(
-                            [animationsMap['wrapOnActionTriggerAnimation']!]),
+                            options: FFButtonOptions(
+                              width: 150,
+                              height: 50,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (FFAppState().mmol < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else if (FFAppState().mmol > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryBackground;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryBackground;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).richBlackFOGRA29,
+                              ),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    letterSpacing: 1.4,
+                                  ),
+                              elevation: 8,
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(1, -1),
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30,
+                          borderWidth: 1,
+                          buttonSize: 60,
+                          icon: Icon(
+                            Icons.settings,
+                            color: Color(0xBEFFFFFF),
+                            size: 30,
+                          ),
+                          onPressed: () async {
+                            context.pushNamed('Settings');
+                          },
+                        ),
                       ),
                     ],
                   ),
-                ],
+                ).animateOnActionTrigger(
+                  animationsMap['stackOnActionTriggerAnimation']!,
+                ),
+              ).animateOnActionTrigger(
+                animationsMap['containerOnActionTriggerAnimation1']!,
               ),
             ),
           ),

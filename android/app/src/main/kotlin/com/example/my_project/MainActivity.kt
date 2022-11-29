@@ -1,6 +1,6 @@
-package com.example.mycgm
+package com.connectio.mycgm
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterFragmentActivity() {
 }
