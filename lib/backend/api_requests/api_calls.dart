@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../flutter_flow/flutter_flow_util.dart';
+import '../cloud_functions/cloud_functions.dart';
 
 import 'api_manager.dart';
 
@@ -10,12 +11,7 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 /// Start Nightscout Group Code
 
-class NightscoutGroup {
-  static String baseUrl = 'https://[nightscout].herokuapp.com/api/v1/';
-  static Map<String, String> headers = {
-    'api-secret': '[api_key]',
-  };
-}
+class NightscoutGroup {}
 
 /// End Nightscout Group Code
 
@@ -24,22 +20,19 @@ class GetBloodGlucoseCall {
     String? apiKey = 'Thisisnotadrill',
     String? nightscout = 'stucgm',
     String? token = 'mycgm-4eed72c0613bed6d',
-  }) {
-    return ApiManager.instance.makeApiCall(
-      callName: 'GetBloodGlucose',
-      apiUrl:
-          'https://${nightscout}.herokuapp.com/api/v1/entries/sgv?count=30&',
-      callType: ApiCallType.GET,
-      headers: {
-        'accept': 'application/json',
-        'api-secret': '${apiKey}',
+  }) async {
+    final response = await makeCloudCall(
+      _kPrivateApiFunctionName,
+      {
+        'callName': 'GetBloodGlucoseCall',
+        'variables': {
+          'apiKey': apiKey,
+          'nightscout': nightscout,
+          'token': token,
+        },
       },
-      params: {
-        'token': token,
-      },
-      returnBody: true,
-      cache: false,
     );
+    return ApiCallResponse.fromCloudCallResponse(response);
   }
 
   static dynamic date(dynamic response) => getJsonField(
