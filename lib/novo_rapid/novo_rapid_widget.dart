@@ -8,6 +8,7 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class NovoRapidWidget extends StatefulWidget {
   const NovoRapidWidget({Key? key}) : super(key: key);
@@ -38,6 +39,8 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Title(
         title: 'NovoRapid',
         color: FlutterFlowTheme.of(context).primaryColor,
@@ -48,18 +51,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
             desktop: false,
           )
               ? AppBar(
-                  backgroundColor: valueOrDefault<Color>(
-                    () {
-                      if (FFAppState().mmol < 3.9) {
-                        return FlutterFlowTheme.of(context).tertiaryColor;
-                      } else if (FFAppState().mmol > 9.4) {
-                        return FlutterFlowTheme.of(context).secondaryColor;
-                      } else {
-                        return FlutterFlowTheme.of(context).primaryColor;
-                      }
-                    }(),
-                    FlutterFlowTheme.of(context).richBlackFOGRA29,
-                  ),
+                  backgroundColor: FlutterFlowTheme.of(context).secondaryText,
                   automaticallyImplyLeading: false,
                   title: Text(
                     'Add NovoRapid',
@@ -178,7 +170,7 @@ class _NovoRapidWidgetState extends State<NovoRapidWidget> {
                               logFirebaseEvent(
                                   'NOVO_RAPID_PAGE_SUBMIT_BTN_ON_TAP');
                               logFirebaseEvent('Button_backend_call');
-                              postNovoResponse = await PostNovorapidCall.call(
+                              postNovoResponse = await PostInsulinCall.call(
                                 insulin: valueOrDefault<String>(
                                   functions.novoTo1DecimalPlace(
                                       unitsNovorapidController!.text),

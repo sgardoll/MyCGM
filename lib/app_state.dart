@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:csv/csv.dart';
 import 'flutter_flow/lat_lng.dart';
 
-class FFAppState {
+class FFAppState extends ChangeNotifier {
   static final FFAppState _instance = FFAppState._internal();
 
   factory FFAppState() {
@@ -16,7 +17,6 @@ class FFAppState {
   Future initializePersistedState() async {
     secureStorage = FlutterSecureStorage();
     _ratio = await secureStorage.getString('ff_ratio') ?? _ratio;
-    _mmol = await secureStorage.getDouble('ff_mmol') ?? _mmol;
     _count = (await secureStorage.getStringList('ff_count'))
             ?.map(int.parse)
             .toList() ??
@@ -28,46 +28,128 @@ class FFAppState {
 
   late FlutterSecureStorage secureStorage;
 
-  String latestDate = '';
+  String _latestDate = '';
+  String get latestDate => _latestDate;
+  set latestDate(String _value) {
+    notifyListeners();
 
-  double latestDelta = 0.0;
+    _latestDate = _value;
+  }
 
-  String NovoUnitsEntered = '1';
+  double _latestDelta = 0.0;
+  double get latestDelta => _latestDelta;
+  set latestDelta(double _value) {
+    notifyListeners();
 
-  String OptiUnitsEntered = '';
+    _latestDelta = _value;
+  }
 
-  bool recordInsulinWithCarbs = true;
+  String _NovoUnitsEntered = '1';
+  String get NovoUnitsEntered => _NovoUnitsEntered;
+  set NovoUnitsEntered(String _value) {
+    notifyListeners();
 
-  String carbValuForCalc = '1';
+    _NovoUnitsEntered = _value;
+  }
 
-  String novoCalcField = '';
+  String _OptiUnitsEntered = '';
+  String get OptiUnitsEntered => _OptiUnitsEntered;
+  set OptiUnitsEntered(String _value) {
+    notifyListeners();
+
+    _OptiUnitsEntered = _value;
+  }
+
+  bool _recordInsulinWithCarbs = true;
+  bool get recordInsulinWithCarbs => _recordInsulinWithCarbs;
+  set recordInsulinWithCarbs(bool _value) {
+    notifyListeners();
+
+    _recordInsulinWithCarbs = _value;
+  }
+
+  String _carbValuForCalc = '1';
+  String get carbValuForCalc => _carbValuForCalc;
+  set carbValuForCalc(String _value) {
+    notifyListeners();
+
+    _carbValuForCalc = _value;
+  }
+
+  String _novoCalcField = '';
+  String get novoCalcField => _novoCalcField;
+  set novoCalcField(String _value) {
+    notifyListeners();
+
+    _novoCalcField = _value;
+  }
 
   String _ratio = '15';
   String get ratio => _ratio;
   set ratio(String _value) {
+    notifyListeners();
+
     _ratio = _value;
     secureStorage.setString('ff_ratio', _value);
   }
 
   void deleteRatio() {
+    notifyListeners();
     secureStorage.delete(key: 'ff_ratio');
   }
 
-  List<int> sgv = [];
+  List<int> _sgv = [];
+  List<int> get sgv => _sgv;
+  set sgv(List<int> _value) {
+    notifyListeners();
 
-  List<int> date = [];
-
-  List<String> mmolList = [];
-
-  double _mmol = 0.0;
-  double get mmol => _mmol;
-  set mmol(double _value) {
-    _mmol = _value;
-    secureStorage.setDouble('ff_mmol', _value);
+    _sgv = _value;
   }
 
-  void deleteMmol() {
-    secureStorage.delete(key: 'ff_mmol');
+  void addToSgv(int _value) {
+    notifyListeners();
+    _sgv.add(_value);
+  }
+
+  void removeFromSgv(int _value) {
+    notifyListeners();
+    _sgv.remove(_value);
+  }
+
+  List<int> _date = [];
+  List<int> get date => _date;
+  set date(List<int> _value) {
+    notifyListeners();
+
+    _date = _value;
+  }
+
+  void addToDate(int _value) {
+    notifyListeners();
+    _date.add(_value);
+  }
+
+  void removeFromDate(int _value) {
+    notifyListeners();
+    _date.remove(_value);
+  }
+
+  List<String> _mmolList = [];
+  List<String> get mmolList => _mmolList;
+  set mmolList(List<String> _value) {
+    notifyListeners();
+
+    _mmolList = _value;
+  }
+
+  void addToMmolList(String _value) {
+    notifyListeners();
+    _mmolList.add(_value);
+  }
+
+  void removeFromMmolList(String _value) {
+    notifyListeners();
+    _mmolList.remove(_value);
   }
 
   List<int> _count = [
@@ -104,22 +186,27 @@ class FFAppState {
   ];
   List<int> get count => _count;
   set count(List<int> _value) {
+    notifyListeners();
+
     _count = _value;
     secureStorage.setStringList(
         'ff_count', _value.map((x) => x.toString()).toList());
   }
 
   void deleteCount() {
+    notifyListeners();
     secureStorage.delete(key: 'ff_count');
   }
 
   void addToCount(int _value) {
+    notifyListeners();
     _count.add(_value);
     secureStorage.setStringList(
         'ff_count', _count.map((x) => x.toString()).toList());
   }
 
   void removeFromCount(int _value) {
+    notifyListeners();
     _count.remove(_value);
     secureStorage.setStringList(
         'ff_count', _count.map((x) => x.toString()).toList());
@@ -128,34 +215,51 @@ class FFAppState {
   String _token = '';
   String get token => _token;
   set token(String _value) {
+    notifyListeners();
+
     _token = _value;
     secureStorage.setString('ff_token', _value);
   }
 
   void deleteToken() {
+    notifyListeners();
     secureStorage.delete(key: 'ff_token');
   }
 
   String _apikey = '';
   String get apikey => _apikey;
   set apikey(String _value) {
+    notifyListeners();
+
     _apikey = _value;
     secureStorage.setString('ff_apikey', _value);
   }
 
   void deleteApikey() {
+    notifyListeners();
     secureStorage.delete(key: 'ff_apikey');
   }
 
   String _nightscout = '';
   String get nightscout => _nightscout;
   set nightscout(String _value) {
+    notifyListeners();
+
     _nightscout = _value;
     secureStorage.setString('ff_nightscout', _value);
   }
 
   void deleteNightscout() {
+    notifyListeners();
     secureStorage.delete(key: 'ff_nightscout');
+  }
+
+  bool _FABOpen = false;
+  bool get FABOpen => _FABOpen;
+  set FABOpen(bool _value) {
+    notifyListeners();
+
+    _FABOpen = _value;
   }
 }
 

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../../flutter_flow/flutter_flow_util.dart';
-import '../cloud_functions/cloud_functions.dart';
 
 import 'api_manager.dart';
 
@@ -11,7 +10,12 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 /// Start Nightscout Group Code
 
-class NightscoutGroup {}
+class NightscoutGroup {
+  static String baseUrl = 'https://[nightscout]/api/v1/';
+  static Map<String, String> headers = {
+    'api-secret': '[api_key]',
+  };
+}
 
 /// End Nightscout Group Code
 
@@ -20,19 +24,21 @@ class GetBloodGlucoseCall {
     String? apiKey = 'Thisisnotadrill',
     String? nightscout = 'stucgm',
     String? token = 'mycgm-4eed72c0613bed6d',
-  }) async {
-    final response = await makeCloudCall(
-      _kPrivateApiFunctionName,
-      {
-        'callName': 'GetBloodGlucoseCall',
-        'variables': {
-          'apiKey': apiKey,
-          'nightscout': nightscout,
-          'token': token,
-        },
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetBloodGlucose',
+      apiUrl: 'https://${nightscout}/api/v1/entries/sgv?count=30&',
+      callType: ApiCallType.GET,
+      headers: {
+        'accept': 'application/json',
+        'api-secret': '${apiKey}',
       },
+      params: {
+        'token': token,
+      },
+      returnBody: true,
+      cache: false,
     );
-    return ApiCallResponse.fromCloudCallResponse(response);
   }
 
   static dynamic date(dynamic response) => getJsonField(
@@ -57,11 +63,15 @@ class GetBloodGlucoseCall {
       );
 }
 
-class PostNovorapidCall {
+class PostInsulinCall {
   static Future<ApiCallResponse> call({
     String? enteredBy = 'MyCGM_Novo',
     String? insulin = '1.0',
     String? insulinInjections = 'Novo',
+    String? insulinType = '',
+    String? apiKey = '',
+    String? nightscout = '',
+    String? token = '',
   }) {
     final body = '''
 [
@@ -70,25 +80,24 @@ class PostNovorapidCall {
     "insulin": "${insulin}",
     "insulinInjections": [
       {
-        "insulin": "Novorapid",
+        "insulin": "${insulinType}",
         "units": "${insulin}"
       }
     ]
   }
 ]''';
     return ApiManager.instance.makeApiCall(
-      callName: 'PostNovorapid',
-      apiUrl:
-          'https://stucgm.herokuapp.com/api/v1/treatments?token=mycgm-4eed72c0613bed6d',
+      callName: 'PostInsulin',
+      apiUrl: 'https://${nightscout}/api/v1/treatments?token=${token}',
       callType: ApiCallType.POST,
       headers: {
-        'api-secret': 'Thisisnotadrill',
+        'api-secret': '${apiKey}',
       },
       params: {},
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
-      cache: true,
+      cache: false,
     );
   }
 }
@@ -190,5 +199,14 @@ String _serializeList(List? list) {
     return json.encode(list);
   } catch (_) {
     return '[]';
+  }
+}
+
+String _serializeJson(dynamic jsonVar) {
+  jsonVar ??= {};
+  try {
+    return json.encode(jsonVar);
+  } catch (_) {
+    return '{}';
   }
 }
