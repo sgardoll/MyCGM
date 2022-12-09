@@ -37,7 +37,7 @@ class GetBloodGlucoseCall {
         'token': token,
       },
       returnBody: true,
-      cache: false,
+      cache: true,
     );
   }
 
@@ -78,12 +78,7 @@ class PostInsulinCall {
   {
     "enteredBy": "${enteredBy}",
     "insulin": "${insulin}",
-    "insulinInjections": [
-      {
-        "insulin": "${insulinType}",
-        "units": "${insulin}"
-      }
-    ]
+    "insulinInjections": "[{\\"insulin\\":\\"${insulinType}\\",\\"units\\":${insulin}}]"
   }
 ]''';
     return ApiManager.instance.makeApiCall(
@@ -98,42 +93,6 @@ class PostInsulinCall {
       bodyType: BodyType.JSON,
       returnBody: true,
       cache: false,
-    );
-  }
-}
-
-class PostOptiCall {
-  static Future<ApiCallResponse> call({
-    String? enteredBy = 'MyCGM_Novo',
-    String? insulin = '1',
-    String? insulinInjections = 'Opti',
-  }) {
-    final body = '''
-[
-  {
-    "enteredBy": "${enteredBy}",
-    "insulin": "${insulin}",
-    "insulinInjections": [
-      {
-        "insulin": "Toujeo",
-        "units": "${insulin}.0"
-      }
-    ]
-  }
-]''';
-    return ApiManager.instance.makeApiCall(
-      callName: 'PostOpti',
-      apiUrl:
-          'https://stucgm.herokuapp.com/api/v1/treatments?token=mycgm-4eed72c0613bed6d',
-      callType: ApiCallType.POST,
-      headers: {
-        'api-secret': 'Thisisnotadrill',
-      },
-      params: {},
-      body: body,
-      bodyType: BodyType.JSON,
-      returnBody: true,
-      cache: true,
     );
   }
 }

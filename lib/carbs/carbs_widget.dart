@@ -112,13 +112,13 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                         if (functions.mmolListToLatestMmolFirebase(
                                 currentUserDocument!.data.mmol
                                     ?.toList()
-                                    ?.toList()) <
+                                    ?.toList())! <
                             3.9) {
                           return FlutterFlowTheme.of(context).tertiaryColor;
                         } else if (functions.mmolListToLatestMmolFirebase(
                                 currentUserDocument!.data.mmol
                                     ?.toList()
-                                    ?.toList()) >
+                                    ?.toList())! >
                             9.4) {
                           return FlutterFlowTheme.of(context).secondaryColor;
                         } else {
@@ -493,10 +493,13 @@ class _CarbsWidgetState extends State<CarbsWidget> {
                                             'CARBS_PAGE_refresh_ICN_ON_TAP');
                                         logFirebaseEvent(
                                             'IconButton_update_local_state');
-                                        setState(() {});
-                                        logFirebaseEvent(
-                                            'IconButton_update_local_state');
-                                        setState(() {});
+                                        setState(() {
+                                          FFAppState().ratio =
+                                              overrideRatioTextFieldController!
+                                                  .text;
+                                          FFAppState().carbValuForCalc =
+                                              gramsCarbsController!.text;
+                                        });
                                         logFirebaseEvent(
                                             'IconButton_validate_form');
                                         if (formKey.currentState == null ||

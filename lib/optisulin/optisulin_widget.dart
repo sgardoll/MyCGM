@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -18,7 +17,6 @@ class OptisulinWidget extends StatefulWidget {
 }
 
 class _OptisulinWidgetState extends State<OptisulinWidget> {
-  ApiCallResponse? postOptiResponse;
   TextEditingController? unitsOptiController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -99,13 +97,13 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                         if (functions.mmolListToLatestMmolFirebase(
                                 currentUserDocument!.data.mmol
                                     ?.toList()
-                                    ?.toList()) <
+                                    ?.toList())! <
                             3.9) {
                           return FlutterFlowTheme.of(context).tertiaryColor;
                         } else if (functions.mmolListToLatestMmolFirebase(
                                 currentUserDocument!.data.mmol
                                     ?.toList()
-                                    ?.toList()) >
+                                    ?.toList())! >
                             9.4) {
                           return FlutterFlowTheme.of(context).secondaryColor;
                         } else {
@@ -186,61 +184,10 @@ class _OptisulinWidgetState extends State<OptisulinWidget> {
                               logFirebaseEvent(
                                   'OPTISULIN_PAGE_SUBMIT_BTN_ON_TAP');
                               logFirebaseEvent('Button_update_local_state');
-                              setState(() {});
-                              logFirebaseEvent('Button_backend_call');
-                              postOptiResponse = await PostOptiCall.call(
-                                insulin: FFAppState().OptiUnitsEntered,
-                                enteredBy: 'MyCGM_Opti',
-                                insulinInjections: 'Opti',
-                              );
-                              if ((postOptiResponse?.succeeded ?? true) ==
-                                  true) {
-                                logFirebaseEvent('Button_show_snack_bar');
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Submission to Nightscout Successful',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                          ),
-                                    ),
-                                    duration: Duration(milliseconds: 4000),
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                  ),
-                                );
-                              } else {
-                                logFirebaseEvent('Button_show_snack_bar');
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Post Was Unsuccessful',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: FlutterFlowTheme.of(context)
-                                                .rust,
-                                          ),
-                                    ),
-                                    duration: Duration(milliseconds: 4000),
-                                    backgroundColor:
-                                        FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                  ),
-                                );
-                              }
-
-                              logFirebaseEvent(
-                                  'Button_close_dialog,_drawer,_etc');
-                              Navigator.pop(context);
-
-                              setState(() {});
+                              setState(() {
+                                FFAppState().OptiUnitsEntered =
+                                    unitsOptiController!.text;
+                              });
                             },
                             text: 'Submit',
                             options: FFButtonOptions(

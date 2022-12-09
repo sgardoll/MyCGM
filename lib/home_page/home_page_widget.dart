@@ -126,7 +126,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                   .sgvToMmolList(GetBloodGlucoseCall.sgv(
                     (apiResultzmp?.jsonBody ?? ''),
                   ).toList())
-                  .toList()),
+                  ?.toList()),
             },
             clearUnsetFields: true,
           ),
@@ -199,13 +199,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                             if (functions.mmolListToLatestMmolFirebase(
                                     currentUserDocument!.data.mmol
                                         ?.toList()
-                                        ?.toList()) <
+                                        ?.toList())! <
                                 3.9) {
                               return FlutterFlowTheme.of(context).tertiaryColor;
                             } else if (functions.mmolListToLatestMmolFirebase(
                                     currentUserDocument!.data.mmol
                                         ?.toList()
-                                        ?.toList()) >
+                                        ?.toList())! >
                                 9.4) {
                               return FlutterFlowTheme.of(context)
                                   .secondaryColor;
@@ -256,7 +256,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   (apiResultzmp?.jsonBody ??
                                                       ''),
                                                 ).toList())
-                                                .toList()),
+                                                ?.toList()),
                                       },
                                       clearUnsetFields: true,
                                     ),
@@ -305,7 +305,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     currentUserDocument!
                                                         .data.mmol
                                                         ?.toList()
-                                                        ?.toList()) <
+                                                        ?.toList())! <
                                             3.9) {
                                           return FlutterFlowTheme.of(context)
                                               .tertiaryColor;
@@ -314,7 +314,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                     currentUserDocument!
                                                         .data.mmol
                                                         ?.toList()
-                                                        ?.toList()) >
+                                                        ?.toList())! >
                                             9.4) {
                                           return FlutterFlowTheme.of(context)
                                               .secondaryColor;
@@ -421,7 +421,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     functions.mmolListToLatestMmolFirebase(
                                         currentUserDocument!.data.mmol
                                             ?.toList()
-                                            ?.toList())),
+                                            ?.toList()))!,
                                 radius:
                                     MediaQuery.of(context).size.width * 0.375,
                                 lineWidth: 40,
@@ -431,7 +431,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     if (functions.mmolListToLatestMmolFirebase(
                                             currentUserDocument!.data.mmol
                                                 ?.toList()
-                                                ?.toList()) <
+                                                ?.toList())! <
                                         3.9) {
                                       return FlutterFlowTheme.of(context)
                                           .secondaryColor;
@@ -439,7 +439,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .mmolListToLatestMmolFirebase(
                                                 currentUserDocument!.data.mmol
                                                     ?.toList()
-                                                    ?.toList()) >
+                                                    ?.toList())! >
                                         9.4) {
                                       return FlutterFlowTheme.of(context)
                                           .secondaryBackground;
@@ -522,7 +522,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     if (functions.mmolListToLatestMmolFirebase(
                                             currentUserDocument!.data.mmol
                                                 ?.toList()
-                                                ?.toList()) <
+                                                ?.toList())! <
                                         3.9) {
                                       return FlutterFlowTheme.of(context)
                                           .secondaryColor;
@@ -530,7 +530,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             .mmolListToLatestMmolFirebase(
                                                 currentUserDocument!.data.mmol
                                                     ?.toList()
-                                                    ?.toList()) >
+                                                    ?.toList())! >
                                         9.4) {
                                       return FlutterFlowTheme.of(context)
                                           .secondaryBackground;
@@ -547,7 +547,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     blurRadius: 10,
                                     color: Color(0x1A57636C),
                                     offset: Offset(0, -10),
-                                    spreadRadius: 0.1,
+                                    spreadRadius: 2,
                                   )
                                 ],
                                 borderRadius: BorderRadius.only(
@@ -661,25 +661,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             currentUserDocument!
                                                                 .data.mmol
                                                                 ?.toList()
-                                                                ?.toList()) <
+                                                                ?.toList())! <
                                                     3.9) {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryColor;
+                                                      .tertiaryColor;
                                                 } else if (functions
                                                         .mmolListToLatestMmolFirebase(
                                                             currentUserDocument!
                                                                 .data.mmol
                                                                 ?.toList()
-                                                                ?.toList()) >
+                                                                ?.toList())! >
                                                     9.4) {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryBackground;
+                                                      .secondaryColor;
                                                 } else {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .primaryBackground;
+                                                      .primaryColor;
                                                 }
                                               }(),
                                               FlutterFlowTheme.of(context)
@@ -722,25 +722,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             currentUserDocument!
                                                                 .data.mmol
                                                                 ?.toList()
-                                                                ?.toList()) <
+                                                                ?.toList())! <
                                                     3.9) {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryColor;
+                                                      .tertiaryColor;
                                                 } else if (functions
                                                         .mmolListToLatestMmolFirebase(
                                                             currentUserDocument!
                                                                 .data.mmol
                                                                 ?.toList()
-                                                                ?.toList()) >
+                                                                ?.toList())! >
                                                     9.4) {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryBackground;
+                                                      .secondaryColor;
                                                 } else {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .primaryBackground;
+                                                      .primaryColor;
                                                 }
                                               }(),
                                               FlutterFlowTheme.of(context)
@@ -797,25 +797,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                             currentUserDocument!
                                                                 .data.mmol
                                                                 ?.toList()
-                                                                ?.toList()) <
+                                                                ?.toList())! <
                                                     3.9) {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryColor;
+                                                      .tertiaryColor;
                                                 } else if (functions
                                                         .mmolListToLatestMmolFirebase(
                                                             currentUserDocument!
                                                                 .data.mmol
                                                                 ?.toList()
-                                                                ?.toList()) >
+                                                                ?.toList())! >
                                                     9.4) {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryBackground;
+                                                      .secondaryColor;
                                                 } else {
                                                   return FlutterFlowTheme.of(
                                                           context)
-                                                      .primaryBackground;
+                                                      .primaryColor;
                                                 }
                                               }(),
                                               FlutterFlowTheme.of(context)
@@ -839,7 +839,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                       MediaQuery.of(context)
                                                           .viewInsets,
                                                   child: POSTInsulinWidget(
-                                                    insulinType: 'NovoRapid',
+                                                    insulinType: 'Novorapid',
                                                   ),
                                                 );
                                               },
@@ -854,16 +854,49 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                     if (FFAppState().FABOpen)
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 0, 10),
+                                            0, 0, 0, 24),
                                         child: AuthUserStreamWidget(
                                           child: FlutterFlowIconButton(
                                             borderColor: Colors.transparent,
                                             borderRadius: 25,
                                             borderWidth: 1,
                                             buttonSize: 60,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryText,
                                             icon: Icon(
                                               Icons.keyboard_arrow_down_rounded,
-                                              color: Colors.white,
+                                              color: valueOrDefault<Color>(
+                                                () {
+                                                  if (functions
+                                                          .mmolListToLatestMmolFirebase(
+                                                              currentUserDocument!
+                                                                  .data.mmol
+                                                                  ?.toList()
+                                                                  ?.toList())! <
+                                                      3.9) {
+                                                    return FlutterFlowTheme.of(
+                                                            context)
+                                                        .tertiaryColor;
+                                                  } else if (functions
+                                                          .mmolListToLatestMmolFirebase(
+                                                              currentUserDocument!
+                                                                  .data.mmol
+                                                                  ?.toList()
+                                                                  ?.toList())! >
+                                                      9.4) {
+                                                    return FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryColor;
+                                                  } else {
+                                                    return FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryColor;
+                                                  }
+                                                }(),
+                                                FlutterFlowTheme.of(context)
+                                                    .primaryBackground,
+                                              ),
                                               size: 30,
                                             ),
                                             onPressed: () async {
@@ -913,7 +946,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               }
                                               logFirebaseEvent(
                                                   'FABMinus_update_local_state');
-                                              setState(() {});
+                                              setState(() {
+                                                FFAppState().FABOpen = false;
+                                              });
                                             },
                                           ),
                                         ),
@@ -940,25 +975,25 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                               currentUserDocument!
                                                                   .data.mmol
                                                                   ?.toList()
-                                                                  ?.toList()) <
+                                                                  ?.toList())! <
                                                       3.9) {
                                                     return FlutterFlowTheme.of(
                                                             context)
-                                                        .secondaryColor;
+                                                        .tertiaryColor;
                                                   } else if (functions
                                                           .mmolListToLatestMmolFirebase(
                                                               currentUserDocument!
                                                                   .data.mmol
                                                                   ?.toList()
-                                                                  ?.toList()) >
+                                                                  ?.toList())! >
                                                       9.4) {
                                                     return FlutterFlowTheme.of(
                                                             context)
-                                                        .secondaryBackground;
+                                                        .secondaryColor;
                                                   } else {
                                                     return FlutterFlowTheme.of(
                                                             context)
-                                                        .primaryBackground;
+                                                        .primaryColor;
                                                   }
                                                 }(),
                                                 FlutterFlowTheme.of(context)
@@ -1001,7 +1036,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                               }
                                               logFirebaseEvent(
                                                   'FABPlus_update_local_state');
-                                              setState(() {});
+                                              setState(() {
+                                                FFAppState().FABOpen = true;
+                                              });
                                             },
                                           ),
                                         ),

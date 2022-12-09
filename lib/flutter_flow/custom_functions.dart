@@ -11,7 +11,7 @@ import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../auth/auth_util.dart';
 
-double sgvToProgressInd(double? mmol) {
+double? sgvToProgressInd(double? mmol) {
   double i = 1.0;
   if (mmol == null) {
     i = 0.1;
@@ -83,7 +83,7 @@ String setColByMmol(double sgvToDoubleMmol) {
   }
 }
 
-List<String> sgvToMmolList(List<int> sgv) {
+List<String>? sgvToMmolList(List<int> sgv) {
   return sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
 }
 
@@ -103,7 +103,7 @@ String? novoCalcBasedOnRatio(
   return carbs.toStringAsFixed(1);
 }
 
-double mmolListToLatestMmol(List<String>? sgvToMmolList) {
+double? mmolListToLatestMmol(List<String>? sgvToMmolList) {
   if (sgvToMmolList == null) {
     return 0.0;
   }
@@ -113,7 +113,7 @@ double mmolListToLatestMmol(List<String>? sgvToMmolList) {
   return double.parse(sgvToMmolList.first);
 }
 
-double mmolListToLatestMmolFirebase(List<double>? sgvToMmolList) {
+double? mmolListToLatestMmolFirebase(List<double>? sgvToMmolList) {
   if (sgvToMmolList == null) {
     return 0.0;
   }

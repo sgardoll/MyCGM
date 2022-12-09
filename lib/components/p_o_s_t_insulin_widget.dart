@@ -23,18 +23,18 @@ class POSTInsulinWidget extends StatefulWidget {
 
 class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
   ApiCallResponse? postInsulin;
-  TextEditingController? unitsNovorapidController;
+  TextEditingController? unitsController;
 
   @override
   void initState() {
     super.initState();
-    unitsNovorapidController = TextEditingController();
+    unitsController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
-    unitsNovorapidController?.dispose();
+    unitsController?.dispose();
     super.dispose();
   }
 
@@ -61,11 +61,11 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
             color: valueOrDefault<Color>(
               () {
                 if (functions.mmolListToLatestMmolFirebase(
-                        currentUserDocument!.data.mmol?.toList()?.toList()) <
+                        currentUserDocument!.data.mmol?.toList()?.toList())! <
                     3.9) {
                   return FlutterFlowTheme.of(context).tertiaryColor;
                 } else if (functions.mmolListToLatestMmolFirebase(
-                        currentUserDocument!.data.mmol?.toList()?.toList()) >
+                        currentUserDocument!.data.mmol?.toList()?.toList())! >
                     9.4) {
                   return FlutterFlowTheme.of(context).secondaryColor;
                 } else {
@@ -117,17 +117,10 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                         child: TextFormField(
-                          controller: unitsNovorapidController,
+                          controller: unitsController,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelStyle:
-                                FlutterFlowTheme.of(context).title3.override(
-                                      fontFamily: 'Poppins',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      fontWeight: FontWeight.normal,
-                                    ),
                             hintText: 'units',
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -178,7 +171,27 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                       fillColor: FlutterFlowTheme.of(context).secondaryText,
                       icon: Icon(
                         Icons.send_rounded,
-                        color: FlutterFlowTheme.of(context).primaryText,
+                        color: valueOrDefault<Color>(
+                          () {
+                            if (functions.mmolListToLatestMmolFirebase(
+                                    currentUserDocument!.data.mmol
+                                        ?.toList()
+                                        ?.toList())! <
+                                3.9) {
+                              return FlutterFlowTheme.of(context).tertiaryColor;
+                            } else if (functions.mmolListToLatestMmolFirebase(
+                                    currentUserDocument!.data.mmol
+                                        ?.toList()
+                                        ?.toList())! >
+                                9.4) {
+                              return FlutterFlowTheme.of(context)
+                                  .secondaryColor;
+                            } else {
+                              return FlutterFlowTheme.of(context).primaryColor;
+                            }
+                          }(),
+                          FlutterFlowTheme.of(context).primaryBackground,
+                        ),
                         size: 30,
                       ),
                       showLoadingIndicator: true,
@@ -188,17 +201,22 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                         logFirebaseEvent('IconButton_backend_call');
                         postInsulin = await PostInsulinCall.call(
                           insulin: valueOrDefault<String>(
-                            functions.novoTo1DecimalPlace(
-                                unitsNovorapidController!.text),
+                            functions
+                                .novoTo1DecimalPlace(unitsController!.text),
                             '1.0',
                           ),
-                          enteredBy: 'MyCGM_Novo',
-                          insulinInjections:
-                              '[{\\\"insulin\\\":\\\"Novorapid\\\",\\\"units\\\":XX.0}]',
-                          insulinType: widget.insulinType,
-                          apiKey: FFAppState().apikey,
-                          nightscout: FFAppState().nightscout,
-                          token: FFAppState().token,
+                          enteredBy: 'MyCGM',
+                          insulinInjections: widget.insulinType == 'NovoRapid'
+                              ? '[{\\\"insulin\\\":\\\"Novorapid\\\",\\\"units\\\":XX}]'
+                              : '[{\\\"insulin\\\":\\\"Toujeo\\\",\\\"units\\\":XX.0}]',
+                          insulinType: widget.insulinType == 'Optisulin'
+                              ? 'Toujeo'
+                              : widget.insulinType,
+                          apiKey:
+                              valueOrDefault(currentUserDocument?.apiKey, ''),
+                          nightscout: valueOrDefault(
+                              currentUserDocument?.nightscout, ''),
+                          token: valueOrDefault(currentUserDocument?.token, ''),
                         );
                         if ((postInsulin?.succeeded ?? true)) {
                           logFirebaseEvent('IconButton_show_snack_bar');

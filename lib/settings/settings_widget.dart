@@ -110,13 +110,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         if (functions.mmolListToLatestMmolFirebase(
                                 currentUserDocument!.data.mmol
                                     ?.toList()
-                                    ?.toList()) <
+                                    ?.toList())! <
                             3.9) {
                           return FlutterFlowTheme.of(context).tertiaryColor;
                         } else if (functions.mmolListToLatestMmolFirebase(
                                 currentUserDocument!.data.mmol
                                     ?.toList()
-                                    ?.toList()) >
+                                    ?.toList())! >
                             9.4) {
                           return FlutterFlowTheme.of(context).secondaryColor;
                         } else {
