@@ -69,39 +69,36 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? HomePageWidget() : LoginPageWidget(),
+          appStateNotifier.loggedIn ? RedirectWidget() : LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? HomePageWidget() : LoginPageWidget(),
+              appStateNotifier.loggedIn ? RedirectWidget() : LoginPageWidget(),
           routes: [
-            FFRoute(
-              name: 'HomePage',
-              path: 'homePage',
-              requireAuth: true,
-              builder: (context, params) => HomePageWidget(),
-            ),
-            FFRoute(
-              name: 'NovoRapid',
-              path: 'novoRapid',
-              builder: (context, params) => NovoRapidWidget(),
-            ),
-            FFRoute(
-              name: 'Optisulin',
-              path: 'optisulin',
-              builder: (context, params) => OptisulinWidget(),
-            ),
-            FFRoute(
-              name: 'Carbs',
-              path: 'carbs',
-              builder: (context, params) => CarbsWidget(),
-            ),
             FFRoute(
               name: 'loginPage',
               path: 'loginPage',
               builder: (context, params) => LoginPageWidget(),
+            ),
+            FFRoute(
+              name: 'redirect',
+              path: 'redirect',
+              requireAuth: true,
+              builder: (context, params) => RedirectWidget(),
+            ),
+            FFRoute(
+              name: 'Main',
+              path: 'main',
+              requireAuth: true,
+              builder: (context, params) => MainWidget(
+                mmolList:
+                    params.getParam<double>('mmolList', ParamType.double, true),
+                latestMmol: params.getParam('latestMmol', ParamType.double),
+                dateStringList: params.getParam<String>(
+                    'dateStringList', ParamType.String, true),
+              ),
             ),
             FFRoute(
               name: 'Settings',

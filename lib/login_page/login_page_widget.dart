@@ -12,6 +12,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginPageWidget extends StatefulWidget {
@@ -28,12 +29,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 550.ms,
-          duration: 1240.ms,
+        ScaleEffect(
+          curve: Curves.easeInOut,
+          delay: 300.ms,
+          duration: 600.ms,
           begin: 1,
-          end: 0,
+          end: 4,
         ),
       ],
     ),
@@ -61,20 +62,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        ShakeEffect(
-          curve: Curves.easeInOut,
-          delay: 640.ms,
-          duration: 2000.ms,
-          hz: 0,
-          offset: Offset(100, 100),
-          rotation: -6.283,
-        ),
         FadeEffect(
           curve: Curves.easeOut,
-          delay: 640.ms,
+          delay: 300.ms,
           duration: 2000.ms,
           begin: 1,
           end: 0,
+        ),
+        ScaleEffect(
+          curve: Curves.easeOut,
+          delay: 300.ms,
+          duration: 2000.ms,
+          begin: 1,
+          end: 5,
         ),
       ],
     ),
@@ -109,6 +109,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   TextEditingController? passwordController;
 
   late bool passwordVisibility;
+  bool? checkboxValue;
   TextEditingController? emailAddressCreateController;
   TextEditingController? passwordCreateController;
 
@@ -116,11 +117,64 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   TextEditingController? passwordCreateConfirmController;
 
   late bool passwordCreateConfirmVisibility;
+  bool bioAfterAutoLogin = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('LOGIN_PAGE_PAGE_loginPage_ON_PAGE_LOAD');
+      Function() _navigate = () {};
+      if ((FFAppState().rememberedPass != null &&
+              FFAppState().rememberedPass != '') &&
+          (FFAppState().rememberedUser != null &&
+              FFAppState().rememberedUser != '')) {
+        logFirebaseEvent('loginPage_auth');
+        GoRouter.of(context).prepareAuthEvent();
+
+        final user = await signInWithEmail(
+          context,
+          emailAddressController!.text,
+          passwordController!.text,
+        );
+        if (user == null) {
+          return;
+        }
+
+        _navigate = () => context.goNamedAuth('redirect', mounted);
+        logFirebaseEvent('loginPage_biometric_verification');
+        final _localAuth = LocalAuthentication();
+        bool _isBiometricSupported = await _localAuth.isDeviceSupported();
+
+        if (_isBiometricSupported) {
+          bioAfterAutoLogin = await _localAuth.authenticate(
+              localizedReason: 'Please authenticate to login');
+          setState(() {});
+        }
+      }
+
+      _navigate();
+    });
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
+    emailAddressController = TextEditingController(
+        text: FFAppState().rememberedUser != null &&
+                FFAppState().rememberedUser != ''
+            ? FFAppState().rememberedUser
+            : '');
+    passwordController = TextEditingController(
+        text: FFAppState().rememberedPass != null &&
+                FFAppState().rememberedPass != ''
+            ? FFAppState().rememberedPass
+            : '');
+    passwordVisibility = false;
+    emailAddressCreateController = TextEditingController();
+    passwordCreateController = TextEditingController();
+    passwordCreateVisibility = false;
+    passwordCreateConfirmController = TextEditingController();
+    passwordCreateConfirmVisibility = false;
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -132,15 +186,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       animationsMap['tabBarOnPageLoadAnimation']!.controller.forward(from: 0.0);
     });
 
-    emailAddressController = TextEditingController();
-    passwordController = TextEditingController();
-    passwordVisibility = false;
-    emailAddressCreateController = TextEditingController();
-    passwordCreateController = TextEditingController();
-    passwordCreateVisibility = false;
-    passwordCreateConfirmController = TextEditingController();
-    passwordCreateConfirmVisibility = false;
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -407,8 +452,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       labelStyle:
                                                                           FlutterFlowTheme.of(context)
                                                                               .bodyText2,
-                                                                      hintText:
-                                                                          'Enter your email...',
                                                                       hintStyle:
                                                                           FlutterFlowTheme.of(context)
                                                                               .bodyText2,
@@ -499,8 +542,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       labelStyle:
                                                                           FlutterFlowTheme.of(context)
                                                                               .bodyText2,
-                                                                      hintText:
-                                                                          'Enter your password...',
                                                                       hintStyle:
                                                                           FlutterFlowTheme.of(context)
                                                                               .bodyText2,
@@ -588,6 +629,117 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                             context)
                                                                         .bodyText1,
                                                                   ),
+                                                                ),
+                                                                Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              0,
+                                                                              12,
+                                                                              12,
+                                                                              0),
+                                                                      child:
+                                                                          Theme(
+                                                                        data:
+                                                                            ThemeData(
+                                                                          checkboxTheme:
+                                                                              CheckboxThemeData(
+                                                                            shape:
+                                                                                CircleBorder(),
+                                                                          ),
+                                                                          unselectedWidgetColor:
+                                                                              Color(0xFFF5F5F5),
+                                                                        ),
+                                                                        child:
+                                                                            Checkbox(
+                                                                          value: checkboxValue ??=
+                                                                              true,
+                                                                          onChanged:
+                                                                              (newValue) async {
+                                                                            setState(() =>
+                                                                                checkboxValue = newValue!);
+                                                                            if (newValue!) {
+                                                                              logFirebaseEvent('LOGIN_Checkbox_aco6hpkq_ON_TOGGLE_ON');
+                                                                              logFirebaseEvent('Checkbox_update_local_state');
+                                                                              setState(() {
+                                                                                FFAppState().rememberedUser = emailAddressController!.text;
+                                                                                FFAppState().rememberedPass = passwordController!.text;
+                                                                              });
+                                                                              if (FFAppState().useBio == null) {
+                                                                                logFirebaseEvent('Checkbox_alert_dialog');
+                                                                                var confirmDialogResponse = await showDialog<bool>(
+                                                                                      context: context,
+                                                                                      builder: (alertDialogContext) {
+                                                                                        return AlertDialog(
+                                                                                          title: Text('Biometric Login'),
+                                                                                          content: Text('Use Biometric Login In Future?'),
+                                                                                          actions: [
+                                                                                            TextButton(
+                                                                                              onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                              child: Text('No'),
+                                                                                            ),
+                                                                                            TextButton(
+                                                                                              onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                              child: Text('Yes'),
+                                                                                            ),
+                                                                                          ],
+                                                                                        );
+                                                                                      },
+                                                                                    ) ??
+                                                                                    false;
+                                                                                if (confirmDialogResponse) {
+                                                                                  logFirebaseEvent('Checkbox_update_local_state');
+                                                                                  setState(() {
+                                                                                    FFAppState().useBio = true;
+                                                                                  });
+                                                                                } else {
+                                                                                  logFirebaseEvent('Checkbox_update_local_state');
+                                                                                  setState(() {
+                                                                                    FFAppState().useBio = false;
+                                                                                  });
+                                                                                }
+                                                                              }
+                                                                            } else {
+                                                                              logFirebaseEvent('LOGIN_Checkbox_aco6hpkq_ON_TOGGLE_OFF');
+                                                                              logFirebaseEvent('Checkbox_update_local_state');
+                                                                              setState(() {
+                                                                                FFAppState().deleteRememberedPass();
+                                                                                FFAppState().rememberedPass = '';
+
+                                                                                FFAppState().deleteRememberedUser();
+                                                                                FFAppState().rememberedUser = '';
+                                                                              });
+                                                                            }
+                                                                          },
+                                                                          activeColor:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                          checkColor:
+                                                                              FlutterFlowTheme.of(context).primaryText,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional
+                                                                          .fromSTEB(
+                                                                              0,
+                                                                              12,
+                                                                              0,
+                                                                              0),
+                                                                      child:
+                                                                          Text(
+                                                                        'Remember me',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyText2,
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
@@ -703,9 +855,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               .canPop()) {
                                                                             context.pop();
                                                                           }
-                                                                          context.pushNamedAuth(
-                                                                              'HomePage',
-                                                                              mounted);
+                                                                          context
+                                                                              .pushNamedAuth(
+                                                                            'redirect',
+                                                                            mounted,
+                                                                            extra: <String,
+                                                                                dynamic>{
+                                                                              kTransitionInfoKey: TransitionInfo(
+                                                                                hasTransition: true,
+                                                                                transitionType: PageTransitionType.fade,
+                                                                                duration: Duration(milliseconds: 0),
+                                                                              ),
+                                                                            },
+                                                                          );
                                                                         },
                                                                         text:
                                                                             'Sign In',
@@ -821,7 +983,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               return;
                                                                             }
 
-                                                                            context.goNamedAuth('HomePage',
+                                                                            context.goNamedAuth('redirect',
                                                                                 mounted);
                                                                           },
                                                                         ),
@@ -862,7 +1024,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               return;
                                                                             }
 
-                                                                            context.goNamedAuth('HomePage',
+                                                                            context.goNamedAuth('redirect',
                                                                                 mounted);
                                                                           },
                                                                         ),
@@ -1101,6 +1263,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       labelStyle:
                                                                           FlutterFlowTheme.of(context)
                                                                               .bodyText2,
+                                                                      hintText:
+                                                                          'Enter your password again...',
                                                                       hintStyle:
                                                                           FlutterFlowTheme.of(context)
                                                                               .bodyText2,
@@ -1202,6 +1366,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         () async {
                                                                       logFirebaseEvent(
                                                                           'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
+                                                                      Function()
+                                                                          _navigate =
+                                                                          () {};
                                                                       logFirebaseEvent(
                                                                           'Button-Login_auth');
                                                                       GoRouter.of(
@@ -1250,9 +1417,53 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           .update(
                                                                               usersCreateData);
 
-                                                                      context.goNamedAuth(
-                                                                          'HomePage',
+                                                                      _navigate = () => context.goNamedAuth(
+                                                                          'redirect',
                                                                           mounted);
+                                                                      logFirebaseEvent(
+                                                                          'Button-Login_alert_dialog');
+                                                                      var confirmDialogResponse = await showDialog<
+                                                                              bool>(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (alertDialogContext) {
+                                                                              return AlertDialog(
+                                                                                title: Text('Biometric Login'),
+                                                                                content: Text('Use Biometric Login In Future?'),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                    child: Text('No'),
+                                                                                  ),
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                    child: Text('Yes'),
+                                                                                  ),
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          ) ??
+                                                                          false;
+                                                                      if (confirmDialogResponse) {
+                                                                        logFirebaseEvent(
+                                                                            'Button-Login_update_local_state');
+                                                                        setState(
+                                                                            () {
+                                                                          FFAppState().useBio =
+                                                                              true;
+                                                                        });
+                                                                      } else {
+                                                                        logFirebaseEvent(
+                                                                            'Button-Login_update_local_state');
+                                                                        setState(
+                                                                            () {
+                                                                          FFAppState().useBio =
+                                                                              false;
+                                                                        });
+                                                                      }
+
+                                                                      _navigate();
                                                                     },
                                                                     text:
                                                                         'Create Account',

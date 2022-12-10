@@ -68,23 +68,14 @@ String? minutesAgo(List<String>? latestDate) {
   }
 }
 
-String setColByMmol(double sgvToDoubleMmol) {
-  // change image link based on the value of sgvToMmol
-  var i = "https://connectio.com.au/MyCGM/assets/Pri.png";
-  if (sgvToDoubleMmol >= 9.4) {
-    i = "https://connectio.com.au/MyCGM/assets/Sec.png";
-    return i;
-  }
-  if (sgvToDoubleMmol <= 3.9) {
-    i = "https://connectio.com.au/MyCGM/assets/Alt.png";
-    return i;
-  } else {
-    return i = "https://connectio.com.au/MyCGM/assets/Pri.png";
-  }
+List<double> sgvListToMmolListDouble(List<int> sgv) {
+  List<double> result = sgv.map((e) => e / 18.0).toList();
+  return result;
 }
 
-List<String>? sgvToMmolList(List<int> sgv) {
-  return sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
+double? sgvListToMmolDouble(List<int> sgv) {
+  dynamic i = sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
+  return double.parse(i.first);
 }
 
 String? novoCalcBasedOnRatio(
@@ -101,16 +92,6 @@ String? novoCalcBasedOnRatio(
   double carbs = carbValue / double.parse(ratio ??= "");
   // return the carbs as a string
   return carbs.toStringAsFixed(1);
-}
-
-double? mmolListToLatestMmol(List<String>? sgvToMmolList) {
-  if (sgvToMmolList == null) {
-    return 0.0;
-  }
-  if (sgvToMmolList.isEmpty) {
-    return 0.0;
-  }
-  return double.parse(sgvToMmolList.first);
 }
 
 double? mmolListToLatestMmolFirebase(List<double>? sgvToMmolList) {

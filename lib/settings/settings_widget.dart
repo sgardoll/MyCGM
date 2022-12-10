@@ -11,6 +11,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class SettingsWidget extends StatefulWidget {
@@ -25,6 +26,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   TextEditingController? aPISecretController;
   TextEditingController? nightscoutController;
   TextEditingController? tokenController;
+  bool bioUpdate = false;
+  bool? checkboxValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -433,6 +436,117 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 12, 12, 0),
+                                    child: Theme(
+                                      data: ThemeData(
+                                        checkboxTheme: CheckboxThemeData(
+                                          shape: CircleBorder(),
+                                        ),
+                                        unselectedWidgetColor:
+                                            Color(0xFFF5F5F5),
+                                      ),
+                                      child: Checkbox(
+                                        value: checkboxValue ??=
+                                            FFAppState().useBio,
+                                        onChanged: (newValue) async {
+                                          setState(
+                                              () => checkboxValue = newValue!);
+                                          if (newValue!) {
+                                            logFirebaseEvent(
+                                                'SETTINGS_Checkbox_ie4x7fdp_ON_TOGGLE_ON');
+                                            var _shouldSetState = false;
+                                            logFirebaseEvent(
+                                                'Checkbox_biometric_verification');
+                                            final _localAuth =
+                                                LocalAuthentication();
+                                            bool _isBiometricSupported =
+                                                await _localAuth
+                                                    .isDeviceSupported();
+
+                                            if (_isBiometricSupported) {
+                                              bioUpdate =
+                                                  await _localAuth.authenticate(
+                                                      localizedReason:
+                                                          'Please authenticate with biometrics');
+                                              setState(() {});
+                                            }
+
+                                            _shouldSetState = true;
+                                            if (bioUpdate!) {
+                                              logFirebaseEvent(
+                                                  'Checkbox_update_local_state');
+                                              setState(() {
+                                                FFAppState().useBio = true;
+                                              });
+                                            } else {
+                                              logFirebaseEvent(
+                                                  'Checkbox_show_snack_bar');
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Biometric login unsuccessful',
+                                                    style: TextStyle(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                    ),
+                                                  ),
+                                                  duration: Duration(
+                                                      milliseconds: 4000),
+                                                  backgroundColor:
+                                                      Color(0x00000000),
+                                                ),
+                                              );
+                                              if (_shouldSetState)
+                                                setState(() {});
+                                              return;
+                                            }
+
+                                            if (_shouldSetState)
+                                              setState(() {});
+                                          } else {
+                                            logFirebaseEvent(
+                                                'SETTINGS_Checkbox_ie4x7fdp_ON_TOGGLE_OFF');
+                                            logFirebaseEvent(
+                                                'Checkbox_update_local_state');
+                                            setState(() {
+                                              FFAppState()
+                                                  .deleteRememberedPass();
+                                              FFAppState().rememberedPass = '';
+
+                                              FFAppState()
+                                                  .deleteRememberedUser();
+                                              FFAppState().rememberedUser = '';
+                                            });
+                                          }
+                                        },
+                                        activeColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                        checkColor: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 12, 0, 0),
+                                    child: Text(
+                                      'Use Biometric Login?',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText2,
+                                    ),
+                                  ),
+                                ],
+                              ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0, 24, 0, 24),
@@ -470,7 +584,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     logFirebaseEvent(
                                         'ButtonSaveChanges_navigate_to');
 
-                                    context.pushNamed('HomePage');
+                                    context.pushNamed('Main');
                                   },
                                   text: 'Save Changes',
                                   icon: Icon(
@@ -503,6 +617,18 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   onPressed: () async {
                                     logFirebaseEvent(
                                         'SETTINGS_PAGE_ButtonSaveChanges_ON_TAP');
+                                    logFirebaseEvent(
+                                        'ButtonSaveChanges_update_local_state');
+                                    setState(() {
+                                      FFAppState().deleteRememberedPass();
+                                      FFAppState().rememberedPass = '';
+
+                                      FFAppState().deleteRememberedUser();
+                                      FFAppState().rememberedUser = '';
+
+                                      FFAppState().deleteUseBio();
+                                      FFAppState().useBio = false;
+                                    });
                                     logFirebaseEvent('ButtonSaveChanges_auth');
                                     GoRouter.of(context).prepareAuthEvent();
                                     await signOut();
