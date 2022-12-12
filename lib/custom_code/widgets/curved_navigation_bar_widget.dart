@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:my_c_g_m/index.dart';
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class CurvedNavigationBarWidget extends StatefulWidget {
@@ -60,32 +58,32 @@ class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
         setState(() {
           widget.index = index;
           // navigate to the same index as defined in lib/flutter_flow/nav/nav.dart
-          switch (index) {
-            case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainWidget(),
-                ),
-              );
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainWidget(),
-                ),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainWidget(),
-                ),
-              );
-              break;
-          }
+          //   switch (index) {
+          //     case 0:
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => (),
+          //         ),
+          //       );
+          //       break;
+          //     case 1:
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => (),
+          //         ),
+          //       );
+          //       break;
+          //     case 2:
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => (),
+          //         ),
+          //       );
+          //       break;
+          //   }
         });
       },
       letIndexChange: (index) => true,
