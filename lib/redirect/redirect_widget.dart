@@ -195,16 +195,18 @@ class _RedirectWidgetState extends State<RedirectWidget>
               FFAppState().apiJSON,
               r'''$.sgv''',
             ))!;
+            FFAppState().mmolList = functions
+                .sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
+                  (apiResult?.jsonBody ?? ''),
+                ).toList())!
+                .toList();
           });
 
           context.pushNamed(
             'Main',
             queryParams: {
               'mmolList': serializeParam(
-                getJsonField(
-                  FFAppState().apiJSON,
-                  r'''$.sgv''',
-                ),
+                FFAppState().mmolList,
                 ParamType.double,
                 true,
               ),

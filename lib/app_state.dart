@@ -130,6 +130,24 @@ class FFAppState extends ChangeNotifier {
 
     _latestMmol = _value;
   }
+
+  List<double> _mmolList = [];
+  List<double> get mmolList => _mmolList;
+  set mmolList(List<double> _value) {
+    notifyListeners();
+
+    _mmolList = _value;
+  }
+
+  void addToMmolList(double _value) {
+    notifyListeners();
+    _mmolList.add(_value);
+  }
+
+  void removeFromMmolList(double _value) {
+    notifyListeners();
+    _mmolList.remove(_value);
+  }
 }
 
 LatLng? _latLngFromString(String? val) {
