@@ -148,6 +148,24 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
     _mmolList.remove(_value);
   }
+
+  List<String> _dateString = [];
+  List<String> get dateString => _dateString;
+  set dateString(List<String> _value) {
+    notifyListeners();
+
+    _dateString = _value;
+  }
+
+  void addToDateString(String _value) {
+    notifyListeners();
+    _dateString.add(_value);
+  }
+
+  void removeFromDateString(String _value) {
+    notifyListeners();
+    _dateString.remove(_value);
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

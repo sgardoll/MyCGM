@@ -186,10 +186,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
         );
         if ((apiResult?.succeeded ?? true)) {
           setState(() {
-            FFAppState().apiJSON = getJsonField(
-              (apiResult?.jsonBody ?? ''),
-              r'''$''',
-            );
             FFAppState().latestMmol =
                 functions.sgvListToMmolDouble(getJsonField(
               FFAppState().apiJSON,
@@ -199,6 +195,12 @@ class _RedirectWidgetState extends State<RedirectWidget>
                 .sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
                   (apiResult?.jsonBody ?? ''),
                 ).toList())!
+                .toList();
+            FFAppState().dateString = (GetBloodGlucoseCall.dateString(
+              (apiResult?.jsonBody ?? ''),
+            ) as List)
+                .map<String>((s) => s.toString())
+                .toList()
                 .toList();
           });
 
@@ -211,13 +213,14 @@ class _RedirectWidgetState extends State<RedirectWidget>
                 true,
               ),
               'latestMmol': serializeParam(
-                FFAppState().latestMmol,
+                functions.sgvListToMmolDouble(GetBloodGlucoseCall.sgv(
+                  (apiResult?.jsonBody ?? ''),
+                ).toList()),
                 ParamType.double,
               ),
               'dateString': serializeParam(
-                (getJsonField(
-                  FFAppState().apiJSON,
-                  r'''$.dateString''',
+                (GetBloodGlucoseCall.dateString(
+                  (apiResult?.jsonBody ?? ''),
                 ) as List)
                     .map<String>((s) => s.toString())
                     .toList(),
