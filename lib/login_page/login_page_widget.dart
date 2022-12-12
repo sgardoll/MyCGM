@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../auth/firebase_user_provider.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -105,11 +106,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       ],
     ),
   };
-  TextEditingController? emailAddressController;
-  TextEditingController? passwordController;
-
-  late bool passwordVisibility;
-  bool? checkboxValue;
+  TextEditingController? displayNameController;
   TextEditingController? emailAddressCreateController;
   TextEditingController? passwordCreateController;
 
@@ -117,6 +114,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   TextEditingController? passwordCreateConfirmController;
 
   late bool passwordCreateConfirmVisibility;
+  TextEditingController? emailAddressController;
+  TextEditingController? passwordController;
+
+  late bool passwordVisibility;
+  bool? checkboxValue;
   bool bioAfterAutoLogin = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -159,6 +161,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     });
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
+    displayNameController = TextEditingController();
+    emailAddressCreateController = TextEditingController();
+    passwordCreateController = TextEditingController();
+    passwordCreateVisibility = false;
+    passwordCreateConfirmController = TextEditingController();
+    passwordCreateConfirmVisibility = false;
     emailAddressController = TextEditingController(
         text: FFAppState().rememberedUser != null &&
                 FFAppState().rememberedUser != ''
@@ -170,11 +178,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
             ? FFAppState().rememberedPass
             : '');
     passwordVisibility = false;
-    emailAddressCreateController = TextEditingController();
-    passwordCreateController = TextEditingController();
-    passwordCreateVisibility = false;
-    passwordCreateConfirmController = TextEditingController();
-    passwordCreateConfirmVisibility = false;
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -191,11 +194,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
 
   @override
   void dispose() {
-    emailAddressController?.dispose();
-    passwordController?.dispose();
+    displayNameController?.dispose();
     emailAddressCreateController?.dispose();
     passwordCreateController?.dispose();
     passwordCreateConfirmController?.dispose();
+    emailAddressController?.dispose();
+    passwordController?.dispose();
     super.dispose();
   }
 
@@ -982,9 +986,27 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                                 null) {
                                                                               return;
                                                                             }
+                                                                            if (loggedIn ==
+                                                                                true) {
+                                                                              logFirebaseEvent('IconButton_navigate_to');
 
-                                                                            context.goNamedAuth('redirect',
-                                                                                mounted);
+                                                                              context.pushNamedAuth('redirect', mounted);
+                                                                            } else {
+                                                                              logFirebaseEvent('IconButton_show_snack_bar');
+                                                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                                                SnackBar(
+                                                                                  content: Text(
+                                                                                    'Google Login Error',
+                                                                                    style: TextStyle(
+                                                                                      color: FlutterFlowTheme.of(context).primaryText,
+                                                                                    ),
+                                                                                  ),
+                                                                                  duration: Duration(milliseconds: 4000),
+                                                                                  backgroundColor: Color(0x00000000),
+                                                                                ),
+                                                                              );
+                                                                              return;
+                                                                            }
                                                                           },
                                                                         ),
                                                                       ),
@@ -1041,6 +1063,98 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   MainAxisSize
                                                                       .max,
                                                               children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          24,
+                                                                          20,
+                                                                          24,
+                                                                          0),
+                                                                  child:
+                                                                      TextFormField(
+                                                                    controller:
+                                                                        displayNameController,
+                                                                    obscureText:
+                                                                        false,
+                                                                    decoration:
+                                                                        InputDecoration(
+                                                                      labelText:
+                                                                          'Your name',
+                                                                      labelStyle:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText2,
+                                                                      hintText:
+                                                                          'Enter your name...',
+                                                                      hintStyle:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .bodyText2,
+                                                                      enabledBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).lineColor,
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(24),
+                                                                      ),
+                                                                      focusedBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).lineColor,
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(24),
+                                                                      ),
+                                                                      errorBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primaryColor,
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(24),
+                                                                      ),
+                                                                      focusedErrorBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primaryColor,
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(24),
+                                                                      ),
+                                                                      filled:
+                                                                          true,
+                                                                      fillColor:
+                                                                          FlutterFlowTheme.of(context)
+                                                                              .primaryBackground,
+                                                                      contentPadding:
+                                                                          EdgeInsetsDirectional.fromSTEB(
+                                                                              20,
+                                                                              24,
+                                                                              20,
+                                                                              24),
+                                                                    ),
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyText1,
+                                                                    maxLines:
+                                                                        null,
+                                                                  ),
+                                                                ),
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
@@ -1393,7 +1507,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       final user =
                                                                           await createAccountWithEmail(
                                                                         context,
-                                                                        emailAddressCreateController!
+                                                                        displayNameController!
                                                                             .text,
                                                                         passwordCreateController!
                                                                             .text,
@@ -1405,10 +1519,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
 
                                                                       final usersCreateData =
                                                                           createUsersRecordData(
-                                                                        email: emailAddressCreateController!
+                                                                        email: displayNameController!
                                                                             .text,
                                                                         createdTime:
                                                                             getCurrentTimestamp,
+                                                                        displayName:
+                                                                            displayNameController!.text,
                                                                       );
                                                                       await UsersRecord
                                                                           .collection

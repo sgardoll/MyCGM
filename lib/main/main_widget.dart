@@ -1,11 +1,14 @@
 import '../auth/auth_util.dart';
+import '../components/p_o_s_t_insulin_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_charts.dart';
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../custom_code/widgets/index.dart' as custom_widgets;
 import '../flutter_flow/custom_functions.dart' as functions;
-import 'package:flip_card/flip_card.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart'
+    as smooth_page_indicator;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -32,15 +35,58 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   final animationsMap = {
-    'flippableCardOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
+    'iconButtonOnActionTriggerAnimation1': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
+      effects: [
+        VisibilityEffect(duration: 200.ms),
+        MoveEffect(
+          curve: Curves.easeIn,
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: Offset(0, 68),
+          end: Offset(0, 0),
+        ),
+        FadeEffect(
+          curve: Curves.easeIn,
+          delay: 200.ms,
+          duration: 300.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
+    'iconButtonOnActionTriggerAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
+      effects: [
+        VisibilityEffect(duration: 100.ms),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 100.ms,
+          duration: 300.ms,
+          begin: Offset(0, 68),
+          end: Offset(0, 0),
+        ),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 100.ms,
+          duration: 300.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
+    'iconButtonOnActionTriggerAnimation3': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
       effects: [
         VisibilityEffect(duration: 1.ms),
         MoveEffect(
-          curve: Curves.elasticOut,
-          delay: 150.ms,
-          duration: 600.ms,
-          begin: Offset(0, -100),
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 300.ms,
+          begin: Offset(0, 68),
           end: Offset(0, 0),
         ),
         FadeEffect(
@@ -53,11 +99,18 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       ],
     ),
   };
+  PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
+      this,
+    );
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'Main'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
@@ -78,8 +131,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
             child: Stack(
               children: [
                 Container(
-                  width: double.infinity,
-                  height: double.infinity,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 1,
                   decoration: BoxDecoration(
                     color: valueOrDefault<Color>(
                       () {
@@ -94,17 +147,12 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                       FlutterFlowTheme.of(context).primaryColor,
                     ),
                   ),
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FlipCard(
-                      fill: Fill.fillBack,
-                      direction: FlipDirection.HORIZONTAL,
-                      speed: 400,
-                      front: Material(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Material(
                         color: Colors.transparent,
                         elevation: 30,
                         shape: RoundedRectangleBorder(
@@ -115,11 +163,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             topRight: Radius.circular(0),
                           ),
                         ),
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 100),
-                          curve: Curves.easeInOut,
+                        child: Container(
                           width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.7,
+                          height: MediaQuery.of(context).size.height * 0.65,
                           decoration: BoxDecoration(
                             color: valueOrDefault<Color>(
                               () {
@@ -150,188 +196,478 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               topRight: Radius.circular(0),
                             ),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                child: AuthUserStreamWidget(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.2,
-                                    child: FlutterFlowLineChart(
-                                      data: [
-                                        FFLineChartData(
-                                          xData: currentUserDocument!.data.date!
-                                              .toList(),
-                                          yData: currentUserDocument!.data.mmol!
-                                              .toList()
-                                              .map((e) => formatNumber(
-                                                    e,
-                                                    formatType:
-                                                        FormatType.custom,
-                                                    format: '#0.0',
-                                                    locale: '',
-                                                  ))
-                                              .toList(),
-                                          settings: LineChartBarData(
-                                            color: Color(0x7FFFFFFF),
-                                            barWidth: 5,
-                                            isCurved: true,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: double.infinity,
+                            child: Stack(
+                              children: [
+                                PageView(
+                                  controller: pageViewController ??=
+                                      PageController(initialPage: 0),
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0, 0.5),
+                                          child: CircularPercentIndicator(
+                                            percent: () {
+                                              if (widget.latestMmol == null) {
+                                                return 0.1;
+                                              } else if (widget.latestMmol! <
+                                                  3.9) {
+                                                return 0.1;
+                                              } else if (widget.latestMmol! >
+                                                  9.4) {
+                                                return 1.0;
+                                              } else {
+                                                return functions
+                                                    .quickProgressInd(
+                                                        widget.latestMmol!);
+                                              }
+                                            }(),
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.375,
+                                            lineWidth: 40,
+                                            animation: true,
+                                            progressColor:
+                                                valueOrDefault<Color>(
+                                              () {
+                                                if (widget.latestMmol! < 3.9) {
+                                                  return FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryColor;
+                                                } else if (widget.latestMmol! >
+                                                    9.4) {
+                                                  return FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryBackground;
+                                                } else {
+                                                  return FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryBackground;
+                                                }
+                                              }(),
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                            ),
+                                            backgroundColor: Color(0x40FFFFFF),
+                                            center: Text(
+                                              formatNumber(
+                                                FFAppState().latestMmol,
+                                                formatType: FormatType.custom,
+                                                format: '#0.0',
+                                                locale: '',
+                                              ).maybeHandleOverflow(
+                                                maxChars: 20,
+                                                replacement: '…',
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .title1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 90,
+                                                      ),
+                                            ),
+                                            startAngle: 0,
                                           ),
-                                        )
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12, 0, 0, 0),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.3,
+                                            child: FlutterFlowLineChart(
+                                              data: [
+                                                FFLineChartData(
+                                                  xData: widget.dateStringList!
+                                                      .map((e) => e)
+                                                      .toList(),
+                                                  yData: widget.mmolList!
+                                                      .map((e) => formatNumber(
+                                                            e,
+                                                            formatType:
+                                                                FormatType
+                                                                    .custom,
+                                                            format: '#0.0',
+                                                            locale: '',
+                                                          ))
+                                                      .toList(),
+                                                  settings: LineChartBarData(
+                                                    color: Color(0x7FFFFFFF),
+                                                    barWidth: 5,
+                                                    isCurved: true,
+                                                  ),
+                                                )
+                                              ],
+                                              chartStylingInfo:
+                                                  ChartStylingInfo(
+                                                enableTooltip: true,
+                                                tooltipBackgroundColor:
+                                                    Color(0x801E2429),
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                showBorder: false,
+                                              ),
+                                              axisBounds: AxisBounds(
+                                                minY: 0,
+                                                maxY: 18,
+                                              ),
+                                              xAxisLabelInfo: AxisLabelInfo(),
+                                              yAxisLabelInfo: AxisLabelInfo(
+                                                showLabels: true,
+                                                labelTextStyle:
+                                                    GoogleFonts.getFont(
+                                                  'Open Sans',
+                                                  color: Color(0x7CFFFFFF),
+                                                  fontSize: 10,
+                                                ),
+                                                labelInterval: 5,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 24),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Align(
+                                                alignment:
+                                                    AlignmentDirectional(0, 0),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(0, 12, 0, 0),
+                                                  child: AuthUserStreamWidget(
+                                                    child: Text(
+                                                      valueOrDefault(
+                                                          currentUserDocument
+                                                              ?.units,
+                                                          ''),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .title1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Poppins',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                              ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment:
+                                                    AlignmentDirectional(0, 0),
+                                                child: Text(
+                                                  'as of ${functions.minutesAgo(FFAppState().latestDateList.toList())}',
+                                                  textAlign: TextAlign.center,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .title3
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
-                                      chartStylingInfo: ChartStylingInfo(
-                                        enableTooltip: true,
-                                        tooltipBackgroundColor:
-                                            Color(0x801E2429),
-                                        backgroundColor: Colors.transparent,
-                                        showBorder: false,
-                                      ),
-                                      axisBounds: AxisBounds(
-                                        maxY: 18,
-                                      ),
-                                      xAxisLabelInfo: AxisLabelInfo(),
-                                      yAxisLabelInfo: AxisLabelInfo(
-                                        showLabels: true,
-                                        labelTextStyle: GoogleFonts.getFont(
-                                          'Open Sans',
-                                          color: Color(0x7CFFFFFF),
-                                          fontSize: 10,
-                                        ),
-                                        labelInterval: 5,
+                                    ),
+                                    Container(),
+                                    Container(),
+                                  ],
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional(1, 0),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 12, 0),
+                                    child: smooth_page_indicator
+                                        .SmoothPageIndicator(
+                                      controller: pageViewController ??=
+                                          PageController(initialPage: 0),
+                                      count: 3,
+                                      axisDirection: Axis.vertical,
+                                      onDotClicked: (i) {
+                                        pageViewController!.animateToPage(
+                                          i,
+                                          duration: Duration(milliseconds: 500),
+                                          curve: Curves.ease,
+                                        );
+                                      },
+                                      effect: smooth_page_indicator
+                                          .ExpandingDotsEffect(
+                                        expansionFactor: 2,
+                                        spacing: 8,
+                                        radius: 16,
+                                        dotWidth: 16,
+                                        dotHeight: 16,
+                                        dotColor: Color(0x41FFFFFF),
+                                        activeDotColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                        paintStyle: PaintingStyle.fill,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              AuthUserStreamWidget(
-                                child: CircularPercentIndicator(
-                                  percent: functions.sgvToProgressInd(
-                                      functions.mmolListToLatestMmolFirebase(
-                                          currentUserDocument!.data.mmol
-                                              ?.toList()
-                                              ?.toList()))!,
-                                  radius:
-                                      MediaQuery.of(context).size.width * 0.375,
-                                  lineWidth: 40,
-                                  animation: true,
-                                  progressColor: valueOrDefault<Color>(
-                                    () {
-                                      if (functions
-                                              .mmolListToLatestMmolFirebase(
-                                                  currentUserDocument!.data.mmol
-                                                      ?.toList()
-                                                      ?.toList())! <
-                                          3.9) {
-                                        return FlutterFlowTheme.of(context)
-                                            .secondaryColor;
-                                      } else if (functions
-                                              .mmolListToLatestMmolFirebase(
-                                                  currentUserDocument!.data.mmol
-                                                      ?.toList()
-                                                      ?.toList())! >
-                                          9.4) {
-                                        return FlutterFlowTheme.of(context)
-                                            .secondaryBackground;
-                                      } else {
-                                        return FlutterFlowTheme.of(context)
-                                            .primaryBackground;
-                                      }
-                                    }(),
-                                    FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                  ),
-                                  backgroundColor: Color(0x40FFFFFF),
-                                  center: Text(
-                                    formatNumber(
-                                      FFAppState().latestMmol,
-                                      formatType: FormatType.custom,
-                                      format: '#0.0',
-                                      locale: '',
-                                    ).maybeHandleOverflow(
-                                      maxChars: 20,
-                                      replacement: '…',
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.of(context)
-                                        .title1
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                          fontSize: 90,
-                                        ),
-                                  ),
-                                  startAngle: 0,
-                                ),
-                              ),
-                              Align(
-                                alignment: AlignmentDirectional(0, 0),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 12, 0, 12),
-                                  child: Text(
-                                    'as of ${functions.minutesAgo(FFAppState().latestDateList.toList())}',
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.of(context)
-                                        .title3
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      back: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).tertiaryColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Align(
-                          alignment: AlignmentDirectional(0, 0),
-                          child: Text(
-                            'Back',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyText1
-                                .override(
-                                  fontFamily: 'Poppins',
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                          child: AuthUserStreamWidget(
+                            child: FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 20,
+                              borderWidth: 1,
+                              buttonSize: 50,
+                              fillColor:
+                                  FlutterFlowTheme.of(context).secondaryText,
+                              icon: Icon(
+                                Icons.local_dining_rounded,
+                                color: valueOrDefault<Color>(
+                                  () {
+                                    if (functions.mmolListToLatestMmolFirebase(
+                                            currentUserDocument!.data.mmol
+                                                ?.toList()
+                                                ?.toList())! <
+                                        3.9) {
+                                      return FlutterFlowTheme.of(context)
+                                          .tertiaryColor;
+                                    } else if (functions
+                                            .mmolListToLatestMmolFirebase(
+                                                currentUserDocument!.data.mmol
+                                                    ?.toList()
+                                                    ?.toList())! >
+                                        9.4) {
+                                      return FlutterFlowTheme.of(context)
+                                          .secondaryColor;
+                                    } else {
+                                      return FlutterFlowTheme.of(context)
+                                          .primaryColor;
+                                    }
+                                  }(),
+                                  FlutterFlowTheme.of(context)
+                                      .primaryBackground,
                                 ),
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                print('AddCarbsButton pressed ...');
+                              },
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'iconButtonOnActionTriggerAnimation1']!,
+                            ),
                           ),
                         ),
-                      ),
-                    ).animateOnPageLoad(
-                        animationsMap['flippableCardOnPageLoadAnimation']!),
-                    custom_widgets.CurvedNavigationBarWidget(
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      backgroundColor: Colors.transparent,
-                      buttonBackgroundColor: valueOrDefault<Color>(
-                        () {
-                          if (FFAppState().latestMmol < 3.9) {
-                            return FlutterFlowTheme.of(context).tertiaryColor;
-                          } else if (FFAppState().latestMmol > 9.4) {
-                            return FlutterFlowTheme.of(context).secondaryColor;
-                          } else {
-                            return FlutterFlowTheme.of(context).primaryColor;
-                          }
-                        }(),
-                        FlutterFlowTheme.of(context).primaryBackground,
-                      ),
-                      index: 2,
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                          child: AuthUserStreamWidget(
+                            child: FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 20,
+                              borderWidth: 1,
+                              buttonSize: 50,
+                              fillColor:
+                                  FlutterFlowTheme.of(context).secondaryText,
+                              icon: Icon(
+                                Icons.timelapse,
+                                color: valueOrDefault<Color>(
+                                  () {
+                                    if (functions.mmolListToLatestMmolFirebase(
+                                            currentUserDocument!.data.mmol
+                                                ?.toList()
+                                                ?.toList())! <
+                                        3.9) {
+                                      return FlutterFlowTheme.of(context)
+                                          .tertiaryColor;
+                                    } else if (functions
+                                            .mmolListToLatestMmolFirebase(
+                                                currentUserDocument!.data.mmol
+                                                    ?.toList()
+                                                    ?.toList())! >
+                                        9.4) {
+                                      return FlutterFlowTheme.of(context)
+                                          .secondaryColor;
+                                    } else {
+                                      return FlutterFlowTheme.of(context)
+                                          .primaryColor;
+                                    }
+                                  }(),
+                                  FlutterFlowTheme.of(context)
+                                      .primaryBackground,
+                                ),
+                                size: 25,
+                              ),
+                              onPressed: () async {
+                                logFirebaseEvent(
+                                    'MAIN_PAGE_AddOptiButton_ON_TAP');
+                                logFirebaseEvent('AddOptiButton_bottom_sheet');
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding:
+                                          MediaQuery.of(context).viewInsets,
+                                      child: POSTInsulinWidget(
+                                        insulinType: 'Optisulin',
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => setState(() {}));
+                              },
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'iconButtonOnActionTriggerAnimation2']!,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                          child: AuthUserStreamWidget(
+                            child: FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 20,
+                              borderWidth: 1,
+                              buttonSize: 50,
+                              fillColor:
+                                  FlutterFlowTheme.of(context).secondaryText,
+                              icon: Icon(
+                                Icons.speed_rounded,
+                                color: valueOrDefault<Color>(
+                                  () {
+                                    if (functions.mmolListToLatestMmolFirebase(
+                                            currentUserDocument!.data.mmol
+                                                ?.toList()
+                                                ?.toList())! <
+                                        3.9) {
+                                      return FlutterFlowTheme.of(context)
+                                          .tertiaryColor;
+                                    } else if (functions
+                                            .mmolListToLatestMmolFirebase(
+                                                currentUserDocument!.data.mmol
+                                                    ?.toList()
+                                                    ?.toList())! >
+                                        9.4) {
+                                      return FlutterFlowTheme.of(context)
+                                          .secondaryColor;
+                                    } else {
+                                      return FlutterFlowTheme.of(context)
+                                          .primaryColor;
+                                    }
+                                  }(),
+                                  FlutterFlowTheme.of(context)
+                                      .primaryBackground,
+                                ),
+                                size: 25,
+                              ),
+                              onPressed: () async {
+                                logFirebaseEvent(
+                                    'MAIN_PAGE_AddNovoButton_ON_TAP');
+                                logFirebaseEvent('AddNovoButton_bottom_sheet');
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding:
+                                          MediaQuery.of(context).viewInsets,
+                                      child: POSTInsulinWidget(
+                                        insulinType: 'Novorapid',
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => setState(() {}));
+                              },
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'iconButtonOnActionTriggerAnimation3']!,
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(0, 1),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 60,
+                            child: custom_widgets.CurvedNavigationBarWidget(
+                              width: MediaQuery.of(context).size.width,
+                              height: 60,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              backgroundColor: Colors.transparent,
+                              buttonBackgroundColor: valueOrDefault<Color>(
+                                () {
+                                  if (FFAppState().latestMmol < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (FFAppState().latestMmol > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryBackground,
+                              ),
+                              index: 2,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

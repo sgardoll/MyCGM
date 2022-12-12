@@ -29,6 +29,9 @@ class FFAppState extends ChangeNotifier {
     _rememberedUser =
         await secureStorage.getString('ff_rememberedUser') ?? _rememberedUser;
     _useBio = await secureStorage.getBool('ff_useBio') ?? _useBio;
+    _nightscout = await secureStorage.getString('ff_nightscout') ?? _nightscout;
+    _apiKey = await secureStorage.getString('ff_apiKey') ?? _apiKey;
+    _token = await secureStorage.getString('ff_token') ?? _token;
   }
 
   late FlutterSecureStorage secureStorage;
@@ -188,6 +191,48 @@ class FFAppState extends ChangeNotifier {
   void deleteUseBio() {
     notifyListeners();
     secureStorage.delete(key: 'ff_useBio');
+  }
+
+  String _nightscout = '';
+  String get nightscout => _nightscout;
+  set nightscout(String _value) {
+    notifyListeners();
+
+    _nightscout = _value;
+    secureStorage.setString('ff_nightscout', _value);
+  }
+
+  void deleteNightscout() {
+    notifyListeners();
+    secureStorage.delete(key: 'ff_nightscout');
+  }
+
+  String _apiKey = '';
+  String get apiKey => _apiKey;
+  set apiKey(String _value) {
+    notifyListeners();
+
+    _apiKey = _value;
+    secureStorage.setString('ff_apiKey', _value);
+  }
+
+  void deleteApiKey() {
+    notifyListeners();
+    secureStorage.delete(key: 'ff_apiKey');
+  }
+
+  String _token = '';
+  String get token => _token;
+  set token(String _value) {
+    notifyListeners();
+
+    _token = _value;
+    secureStorage.setString('ff_token', _value);
+  }
+
+  void deleteToken() {
+    notifyListeners();
+    secureStorage.delete(key: 'ff_token');
   }
 }
 

@@ -85,12 +85,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'redirect',
               path: 'redirect',
-              requireAuth: true,
               builder: (context, params) => RedirectWidget(),
             ),
             FFRoute(
               name: 'Main',
-              path: 'main',
+              path: 'Main',
               requireAuth: true,
               builder: (context, params) => MainWidget(
                 mmolList:
@@ -102,7 +101,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             ),
             FFRoute(
               name: 'Settings',
-              path: 'settings',
+              path: 'Settings',
               builder: (context, params) => SettingsWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

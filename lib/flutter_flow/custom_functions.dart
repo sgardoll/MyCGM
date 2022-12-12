@@ -131,3 +131,7 @@ String novoTo1DecimalPlace(String units) {
   else
     return units + '.0';
 }
+
+double quickProgressInd(double latestMmol) {
+  return (latestMmol - 3.9) / (9.4 - 3.9);
+}
