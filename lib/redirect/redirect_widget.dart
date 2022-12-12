@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../auth/firebase_user_provider.dart';
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -85,12 +84,13 @@ class _RedirectWidgetState extends State<RedirectWidget>
         ),
       ],
     ),
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      applyInitialState: false,
+    'containerOnActionTriggerAnimation4': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
       effects: [
+        VisibilityEffect(duration: 1.ms),
         MoveEffect(
-          curve: Curves.easeInOut,
+          curve: Curves.easeIn,
           delay: 0.ms,
           duration: 600.ms,
           begin: Offset(0, 100),
@@ -99,29 +99,9 @@ class _RedirectWidgetState extends State<RedirectWidget>
         FadeEffect(
           curve: Curves.easeIn,
           delay: 0.ms,
-          duration: 600.ms,
+          duration: 800.ms,
           begin: 0,
           end: 1,
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation4': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0, 0),
-          end: Offset(0, -100),
-        ),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 1,
-          end: 0,
         ),
       ],
     ),
@@ -144,55 +124,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
           begin: 0,
           end: 1,
         ),
-        MoveEffect(
-          curve: Curves.easeOut,
-          delay: 800.ms,
-          duration: 600.ms,
-          begin: Offset(0, 0),
-          end: Offset(0, -100),
-        ),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 600.ms,
-          duration: 600.ms,
-          begin: 1,
-          end: 0,
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation6': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        MoveEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0, 100),
-          end: Offset(0, 0),
-        ),
-        FadeEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 800.ms,
-          begin: 0,
-          end: 1,
-        ),
-        MoveEffect(
-          curve: Curves.easeOut,
-          delay: 1000.ms,
-          duration: 600.ms,
-          begin: Offset(0, 0),
-          end: Offset(0, -100),
-        ),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 1000.ms,
-          duration: 600.ms,
-          begin: 1,
-          end: 0,
-        ),
       ],
     ),
   };
@@ -202,8 +133,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      logFirebaseEvent('REDIRECT_PAGE_redirect_ON_PAGE_LOAD');
-      logFirebaseEvent('redirect_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation3'] != null) {
         setState(() => hasContainerTriggered3 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -215,7 +144,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         .controller
                         .reverse));
       }
-      logFirebaseEvent('redirect_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
         setState(() => hasContainerTriggered1 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -227,7 +155,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         .controller
                         .reverse));
       }
-      logFirebaseEvent('redirect_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation2'] != null) {
         setState(() => hasContainerTriggered2 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -239,195 +166,115 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         .controller
                         .reverse));
       }
-      if (loggedIn) {
-        logFirebaseEvent('redirect_widget_animation');
-        if (animationsMap['containerOnActionTriggerAnimation4'] != null) {
-          await animationsMap['containerOnActionTriggerAnimation4']!
-              .controller
-              .forward(from: 0.0);
-        }
-        // NIGHTSCOUT FLOW
-        logFirebaseEvent('redirect_widget_animation');
+      // NIGHTSCOUT FLOW
+      if (animationsMap['containerOnActionTriggerAnimation4'] != null) {
+        animationsMap['containerOnActionTriggerAnimation4']!
+            .controller
+            .forward(from: 0.0);
+      }
+      if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
+              valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
+          (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
+              valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
+          (valueOrDefault(currentUserDocument?.units, '') != null &&
+              valueOrDefault(currentUserDocument?.units, '') != '') &&
+          (valueOrDefault(currentUserDocument?.token, '') != null &&
+              valueOrDefault(currentUserDocument?.token, '') != '')) {
         if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
           animationsMap['containerOnActionTriggerAnimation5']!
               .controller
               .forward(from: 0.0);
         }
-        if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
-                valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
-            (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
-                valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
-            (valueOrDefault(currentUserDocument?.units, '') != null &&
-                valueOrDefault(currentUserDocument?.units, '') != '') &&
-            (valueOrDefault(currentUserDocument?.token, '') != null &&
-                valueOrDefault(currentUserDocument?.token, '') != '')) {
-          logFirebaseEvent('redirect_wait__delay');
-          await Future.delayed(const Duration(milliseconds: 600));
-          logFirebaseEvent('redirect_update_local_state');
-          setState(() {
-            FFAppState().nightscout =
-                valueOrDefault(currentUserDocument?.nightscout, '');
-            FFAppState().apiKey =
-                valueOrDefault(currentUserDocument?.apiKey, '');
-            FFAppState().token = valueOrDefault(currentUserDocument?.token, '');
-          });
-          // LOGIN FLOW
-          logFirebaseEvent('redirect_widget_animation');
-          if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
-            await animationsMap['containerOnActionTriggerAnimation5']!
-                .controller
-                .forward();
-          }
-          // LOAD DATA FLOW
-          logFirebaseEvent('redirect_widget_animation');
-          if (animationsMap['containerOnActionTriggerAnimation6'] != null) {
-            animationsMap['containerOnActionTriggerAnimation6']!
-                .controller
-                .forward(from: 0.0);
-          }
-          logFirebaseEvent('redirect_backend_call');
-          apiResult = await GetBloodGlucoseCall.call(
-            apiKey: FFAppState().apiKey,
-            nightscout: FFAppState().nightscout,
-            token: FFAppState().token,
+        apiResult = await GetBloodGlucoseCall.call(
+          apiKey: FFAppState().apiKey,
+          nightscout: FFAppState().nightscout,
+          token: FFAppState().token,
+        );
+        if ((apiResult?.jsonBody ?? '')) {
+          context.pushNamed(
+            'Main',
+            queryParams: {
+              'mmolList': serializeParam(
+                functions.sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
+                  (apiResult?.jsonBody ?? ''),
+                ).toList()),
+                ParamType.double,
+                true,
+              ),
+              'latestMmol': serializeParam(
+                functions.sgvListToMmolDouble(GetBloodGlucoseCall.sgv(
+                  (apiResult?.jsonBody ?? ''),
+                ).toList()),
+                ParamType.double,
+              ),
+              'dateStringList': serializeParam(
+                (GetBloodGlucoseCall.dateString(
+                  (apiResult?.jsonBody ?? ''),
+                ) as List)
+                    .map<String>((s) => s.toString())
+                    .toList(),
+                ParamType.String,
+                true,
+              ),
+            }.withoutNulls,
           );
-          if ((apiResult?.jsonBody ?? '')) {
-            logFirebaseEvent('redirect_wait__delay');
-            await Future.delayed(const Duration(milliseconds: 600));
-            logFirebaseEvent('redirect_navigate_to');
+        } else {
+          HapticFeedback.vibrate();
+          await showDialog(
+            context: context,
+            builder: (alertDialogContext) {
+              return AlertDialog(
+                title: Text('Error'),
+                content:
+                    Text('Error getting latest Nightscout data from the API'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(alertDialogContext),
+                    child: Text('I understand that data won\'t be up to date'),
+                  ),
+                ],
+              );
+            },
+          );
 
-            context.pushNamed(
-              'Main',
-              queryParams: {
-                'mmolList': serializeParam(
-                  functions.sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
-                    (apiResult?.jsonBody ?? ''),
-                  ).toList()),
-                  ParamType.double,
-                  true,
-                ),
-                'latestMmol': serializeParam(
-                  functions.sgvListToMmolDouble(GetBloodGlucoseCall.sgv(
-                    (apiResult?.jsonBody ?? ''),
-                  ).toList()),
-                  ParamType.double,
-                ),
-                'dateStringList': serializeParam(
-                  (GetBloodGlucoseCall.dateString(
-                    (apiResult?.jsonBody ?? ''),
-                  ) as List)
-                      .map<String>((s) => s.toString())
-                      .toList(),
-                  ParamType.String,
-                  true,
-                ),
-              }.withoutNulls,
-            );
-
-            return;
-          } else {
-            logFirebaseEvent('redirect_haptic_feedback');
-            HapticFeedback.vibrate();
-            logFirebaseEvent('redirect_alert_dialog');
-            await showDialog(
+          context.pushNamed('Main');
+        }
+      } else {
+        var confirmDialogResponse = await showDialog<bool>(
               context: context,
               builder: (alertDialogContext) {
                 return AlertDialog(
-                  title: Text('Error'),
-                  content: Text('Error getting Nightscout data'),
+                  title: Text('Nightscout details required'),
+                  content: Text(
+                      'Please enter your Nightscout details on the next screen to proceed'),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext),
-                      child:
-                          Text('I understand that data won\'t be up to date'),
+                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                      child: Text('Back'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                      child: Text('OK'),
                     ),
                   ],
                 );
               },
-            );
-            logFirebaseEvent('redirect_navigate_to');
-
-            context.pushNamed('Main');
-
-            return;
-          }
+            ) ??
+            false;
+        if (confirmDialogResponse) {
+          context.pushNamed('Settings');
         } else {
-          logFirebaseEvent('redirect_alert_dialog');
-          var confirmDialogResponse = await showDialog<bool>(
-                context: context,
-                builder: (alertDialogContext) {
-                  return AlertDialog(
-                    title: Text('Nightscout details required'),
-                    content: Text(
-                        'Please enter your Nightscout details on the next screen to proceed'),
-                    actions: [
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.pop(alertDialogContext, false),
-                        child: Text('Back'),
-                      ),
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.pop(alertDialogContext, true),
-                        child: Text('OK'),
-                      ),
-                    ],
-                  );
-                },
-              ) ??
-              false;
-          if (confirmDialogResponse) {
-            logFirebaseEvent('redirect_navigate_to');
-
-            context.pushNamed('Settings');
-
-            return;
-          } else {
-            logFirebaseEvent('redirect_navigate_to');
-
-            context.pushNamed('loginPage');
-
-            return;
-          }
+          context.pushNamed('loginPage');
         }
-      } else {
-        logFirebaseEvent('redirect_alert_dialog');
-        await showDialog(
-          context: context,
-          builder: (alertDialogContext) {
-            return AlertDialog(
-              title: Text('Please login'),
-              content: Text('Please login on the next screen'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(alertDialogContext),
-                  child: Text('Ok'),
-                ),
-              ],
-            );
-          },
-        );
-        logFirebaseEvent('redirect_navigate_to');
-
-        context.pushNamed('loginPage');
-
-        return;
       }
     });
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'redirect'});
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
           !anim.applyInitialState),
       this,
     );
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      animationsMap['containerOnPageLoadAnimation']!
-          .controller
-          .forward(from: 0.0);
-    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -574,7 +421,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                                 children: [
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        12, 0, 0, 0),
+                                        12, 0, 2, 0),
                                     child: Text(
                                       'Hey there',
                                       style: FlutterFlowTheme.of(context)
@@ -647,76 +494,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
                                         ),
                                         alignment: AlignmentDirectional(0, 0),
                                         child: Icon(
-                                          Icons.login_rounded,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 12, 0),
-                                      child: Text(
-                                        'Logging you in',
-                                        style: FlutterFlowTheme.of(context)
-                                            .subtitle1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                                  .animateOnPageLoad(animationsMap[
-                                      'containerOnPageLoadAnimation']!)
-                                  .animateOnActionTrigger(
-                                    animationsMap[
-                                        'containerOnActionTriggerAnimation4']!,
-                                  ),
-                            ),
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16, 16, 16, 16),
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 4,
-                                      color: Color(0x34090F13),
-                                      offset: Offset(0, 2),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 12, 0),
-                                      child: Container(
-                                        width: 36,
-                                        height: 36,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        alignment: AlignmentDirectional(0, 0),
-                                        child: Icon(
                                           Icons.security_rounded,
                                           color: Colors.white,
                                           size: 20,
@@ -742,7 +519,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                                 ),
                               ).animateOnActionTrigger(
                                 animationsMap[
-                                    'containerOnActionTriggerAnimation5']!,
+                                    'containerOnActionTriggerAnimation4']!,
                               ),
                             ),
                           ),
@@ -809,7 +586,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                                 ),
                               ).animateOnActionTrigger(
                                 animationsMap[
-                                    'containerOnActionTriggerAnimation6']!,
+                                    'containerOnActionTriggerAnimation5']!,
                               ),
                             ),
                           ),

@@ -39,7 +39,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         text: valueOrDefault(currentUserDocument?.nightscout, ''));
     tokenController = TextEditingController(
         text: valueOrDefault(currentUserDocument?.token, ''));
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Settings'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -88,9 +87,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           size: 30,
                         ),
                         onPressed: () async {
-                          logFirebaseEvent(
-                              'SETTINGS_PAGE_close_rounded_ICN_ON_TAP');
-                          logFirebaseEvent('IconButton_navigate_back');
                           context.pop();
                         },
                       ),
@@ -458,11 +454,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                           setState(
                                               () => checkboxValue = newValue!);
                                           if (newValue!) {
-                                            logFirebaseEvent(
-                                                'SETTINGS_Checkbox_ie4x7fdp_ON_TOGGLE_ON');
                                             var _shouldSetState = false;
-                                            logFirebaseEvent(
-                                                'Checkbox_biometric_verification');
                                             final _localAuth =
                                                 LocalAuthentication();
                                             bool _isBiometricSupported =
@@ -479,14 +471,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
 
                                             _shouldSetState = true;
                                             if (bioUpdate!) {
-                                              logFirebaseEvent(
-                                                  'Checkbox_update_local_state');
                                               setState(() {
                                                 FFAppState().useBio = true;
                                               });
                                             } else {
-                                              logFirebaseEvent(
-                                                  'Checkbox_show_snack_bar');
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 SnackBar(
@@ -513,10 +501,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                             if (_shouldSetState)
                                               setState(() {});
                                           } else {
-                                            logFirebaseEvent(
-                                                'SETTINGS_Checkbox_ie4x7fdp_ON_TOGGLE_OFF');
-                                            logFirebaseEvent(
-                                                'Checkbox_update_local_state');
                                             setState(() {
                                               FFAppState()
                                                   .deleteRememberedPass();
@@ -552,11 +536,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     0, 24, 0, 24),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    logFirebaseEvent(
-                                        'SETTINGS_PAGE_ButtonSaveChanges_ON_TAP');
-                                    logFirebaseEvent(
-                                        'ButtonSaveChanges_backend_call');
-
                                     final usersUpdateData =
                                         createUsersRecordData(
                                       token: tokenController!.text,
@@ -566,8 +545,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     );
                                     await currentUserReference!
                                         .update(usersUpdateData);
-                                    logFirebaseEvent(
-                                        'ButtonSaveChanges_show_snack_bar');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
@@ -581,8 +558,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                         backgroundColor: Color(0x00000000),
                                       ),
                                     );
-                                    logFirebaseEvent(
-                                        'ButtonSaveChanges_navigate_to');
 
                                     context.pushNamed('Main');
                                   },
@@ -615,10 +590,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     0, 24, 0, 24),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    logFirebaseEvent(
-                                        'SETTINGS_PAGE_ButtonSaveChanges_ON_TAP');
-                                    logFirebaseEvent(
-                                        'ButtonSaveChanges_update_local_state');
                                     setState(() {
                                       FFAppState().deleteRememberedPass();
                                       FFAppState().rememberedPass = '';
@@ -629,7 +600,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       FFAppState().deleteUseBio();
                                       FFAppState().useBio = false;
                                     });
-                                    logFirebaseEvent('ButtonSaveChanges_auth');
                                     GoRouter.of(context).prepareAuthEvent();
                                     await signOut();
 

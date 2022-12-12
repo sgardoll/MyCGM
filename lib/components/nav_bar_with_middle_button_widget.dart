@@ -141,10 +141,6 @@ class _NavBarWithMiddleButtonWidgetState
                               size: 24,
                             ),
                             onPressed: () async {
-                              logFirebaseEvent(
-                                  'NAV_BAR_WITH_MIDDLE_BUTTON_home_rounded_');
-                              logFirebaseEvent('IconButton_navigate_to');
-
                               context.pushNamed('Main');
                             },
                           ),
@@ -197,10 +193,6 @@ class _NavBarWithMiddleButtonWidgetState
                               size: 24,
                             ),
                             onPressed: () async {
-                              logFirebaseEvent(
-                                  'NAV_BAR_WITH_MIDDLE_BUTTON_settings_ICN_');
-                              logFirebaseEvent('IconButton_navigate_to');
-
                               context.pushNamed('Settings');
                             },
                           ),

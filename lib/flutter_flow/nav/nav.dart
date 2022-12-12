@@ -85,6 +85,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'redirect',
               path: 'redirect',
+              requireAuth: true,
               builder: (context, params) => RedirectWidget(),
             ),
             FFRoute(

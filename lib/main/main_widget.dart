@@ -112,7 +112,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       this,
     );
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Main'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -550,9 +549,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 size: 25,
                               ),
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'MAIN_PAGE_AddOptiButton_ON_TAP');
-                                logFirebaseEvent('AddOptiButton_bottom_sheet');
                                 showModalBottomSheet(
                                   isScrollControlled: true,
                                   backgroundColor: Colors.transparent,
@@ -614,9 +610,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 size: 25,
                               ),
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'MAIN_PAGE_AddNovoButton_ON_TAP');
-                                logFirebaseEvent('AddNovoButton_bottom_sheet');
                                 showModalBottomSheet(
                                   isScrollControlled: true,
                                   backgroundColor: Colors.transparent,

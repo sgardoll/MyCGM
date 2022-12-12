@@ -127,13 +127,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      logFirebaseEvent('LOGIN_PAGE_PAGE_loginPage_ON_PAGE_LOAD');
       Function() _navigate = () {};
       if ((FFAppState().rememberedPass != null &&
               FFAppState().rememberedPass != '') &&
           (FFAppState().rememberedUser != null &&
               FFAppState().rememberedUser != '')) {
-        logFirebaseEvent('loginPage_auth');
         GoRouter.of(context).prepareAuthEvent();
 
         final user = await signInWithEmail(
@@ -146,7 +144,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
         }
 
         _navigate = () => context.goNamedAuth('redirect', mounted);
-        logFirebaseEvent('loginPage_biometric_verification');
         final _localAuth = LocalAuthentication();
         bool _isBiometricSupported = await _localAuth.isDeviceSupported();
 
@@ -160,7 +157,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       _navigate();
     });
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
     displayNameController = TextEditingController();
     emailAddressCreateController = TextEditingController();
     passwordCreateController = TextEditingController();
@@ -469,7 +465,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedBorder:
                                                                           OutlineInputBorder(
@@ -481,7 +477,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       errorBorder:
                                                                           OutlineInputBorder(
@@ -493,7 +489,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedErrorBorder:
                                                                           OutlineInputBorder(
@@ -505,7 +501,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       filled:
                                                                           true,
@@ -530,315 +526,103 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           24,
-                                                                          12,
                                                                           24,
-                                                                          0),
-                                                                  child:
-                                                                      TextFormField(
-                                                                    controller:
-                                                                        passwordController,
-                                                                    obscureText:
-                                                                        !passwordVisibility,
-                                                                    decoration:
-                                                                        InputDecoration(
-                                                                      labelText:
-                                                                          'Password',
-                                                                      labelStyle:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyText2,
-                                                                      hintStyle:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyText2,
-                                                                      enabledBorder:
-                                                                          OutlineInputBorder(
-                                                                        borderSide:
-                                                                            BorderSide(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).lineColor,
-                                                                          width:
-                                                                              1,
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(24),
-                                                                      ),
-                                                                      focusedBorder:
-                                                                          OutlineInputBorder(
-                                                                        borderSide:
-                                                                            BorderSide(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).lineColor,
-                                                                          width:
-                                                                              1,
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(24),
-                                                                      ),
-                                                                      errorBorder:
-                                                                          OutlineInputBorder(
-                                                                        borderSide:
-                                                                            BorderSide(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryColor,
-                                                                          width:
-                                                                              1,
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(24),
-                                                                      ),
-                                                                      focusedErrorBorder:
-                                                                          OutlineInputBorder(
-                                                                        borderSide:
-                                                                            BorderSide(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryColor,
-                                                                          width:
-                                                                              1,
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(24),
-                                                                      ),
-                                                                      filled:
-                                                                          true,
-                                                                      fillColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .primaryBackground,
-                                                                      contentPadding:
-                                                                          EdgeInsetsDirectional.fromSTEB(
-                                                                              20,
-                                                                              24,
-                                                                              20,
-                                                                              24),
-                                                                      suffixIcon:
-                                                                          InkWell(
-                                                                        onTap: () =>
-                                                                            setState(
-                                                                          () => passwordVisibility =
-                                                                              !passwordVisibility,
-                                                                        ),
-                                                                        focusNode:
-                                                                            FocusNode(skipTraversal: true),
-                                                                        child:
-                                                                            Icon(
-                                                                          passwordVisibility
-                                                                              ? Icons.visibility_outlined
-                                                                              : Icons.visibility_off_outlined,
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryText,
-                                                                          size:
-                                                                              20,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyText1,
-                                                                  ),
-                                                                ),
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              0,
-                                                                              12,
-                                                                              12,
-                                                                              0),
-                                                                      child:
-                                                                          Theme(
-                                                                        data:
-                                                                            ThemeData(
-                                                                          checkboxTheme:
-                                                                              CheckboxThemeData(
-                                                                            shape:
-                                                                                CircleBorder(),
-                                                                          ),
-                                                                          unselectedWidgetColor:
-                                                                              Color(0xFFF5F5F5),
-                                                                        ),
-                                                                        child:
-                                                                            Checkbox(
-                                                                          value: checkboxValue ??=
-                                                                              true,
-                                                                          onChanged:
-                                                                              (newValue) async {
-                                                                            setState(() =>
-                                                                                checkboxValue = newValue!);
-                                                                            if (newValue!) {
-                                                                              logFirebaseEvent('LOGIN_Checkbox_aco6hpkq_ON_TOGGLE_ON');
-                                                                              logFirebaseEvent('Checkbox_update_local_state');
-                                                                              setState(() {
-                                                                                FFAppState().rememberedUser = emailAddressController!.text;
-                                                                                FFAppState().rememberedPass = passwordController!.text;
-                                                                              });
-                                                                              if (FFAppState().useBio == null) {
-                                                                                logFirebaseEvent('Checkbox_alert_dialog');
-                                                                                var confirmDialogResponse = await showDialog<bool>(
-                                                                                      context: context,
-                                                                                      builder: (alertDialogContext) {
-                                                                                        return AlertDialog(
-                                                                                          title: Text('Biometric Login'),
-                                                                                          content: Text('Use Biometric Login In Future?'),
-                                                                                          actions: [
-                                                                                            TextButton(
-                                                                                              onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                              child: Text('No'),
-                                                                                            ),
-                                                                                            TextButton(
-                                                                                              onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                              child: Text('Yes'),
-                                                                                            ),
-                                                                                          ],
-                                                                                        );
-                                                                                      },
-                                                                                    ) ??
-                                                                                    false;
-                                                                                if (confirmDialogResponse) {
-                                                                                  logFirebaseEvent('Checkbox_update_local_state');
-                                                                                  setState(() {
-                                                                                    FFAppState().useBio = true;
-                                                                                  });
-                                                                                } else {
-                                                                                  logFirebaseEvent('Checkbox_update_local_state');
-                                                                                  setState(() {
-                                                                                    FFAppState().useBio = false;
-                                                                                  });
-                                                                                }
-                                                                              }
-                                                                            } else {
-                                                                              logFirebaseEvent('LOGIN_Checkbox_aco6hpkq_ON_TOGGLE_OFF');
-                                                                              logFirebaseEvent('Checkbox_update_local_state');
-                                                                              setState(() {
-                                                                                FFAppState().deleteRememberedPass();
-                                                                                FFAppState().rememberedPass = '';
-
-                                                                                FFAppState().deleteRememberedUser();
-                                                                                FFAppState().rememberedUser = '';
-                                                                              });
-                                                                            }
-                                                                          },
-                                                                          activeColor:
-                                                                              FlutterFlowTheme.of(context).secondaryText,
-                                                                          checkColor:
-                                                                              FlutterFlowTheme.of(context).primaryText,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              0,
-                                                                              12,
-                                                                              0,
-                                                                              0),
-                                                                      child:
-                                                                          Text(
-                                                                        'Remember me',
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText2,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
                                                                           24,
-                                                                          16,
-                                                                          24,
-                                                                          0),
-                                                                  child: Wrap(
-                                                                    spacing: 24,
-                                                                    runSpacing:
-                                                                        8,
-                                                                    alignment:
-                                                                        WrapAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        WrapCrossAlignment
-                                                                            .center,
-                                                                    direction: Axis
-                                                                        .horizontal,
-                                                                    runAlignment:
-                                                                        WrapAlignment
-                                                                            .center,
-                                                                    verticalDirection:
-                                                                        VerticalDirection
-                                                                            .down,
-                                                                    clipBehavior:
-                                                                        Clip.none,
+                                                                          12),
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     children: [
-                                                                      FFButtonWidget(
-                                                                        onPressed:
-                                                                            () {
-                                                                          print(
-                                                                              'Button-ForgotPassword pressed ...');
-                                                                        },
-                                                                        text:
-                                                                            'Forgot Password?',
-                                                                        options:
-                                                                            FFButtonOptions(
-                                                                          width:
-                                                                              140,
-                                                                          height:
-                                                                              40,
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          textStyle: FlutterFlowTheme.of(context)
-                                                                              .bodyText2
-                                                                              .override(
-                                                                                fontFamily: 'Poppins',
-                                                                                fontSize: 12,
-                                                                              ),
-                                                                          elevation:
+                                                                      Expanded(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
                                                                               0,
-                                                                          borderSide:
-                                                                              BorderSide(
-                                                                            color:
-                                                                                Colors.transparent,
-                                                                            width:
-                                                                                1,
+                                                                              0,
+                                                                              12,
+                                                                              0),
+                                                                          child:
+                                                                              TextFormField(
+                                                                            controller:
+                                                                                passwordController,
+                                                                            obscureText:
+                                                                                !passwordVisibility,
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              labelText: 'Password',
+                                                                              labelStyle: FlutterFlowTheme.of(context).bodyText2,
+                                                                              hintStyle: FlutterFlowTheme.of(context).bodyText2,
+                                                                              enabledBorder: OutlineInputBorder(
+                                                                                borderSide: BorderSide(
+                                                                                  color: FlutterFlowTheme.of(context).lineColor,
+                                                                                  width: 1,
+                                                                                ),
+                                                                                borderRadius: BorderRadius.circular(60),
+                                                                              ),
+                                                                              focusedBorder: OutlineInputBorder(
+                                                                                borderSide: BorderSide(
+                                                                                  color: FlutterFlowTheme.of(context).lineColor,
+                                                                                  width: 1,
+                                                                                ),
+                                                                                borderRadius: BorderRadius.circular(60),
+                                                                              ),
+                                                                              errorBorder: OutlineInputBorder(
+                                                                                borderSide: BorderSide(
+                                                                                  color: FlutterFlowTheme.of(context).primaryColor,
+                                                                                  width: 1,
+                                                                                ),
+                                                                                borderRadius: BorderRadius.circular(60),
+                                                                              ),
+                                                                              focusedErrorBorder: OutlineInputBorder(
+                                                                                borderSide: BorderSide(
+                                                                                  color: FlutterFlowTheme.of(context).primaryColor,
+                                                                                  width: 1,
+                                                                                ),
+                                                                                borderRadius: BorderRadius.circular(60),
+                                                                              ),
+                                                                              filled: true,
+                                                                              fillColor: FlutterFlowTheme.of(context).primaryBackground,
+                                                                              contentPadding: EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                                                                              suffixIcon: InkWell(
+                                                                                onTap: () => setState(
+                                                                                  () => passwordVisibility = !passwordVisibility,
+                                                                                ),
+                                                                                focusNode: FocusNode(skipTraversal: true),
+                                                                                child: Icon(
+                                                                                  passwordVisibility ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                  size: 20,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            style:
+                                                                                FlutterFlowTheme.of(context).bodyText1,
                                                                           ),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(50),
                                                                         ),
                                                                       ),
                                                                       FFButtonWidget(
                                                                         onPressed:
                                                                             () async {
-                                                                          logFirebaseEvent(
-                                                                              'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
-                                                                          logFirebaseEvent(
-                                                                              'Button-Login_widget_animation');
                                                                           if (animationsMap['containerOnActionTriggerAnimation1'] !=
                                                                               null) {
                                                                             animationsMap['containerOnActionTriggerAnimation1']!.controller.forward(from: 0.0);
                                                                           }
-                                                                          logFirebaseEvent(
-                                                                              'Button-Login_widget_animation');
                                                                           if (animationsMap['containerOnActionTriggerAnimation2'] !=
                                                                               null) {
                                                                             animationsMap['containerOnActionTriggerAnimation2']!.controller.forward(from: 0.0);
                                                                           }
-                                                                          logFirebaseEvent(
-                                                                              'Button-Login_widget_animation');
                                                                           if (animationsMap['containerOnActionTriggerAnimation3'] !=
                                                                               null) {
                                                                             animationsMap['containerOnActionTriggerAnimation3']!.controller.forward(from: 0.0);
                                                                           }
-                                                                          logFirebaseEvent(
-                                                                              'Button-Login_widget_animation');
                                                                           if (animationsMap['tabBarOnActionTriggerAnimation'] !=
                                                                               null) {
                                                                             animationsMap['tabBarOnActionTriggerAnimation']!.controller.forward(from: 0.0);
                                                                           }
-                                                                          logFirebaseEvent(
-                                                                              'Button-Login_auth');
                                                                           GoRouter.of(context)
                                                                               .prepareAuthEvent();
 
@@ -853,8 +637,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                             return;
                                                                           }
 
-                                                                          logFirebaseEvent(
-                                                                              'Button-Login_navigate_to');
                                                                           if (Navigator.of(context)
                                                                               .canPop()) {
                                                                             context.pop();
@@ -900,6 +682,148 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           ),
                                                                           borderRadius:
                                                                               BorderRadius.circular(60),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          12,
+                                                                          0,
+                                                                          0),
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0,
+                                                                            0,
+                                                                            6,
+                                                                            0),
+                                                                        child:
+                                                                            Theme(
+                                                                          data:
+                                                                              ThemeData(
+                                                                            checkboxTheme:
+                                                                                CheckboxThemeData(
+                                                                              shape: CircleBorder(),
+                                                                            ),
+                                                                            unselectedWidgetColor:
+                                                                                Color(0xFFF5F5F5),
+                                                                          ),
+                                                                          child:
+                                                                              Checkbox(
+                                                                            value: checkboxValue ??=
+                                                                                true,
+                                                                            onChanged:
+                                                                                (newValue) async {
+                                                                              setState(() => checkboxValue = newValue!);
+                                                                              if (newValue!) {
+                                                                                setState(() {
+                                                                                  FFAppState().rememberedUser = emailAddressController!.text;
+                                                                                  FFAppState().rememberedPass = passwordController!.text;
+                                                                                });
+                                                                                if (FFAppState().useBio == null) {
+                                                                                  var confirmDialogResponse = await showDialog<bool>(
+                                                                                        context: context,
+                                                                                        builder: (alertDialogContext) {
+                                                                                          return AlertDialog(
+                                                                                            title: Text('Biometric Login'),
+                                                                                            content: Text('Use Biometric Login In Future?'),
+                                                                                            actions: [
+                                                                                              TextButton(
+                                                                                                onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                                child: Text('No'),
+                                                                                              ),
+                                                                                              TextButton(
+                                                                                                onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                                child: Text('Yes'),
+                                                                                              ),
+                                                                                            ],
+                                                                                          );
+                                                                                        },
+                                                                                      ) ??
+                                                                                      false;
+                                                                                  if (confirmDialogResponse) {
+                                                                                    setState(() {
+                                                                                      FFAppState().useBio = true;
+                                                                                    });
+                                                                                  } else {
+                                                                                    setState(() {
+                                                                                      FFAppState().useBio = false;
+                                                                                    });
+                                                                                  }
+                                                                                }
+                                                                              } else {
+                                                                                setState(() {
+                                                                                  FFAppState().deleteRememberedPass();
+                                                                                  FFAppState().rememberedPass = '';
+
+                                                                                  FFAppState().deleteRememberedUser();
+                                                                                  FFAppState().rememberedUser = '';
+                                                                                });
+                                                                              }
+                                                                            },
+                                                                            activeColor:
+                                                                                FlutterFlowTheme.of(context).secondaryText,
+                                                                            checkColor:
+                                                                                FlutterFlowTheme.of(context).primaryText,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                                                            0,
+                                                                            0,
+                                                                            24,
+                                                                            0),
+                                                                        child:
+                                                                            Text(
+                                                                          'Remember me',
+                                                                          style:
+                                                                              FlutterFlowTheme.of(context).bodyText2,
+                                                                        ),
+                                                                      ),
+                                                                      FFButtonWidget(
+                                                                        onPressed:
+                                                                            () {
+                                                                          print(
+                                                                              'Button-ForgotPassword pressed ...');
+                                                                        },
+                                                                        text:
+                                                                            'Forgot Password?',
+                                                                        options:
+                                                                            FFButtonOptions(
+                                                                          width:
+                                                                              140,
+                                                                          height:
+                                                                              40,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryColor,
+                                                                          textStyle:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                12,
+                                                                          ),
+                                                                          elevation:
+                                                                              0,
+                                                                          borderSide:
+                                                                              BorderSide(
+                                                                            color:
+                                                                                Colors.transparent,
+                                                                            width:
+                                                                                1,
+                                                                          ),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(50),
                                                                         ),
                                                                       ),
                                                                     ],
@@ -977,8 +901,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           ),
                                                                           onPressed:
                                                                               () async {
-                                                                            logFirebaseEvent('LOGIN_PAGE_PAGE_google_ICN_ON_TAP');
-                                                                            logFirebaseEvent('IconButton_auth');
                                                                             GoRouter.of(context).prepareAuthEvent();
                                                                             final user =
                                                                                 await signInWithGoogle(context);
@@ -988,11 +910,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                             }
                                                                             if (loggedIn ==
                                                                                 true) {
-                                                                              logFirebaseEvent('IconButton_navigate_to');
-
                                                                               context.pushNamedAuth('redirect', mounted);
                                                                             } else {
-                                                                              logFirebaseEvent('IconButton_show_snack_bar');
                                                                               ScaffoldMessenger.of(context).showSnackBar(
                                                                                 SnackBar(
                                                                                   content: Text(
@@ -1036,8 +955,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           ),
                                                                           onPressed:
                                                                               () async {
-                                                                            logFirebaseEvent('LOGIN_PAGE_PAGE_apple_ICN_ON_TAP');
-                                                                            logFirebaseEvent('IconButton_auth');
                                                                             GoRouter.of(context).prepareAuthEvent();
                                                                             final user =
                                                                                 await signInWithApple(context);
@@ -1067,7 +984,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           24,
-                                                                          20,
+                                                                          24,
                                                                           24,
                                                                           0),
                                                                   child:
@@ -1098,7 +1015,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedBorder:
                                                                           OutlineInputBorder(
@@ -1110,7 +1027,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       errorBorder:
                                                                           OutlineInputBorder(
@@ -1122,7 +1039,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedErrorBorder:
                                                                           OutlineInputBorder(
@@ -1134,7 +1051,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       filled:
                                                                           true,
@@ -1159,7 +1076,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           24,
-                                                                          20,
+                                                                          24,
                                                                           24,
                                                                           0),
                                                                   child:
@@ -1190,7 +1107,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedBorder:
                                                                           OutlineInputBorder(
@@ -1202,7 +1119,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       errorBorder:
                                                                           OutlineInputBorder(
@@ -1214,7 +1131,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedErrorBorder:
                                                                           OutlineInputBorder(
@@ -1226,7 +1143,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       filled:
                                                                           true,
@@ -1251,7 +1168,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           24,
-                                                                          12,
+                                                                          24,
                                                                           24,
                                                                           0),
                                                                   child:
@@ -1282,7 +1199,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedBorder:
                                                                           OutlineInputBorder(
@@ -1294,7 +1211,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       errorBorder:
                                                                           OutlineInputBorder(
@@ -1306,7 +1223,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedErrorBorder:
                                                                           OutlineInputBorder(
@@ -1318,7 +1235,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       filled:
                                                                           true,
@@ -1361,7 +1278,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           24,
-                                                                          12,
+                                                                          24,
                                                                           24,
                                                                           0),
                                                                   child:
@@ -1392,7 +1309,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedBorder:
                                                                           OutlineInputBorder(
@@ -1404,7 +1321,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       errorBorder:
                                                                           OutlineInputBorder(
@@ -1416,7 +1333,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       focusedErrorBorder:
                                                                           OutlineInputBorder(
@@ -1428,7 +1345,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               1,
                                                                         ),
                                                                         borderRadius:
-                                                                            BorderRadius.circular(24),
+                                                                            BorderRadius.circular(60),
                                                                       ),
                                                                       filled:
                                                                           true,
@@ -1471,20 +1388,16 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0,
-                                                                          16,
+                                                                          24,
                                                                           0,
                                                                           0),
                                                                   child:
                                                                       FFButtonWidget(
                                                                     onPressed:
                                                                         () async {
-                                                                      logFirebaseEvent(
-                                                                          'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
                                                                       Function()
                                                                           _navigate =
                                                                           () {};
-                                                                      logFirebaseEvent(
-                                                                          'Button-Login_auth');
                                                                       GoRouter.of(
                                                                               context)
                                                                           .prepareAuthEvent();
@@ -1536,8 +1449,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       _navigate = () => context.goNamedAuth(
                                                                           'redirect',
                                                                           mounted);
-                                                                      logFirebaseEvent(
-                                                                          'Button-Login_alert_dialog');
                                                                       var confirmDialogResponse = await showDialog<
                                                                               bool>(
                                                                             context:
@@ -1562,16 +1473,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           ) ??
                                                                           false;
                                                                       if (confirmDialogResponse) {
-                                                                        logFirebaseEvent(
-                                                                            'Button-Login_update_local_state');
                                                                         setState(
                                                                             () {
                                                                           FFAppState().useBio =
                                                                               true;
                                                                         });
                                                                       } else {
-                                                                        logFirebaseEvent(
-                                                                            'Button-Login_update_local_state');
                                                                         setState(
                                                                             () {
                                                                           FFAppState().useBio =

@@ -39,6 +39,8 @@ class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      widget.index =
+          _selectedIndex; // Update the index of the CurvedNavigationBar widget
     });
   }
 
@@ -56,13 +58,18 @@ class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
             Navigator.pushNamed(context, 'Settings');
           },
         ),
-
         Icon(Icons.refresh, size: 30),
         //Icon(Icons.add_circle_rounded, size: 60),
         // Add an onTap callback to the add_circle_rounded icon
-        Icon(Icons.add_circle_rounded, size: 60),
+        IconButton(
+          icon: Icon(Icons.add_circle_rounded, size: 60),
+          onPressed: () {
+            Navigator.pushNamed(context, 'Main');
+          },
+        ),
       ],
       onTap: _onItemTapped,
+      letIndexChange: (index) => true,
     );
   }
 }
