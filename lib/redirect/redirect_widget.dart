@@ -166,12 +166,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         .controller
                         .reverse));
       }
-      // NIGHTSCOUT FLOW
-      if (animationsMap['containerOnActionTriggerAnimation4'] != null) {
-        animationsMap['containerOnActionTriggerAnimation4']!
-            .controller
-            .forward(from: 0.0);
-      }
       if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
               valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
           (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
@@ -180,36 +174,48 @@ class _RedirectWidgetState extends State<RedirectWidget>
               valueOrDefault(currentUserDocument?.units, '') != '') &&
           (valueOrDefault(currentUserDocument?.token, '') != null &&
               valueOrDefault(currentUserDocument?.token, '') != '')) {
-        if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
-          animationsMap['containerOnActionTriggerAnimation5']!
+        if (animationsMap['containerOnActionTriggerAnimation4'] != null) {
+          animationsMap['containerOnActionTriggerAnimation4']!
               .controller
               .forward(from: 0.0);
         }
         apiResult = await GetBloodGlucoseCall.call(
-          apiKey: FFAppState().apiKey,
-          nightscout: FFAppState().nightscout,
-          token: FFAppState().token,
+          apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
+          nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
+          token: valueOrDefault(currentUserDocument?.token, ''),
         );
-        if ((apiResult?.jsonBody ?? '')) {
+        if ((apiResult?.succeeded ?? true)) {
+          setState(() {
+            FFAppState().apiJSON = getJsonField(
+              (apiResult?.jsonBody ?? ''),
+              r'''$''',
+            );
+            FFAppState().latestMmol =
+                functions.sgvListToMmolDouble(getJsonField(
+              FFAppState().apiJSON,
+              r'''$.sgv''',
+            ))!;
+          });
+
           context.pushNamed(
             'Main',
             queryParams: {
               'mmolList': serializeParam(
-                functions.sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
-                  (apiResult?.jsonBody ?? ''),
-                ).toList()),
+                getJsonField(
+                  FFAppState().apiJSON,
+                  r'''$.sgv''',
+                ),
                 ParamType.double,
                 true,
               ),
               'latestMmol': serializeParam(
-                functions.sgvListToMmolDouble(GetBloodGlucoseCall.sgv(
-                  (apiResult?.jsonBody ?? ''),
-                ).toList()),
+                FFAppState().latestMmol,
                 ParamType.double,
               ),
-              'dateStringList': serializeParam(
-                (GetBloodGlucoseCall.dateString(
-                  (apiResult?.jsonBody ?? ''),
+              'dateString': serializeParam(
+                (getJsonField(
+                  FFAppState().apiJSON,
+                  r'''$.dateString''',
                 ) as List)
                     .map<String>((s) => s.toString())
                     .toList(),
@@ -289,312 +295,326 @@ class _RedirectWidgetState extends State<RedirectWidget>
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          body: SafeArea(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 1,
-                child: Stack(
-                  children: [
-                    ClipRect(
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(
-                          sigmaX: 40,
-                          sigmaY: 40,
-                        ),
-                        child: Stack(
-                          children: [
-                            if (responsiveVisibility(
-                              context: context,
-                              tabletLandscape: false,
-                              desktop: false,
-                            ))
-                              Align(
-                                alignment: AlignmentDirectional(2.5, -1.2),
-                                child: Container(
-                                  width: 300,
-                                  height: 300,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ).animateOnActionTrigger(
-                                    animationsMap[
-                                        'containerOnActionTriggerAnimation1']!,
-                                    hasBeenTriggered: hasContainerTriggered1),
-                              ),
+          body: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Container(
+              width: double.infinity,
+              child: Stack(
+                children: [
+                  ClipRect(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(
+                        sigmaX: 40,
+                        sigmaY: 40,
+                      ),
+                      child: Stack(
+                        children: [
+                          if (responsiveVisibility(
+                            context: context,
+                            tabletLandscape: false,
+                            desktop: false,
+                          ))
                             Align(
-                              alignment: AlignmentDirectional(1, -1.4),
+                              alignment: AlignmentDirectional(2.5, -1.2),
                               child: Container(
-                                width: 500,
-                                height: 500,
+                                width: 300,
+                                height: 300,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
-                                      .tertiaryColor,
+                                      .secondaryColor,
                                   shape: BoxShape.circle,
                                 ),
                               ).animateOnActionTrigger(
                                   animationsMap[
-                                      'containerOnActionTriggerAnimation2']!,
-                                  hasBeenTriggered: hasContainerTriggered2),
+                                      'containerOnActionTriggerAnimation1']!,
+                                  hasBeenTriggered: hasContainerTriggered1),
                             ),
-                            if (responsiveVisibility(
-                              context: context,
-                              tabletLandscape: false,
-                              desktop: false,
-                            ))
-                              Align(
-                                alignment: AlignmentDirectional(-1, -1.5),
-                                child: Container(
-                                  width: 350,
-                                  height: 350,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ).animateOnActionTrigger(
-                                    animationsMap[
-                                        'containerOnActionTriggerAnimation3']!,
-                                    hasBeenTriggered: hasContainerTriggered3),
+                          Align(
+                            alignment: AlignmentDirectional(1, -1.4),
+                            child: Container(
+                              width: 500,
+                              height: 500,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                shape: BoxShape.circle,
                               ),
-                          ],
-                        ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation2']!,
+                                hasBeenTriggered: hasContainerTriggered2),
+                          ),
+                          if (responsiveVisibility(
+                            context: context,
+                            tabletLandscape: false,
+                            desktop: false,
+                          ))
+                            Align(
+                              alignment: AlignmentDirectional(-1, -1.5),
+                              child: Container(
+                                width: 350,
+                                height: 350,
+                                decoration: BoxDecoration(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ).animateOnActionTrigger(
+                                  animationsMap[
+                                      'containerOnActionTriggerAnimation3']!,
+                                  hasBeenTriggered: hasContainerTriggered3),
+                            ),
+                        ],
                       ),
                     ),
-                    ClipRect(
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(
-                          sigmaX: 12,
-                          sigmaY: 12,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 64, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/Heart-White-50.png',
-                                width:
-                                    MediaQuery.of(context).size.width * 0.339,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                fit: BoxFit.contain,
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 64, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
+                            child: ClipRect(
+                              child: ImageFiltered(
+                                imageFilter: ImageFilter.blur(
+                                  sigmaX: 12,
+                                  sigmaY: 12,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      30, 30, 30, 30),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.asset(
+                                      'assets/images/Heart-White-50.png',
+                                      width: MediaQuery.of(context).size.width *
+                                          0.184,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.192,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 64, 0, 0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 64, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.asset(
                             'assets/images/Heart-White-50.png',
                             width: MediaQuery.of(context).size.width * 0.3,
                             height: MediaQuery.of(context).size.height * 0.3,
                             fit: BoxFit.contain,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 400, 0, 0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 0, 16, 12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12, 0, 2, 0),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 100, 0, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional(0, 0),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(16, 0, 16, 12),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 2, 0),
+                                  child: Text(
+                                    'Hey there',
+                                    style: FlutterFlowTheme.of(context)
+                                        .title3
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryColor,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      2, 0, 12, 0),
+                                  child: AuthUserStreamWidget(
                                     child: Text(
-                                      'Hey there',
+                                      currentUserDisplayName,
                                       style: FlutterFlowTheme.of(context)
                                           .title3
                                           .override(
                                             fontFamily: 'Poppins',
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryColor,
+                                            color: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
                                   ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(0, 0),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .primaryBackground,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 4,
+                                    color: Color(0x34090F13),
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        2, 0, 12, 0),
-                                    child: AuthUserStreamWidget(
-                                      child: Text(
-                                        currentUserDisplayName,
-                                        style: FlutterFlowTheme.of(context)
-                                            .title3
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500,
-                                            ),
+                                        12, 0, 12, 0),
+                                    child: Container(
+                                      width: 36,
+                                      height: 36,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
+                                      alignment: AlignmentDirectional(0, 0),
+                                      child: Icon(
+                                        Icons.security_rounded,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 12, 0),
+                                    child: Text(
+                                      'Authenticating Nightscout',
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle1
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                     ),
                                   ),
                                 ],
                               ),
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation4']!,
                             ),
                           ),
-                          Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16, 16, 16, 16),
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 4,
-                                      color: Color(0x34090F13),
-                                      offset: Offset(0, 2),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 12, 0),
-                                      child: Container(
-                                        width: 36,
-                                        height: 36,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        alignment: AlignmentDirectional(0, 0),
-                                        child: Icon(
-                                          Icons.security_rounded,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 12, 0),
-                                      child: Text(
-                                        'Authenticating Nightscout',
-                                        style: FlutterFlowTheme.of(context)
-                                            .subtitle1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ).animateOnActionTrigger(
-                                animationsMap[
-                                    'containerOnActionTriggerAnimation4']!,
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(0, 0),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .primaryBackground,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 4,
+                                    color: Color(0x34090F13),
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                            ),
-                          ),
-                          Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  16, 16, 16, 16),
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 4,
-                                      color: Color(0x34090F13),
-                                      offset: Offset(0, 2),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 12, 0),
-                                      child: Container(
-                                        width: 36,
-                                        height: 36,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        alignment: AlignmentDirectional(0, 0),
-                                        child: Icon(
-                                          Icons.open_in_browser_outlined,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        12, 0, 12, 0),
+                                    child: Container(
+                                      width: 36,
+                                      height: 36,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      alignment: AlignmentDirectional(0, 0),
+                                      child: Icon(
+                                        Icons.open_in_browser_outlined,
+                                        color: Colors.white,
+                                        size: 20,
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 12, 0),
-                                      child: Text(
-                                        'Loading latest data',
-                                        style: FlutterFlowTheme.of(context)
-                                            .subtitle1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 12, 0),
+                                    child: Text(
+                                      'Loading latest data',
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle1
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                     ),
-                                  ],
-                                ),
-                              ).animateOnActionTrigger(
-                                animationsMap[
-                                    'containerOnActionTriggerAnimation5']!,
+                                  ),
+                                ],
                               ),
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation5']!,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

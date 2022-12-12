@@ -96,8 +96,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 mmolList:
                     params.getParam<double>('mmolList', ParamType.double, true),
                 latestMmol: params.getParam('latestMmol', ParamType.double),
-                dateStringList: params.getParam<String>(
-                    'dateStringList', ParamType.String, true),
+                dateString: params.getParam<String>(
+                    'dateString', ParamType.String, true),
               ),
             ),
             FFRoute(

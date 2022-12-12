@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+import 'package:my_c_g_m/index.dart';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class CurvedNavigationBarWidget extends StatefulWidget {
@@ -34,15 +36,13 @@ class CurvedNavigationBarWidget extends StatefulWidget {
 }
 
 class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
-  int _selectedIndex = 0;
+  int index = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      widget.index =
-          _selectedIndex; // Update the index of the CurvedNavigationBar widget
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //     widget.index = _selectedIndex;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,24 +51,43 @@ class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
       backgroundColor: widget.backgroundColor,
       buttonBackgroundColor: widget.buttonBackgroundColor,
       index: widget.index,
-      items: [
-        IconButton(
-          icon: Icon(Icons.settings, size: 30),
-          onPressed: () {
-            Navigator.pushNamed(context, 'Settings');
-          },
-        ),
+      items: <Widget>[
+        Icon(Icons.settings, size: 30),
         Icon(Icons.refresh, size: 30),
-        //Icon(Icons.add_circle_rounded, size: 60),
-        // Add an onTap callback to the add_circle_rounded icon
-        IconButton(
-          icon: Icon(Icons.add_circle_rounded, size: 60),
-          onPressed: () {
-            Navigator.pushNamed(context, 'Main');
-          },
-        ),
+        Icon(Icons.add_circle_rounded, size: 60),
       ],
-      onTap: _onItemTapped,
+      onTap: (index) {
+        setState(() {
+          widget.index = index;
+          // navigate to the same index as defined in lib/flutter_flow/nav/nav.dart
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainWidget(),
+                ),
+              );
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainWidget(),
+                ),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainWidget(),
+                ),
+              );
+              break;
+          }
+        });
+      },
       letIndexChange: (index) => true,
     );
   }

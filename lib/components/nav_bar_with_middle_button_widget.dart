@@ -218,18 +218,7 @@ class _NavBarWithMiddleButtonWidgetState
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: valueOrDefault<Color>(
-                    () {
-                      if (FFAppState().latestMmol < 3.9) {
-                        return FlutterFlowTheme.of(context).tertiaryColor;
-                      } else if (FFAppState().latestMmol > 9.4) {
-                        return FlutterFlowTheme.of(context).secondaryColor;
-                      } else {
-                        return FlutterFlowTheme.of(context).primaryColor;
-                      }
-                    }(),
-                    FlutterFlowTheme.of(context).primaryColor,
-                  ),
+                  color: FlutterFlowTheme.of(context).secondaryText,
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 4,

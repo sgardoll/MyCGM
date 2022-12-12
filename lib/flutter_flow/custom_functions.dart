@@ -68,13 +68,17 @@ String? minutesAgo(List<String>? latestDate) {
   }
 }
 
-List<double> sgvListToMmolListDouble(List<int> sgv) {
-  List<double> result = sgv.map((e) => e / 18.0).toList();
-  return result;
+List<double>? sgvListToMmolListDouble(List<int> sgv) {
+//take the list of integers and convert to a list of doubles
+  List<double> l = [];
+  for (int i = 0; i < sgv.length; i++) {
+    l.add(sgv[i] / 18);
+  }
+  return l;
 }
 
 double? sgvListToMmolDouble(List<int> sgv) {
-  dynamic i = sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
+  var i = sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
   return double.parse(i.first);
 }
 

@@ -22,12 +22,12 @@ class MainWidget extends StatefulWidget {
     Key? key,
     this.mmolList,
     this.latestMmol,
-    this.dateStringList,
+    this.dateString,
   }) : super(key: key);
 
   final List<double>? mmolList;
   final double? latestMmol;
-  final List<String>? dateStringList;
+  final List<String>? dateString;
 
   @override
   _MainWidgetState createState() => _MainWidgetState();
@@ -135,9 +135,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                   decoration: BoxDecoration(
                     color: valueOrDefault<Color>(
                       () {
-                        if (FFAppState().latestMmol < 3.9) {
+                        if (widget.latestMmol! < 3.9) {
                           return FlutterFlowTheme.of(context).tertiaryColor;
-                        } else if (FFAppState().latestMmol > 9.4) {
+                        } else if (widget.latestMmol! > 9.4) {
                           return FlutterFlowTheme.of(context).secondaryColor;
                         } else {
                           return FlutterFlowTheme.of(context).primaryColor;
@@ -168,10 +168,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           decoration: BoxDecoration(
                             color: valueOrDefault<Color>(
                               () {
-                                if (FFAppState().latestMmol < 3.9) {
+                                if (widget.latestMmol! < 3.9) {
                                   return FlutterFlowTheme.of(context)
                                       .tertiaryColor;
-                                } else if (FFAppState().latestMmol > 9.4) {
+                                } else if (widget.latestMmol! > 9.4) {
                                   return FlutterFlowTheme.of(context)
                                       .secondaryColor;
                                 } else {
@@ -179,7 +179,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       .primaryColor;
                                 }
                               }(),
-                              FlutterFlowTheme.of(context).primaryBackground,
+                              FlutterFlowTheme.of(context).primaryColor,
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -256,7 +256,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             backgroundColor: Color(0x40FFFFFF),
                                             center: Text(
                                               formatNumber(
-                                                FFAppState().latestMmol,
+                                                widget.latestMmol,
                                                 formatType: FormatType.custom,
                                                 format: '#0.0',
                                                 locale: '',
@@ -295,7 +295,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             child: FlutterFlowLineChart(
                                               data: [
                                                 FFLineChartData(
-                                                  xData: widget.dateStringList!
+                                                  xData: widget.dateString!
                                                       .map((e) => e)
                                                       .toList(),
                                                   yData: widget.mmolList!
@@ -384,7 +384,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 alignment:
                                                     AlignmentDirectional(0, 0),
                                                 child: Text(
-                                                  'as of ${functions.minutesAgo(FFAppState().latestDateList.toList())}',
+                                                  'as of ${functions.minutesAgo(widget.dateString?.toList())}',
                                                   textAlign: TextAlign.center,
                                                   style: FlutterFlowTheme.of(
                                                           context)
@@ -463,172 +463,134 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                       children: [
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                          child: AuthUserStreamWidget(
-                            child: FlutterFlowIconButton(
-                              borderColor: Colors.transparent,
-                              borderRadius: 20,
-                              borderWidth: 1,
-                              buttonSize: 50,
-                              fillColor:
-                                  FlutterFlowTheme.of(context).secondaryText,
-                              icon: Icon(
-                                Icons.local_dining_rounded,
-                                color: valueOrDefault<Color>(
-                                  () {
-                                    if (functions.mmolListToLatestMmolFirebase(
-                                            currentUserDocument!.data.mmol
-                                                ?.toList()
-                                                ?.toList())! <
-                                        3.9) {
-                                      return FlutterFlowTheme.of(context)
-                                          .tertiaryColor;
-                                    } else if (functions
-                                            .mmolListToLatestMmolFirebase(
-                                                currentUserDocument!.data.mmol
-                                                    ?.toList()
-                                                    ?.toList())! >
-                                        9.4) {
-                                      return FlutterFlowTheme.of(context)
-                                          .secondaryColor;
-                                    } else {
-                                      return FlutterFlowTheme.of(context)
-                                          .primaryColor;
-                                    }
-                                  }(),
-                                  FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                ),
-                                size: 25,
+                          child: FlutterFlowIconButton(
+                            borderColor: Colors.transparent,
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            buttonSize: 50,
+                            fillColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            icon: Icon(
+                              Icons.local_dining_rounded,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (widget.latestMmol! < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (widget.latestMmol! > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryColor,
                               ),
-                              onPressed: () {
-                                print('AddCarbsButton pressed ...');
-                              },
-                            ).animateOnActionTrigger(
-                              animationsMap[
-                                  'iconButtonOnActionTriggerAnimation1']!,
+                              size: 25,
                             ),
+                            onPressed: () {
+                              print('AddCarbsButton pressed ...');
+                            },
+                          ).animateOnActionTrigger(
+                            animationsMap[
+                                'iconButtonOnActionTriggerAnimation1']!,
                           ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                          child: AuthUserStreamWidget(
-                            child: FlutterFlowIconButton(
-                              borderColor: Colors.transparent,
-                              borderRadius: 20,
-                              borderWidth: 1,
-                              buttonSize: 50,
-                              fillColor:
-                                  FlutterFlowTheme.of(context).secondaryText,
-                              icon: Icon(
-                                Icons.timelapse,
-                                color: valueOrDefault<Color>(
-                                  () {
-                                    if (functions.mmolListToLatestMmolFirebase(
-                                            currentUserDocument!.data.mmol
-                                                ?.toList()
-                                                ?.toList())! <
-                                        3.9) {
-                                      return FlutterFlowTheme.of(context)
-                                          .tertiaryColor;
-                                    } else if (functions
-                                            .mmolListToLatestMmolFirebase(
-                                                currentUserDocument!.data.mmol
-                                                    ?.toList()
-                                                    ?.toList())! >
-                                        9.4) {
-                                      return FlutterFlowTheme.of(context)
-                                          .secondaryColor;
-                                    } else {
-                                      return FlutterFlowTheme.of(context)
-                                          .primaryColor;
-                                    }
-                                  }(),
-                                  FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                ),
-                                size: 25,
+                          child: FlutterFlowIconButton(
+                            borderColor: Colors.transparent,
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            buttonSize: 50,
+                            fillColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            icon: Icon(
+                              Icons.timelapse,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (widget.latestMmol! < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (widget.latestMmol! > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryColor,
                               ),
-                              onPressed: () async {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding:
-                                          MediaQuery.of(context).viewInsets,
-                                      child: POSTInsulinWidget(
-                                        insulinType: 'Optisulin',
-                                      ),
-                                    );
-                                  },
-                                ).then((value) => setState(() {}));
-                              },
-                            ).animateOnActionTrigger(
-                              animationsMap[
-                                  'iconButtonOnActionTriggerAnimation2']!,
+                              size: 25,
                             ),
+                            onPressed: () async {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                    padding: MediaQuery.of(context).viewInsets,
+                                    child: POSTInsulinWidget(
+                                      insulinType: 'Optisulin',
+                                      latestMmol: widget.latestMmol,
+                                    ),
+                                  );
+                                },
+                              ).then((value) => setState(() {}));
+                            },
+                          ).animateOnActionTrigger(
+                            animationsMap[
+                                'iconButtonOnActionTriggerAnimation2']!,
                           ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                          child: AuthUserStreamWidget(
-                            child: FlutterFlowIconButton(
-                              borderColor: Colors.transparent,
-                              borderRadius: 20,
-                              borderWidth: 1,
-                              buttonSize: 50,
-                              fillColor:
-                                  FlutterFlowTheme.of(context).secondaryText,
-                              icon: Icon(
-                                Icons.speed_rounded,
-                                color: valueOrDefault<Color>(
-                                  () {
-                                    if (functions.mmolListToLatestMmolFirebase(
-                                            currentUserDocument!.data.mmol
-                                                ?.toList()
-                                                ?.toList())! <
-                                        3.9) {
-                                      return FlutterFlowTheme.of(context)
-                                          .tertiaryColor;
-                                    } else if (functions
-                                            .mmolListToLatestMmolFirebase(
-                                                currentUserDocument!.data.mmol
-                                                    ?.toList()
-                                                    ?.toList())! >
-                                        9.4) {
-                                      return FlutterFlowTheme.of(context)
-                                          .secondaryColor;
-                                    } else {
-                                      return FlutterFlowTheme.of(context)
-                                          .primaryColor;
-                                    }
-                                  }(),
-                                  FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                ),
-                                size: 25,
+                          child: FlutterFlowIconButton(
+                            borderColor: Colors.transparent,
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            buttonSize: 50,
+                            fillColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            icon: Icon(
+                              Icons.speed_rounded,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (widget.latestMmol! < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (widget.latestMmol! > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryColor,
                               ),
-                              onPressed: () async {
-                                showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding:
-                                          MediaQuery.of(context).viewInsets,
-                                      child: POSTInsulinWidget(
-                                        insulinType: 'Novorapid',
-                                      ),
-                                    );
-                                  },
-                                ).then((value) => setState(() {}));
-                              },
-                            ).animateOnActionTrigger(
-                              animationsMap[
-                                  'iconButtonOnActionTriggerAnimation3']!,
+                              size: 25,
                             ),
+                            onPressed: () async {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                    padding: MediaQuery.of(context).viewInsets,
+                                    child: POSTInsulinWidget(
+                                      insulinType: 'Novorapid',
+                                      latestMmol: widget.latestMmol,
+                                    ),
+                                  );
+                                },
+                              ).then((value) => setState(() {}));
+                            },
+                          ).animateOnActionTrigger(
+                            animationsMap[
+                                'iconButtonOnActionTriggerAnimation3']!,
                           ),
                         ),
                         Align(
@@ -643,10 +605,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               backgroundColor: Colors.transparent,
                               buttonBackgroundColor: valueOrDefault<Color>(
                                 () {
-                                  if (FFAppState().latestMmol < 3.9) {
+                                  if (widget.latestMmol! < 3.9) {
                                     return FlutterFlowTheme.of(context)
                                         .tertiaryColor;
-                                  } else if (FFAppState().latestMmol > 9.4) {
+                                  } else if (widget.latestMmol! > 9.4) {
                                     return FlutterFlowTheme.of(context)
                                         .secondaryColor;
                                   } else {
@@ -654,7 +616,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .primaryColor;
                                   }
                                 }(),
-                                FlutterFlowTheme.of(context).primaryBackground,
+                                FlutterFlowTheme.of(context).primaryColor,
                               ),
                               index: 2,
                             ),

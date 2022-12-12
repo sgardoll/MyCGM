@@ -37,7 +37,7 @@ class GetBloodGlucoseCall {
         'token': token,
       },
       returnBody: true,
-      cache: true,
+      cache: false,
     );
   }
 
@@ -131,7 +131,7 @@ class PostCarbsCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
-      cache: true,
+      cache: false,
     );
   }
 }
