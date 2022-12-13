@@ -461,7 +461,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                   alignment: AlignmentDirectional(0, 1),
                   child: custom_widgets.CurvedNavigationBarWidget(
                     width: MediaQuery.of(context).size.width,
-                    height: 40,
+                    height: 60,
                     color: Color(0x40FFFFFF),
                     backgroundColor: Colors.transparent,
                     buttonBackgroundColor:

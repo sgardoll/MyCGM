@@ -22,7 +22,7 @@ class CurvedNavigationBarWidget extends StatefulWidget {
   }) : super(key: key);
 
   final double? width;
-  final double? height;
+  double? height;
   final Color color;
   final Color backgroundColor;
   final Color buttonBackgroundColor;
@@ -45,13 +45,14 @@ class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
+      height: 60,
       color: widget.color,
       backgroundColor: widget.backgroundColor,
       buttonBackgroundColor: widget.buttonBackgroundColor,
       index: widget.index,
       items: <Widget>[
         Icon(Icons.settings, size: 30, color: widget.buttonBackgroundColor),
-        Icon(Icons.home, size: 30, color: widget.color),
+        Icon(Icons.home, size: 60, color: widget.backgroundColor),
         Icon(Icons.refresh, size: 30, color: widget.buttonBackgroundColor),
       ],
       onTap: (index) {
