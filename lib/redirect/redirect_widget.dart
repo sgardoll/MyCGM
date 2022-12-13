@@ -201,7 +201,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                 true,
               ),
               'latestMmol': serializeParam(
-                functions.jSONToMmolDouble(getJsonField(
+                functions.jsonToMmolDouble(getJsonField(
                   (apiResult?.jsonBody ?? ''),
                   r'''$.sgv''',
                 )),

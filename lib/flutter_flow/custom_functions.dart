@@ -68,7 +68,7 @@ String? minutesAgo(List<String>? latestDate) {
   }
 }
 
-List<double>? jsonToMmolListDouble(dynamic sgv) {
+List<double>? jsonToMmolListDouble(List<dynamic> sgv) {
 //take the list of integers and convert to a list of doubles
   List<double> l = [];
   for (int i = 0; i < sgv.length; i++) {
@@ -77,7 +77,7 @@ List<double>? jsonToMmolListDouble(dynamic sgv) {
   return l;
 }
 
-double? jSONToMmolDouble(dynamic sgv) {
+double? jsonToMmolDouble(List<dynamic> sgv) {
   var i = sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
   return double.parse(i.first);
 }
