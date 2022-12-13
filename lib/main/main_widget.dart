@@ -642,7 +642,21 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             child: custom_widgets.CurvedNavigationBarWidget(
                               width: MediaQuery.of(context).size.width,
                               height: 60,
-                              color: FlutterFlowTheme.of(context).secondaryText,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (widget.latestMmol! < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (widget.latestMmol! > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryColor,
+                              ),
                               backgroundColor: Colors.transparent,
                               buttonBackgroundColor: valueOrDefault<Color>(
                                 () {
