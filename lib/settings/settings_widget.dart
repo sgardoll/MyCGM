@@ -429,105 +429,109 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 0),
-                                    child: Theme(
-                                      data: ThemeData(
-                                        checkboxTheme: CheckboxThemeData(
-                                          shape: CircleBorder(),
+                              if (isAndroid)
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 12, 0, 0),
+                                      child: Theme(
+                                        data: ThemeData(
+                                          checkboxTheme: CheckboxThemeData(
+                                            shape: CircleBorder(),
+                                          ),
+                                          unselectedWidgetColor:
+                                              Color(0xFFF5F5F5),
                                         ),
-                                        unselectedWidgetColor:
-                                            Color(0xFFF5F5F5),
-                                      ),
-                                      child: Checkbox(
-                                        value: checkboxValue ??=
-                                            FFAppState().useBio,
-                                        onChanged: (newValue) async {
-                                          setState(
-                                              () => checkboxValue = newValue!);
-                                          if (newValue!) {
-                                            var _shouldSetState = false;
-                                            final _localAuth =
-                                                LocalAuthentication();
-                                            bool _isBiometricSupported =
-                                                await _localAuth
-                                                    .isDeviceSupported();
+                                        child: Checkbox(
+                                          value: checkboxValue ??=
+                                              FFAppState().useBio,
+                                          onChanged: (newValue) async {
+                                            setState(() =>
+                                                checkboxValue = newValue!);
+                                            if (newValue!) {
+                                              var _shouldSetState = false;
+                                              final _localAuth =
+                                                  LocalAuthentication();
+                                              bool _isBiometricSupported =
+                                                  await _localAuth
+                                                      .isDeviceSupported();
 
-                                            if (_isBiometricSupported) {
-                                              bioUpdate =
-                                                  await _localAuth.authenticate(
-                                                      localizedReason:
-                                                          'Please authenticate with biometrics');
-                                              setState(() {});
-                                            }
+                                              if (_isBiometricSupported) {
+                                                bioUpdate = await _localAuth
+                                                    .authenticate(
+                                                        localizedReason:
+                                                            'Please authenticate with biometrics');
+                                                setState(() {});
+                                              }
 
-                                            _shouldSetState = true;
-                                            if (bioUpdate!) {
-                                              setState(() {
-                                                FFAppState().useBio = true;
-                                              });
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    'Biometric login unsuccessful',
-                                                    style: TextStyle(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
+                                              _shouldSetState = true;
+                                              if (bioUpdate!) {
+                                                setState(() {
+                                                  FFAppState().useBio = true;
+                                                });
+                                              } else {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Biometric login unsuccessful',
+                                                      style: TextStyle(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                      ),
                                                     ),
+                                                    duration: Duration(
+                                                        milliseconds: 4000),
+                                                    backgroundColor:
+                                                        Color(0x00000000),
                                                   ),
-                                                  duration: Duration(
-                                                      milliseconds: 4000),
-                                                  backgroundColor:
-                                                      Color(0x00000000),
-                                                ),
-                                              );
+                                                );
+                                                if (_shouldSetState)
+                                                  setState(() {});
+                                                return;
+                                              }
+
                                               if (_shouldSetState)
                                                 setState(() {});
-                                              return;
+                                            } else {
+                                              setState(() {
+                                                FFAppState()
+                                                    .deleteRememberedPass();
+                                                FFAppState().rememberedPass =
+                                                    '';
+
+                                                FFAppState()
+                                                    .deleteRememberedUser();
+                                                FFAppState().rememberedUser =
+                                                    '';
+                                              });
                                             }
-
-                                            if (_shouldSetState)
-                                              setState(() {});
-                                          } else {
-                                            setState(() {
-                                              FFAppState()
-                                                  .deleteRememberedPass();
-                                              FFAppState().rememberedPass = '';
-
-                                              FFAppState()
-                                                  .deleteRememberedUser();
-                                              FFAppState().rememberedUser = '';
-                                            });
-                                          }
-                                        },
-                                        activeColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                        checkColor: FlutterFlowTheme.of(context)
-                                            .primaryText,
+                                          },
+                                          activeColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryText,
+                                          checkColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryText,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 0),
-                                    child: Text(
-                                      'Use Biometric Login?',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText2,
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 12, 0, 0),
+                                      child: Text(
+                                        'Use Biometric Login?',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText2,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0, 24, 0, 24),

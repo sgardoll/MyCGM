@@ -220,6 +220,12 @@ class _RedirectWidgetState extends State<RedirectWidget>
                 true,
               ),
             }.withoutNulls,
+            extra: <String, dynamic>{
+              kTransitionInfoKey: TransitionInfo(
+                hasTransition: true,
+                transitionType: PageTransitionType.fade,
+              ),
+            },
           );
         } else {
           HapticFeedback.vibrate();

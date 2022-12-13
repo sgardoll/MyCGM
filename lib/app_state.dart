@@ -22,6 +22,7 @@ class FFAppState extends ChangeNotifier {
     _rememberedUser =
         await secureStorage.getString('ff_rememberedUser') ?? _rememberedUser;
     _useBio = await secureStorage.getBool('ff_useBio') ?? _useBio;
+    _FABOpen = await secureStorage.getBool('ff_FABOpen') ?? _FABOpen;
   }
 
   late FlutterSecureStorage secureStorage;
@@ -64,14 +65,6 @@ class FFAppState extends ChangeNotifier {
     secureStorage.delete(key: 'ff_ratio');
   }
 
-  bool _FABOpen = false;
-  bool get FABOpen => _FABOpen;
-  set FABOpen(bool _value) {
-    notifyListeners();
-
-    _FABOpen = _value;
-  }
-
   String _rememberedPass = '';
   String get rememberedPass => _rememberedPass;
   set rememberedPass(String _value) {
@@ -112,6 +105,20 @@ class FFAppState extends ChangeNotifier {
   void deleteUseBio() {
     notifyListeners();
     secureStorage.delete(key: 'ff_useBio');
+  }
+
+  bool _FABOpen = false;
+  bool get FABOpen => _FABOpen;
+  set FABOpen(bool _value) {
+    notifyListeners();
+
+    _FABOpen = _value;
+    secureStorage.setBool('ff_FABOpen', _value);
+  }
+
+  void deleteFABOpen() {
+    notifyListeners();
+    secureStorage.delete(key: 'ff_FABOpen');
   }
 }
 

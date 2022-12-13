@@ -52,7 +52,7 @@ class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
       index: widget.index,
       items: <Widget>[
         Icon(Icons.settings, size: 30, color: widget.buttonBackgroundColor),
-        Icon(Icons.home, size: 30, color: widget.backgroundColor),
+        Icon(Icons.home, size: 30, color: widget.buttonBackgroundColor),
         Icon(Icons.refresh, size: 30, color: widget.buttonBackgroundColor),
       ],
       onTap: (index) {

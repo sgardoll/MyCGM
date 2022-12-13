@@ -56,14 +56,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       effects: [
         VisibilityEffect(duration: 1.ms),
         MoveEffect(
-          curve: Curves.easeIn,
+          curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 300.ms,
           begin: Offset(55, 0),
           end: Offset(-12.5, -22.5),
         ),
         FadeEffect(
-          curve: Curves.easeIn,
+          curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 300.ms,
           begin: 0,
@@ -120,6 +120,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        FFAppState().deleteFABOpen();
+        FFAppState().FABOpen = false;
+      });
+    });
+
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -139,7 +147,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
+          backgroundColor: Color(0x4D005F73),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Stack(
@@ -225,71 +233,79 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        CircularPercentIndicator(
-                                          percent: () {
-                                            if (widget.latestMmol == null) {
-                                              return 0.1;
-                                            } else if (widget.latestMmol! <
-                                                3.9) {
-                                              return 0.1;
-                                            } else if (widget.latestMmol! >
-                                                9.4) {
-                                              return 1.0;
-                                            } else {
-                                              return functions.quickProgressInd(
-                                                  widget.latestMmol!);
-                                            }
-                                          }(),
-                                          radius: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.375,
-                                          lineWidth: 40,
-                                          animation: true,
-                                          progressColor: Color(0x40FFFFFF),
-                                          backgroundColor:
-                                              valueOrDefault<Color>(
-                                            () {
-                                              if (widget.latestMmol! < 3.9) {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .secondaryColor;
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 40, 0, 0),
+                                          child: CircularPercentIndicator(
+                                            percent: () {
+                                              if (widget.latestMmol == null) {
+                                                return 0.1;
+                                              } else if (widget.latestMmol! <
+                                                  3.9) {
+                                                return 0.1;
                                               } else if (widget.latestMmol! >
                                                   9.4) {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .secondaryBackground;
+                                                return 1.0;
                                               } else {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .primaryBackground;
+                                                return functions
+                                                    .quickProgressInd(
+                                                        widget.latestMmol!);
                                               }
                                             }(),
-                                            FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                          ),
-                                          center: Text(
-                                            formatNumber(
-                                              widget.latestMmol,
-                                              formatType: FormatType.custom,
-                                              format: '#0.0',
-                                              locale: '',
-                                            ).maybeHandleOverflow(
-                                              maxChars: 20,
-                                              replacement: '…',
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.of(context)
-                                                .title1
-                                                .override(
-                                                  fontFamily: 'Poppins',
-                                                  color: FlutterFlowTheme.of(
+                                            radius: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.375,
+                                            lineWidth: 40,
+                                            animation: true,
+                                            progressColor: Color(0x40FFFFFF),
+                                            backgroundColor:
+                                                valueOrDefault<Color>(
+                                              () {
+                                                if (widget.latestMmol! < 3.9) {
+                                                  return FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryText,
-                                                  fontSize: 90,
-                                                ),
+                                                      .secondaryColor;
+                                                } else if (widget.latestMmol! >
+                                                    9.4) {
+                                                  return FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryBackground;
+                                                } else {
+                                                  return FlutterFlowTheme.of(
+                                                          context)
+                                                      .primaryBackground;
+                                                }
+                                              }(),
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                            ),
+                                            center: Text(
+                                              formatNumber(
+                                                widget.latestMmol,
+                                                formatType: FormatType.custom,
+                                                format: '#0.0',
+                                                locale: '',
+                                              ).maybeHandleOverflow(
+                                                maxChars: 20,
+                                                replacement: '…',
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .title1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 90,
+                                                      ),
+                                            ),
+                                            startAngle: 0,
                                           ),
-                                          startAngle: 0,
                                         ),
                                         Align(
                                           alignment: AlignmentDirectional(0, 0),
@@ -419,15 +435,18 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 ),
                 Align(
                   alignment: AlignmentDirectional(0, 1),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0x00FFFFFF), Color(0x67001219)],
-                        stops: [0, 1],
-                        begin: AlignmentDirectional(0, -1),
-                        end: AlignmentDirectional(0, 1),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0x00FFFFFF), Color(0x4D005F73)],
+                          stops: [0, 1],
+                          begin: AlignmentDirectional(0, -1),
+                          end: AlignmentDirectional(0, 1),
+                        ),
                       ),
                     ),
                   ),
@@ -490,7 +509,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     null) {
                                   animationsMap['iconOnActionTriggerAnimation']!
                                       .controller
-                                      .forward(from: 0.0)
+                                      .forward()
                                       .whenComplete(animationsMap[
                                               'iconOnActionTriggerAnimation']!
                                           .controller
@@ -502,7 +521,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                   animationsMap[
                                           'iconButtonOnActionTriggerAnimation2']!
                                       .controller
-                                      .forward(from: 0.0)
+                                      .forward()
                                       .whenComplete(animationsMap[
                                               'iconButtonOnActionTriggerAnimation2']!
                                           .controller
@@ -514,7 +533,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                   animationsMap[
                                           'iconButtonOnActionTriggerAnimation1']!
                                       .controller
-                                      .forward(from: 0.0)
+                                      .forward()
                                       .whenComplete(animationsMap[
                                               'iconButtonOnActionTriggerAnimation1']!
                                           .controller
@@ -526,7 +545,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                   animationsMap[
                                           'iconButtonOnActionTriggerAnimation3']!
                                       .controller
-                                      .forward(from: 0.0)
+                                      .forward()
                                       .whenComplete(animationsMap[
                                               'iconButtonOnActionTriggerAnimation3']!
                                           .controller
