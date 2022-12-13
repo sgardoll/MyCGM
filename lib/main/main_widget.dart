@@ -37,6 +37,19 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   final animationsMap = {
+    'iconOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
+      effects: [
+        RotateEffect(
+          curve: Curves.linear,
+          delay: 0.ms,
+          duration: 300.ms,
+          begin: 0,
+          end: 0.125,
+        ),
+      ],
+    ),
     'iconButtonOnActionTriggerAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
@@ -97,19 +110,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           duration: 300.ms,
           begin: 0,
           end: 1,
-        ),
-      ],
-    ),
-    'iconOnActionTriggerAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        RotateEffect(
-          curve: Curves.linear,
-          delay: 0.ms,
-          duration: 300.ms,
-          begin: 0,
-          end: 0.125,
         ),
       ],
     ),
@@ -224,7 +224,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       children: [
                                         Align(
                                           alignment:
-                                              AlignmentDirectional(0, 0.5),
+                                              AlignmentDirectional(0, -0.4),
                                           child: CircularPercentIndicator(
                                             percent: () {
                                               if (widget.latestMmol == null) {
@@ -298,59 +298,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
-                                                  12, 0, 0, 0),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.3,
-                                            child: FlutterFlowLineChart(
-                                              data: [
-                                                FFLineChartData(
-                                                  xData: widget.dateString!
-                                                      .map((e) => e)
-                                                      .toList(),
-                                                  yData: widget.mmolList!,
-                                                  settings: LineChartBarData(
-                                                    color: Color(0x7FFFFFFF),
-                                                    barWidth: 5,
-                                                    isCurved: true,
-                                                  ),
-                                                )
-                                              ],
-                                              chartStylingInfo:
-                                                  ChartStylingInfo(
-                                                enableTooltip: true,
-                                                tooltipBackgroundColor:
-                                                    Color(0x801E2429),
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                showBorder: false,
-                                              ),
-                                              axisBounds: AxisBounds(
-                                                minY: 0,
-                                                maxY: 18,
-                                              ),
-                                              xAxisLabelInfo: AxisLabelInfo(),
-                                              yAxisLabelInfo: AxisLabelInfo(
-                                                showLabels: true,
-                                                labelTextStyle:
-                                                    GoogleFonts.getFont(
-                                                  'Open Sans',
-                                                  color: Color(0x7CFFFFFF),
-                                                  fontSize: 10,
-                                                ),
-                                                labelInterval: 5,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
                                                   0, 0, 0, 24),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -401,6 +348,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .secondaryText,
+                                                        fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -411,7 +359,43 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    Container(),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.3,
+                                      child: FlutterFlowLineChart(
+                                        data: [
+                                          FFLineChartData(
+                                            xData: widget.dateString!,
+                                            yData: widget.mmolList!,
+                                            settings: LineChartBarData(
+                                              color: Color(0x7FFFFFFF),
+                                              barWidth: 5,
+                                              isCurved: true,
+                                            ),
+                                          )
+                                        ],
+                                        chartStylingInfo: ChartStylingInfo(
+                                          backgroundColor: Colors.transparent,
+                                          showBorder: false,
+                                        ),
+                                        axisBounds: AxisBounds(
+                                          minY: 0,
+                                          maxY: 18,
+                                        ),
+                                        xAxisLabelInfo: AxisLabelInfo(),
+                                        yAxisLabelInfo: AxisLabelInfo(
+                                          showLabels: true,
+                                          labelTextStyle: GoogleFonts.getFont(
+                                            'Open Sans',
+                                            color: Color(0x7CFFFFFF),
+                                            fontSize: 10,
+                                          ),
+                                          labelInterval: 5,
+                                        ),
+                                      ),
+                                    ),
                                     Container(),
                                   ],
                                 ),
@@ -501,7 +485,78 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 Align(
                   alignment: AlignmentDirectional(0, 1),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 60),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 12,
+                                color: Color(0x40000000),
+                                offset: Offset(0, 2),
+                                spreadRadius: 12,
+                              )
+                            ],
+                            shape: BoxShape.circle,
+                          ),
+                          child: InkWell(
+                            onTap: () async {
+                              if (animationsMap[
+                                      'iconOnActionTriggerAnimation'] !=
+                                  null) {
+                                animationsMap['iconOnActionTriggerAnimation']!
+                                    .controller
+                                    .forward(from: 0.0);
+                              }
+                              if (animationsMap[
+                                      'iconButtonOnActionTriggerAnimation2'] !=
+                                  null) {
+                                animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2']!
+                                    .controller
+                                    .forward(from: 0.0);
+                              }
+                              if (animationsMap[
+                                      'iconButtonOnActionTriggerAnimation1'] !=
+                                  null) {
+                                animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1']!
+                                    .controller
+                                    .forward(from: 0.0);
+                              }
+                              if (animationsMap[
+                                      'iconButtonOnActionTriggerAnimation3'] !=
+                                  null) {
+                                animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3']!
+                                    .controller
+                                    .forward(from: 0.0);
+                              }
+                            },
+                            child: Icon(
+                              Icons.add_rounded,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              size: 60,
+                            ),
+                          ).animateOnActionTrigger(
+                            animationsMap['iconOnActionTriggerAnimation']!,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(0, 1),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -566,6 +621,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           onPressed: () async {
                             showModalBottomSheet(
                               isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
                               context: context,
                               builder: (context) {
                                 return Padding(
@@ -609,6 +665,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           onPressed: () async {
                             showModalBottomSheet(
                               isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
                               context: context,
                               builder: (context) {
                                 return Padding(
@@ -623,70 +680,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           },
                         ).animateOnActionTrigger(
                           animationsMap['iconButtonOnActionTriggerAnimation3']!,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0, 1),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 12,
-                                color: Color(0x40000000),
-                                offset: Offset(0, 2),
-                                spreadRadius: 12,
-                              )
-                            ],
-                            shape: BoxShape.circle,
-                          ),
-                          child: InkWell(
-                            onTap: () async {
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation2'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation2']!
-                                    .controller
-                                    .forward(from: 0.0);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation1'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation1']!
-                                    .controller
-                                    .forward(from: 0.0);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation3'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation3']!
-                                    .controller
-                                    .forward(from: 0.0);
-                              }
-                            },
-                            child: Icon(
-                              Icons.add_rounded,
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              size: 60,
-                            ),
-                          ).animateOnActionTrigger(
-                            animationsMap['iconOnActionTriggerAnimation']!,
-                          ),
                         ),
                       ],
                     ),
