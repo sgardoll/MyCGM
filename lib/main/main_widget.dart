@@ -100,7 +100,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         ),
       ],
     ),
-    'iconButtonOnActionTriggerAnimation4': AnimationInfo(
+    'iconOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
@@ -459,14 +459,43 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 ),
                 Align(
                   alignment: AlignmentDirectional(0, 1),
-                  child: custom_widgets.CurvedNavigationBarWidget(
+                  child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 60,
-                    color: Color(0x40FFFFFF),
-                    backgroundColor: Colors.transparent,
-                    buttonBackgroundColor:
-                        FlutterFlowTheme.of(context).secondaryText,
-                    index: 1,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0x00FFFFFF), Color(0x67001219)],
+                        stops: [0, 1],
+                        begin: AlignmentDirectional(0, -1),
+                        end: AlignmentDirectional(0, 1),
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(0, 1),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 60,
+                    child: custom_widgets.CurvedNavigationBarWidget(
+                      width: MediaQuery.of(context).size.width,
+                      height: 60,
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      backgroundColor: Colors.transparent,
+                      buttonBackgroundColor: valueOrDefault<Color>(
+                        () {
+                          if (widget.latestMmol! < 3.9) {
+                            return FlutterFlowTheme.of(context).tertiaryColor;
+                          } else if (widget.latestMmol! > 9.4) {
+                            return FlutterFlowTheme.of(context).secondaryColor;
+                          } else {
+                            return FlutterFlowTheme.of(context).primaryColor;
+                          }
+                        }(),
+                        FlutterFlowTheme.of(context).primaryColor,
+                      ),
+                      index: 1,
+                    ),
                   ),
                 ),
                 Align(
@@ -602,78 +631,61 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 Align(
                   alignment: AlignmentDirectional(0, 1),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 42.5),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 15),
                     child: Row(
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Material(
-                          color: Colors.transparent,
-                          elevation: 12,
-                          shape: const CircleBorder(),
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: valueOrDefault<Color>(
-                                () {
-                                  if (widget.latestMmol! < 3.9) {
-                                    return FlutterFlowTheme.of(context)
-                                        .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
-                                    return FlutterFlowTheme.of(context)
-                                        .secondaryColor;
-                                  } else {
-                                    return FlutterFlowTheme.of(context)
-                                        .primaryColor;
-                                  }
-                                }(),
-                                FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                              shape: BoxShape.circle,
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 6,
+                                color: Color(0x40000000),
+                                offset: Offset(0, 2),
+                                spreadRadius: 6,
+                              )
+                            ],
+                            shape: BoxShape.circle,
+                          ),
+                          child: InkWell(
+                            onTap: () async {
+                              if (animationsMap[
+                                      'iconButtonOnActionTriggerAnimation2'] !=
+                                  null) {
+                                animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2']!
+                                    .controller
+                                    .forward(from: 0.0);
+                              }
+                              if (animationsMap[
+                                      'iconButtonOnActionTriggerAnimation1'] !=
+                                  null) {
+                                animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1']!
+                                    .controller
+                                    .forward(from: 0.0);
+                              }
+                              if (animationsMap[
+                                      'iconButtonOnActionTriggerAnimation3'] !=
+                                  null) {
+                                animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3']!
+                                    .controller
+                                    .forward(from: 0.0);
+                              }
+                            },
+                            child: Icon(
+                              Icons.add_rounded,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              size: 60,
                             ),
-                            child: FlutterFlowIconButton(
-                              borderColor: Colors.transparent,
-                              borderRadius: 30,
-                              borderWidth: 1,
-                              buttonSize: 60,
-                              icon: Icon(
-                                Icons.add_rounded,
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                size: 40,
-                              ),
-                              onPressed: () async {
-                                if (animationsMap[
-                                        'iconButtonOnActionTriggerAnimation2'] !=
-                                    null) {
-                                  animationsMap[
-                                          'iconButtonOnActionTriggerAnimation2']!
-                                      .controller
-                                      .forward(from: 0.0);
-                                }
-                                if (animationsMap[
-                                        'iconButtonOnActionTriggerAnimation1'] !=
-                                    null) {
-                                  animationsMap[
-                                          'iconButtonOnActionTriggerAnimation1']!
-                                      .controller
-                                      .forward(from: 0.0);
-                                }
-                                if (animationsMap[
-                                        'iconButtonOnActionTriggerAnimation3'] !=
-                                    null) {
-                                  animationsMap[
-                                          'iconButtonOnActionTriggerAnimation3']!
-                                      .controller
-                                      .forward(from: 0.0);
-                                }
-                              },
-                            ).animateOnActionTrigger(
-                              animationsMap[
-                                  'iconButtonOnActionTriggerAnimation4']!,
-                            ),
+                          ).animateOnActionTrigger(
+                            animationsMap['iconOnActionTriggerAnimation']!,
                           ),
                         ),
                       ],
