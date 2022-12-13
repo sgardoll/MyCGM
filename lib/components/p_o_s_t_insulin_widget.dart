@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -51,8 +52,8 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(0),
           bottomRight: Radius.circular(0),
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
+          topLeft: Radius.circular(50),
+          topRight: Radius.circular(50),
         ),
       ),
       child: Container(
@@ -74,8 +75,8 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(0),
             bottomRight: Radius.circular(0),
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(50),
           ),
         ),
         child: Column(
@@ -88,7 +89,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                 height: 4,
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).lineColor,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
             ),
@@ -107,7 +108,8 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
               child: Row(
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     flex: 3,
@@ -155,11 +157,15 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                               color: FlutterFlowTheme.of(context).secondaryText,
                             ),
                         textAlign: TextAlign.start,
-                        keyboardType: TextInputType.number,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            signed: true, decimal: true),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                        ],
                       ),
                     ),
                   ),
-                  AuthUserStreamWidget(
+                  Expanded(
                     child: FlutterFlowIconButton(
                       borderColor: Colors.transparent,
                       borderRadius: 50,
@@ -170,24 +176,16 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                         Icons.send_rounded,
                         color: valueOrDefault<Color>(
                           () {
-                            if (functions.mmolListToLatestMmolFirebase(
-                                    currentUserDocument!.data.mmol
-                                        ?.toList()
-                                        ?.toList())! <
-                                3.9) {
+                            if (widget.latestMmol! < 3.9) {
                               return FlutterFlowTheme.of(context).tertiaryColor;
-                            } else if (functions.mmolListToLatestMmolFirebase(
-                                    currentUserDocument!.data.mmol
-                                        ?.toList()
-                                        ?.toList())! >
-                                9.4) {
+                            } else if (widget.latestMmol! > 9.4) {
                               return FlutterFlowTheme.of(context)
                                   .secondaryColor;
                             } else {
                               return FlutterFlowTheme.of(context).primaryColor;
                             }
                           }(),
-                          FlutterFlowTheme.of(context).primaryBackground,
+                          FlutterFlowTheme.of(context).primaryColor,
                         ),
                         size: 30,
                       ),

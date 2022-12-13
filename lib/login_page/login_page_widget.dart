@@ -13,6 +13,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginPageWidget extends StatefulWidget {
@@ -36,6 +37,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   TextEditingController? passwordController;
 
   late bool passwordVisibility;
+  bool bioLogin = false;
   bool? checkboxValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var hasContainerTriggered1 = false;
@@ -124,6 +126,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
         ),
       ],
     ),
+    'tabBarOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      applyInitialState: true,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
   };
 
   @override
@@ -135,10 +150,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           !anim.applyInitialState),
       this,
     );
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      animationsMap['tabBarOnPageLoadAnimation']!.controller.forward(from: 0.0);
-    });
 
     displayNameController = TextEditingController();
     emailAddressCreateController = TextEditingController();
@@ -197,26 +208,21 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                       ),
                       child: Stack(
                         children: [
-                          if (responsiveVisibility(
-                            context: context,
-                            tabletLandscape: false,
-                            desktop: false,
-                          ))
-                            Align(
-                              alignment: AlignmentDirectional(2.5, -1.2),
-                              child: Container(
-                                width: 300,
-                                height: 300,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                              ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation1']!,
-                                  hasBeenTriggered: hasContainerTriggered1),
-                            ),
+                          Align(
+                            alignment: AlignmentDirectional(2.5, -1.2),
+                            child: Container(
+                              width: 300,
+                              height: 300,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation1']!,
+                                hasBeenTriggered: hasContainerTriggered1),
+                          ),
                           Align(
                             alignment: AlignmentDirectional(1, -1.4),
                             child: Container(
@@ -232,26 +238,21 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                     'containerOnActionTriggerAnimation2']!,
                                 hasBeenTriggered: hasContainerTriggered2),
                           ),
-                          if (responsiveVisibility(
-                            context: context,
-                            tabletLandscape: false,
-                            desktop: false,
-                          ))
-                            Align(
-                              alignment: AlignmentDirectional(-1, -1.5),
-                              child: Container(
-                                width: 350,
-                                height: 350,
-                                decoration: BoxDecoration(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                              ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation3']!,
-                                  hasBeenTriggered: hasContainerTriggered3),
-                            ),
+                          Align(
+                            alignment: AlignmentDirectional(-1, -1.5),
+                            child: Container(
+                              width: 350,
+                              height: 350,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation3']!,
+                                hasBeenTriggered: hasContainerTriggered3),
+                          ),
                         ],
                       ),
                     ),
@@ -740,7 +741,17 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                                       FFAppState().useBio = false;
                                                                                     });
                                                                                   }
+                                                                                } else {
+                                                                                  final _localAuth = LocalAuthentication();
+                                                                                  bool _isBiometricSupported = await _localAuth.isDeviceSupported();
+
+                                                                                  if (_isBiometricSupported) {
+                                                                                    bioLogin = await _localAuth.authenticate(localizedReason: 'Please login');
+                                                                                    setState(() {});
+                                                                                  }
                                                                                 }
+
+                                                                                setState(() {});
                                                                               } else {
                                                                                 setState(() {
                                                                                   FFAppState().deleteRememberedPass();
@@ -1510,10 +1521,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                     ),
                                                   ],
                                                 ),
-                                              ).animateOnActionTrigger(
-                                                animationsMap[
-                                                    'tabBarOnActionTriggerAnimation']!,
-                                              ),
+                                              )
+                                                  .animateOnPageLoad(animationsMap[
+                                                      'tabBarOnPageLoadAnimation']!)
+                                                  .animateOnActionTrigger(
+                                                    animationsMap[
+                                                        'tabBarOnActionTriggerAnimation']!,
+                                                  ),
                                             ),
                                           ],
                                         ),

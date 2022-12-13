@@ -246,7 +246,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               0.375,
                                           lineWidth: 40,
                                           animation: true,
-                                          progressColor: valueOrDefault<Color>(
+                                          progressColor: Color(0x40FFFFFF),
+                                          backgroundColor:
+                                              valueOrDefault<Color>(
                                             () {
                                               if (widget.latestMmol! < 3.9) {
                                                 return FlutterFlowTheme.of(
@@ -266,7 +268,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             FlutterFlowTheme.of(context)
                                                 .primaryBackground,
                                           ),
-                                          backgroundColor: Color(0x40FFFFFF),
                                           center: Text(
                                             formatNumber(
                                               widget.latestMmol,
@@ -483,36 +484,94 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           ),
                           child: InkWell(
                             onTap: () async {
-                              if (animationsMap[
-                                      'iconOnActionTriggerAnimation'] !=
-                                  null) {
-                                animationsMap['iconOnActionTriggerAnimation']!
-                                    .controller
-                                    .forward(from: 0.0);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation2'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation2']!
-                                    .controller
-                                    .forward(from: 0.0);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation1'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation1']!
-                                    .controller
-                                    .forward(from: 0.0);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation3'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation3']!
-                                    .controller
-                                    .forward(from: 0.0);
+                              if (FFAppState().FABOpen) {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward(from: 0.0)
+                                      .whenComplete(animationsMap[
+                                              'iconOnActionTriggerAnimation']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward(from: 0.0)
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation2']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward(from: 0.0)
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation1']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward(from: 0.0)
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation3']!
+                                          .controller
+                                          .reverse);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = false;
+                                });
+                                return;
+                              } else {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = true;
+                                });
+                                return;
                               }
                             },
                             child: Icon(
