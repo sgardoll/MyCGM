@@ -189,9 +189,8 @@ class _RedirectWidgetState extends State<RedirectWidget>
             'Main',
             queryParams: {
               'mmolList': serializeParam(
-                functions.sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
-                  (apiResult?.jsonBody ?? ''),
-                ).toList()),
+                functions.sgvListDynamicToMmolListDouble(
+                    (apiResult?.jsonBody ?? '')),
                 ParamType.double,
                 true,
               ),
