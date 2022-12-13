@@ -498,7 +498,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             color: Colors.transparent,
                             boxShadow: [
                               BoxShadow(
-                                blurRadius: 12,
+                                blurRadius: 24,
                                 color: Color(0x40000000),
                                 offset: Offset(0, 2),
                                 spreadRadius: 12,
