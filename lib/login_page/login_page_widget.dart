@@ -13,7 +13,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 class LoginPageWidget extends StatefulWidget {
@@ -119,42 +118,20 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
 
   late bool passwordVisibility;
   bool? checkboxValue;
-  bool bioAfterAutoLogin = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      Function() _navigate = () {};
-      if ((FFAppState().rememberedPass != null &&
-              FFAppState().rememberedPass != '') &&
-          (FFAppState().rememberedUser != null &&
-              FFAppState().rememberedUser != '')) {
-        GoRouter.of(context).prepareAuthEvent();
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
+      this,
+    );
 
-        final user = await signInWithEmail(
-          context,
-          emailAddressController!.text,
-          passwordController!.text,
-        );
-        if (user == null) {
-          return;
-        }
-
-        _navigate = () => context.goNamedAuth('redirect', mounted);
-        final _localAuth = LocalAuthentication();
-        bool _isBiometricSupported = await _localAuth.isDeviceSupported();
-
-        if (_isBiometricSupported) {
-          bioAfterAutoLogin = await _localAuth.authenticate(
-              localizedReason: 'Please authenticate to login');
-          setState(() {});
-        }
-      }
-
-      _navigate();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      animationsMap['tabBarOnPageLoadAnimation']!.controller.forward(from: 0.0);
     });
 
     displayNameController = TextEditingController();
@@ -174,17 +151,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
             ? FFAppState().rememberedPass
             : '');
     passwordVisibility = false;
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
-
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      animationsMap['tabBarOnPageLoadAnimation']!.controller.forward(from: 0.0);
-    });
-
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -396,11 +362,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                       labelColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .primaryText,
+                                                              .secondaryText,
                                                       unselectedLabelColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .secondaryText,
+                                                              .secondaryBackground,
                                                       labelPadding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
@@ -412,7 +378,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                       indicatorColor:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .secondaryColor,
+                                                              .secondaryBackground,
                                                       indicatorWeight: 2,
                                                       tabs: [
                                                         Tab(
@@ -517,7 +483,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     ),
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .bodyText1,
+                                                                        .bodyText1
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Poppins',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryText,
+                                                                        ),
                                                                     maxLines:
                                                                         null,
                                                                   ),
@@ -599,14 +571,20 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                                 ),
                                                                               ),
                                                                             ),
-                                                                            style:
-                                                                                FlutterFlowTheme.of(context).bodyText1,
+                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                  fontFamily: 'Poppins',
+                                                                                  color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                ),
                                                                           ),
                                                                         ),
                                                                       ),
                                                                       FFButtonWidget(
                                                                         onPressed:
                                                                             () async {
+                                                                          if (animationsMap['tabBarOnActionTriggerAnimation'] !=
+                                                                              null) {
+                                                                            animationsMap['tabBarOnActionTriggerAnimation']!.controller.forward(from: 0.0);
+                                                                          }
                                                                           if (animationsMap['containerOnActionTriggerAnimation1'] !=
                                                                               null) {
                                                                             animationsMap['containerOnActionTriggerAnimation1']!.controller.forward(from: 0.0);
