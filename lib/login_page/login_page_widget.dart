@@ -24,11 +24,50 @@ class LoginPageWidget extends StatefulWidget {
 
 class _LoginPageWidgetState extends State<LoginPageWidget>
     with TickerProviderStateMixin {
+  TextEditingController? displayNameController;
+  TextEditingController? emailAddressCreateController;
+  TextEditingController? passwordCreateController;
+
+  late bool passwordCreateVisibility;
+  TextEditingController? passwordCreateConfirmController;
+
+  late bool passwordCreateConfirmVisibility;
+  TextEditingController? emailAddressController;
+  TextEditingController? passwordController;
+
+  late bool passwordVisibility;
+  bool? checkboxValue;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  var hasContainerTriggered1 = false;
+  var hasContainerTriggered2 = false;
+  var hasContainerTriggered3 = false;
   final animationsMap = {
     'containerOnActionTriggerAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
+        VisibilityEffect(duration: 300.ms),
+        FadeEffect(
+          curve: Curves.easeOut,
+          delay: 300.ms,
+          duration: 2000.ms,
+          begin: 1,
+          end: 0,
+        ),
+        ScaleEffect(
+          curve: Curves.easeOut,
+          delay: 300.ms,
+          duration: 2000.ms,
+          begin: 1,
+          end: 5,
+        ),
+      ],
+    ),
+    'containerOnActionTriggerAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
+      effects: [
+        VisibilityEffect(duration: 300.ms),
         ScaleEffect(
           curve: Curves.easeInOut,
           delay: 300.ms,
@@ -38,41 +77,22 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
         ),
       ],
     ),
-    'containerOnActionTriggerAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 1230.ms,
-          begin: 1,
-          end: 0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 1230.ms,
-          begin: 1,
-          end: 5,
-        ),
-      ],
-    ),
     'containerOnActionTriggerAnimation3': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
+        VisibilityEffect(duration: 1.ms),
         FadeEffect(
           curve: Curves.easeOut,
-          delay: 300.ms,
-          duration: 2000.ms,
+          delay: 0.ms,
+          duration: 1230.ms,
           begin: 1,
           end: 0,
         ),
         ScaleEffect(
           curve: Curves.easeOut,
-          delay: 300.ms,
-          duration: 2000.ms,
+          delay: 0.ms,
+          duration: 1230.ms,
           begin: 1,
           end: 5,
         ),
@@ -105,20 +125,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       ],
     ),
   };
-  TextEditingController? displayNameController;
-  TextEditingController? emailAddressCreateController;
-  TextEditingController? passwordCreateController;
-
-  late bool passwordCreateVisibility;
-  TextEditingController? passwordCreateConfirmController;
-
-  late bool passwordCreateConfirmVisibility;
-  TextEditingController? emailAddressController;
-  TextEditingController? passwordController;
-
-  late bool passwordVisibility;
-  bool? checkboxValue;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -183,87 +189,73 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
               child: Stack(
                 alignment: AlignmentDirectional(0, 1),
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional(1, -1.4),
-                    child: Container(
-                      width: 500,
-                      height: 500,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).tertiaryColor,
-                        shape: BoxShape.circle,
+                  ClipRect(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(
+                        sigmaX: 40,
+                        sigmaY: 40,
                       ),
-                    ).animateOnActionTrigger(
-                      animationsMap['containerOnActionTriggerAnimation1']!,
+                      child: Stack(
+                        children: [
+                          if (responsiveVisibility(
+                            context: context,
+                            tabletLandscape: false,
+                            desktop: false,
+                          ))
+                            Align(
+                              alignment: AlignmentDirectional(2.5, -1.2),
+                              child: Container(
+                                width: 300,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ).animateOnActionTrigger(
+                                  animationsMap[
+                                      'containerOnActionTriggerAnimation1']!,
+                                  hasBeenTriggered: hasContainerTriggered1),
+                            ),
+                          Align(
+                            alignment: AlignmentDirectional(1, -1.4),
+                            child: Container(
+                              width: 500,
+                              height: 500,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation2']!,
+                                hasBeenTriggered: hasContainerTriggered2),
+                          ),
+                          if (responsiveVisibility(
+                            context: context,
+                            tabletLandscape: false,
+                            desktop: false,
+                          ))
+                            Align(
+                              alignment: AlignmentDirectional(-1, -1.5),
+                              child: Container(
+                                width: 350,
+                                height: 350,
+                                decoration: BoxDecoration(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ).animateOnActionTrigger(
+                                  animationsMap[
+                                      'containerOnActionTriggerAnimation3']!,
+                                  hasBeenTriggered: hasContainerTriggered3),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-                  if (responsiveVisibility(
-                    context: context,
-                    tabletLandscape: false,
-                    desktop: false,
-                  ))
-                    Align(
-                      alignment: AlignmentDirectional(-1, -1.5),
-                      child: Container(
-                        width: 350,
-                        height: 350,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).primaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ).animateOnActionTrigger(
-                        animationsMap['containerOnActionTriggerAnimation2']!,
-                      ),
-                    ),
-                  if (responsiveVisibility(
-                    context: context,
-                    phone: false,
-                    tablet: false,
-                  ))
-                    Align(
-                      alignment: AlignmentDirectional(-1.25, -1.5),
-                      child: Container(
-                        width: 600,
-                        height: 600,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).primaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                  if (responsiveVisibility(
-                    context: context,
-                    tabletLandscape: false,
-                    desktop: false,
-                  ))
-                    Align(
-                      alignment: AlignmentDirectional(2.5, -1.2),
-                      child: Container(
-                        width: 300,
-                        height: 300,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ).animateOnActionTrigger(
-                        animationsMap['containerOnActionTriggerAnimation3']!,
-                      ),
-                    ),
-                  if (responsiveVisibility(
-                    context: context,
-                    phone: false,
-                    tablet: false,
-                  ))
-                    Align(
-                      alignment: AlignmentDirectional(1, -0.95),
-                      child: Container(
-                        width: 700,
-                        height: 700,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).secondaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
                   Align(
                     alignment: AlignmentDirectional(0, 1),
                     child: ClipRRect(
@@ -585,17 +577,26 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               null) {
                                                                             animationsMap['tabBarOnActionTriggerAnimation']!.controller.forward(from: 0.0);
                                                                           }
+                                                                          if (animationsMap['containerOnActionTriggerAnimation3'] !=
+                                                                              null) {
+                                                                            setState(() =>
+                                                                                hasContainerTriggered3 = true);
+                                                                            SchedulerBinding.instance.addPostFrameCallback((_) async =>
+                                                                                animationsMap['containerOnActionTriggerAnimation3']!.controller.forward(from: 0.0));
+                                                                          }
                                                                           if (animationsMap['containerOnActionTriggerAnimation1'] !=
                                                                               null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation1']!.controller.forward(from: 0.0);
+                                                                            setState(() =>
+                                                                                hasContainerTriggered1 = true);
+                                                                            SchedulerBinding.instance.addPostFrameCallback((_) async =>
+                                                                                animationsMap['containerOnActionTriggerAnimation1']!.controller.forward(from: 0.0));
                                                                           }
                                                                           if (animationsMap['containerOnActionTriggerAnimation2'] !=
                                                                               null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation2']!.controller.forward(from: 0.0);
-                                                                          }
-                                                                          if (animationsMap['containerOnActionTriggerAnimation3'] !=
-                                                                              null) {
-                                                                            animationsMap['containerOnActionTriggerAnimation3']!.controller.forward(from: 0.0);
+                                                                            setState(() =>
+                                                                                hasContainerTriggered2 = true);
+                                                                            SchedulerBinding.instance.addPostFrameCallback((_) async =>
+                                                                                animationsMap['containerOnActionTriggerAnimation2']!.controller.forward(from: 0.0));
                                                                           }
                                                                           if (animationsMap['tabBarOnActionTriggerAnimation'] !=
                                                                               null) {

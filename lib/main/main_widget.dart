@@ -220,141 +220,116 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       PageController(initialPage: 0),
                                   scrollDirection: Axis.vertical,
                                   children: [
-                                    Stack(
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional(0, -0.4),
-                                          child: CircularPercentIndicator(
-                                            percent: () {
-                                              if (widget.latestMmol == null) {
-                                                return 0.1;
-                                              } else if (widget.latestMmol! <
-                                                  3.9) {
-                                                return 0.1;
+                                        CircularPercentIndicator(
+                                          percent: () {
+                                            if (widget.latestMmol == null) {
+                                              return 0.1;
+                                            } else if (widget.latestMmol! <
+                                                3.9) {
+                                              return 0.1;
+                                            } else if (widget.latestMmol! >
+                                                9.4) {
+                                              return 1.0;
+                                            } else {
+                                              return functions.quickProgressInd(
+                                                  widget.latestMmol!);
+                                            }
+                                          }(),
+                                          radius: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.375,
+                                          lineWidth: 40,
+                                          animation: true,
+                                          progressColor: valueOrDefault<Color>(
+                                            () {
+                                              if (widget.latestMmol! < 3.9) {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .secondaryColor;
                                               } else if (widget.latestMmol! >
                                                   9.4) {
-                                                return 1.0;
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .secondaryBackground;
                                               } else {
-                                                return functions
-                                                    .quickProgressInd(
-                                                        widget.latestMmol!);
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .primaryBackground;
                                               }
                                             }(),
-                                            radius: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.375,
-                                            lineWidth: 40,
-                                            animation: true,
-                                            progressColor:
-                                                valueOrDefault<Color>(
-                                              () {
-                                                if (widget.latestMmol! < 3.9) {
-                                                  return FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryColor;
-                                                } else if (widget.latestMmol! >
-                                                    9.4) {
-                                                  return FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground;
-                                                } else {
-                                                  return FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryBackground;
-                                                }
-                                              }(),
-                                              FlutterFlowTheme.of(context)
-                                                  .primaryBackground,
+                                            FlutterFlowTheme.of(context)
+                                                .primaryBackground,
+                                          ),
+                                          backgroundColor: Color(0x40FFFFFF),
+                                          center: Text(
+                                            formatNumber(
+                                              widget.latestMmol,
+                                              formatType: FormatType.custom,
+                                              format: '#0.0',
+                                              locale: '',
+                                            ).maybeHandleOverflow(
+                                              maxChars: 20,
+                                              replacement: '…',
                                             ),
-                                            backgroundColor: Color(0x40FFFFFF),
-                                            center: Text(
-                                              formatNumber(
-                                                widget.latestMmol,
-                                                formatType: FormatType.custom,
-                                                format: '#0.0',
-                                                locale: '',
-                                              ).maybeHandleOverflow(
-                                                maxChars: 20,
-                                                replacement: '…',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .title1
+                                                .override(
+                                                  fontFamily: 'Poppins',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  fontSize: 90,
+                                                ),
+                                          ),
+                                          startAngle: 0,
+                                        ),
+                                        Align(
+                                          alignment: AlignmentDirectional(0, 0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 12, 0, 0),
+                                            child: AuthUserStreamWidget(
+                                              child: Text(
+                                                valueOrDefault(
+                                                    currentUserDocument?.units,
+                                                    ''),
+                                                textAlign: TextAlign.center,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .title1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                        ),
                                               ),
-                                              textAlign: TextAlign.center,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .title1
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 90,
-                                                      ),
                                             ),
-                                            startAngle: 0,
                                           ),
                                         ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 0, 24),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Align(
-                                                alignment:
-                                                    AlignmentDirectional(0, 0),
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(0, 12, 0, 0),
-                                                  child: AuthUserStreamWidget(
-                                                    child: Text(
-                                                      valueOrDefault(
-                                                          currentUserDocument
-                                                              ?.units,
-                                                          ''),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .title1
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Poppins',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryText,
-                                                              ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Align(
-                                                alignment:
-                                                    AlignmentDirectional(0, 0),
-                                                child: Text(
-                                                  'as of ${functions.minutesAgo(widget.dateString?.toList())}',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
+                                        Align(
+                                          alignment: AlignmentDirectional(0, 0),
+                                          child: Text(
+                                            'as of ${functions.minutesAgo(widget.dateString?.toList())}',
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .title3
+                                                .override(
+                                                  fontFamily: 'Poppins',
+                                                  color: FlutterFlowTheme.of(
                                                           context)
-                                                      .title3
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                      .secondaryText,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
-                                              ),
-                                            ],
                                           ),
                                         ),
                                       ],
