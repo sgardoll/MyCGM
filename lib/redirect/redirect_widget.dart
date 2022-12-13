@@ -185,46 +185,14 @@ class _RedirectWidgetState extends State<RedirectWidget>
           token: valueOrDefault(currentUserDocument?.token, ''),
         );
         if ((apiResult?.succeeded ?? true)) {
-          setState(() {
-            FFAppState().latestMmol =
-                functions.sgvListToMmolDouble(getJsonField(
-              FFAppState().apiJSON,
-              r'''$.sgv''',
-            ))!;
-            FFAppState().mmolList = functions
-                .sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
-                  (apiResult?.jsonBody ?? ''),
-                ).toList())!
-                .toList();
-            FFAppState().dateString = (GetBloodGlucoseCall.dateString(
-              (apiResult?.jsonBody ?? ''),
-            ) as List)
-                .map<String>((s) => s.toString())
-                .toList()
-                .toList();
-          });
-
           context.pushNamed(
             'Main',
             queryParams: {
               'mmolList': serializeParam(
-                FFAppState().mmolList,
-                ParamType.double,
-                true,
-              ),
-              'latestMmol': serializeParam(
-                functions.sgvListToMmolDouble(GetBloodGlucoseCall.sgv(
+                functions.sgvListToMmolListDouble(GetBloodGlucoseCall.sgv(
                   (apiResult?.jsonBody ?? ''),
                 ).toList()),
                 ParamType.double,
-              ),
-              'dateString': serializeParam(
-                (GetBloodGlucoseCall.dateString(
-                  (apiResult?.jsonBody ?? ''),
-                ) as List)
-                    .map<String>((s) => s.toString())
-                    .toList(),
-                ParamType.String,
                 true,
               ),
             }.withoutNulls,
