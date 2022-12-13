@@ -77,7 +77,7 @@ List<double>? jsonToMmolListDouble(dynamic sgv) {
   return l;
 }
 
-double? sgvListDynamicToMmolDouble(List<dynamic> sgv) {
+double? jSONToMmolDouble(dynamic sgv) {
   var i = sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
   return double.parse(i.first);
 }

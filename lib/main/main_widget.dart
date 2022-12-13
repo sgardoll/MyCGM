@@ -21,9 +21,15 @@ class MainWidget extends StatefulWidget {
   const MainWidget({
     Key? key,
     this.apiResult,
+    this.mmolList,
+    this.latestMmol,
+    this.dateString,
   }) : super(key: key);
 
   final dynamic apiResult;
+  final List<double>? mmolList;
+  final double? latestMmol;
+  final List<String>? dateString;
 
   @override
   _MainWidgetState createState() => _MainWidgetState();
@@ -52,6 +58,19 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         ),
       ],
     ),
+    'iconButtonOnPageLoadAnimation1': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      applyInitialState: true,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
     'iconButtonOnActionTriggerAnimation2': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
@@ -68,6 +87,19 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           curve: Curves.easeInOut,
           delay: 100.ms,
           duration: 300.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
+    'iconButtonOnPageLoadAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      applyInitialState: true,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
           begin: 0,
           end: 1,
         ),
@@ -94,6 +126,19 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         ),
       ],
     ),
+    'iconButtonOnPageLoadAnimation3': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      applyInitialState: true,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+      ],
+    ),
   };
   PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -101,18 +146,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        FFAppState().mmolList = functions
-            .jsonToMmolListDouble(getJsonField(
-              widget.apiResult,
-              r'''$.sgv''',
-            ))!
-            .toList();
-      });
-    });
-
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -392,7 +425,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 alignment:
                                                     AlignmentDirectional(0, 0),
                                                 child: Text(
-                                                  'as of ${functions.minutesAgo(widget.dateString)}',
+                                                  'as of ${functions.minutesAgo(widget.dateString?.toList())}',
                                                   textAlign: TextAlign.center,
                                                   style: FlutterFlowTheme.of(
                                                           context)
@@ -500,10 +533,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             onPressed: () {
                               print('AddCarbsButton pressed ...');
                             },
-                          ).animateOnActionTrigger(
-                            animationsMap[
-                                'iconButtonOnActionTriggerAnimation1']!,
-                          ),
+                          )
+                              .animateOnPageLoad(animationsMap[
+                                  'iconButtonOnPageLoadAnimation1']!)
+                              .animateOnActionTrigger(
+                                animationsMap[
+                                    'iconButtonOnActionTriggerAnimation1']!,
+                              ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
@@ -548,13 +584,16 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 },
                               ).then((value) => setState(() {}));
                             },
-                          ).animateOnActionTrigger(
-                            animationsMap[
-                                'iconButtonOnActionTriggerAnimation2']!,
-                          ),
+                          )
+                              .animateOnPageLoad(animationsMap[
+                                  'iconButtonOnPageLoadAnimation2']!)
+                              .animateOnActionTrigger(
+                                animationsMap[
+                                    'iconButtonOnActionTriggerAnimation2']!,
+                              ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
                           child: FlutterFlowIconButton(
                             borderColor: Colors.transparent,
                             borderRadius: 20,
@@ -596,10 +635,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 },
                               ).then((value) => setState(() {}));
                             },
-                          ).animateOnActionTrigger(
-                            animationsMap[
-                                'iconButtonOnActionTriggerAnimation3']!,
-                          ),
+                          )
+                              .animateOnPageLoad(animationsMap[
+                                  'iconButtonOnPageLoadAnimation3']!)
+                              .animateOnActionTrigger(
+                                animationsMap[
+                                    'iconButtonOnActionTriggerAnimation3']!,
+                              ),
                         ),
                         Align(
                           alignment: AlignmentDirectional(0, 1),
