@@ -631,7 +631,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 Align(
                   alignment: AlignmentDirectional(0, 1),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 15),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -644,10 +644,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             color: Colors.transparent,
                             boxShadow: [
                               BoxShadow(
-                                blurRadius: 6,
+                                blurRadius: 12,
                                 color: Color(0x40000000),
                                 offset: Offset(0, 2),
-                                spreadRadius: 6,
+                                spreadRadius: 12,
                               )
                             ],
                             shape: BoxShape.circle,
