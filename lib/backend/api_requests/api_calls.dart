@@ -61,6 +61,10 @@ class GetBloodGlucoseCall {
         r'''$[:].dateString''',
         true,
       );
+  static dynamic singleSgv(dynamic response) => getJsonField(
+        response,
+        r'''$[0].sgv''',
+      );
 }
 
 class PostInsulinCall {

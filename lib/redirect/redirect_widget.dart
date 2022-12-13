@@ -192,19 +192,14 @@ class _RedirectWidgetState extends State<RedirectWidget>
                 (apiResult?.jsonBody ?? ''),
                 ParamType.JSON,
               ),
-              'mmolList': serializeParam(
-                functions.jsonToMmolListDouble(getJsonField(
-                  (apiResult?.jsonBody ?? ''),
-                  r'''$.sgv''',
-                )),
-                ParamType.double,
-                true,
-              ),
               'latestMmol': serializeParam(
-                functions.jsonToMmolDouble(getJsonField(
-                  (apiResult?.jsonBody ?? ''),
-                  r'''$.sgv''',
-                )),
+                valueOrDefault<double>(
+                  functions.singleSgvToDouble(getJsonField(
+                    (apiResult?.jsonBody ?? ''),
+                    r'''$[0].sgv''',
+                  )),
+                  18.0,
+                ),
                 ParamType.double,
               ),
               'dateString': serializeParam(
@@ -214,6 +209,14 @@ class _RedirectWidgetState extends State<RedirectWidget>
                     .map<String>((s) => s.toString())
                     .toList(),
                 ParamType.String,
+                true,
+              ),
+              'mmolList': serializeParam(
+                getJsonField(
+                  (apiResult?.jsonBody ?? ''),
+                  r'''$[:].sgv''',
+                ),
+                ParamType.double,
                 true,
               ),
             }.withoutNulls,

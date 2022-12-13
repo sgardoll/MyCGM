@@ -68,18 +68,16 @@ String? minutesAgo(List<String>? latestDate) {
   }
 }
 
-List<double>? jsonToMmolListDouble(List<dynamic> sgv) {
-//take the list of integers and convert to a list of doubles
-  List<double> l = [];
-  for (int i = 0; i < sgv.length; i++) {
-    l.add(sgv[i] / 18);
-  }
-  return l;
+List<double>? intListToMmolListDouble(List<int> sgv) {
+  // get the $.sgv json path as a list, convert to doubles and divide each value by 18
+  var jsonDoubleList = [];
+  for (int i = 0; i < sgv.length; i++)
+    jsonDoubleList.add(double.parse(sgv.elementAt(i).toString()) / 18);
+  return jsonDoubleList;
 }
 
-double? jsonToMmolDouble(List<dynamic> sgv) {
-  var i = sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
-  return double.parse(i.first);
+List<double> intListToMmolDoubleList(List<int> sgv) {
+  return sgv.map((e) => (e / 18.0).toDouble()).toList();
 }
 
 String? novoCalcBasedOnRatio(
@@ -138,4 +136,9 @@ String novoTo1DecimalPlace(String units) {
 
 double quickProgressInd(double latestMmol) {
   return (latestMmol - 3.9) / (9.4 - 3.9);
+}
+
+double singleSgvToDouble(int singleSgv) {
+  double i = singleSgv.toDouble();
+  return i / 18;
 }
