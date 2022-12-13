@@ -41,31 +41,18 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        VisibilityEffect(duration: 200.ms),
+        VisibilityEffect(duration: 1.ms),
         MoveEffect(
           curve: Curves.easeIn,
-          delay: 200.ms,
+          delay: 0.ms,
           duration: 300.ms,
-          begin: Offset(0, 68),
-          end: Offset(0, 0),
+          begin: Offset(55, 0),
+          end: Offset(-12.5, -22.5),
         ),
         FadeEffect(
           curve: Curves.easeIn,
-          delay: 200.ms,
-          duration: 300.ms,
-          begin: 0,
-          end: 1,
-        ),
-      ],
-    ),
-    'iconButtonOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      applyInitialState: true,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
           delay: 0.ms,
-          duration: 600.ms,
+          duration: 300.ms,
           begin: 0,
           end: 1,
         ),
@@ -80,8 +67,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           curve: Curves.easeInOut,
           delay: 100.ms,
           duration: 300.ms,
-          begin: Offset(0, 68),
-          end: Offset(0, 0),
+          begin: Offset(0, 0),
+          end: Offset(0, -55),
         ),
         FadeEffect(
           curve: Curves.easeInOut,
@@ -92,50 +79,37 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         ),
       ],
     ),
-    'iconButtonOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      applyInitialState: true,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0,
-          end: 1,
-        ),
-      ],
-    ),
     'iconButtonOnActionTriggerAnimation3': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        VisibilityEffect(duration: 1.ms),
+        VisibilityEffect(duration: 200.ms),
         MoveEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
+          delay: 200.ms,
           duration: 300.ms,
-          begin: Offset(0, 68),
-          end: Offset(0, 0),
+          begin: Offset(-55, 0),
+          end: Offset(12.5, -22.5),
         ),
         FadeEffect(
           curve: Curves.easeInOut,
-          delay: 0.ms,
+          delay: 200.ms,
           duration: 300.ms,
           begin: 0,
           end: 1,
         ),
       ],
     ),
-    'iconButtonOnPageLoadAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
+    'iconButtonOnActionTriggerAnimation4': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
+        RotateEffect(
+          curve: Curves.linear,
           delay: 0.ms,
-          duration: 600.ms,
+          duration: 300.ms,
           begin: 0,
-          end: 1,
+          end: 0.125,
         ),
       ],
     ),
@@ -483,165 +457,180 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
+                Align(
+                  alignment: AlignmentDirectional(0, 1),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 75,
+                    child: custom_widgets.CurvedNavigationBarWidget(
+                      width: MediaQuery.of(context).size.width,
+                      height: 75,
+                      color: valueOrDefault<Color>(
+                        () {
+                          if (widget.latestMmol! < 3.9) {
+                            return FlutterFlowTheme.of(context).tertiaryColor;
+                          } else if (widget.latestMmol! > 9.4) {
+                            return FlutterFlowTheme.of(context).secondaryColor;
+                          } else {
+                            return FlutterFlowTheme.of(context).primaryColor;
+                          }
+                        }(),
+                        FlutterFlowTheme.of(context).primaryColor,
+                      ),
+                      backgroundColor: Colors.transparent,
+                      buttonBackgroundColor:
+                          FlutterFlowTheme.of(context).secondaryText,
+                      index: 1,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(0, 1),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 60),
+                    child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 20,
+                          borderWidth: 1,
+                          buttonSize: 45,
+                          fillColor: FlutterFlowTheme.of(context).secondaryText,
+                          icon: Icon(
+                            Icons.local_dining_rounded,
+                            color: valueOrDefault<Color>(
+                              () {
+                                if (widget.latestMmol! < 3.9) {
+                                  return FlutterFlowTheme.of(context)
+                                      .tertiaryColor;
+                                } else if (widget.latestMmol! > 9.4) {
+                                  return FlutterFlowTheme.of(context)
+                                      .secondaryColor;
+                                } else {
+                                  return FlutterFlowTheme.of(context)
+                                      .primaryColor;
+                                }
+                              }(),
+                              FlutterFlowTheme.of(context).primaryColor,
+                            ),
+                            size: 25,
+                          ),
+                          onPressed: () {
+                            print('AddCarbsButton pressed ...');
+                          },
+                        ).animateOnActionTrigger(
+                          animationsMap['iconButtonOnActionTriggerAnimation1']!,
+                        ),
+                        FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 20,
+                          borderWidth: 1,
+                          buttonSize: 45,
+                          fillColor: FlutterFlowTheme.of(context).secondaryText,
+                          icon: Icon(
+                            Icons.speed_rounded,
+                            color: valueOrDefault<Color>(
+                              () {
+                                if (widget.latestMmol! < 3.9) {
+                                  return FlutterFlowTheme.of(context)
+                                      .tertiaryColor;
+                                } else if (widget.latestMmol! > 9.4) {
+                                  return FlutterFlowTheme.of(context)
+                                      .secondaryColor;
+                                } else {
+                                  return FlutterFlowTheme.of(context)
+                                      .primaryColor;
+                                }
+                              }(),
+                              FlutterFlowTheme.of(context).primaryColor,
+                            ),
+                            size: 25,
+                          ),
+                          onPressed: () async {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: POSTInsulinWidget(
+                                    insulinType: 'Novorapid',
+                                    latestMmol: widget.latestMmol,
+                                  ),
+                                );
+                              },
+                            ).then((value) => setState(() {}));
+                          },
+                        ).animateOnActionTrigger(
+                          animationsMap['iconButtonOnActionTriggerAnimation2']!,
+                        ),
+                        FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 20,
+                          borderWidth: 1,
+                          buttonSize: 45,
+                          fillColor: FlutterFlowTheme.of(context).secondaryText,
+                          icon: Icon(
+                            Icons.timelapse,
+                            color: valueOrDefault<Color>(
+                              () {
+                                if (widget.latestMmol! < 3.9) {
+                                  return FlutterFlowTheme.of(context)
+                                      .tertiaryColor;
+                                } else if (widget.latestMmol! > 9.4) {
+                                  return FlutterFlowTheme.of(context)
+                                      .secondaryColor;
+                                } else {
+                                  return FlutterFlowTheme.of(context)
+                                      .primaryColor;
+                                }
+                              }(),
+                              FlutterFlowTheme.of(context).primaryColor,
+                            ),
+                            size: 25,
+                          ),
+                          onPressed: () async {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: POSTInsulinWidget(
+                                    insulinType: 'Optisulin',
+                                    latestMmol: widget.latestMmol,
+                                  ),
+                                );
+                              },
+                            ).then((value) => setState(() {}));
+                          },
+                        ).animateOnActionTrigger(
+                          animationsMap['iconButtonOnActionTriggerAnimation3']!,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional(0, 1),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 45),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                          child: FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 20,
-                            borderWidth: 1,
-                            buttonSize: 50,
-                            fillColor:
-                                FlutterFlowTheme.of(context).secondaryText,
-                            icon: Icon(
-                              Icons.local_dining_rounded,
-                              color: valueOrDefault<Color>(
-                                () {
-                                  if (widget.latestMmol! < 3.9) {
-                                    return FlutterFlowTheme.of(context)
-                                        .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
-                                    return FlutterFlowTheme.of(context)
-                                        .secondaryColor;
-                                  } else {
-                                    return FlutterFlowTheme.of(context)
-                                        .primaryColor;
-                                  }
-                                }(),
-                                FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                              size: 25,
-                            ),
-                            onPressed: () {
-                              print('AddCarbsButton pressed ...');
-                            },
-                          )
-                              .animateOnPageLoad(animationsMap[
-                                  'iconButtonOnPageLoadAnimation1']!)
-                              .animateOnActionTrigger(
-                                animationsMap[
-                                    'iconButtonOnActionTriggerAnimation1']!,
-                              ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                          child: FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 20,
-                            borderWidth: 1,
-                            buttonSize: 50,
-                            fillColor:
-                                FlutterFlowTheme.of(context).secondaryText,
-                            icon: Icon(
-                              Icons.timelapse,
-                              color: valueOrDefault<Color>(
-                                () {
-                                  if (widget.latestMmol! < 3.9) {
-                                    return FlutterFlowTheme.of(context)
-                                        .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
-                                    return FlutterFlowTheme.of(context)
-                                        .secondaryColor;
-                                  } else {
-                                    return FlutterFlowTheme.of(context)
-                                        .primaryColor;
-                                  }
-                                }(),
-                                FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                              size: 25,
-                            ),
-                            onPressed: () async {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (context) {
-                                  return Padding(
-                                    padding: MediaQuery.of(context).viewInsets,
-                                    child: POSTInsulinWidget(
-                                      insulinType: 'Optisulin',
-                                      latestMmol: widget.latestMmol,
-                                    ),
-                                  );
-                                },
-                              ).then((value) => setState(() {}));
-                            },
-                          )
-                              .animateOnPageLoad(animationsMap[
-                                  'iconButtonOnPageLoadAnimation2']!)
-                              .animateOnActionTrigger(
-                                animationsMap[
-                                    'iconButtonOnActionTriggerAnimation2']!,
-                              ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                          child: FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 20,
-                            borderWidth: 1,
-                            buttonSize: 50,
-                            fillColor:
-                                FlutterFlowTheme.of(context).secondaryText,
-                            icon: Icon(
-                              Icons.speed_rounded,
-                              color: valueOrDefault<Color>(
-                                () {
-                                  if (widget.latestMmol! < 3.9) {
-                                    return FlutterFlowTheme.of(context)
-                                        .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
-                                    return FlutterFlowTheme.of(context)
-                                        .secondaryColor;
-                                  } else {
-                                    return FlutterFlowTheme.of(context)
-                                        .primaryColor;
-                                  }
-                                }(),
-                                FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                              size: 25,
-                            ),
-                            onPressed: () async {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (context) {
-                                  return Padding(
-                                    padding: MediaQuery.of(context).viewInsets,
-                                    child: POSTInsulinWidget(
-                                      insulinType: 'Novorapid',
-                                      latestMmol: widget.latestMmol,
-                                    ),
-                                  );
-                                },
-                              ).then((value) => setState(() {}));
-                            },
-                          )
-                              .animateOnPageLoad(animationsMap[
-                                  'iconButtonOnPageLoadAnimation3']!)
-                              .animateOnActionTrigger(
-                                animationsMap[
-                                    'iconButtonOnActionTriggerAnimation3']!,
-                              ),
-                        ),
-                        Align(
-                          alignment: AlignmentDirectional(0, 1),
+                        Material(
+                          color: Colors.transparent,
+                          elevation: 12,
+                          shape: const CircleBorder(),
                           child: Container(
-                            width: MediaQuery.of(context).size.width,
+                            width: 60,
                             height: 60,
-                            child: custom_widgets.CurvedNavigationBarWidget(
-                              width: MediaQuery.of(context).size.width,
-                              height: 60,
+                            decoration: BoxDecoration(
                               color: valueOrDefault<Color>(
                                 () {
                                   if (widget.latestMmol! < 3.9) {
@@ -657,29 +646,54 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 }(),
                                 FlutterFlowTheme.of(context).primaryColor,
                               ),
-                              backgroundColor: Colors.transparent,
-                              buttonBackgroundColor: valueOrDefault<Color>(
-                                () {
-                                  if (widget.latestMmol! < 3.9) {
-                                    return FlutterFlowTheme.of(context)
-                                        .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
-                                    return FlutterFlowTheme.of(context)
-                                        .secondaryColor;
-                                  } else {
-                                    return FlutterFlowTheme.of(context)
-                                        .primaryColor;
-                                  }
-                                }(),
-                                FlutterFlowTheme.of(context).primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 30,
+                              borderWidth: 1,
+                              buttonSize: 60,
+                              icon: Icon(
+                                Icons.add_rounded,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                size: 40,
                               ),
-                              index: 2,
+                              onPressed: () async {
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                              },
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'iconButtonOnActionTriggerAnimation4']!,
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),

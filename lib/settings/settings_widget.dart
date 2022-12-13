@@ -67,6 +67,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               ? AppBar(
                   backgroundColor: FlutterFlowTheme.of(context).secondaryText,
                   automaticallyImplyLeading: false,
+                  leading: FlutterFlowIconButton(
+                    borderColor: Colors.transparent,
+                    borderRadius: 30,
+                    borderWidth: 1,
+                    buttonSize: 60,
+                    icon: Icon(
+                      Icons.arrow_back_sharp,
+                      color: FlutterFlowTheme.of(context).primaryText,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      print('IconButton pressed ...');
+                    },
+                  ),
                   title: Text(
                     'Settings',
                     style: FlutterFlowTheme.of(context).title2.override(
@@ -74,26 +88,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           color: FlutterFlowTheme.of(context).primaryText,
                         ),
                   ),
-                  actions: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                      child: FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30,
-                        buttonSize: 48,
-                        icon: Icon(
-                          Icons.close_rounded,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 30,
-                        ),
-                        onPressed: () async {
-                          context.pop();
-                        },
-                      ),
-                    ),
-                  ],
-                  centerTitle: false,
-                  elevation: 4,
+                  actions: [],
+                  centerTitle: true,
+                  elevation: 0,
                 )
               : null,
           body: SafeArea(
@@ -438,7 +435,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 12, 0),
+                                        0, 12, 0, 0),
                                     child: Theme(
                                       data: ThemeData(
                                         checkboxTheme: CheckboxThemeData(
@@ -559,7 +556,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       ),
                                     );
 
-                                    context.pushNamed('Main');
+                                    context.pushNamed('redirect');
                                   },
                                   text: 'Save Changes',
                                   icon: Icon(

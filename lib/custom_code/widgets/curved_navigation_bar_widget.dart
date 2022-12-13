@@ -50,9 +50,9 @@ class _CurvedNavigationBarWidgetState extends State<CurvedNavigationBarWidget> {
       buttonBackgroundColor: widget.buttonBackgroundColor,
       index: widget.index,
       items: <Widget>[
-        Icon(Icons.settings, size: 30),
-        Icon(Icons.refresh, size: 30),
-        Icon(Icons.add_circle_rounded, size: 60),
+        Icon(Icons.settings, size: 30, color: widget.buttonBackgroundColor),
+        Icon(Icons.home, size: 30, color: widget.color),
+        Icon(Icons.refresh, size: 30, color: widget.buttonBackgroundColor),
       ],
       onTap: (index) {
         setState(() {
