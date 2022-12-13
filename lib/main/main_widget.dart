@@ -459,29 +459,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 ),
                 Align(
                   alignment: AlignmentDirectional(0, 1),
-                  child: Container(
+                  child: custom_widgets.CurvedNavigationBarWidget(
                     width: MediaQuery.of(context).size.width,
-                    height: 75,
-                    child: custom_widgets.CurvedNavigationBarWidget(
-                      width: MediaQuery.of(context).size.width,
-                      height: 75,
-                      color: valueOrDefault<Color>(
-                        () {
-                          if (widget.latestMmol! < 3.9) {
-                            return FlutterFlowTheme.of(context).tertiaryColor;
-                          } else if (widget.latestMmol! > 9.4) {
-                            return FlutterFlowTheme.of(context).secondaryColor;
-                          } else {
-                            return FlutterFlowTheme.of(context).primaryColor;
-                          }
-                        }(),
-                        FlutterFlowTheme.of(context).primaryColor,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      buttonBackgroundColor:
-                          FlutterFlowTheme.of(context).secondaryText,
-                      index: 1,
-                    ),
+                    height: 40,
+                    color: Color(0x40FFFFFF),
+                    backgroundColor: Colors.transparent,
+                    buttonBackgroundColor:
+                        FlutterFlowTheme.of(context).secondaryText,
+                    index: 1,
                   ),
                 ),
                 Align(
@@ -617,7 +602,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 Align(
                   alignment: AlignmentDirectional(0, 1),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 45),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 42.5),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
