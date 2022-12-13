@@ -4,7 +4,6 @@ import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'dart:ui';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -188,11 +187,9 @@ class _RedirectWidgetState extends State<RedirectWidget>
           context.pushNamed(
             'Main',
             queryParams: {
-              'mmolList': serializeParam(
-                functions.sgvListDynamicToMmolListDouble(
-                    (apiResult?.jsonBody ?? '')),
-                ParamType.double,
-                true,
+              'apiResult': serializeParam(
+                (apiResult?.jsonBody ?? ''),
+                ParamType.JSON,
               ),
             }.withoutNulls,
           );

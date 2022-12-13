@@ -93,11 +93,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'Main',
               requireAuth: true,
               builder: (context, params) => MainWidget(
-                mmolList:
-                    params.getParam<double>('mmolList', ParamType.double, true),
-                latestMmol: params.getParam('latestMmol', ParamType.double),
-                dateString: params.getParam<String>(
-                    'dateString', ParamType.String, true),
+                apiResult: params.getParam('apiResult', ParamType.JSON),
               ),
             ),
             FFRoute(

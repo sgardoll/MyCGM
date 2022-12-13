@@ -68,7 +68,7 @@ String? minutesAgo(List<String>? latestDate) {
   }
 }
 
-List<double>? sgvListDynamicToMmolListDouble(List<dynamic> sgv) {
+List<double>? jsonToMmolListDouble(dynamic sgv) {
 //take the list of integers and convert to a list of doubles
   List<double> l = [];
   for (int i = 0; i < sgv.length; i++) {

@@ -20,14 +20,10 @@ import 'package:provider/provider.dart';
 class MainWidget extends StatefulWidget {
   const MainWidget({
     Key? key,
-    this.mmolList,
-    this.latestMmol,
-    this.dateString,
+    this.apiResult,
   }) : super(key: key);
 
-  final List<double>? mmolList;
-  final double? latestMmol;
-  final List<String>? dateString;
+  final dynamic apiResult;
 
   @override
   _MainWidgetState createState() => _MainWidgetState();
@@ -105,6 +101,18 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        FFAppState().mmolList = functions
+            .jsonToMmolListDouble(getJsonField(
+              widget.apiResult,
+              r'''$.sgv''',
+            ))!
+            .toList();
+      });
+    });
+
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -384,7 +392,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 alignment:
                                                     AlignmentDirectional(0, 0),
                                                 child: Text(
-                                                  'as of ${functions.minutesAgo(widget.dateString?.toList())}',
+                                                  'as of ${functions.minutesAgo(widget.dateString)}',
                                                   textAlign: TextAlign.center,
                                                   style: FlutterFlowTheme.of(
                                                           context)
