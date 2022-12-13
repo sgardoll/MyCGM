@@ -68,14 +68,6 @@ String? minutesAgo(List<String>? latestDate) {
   }
 }
 
-List<double>? intListToMmolListDouble(List<int> sgv) {
-  // get the $.sgv json path as a list, convert to doubles and divide each value by 18
-  var jsonDoubleList = [];
-  for (int i = 0; i < sgv.length; i++)
-    jsonDoubleList.add(double.parse(sgv.elementAt(i).toString()) / 18);
-  return jsonDoubleList;
-}
-
 List<double> intListToMmolDoubleList(List<int> sgv) {
   return sgv.map((e) => (e / 18.0).toDouble()).toList();
 }

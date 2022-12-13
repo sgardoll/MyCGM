@@ -339,16 +339,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                   xData: widget.dateString!
                                                       .map((e) => e)
                                                       .toList(),
-                                                  yData: widget.mmolList!
-                                                      .map((e) => formatNumber(
-                                                            e,
-                                                            formatType:
-                                                                FormatType
-                                                                    .custom,
-                                                            format: '#0.0',
-                                                            locale: '',
-                                                          ))
-                                                      .toList(),
+                                                  yData: widget.mmolList!,
                                                   settings: LineChartBarData(
                                                     color: Color(0x7FFFFFFF),
                                                     barWidth: 5,

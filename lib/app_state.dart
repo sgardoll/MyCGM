@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:csv/csv.dart';
 import 'flutter_flow/lat_lng.dart';
-import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
   static final FFAppState _instance = FFAppState._internal();
@@ -113,58 +112,6 @@ class FFAppState extends ChangeNotifier {
   void deleteUseBio() {
     notifyListeners();
     secureStorage.delete(key: 'ff_useBio');
-  }
-
-  dynamic _apiJSON;
-  dynamic get apiJSON => _apiJSON;
-  set apiJSON(dynamic _value) {
-    notifyListeners();
-
-    _apiJSON = _value;
-  }
-
-  double _latestMmol = 0.0;
-  double get latestMmol => _latestMmol;
-  set latestMmol(double _value) {
-    notifyListeners();
-
-    _latestMmol = _value;
-  }
-
-  List<double> _mmolList = [];
-  List<double> get mmolList => _mmolList;
-  set mmolList(List<double> _value) {
-    notifyListeners();
-
-    _mmolList = _value;
-  }
-
-  void addToMmolList(double _value) {
-    notifyListeners();
-    _mmolList.add(_value);
-  }
-
-  void removeFromMmolList(double _value) {
-    notifyListeners();
-    _mmolList.remove(_value);
-  }
-
-  List<String> _dateString = [];
-  List<String> get dateString => _dateString;
-  set dateString(List<String> _value) {
-    notifyListeners();
-
-    _dateString = _value;
-  }
-
-  void addToDateString(String _value) {
-    notifyListeners();
-    _dateString.add(_value);
-  }
-
-  void removeFromDateString(String _value) {
-    notifyListeners();
-    _dateString.remove(_value);
   }
 }
 
