@@ -419,7 +419,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       12, 0, 2, 0),
                                   child: Text(
-                                    'Hey there',
+                                    'Welcome back',
                                     style: FlutterFlowTheme.of(context)
                                         .title3
                                         .override(

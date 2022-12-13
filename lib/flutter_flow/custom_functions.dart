@@ -77,7 +77,7 @@ List<double>? sgvListToMmolListDouble(List<int> sgv) {
   return l;
 }
 
-double? sgvListToMmolDouble(List<int> sgv) {
+double? sgvListToMmolDouble(List<dynamic> sgv) {
   var i = sgv.map((e) => (e / 18.0).toStringAsFixed(1)).toList();
   return double.parse(i.first);
 }
