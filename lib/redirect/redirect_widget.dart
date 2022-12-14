@@ -33,19 +33,12 @@ class _RedirectWidgetState extends State<RedirectWidget>
       applyInitialState: true,
       effects: [
         VisibilityEffect(duration: 300.ms),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 300.ms,
-          duration: 2000.ms,
-          begin: 1,
-          end: 0,
-        ),
         ScaleEffect(
-          curve: Curves.easeOut,
+          curve: Curves.easeInOut,
           delay: 300.ms,
-          duration: 2000.ms,
+          duration: 600.ms,
           begin: 1,
-          end: 5,
+          end: 4,
         ),
       ],
     ),
@@ -53,13 +46,27 @@ class _RedirectWidgetState extends State<RedirectWidget>
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        VisibilityEffect(duration: 300.ms),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 300.ms,
-          duration: 600.ms,
+        VisibilityEffect(duration: 1.ms),
+        FadeEffect(
+          curve: Curves.easeOut,
+          delay: 0.ms,
+          duration: 2000.ms,
           begin: 1,
-          end: 4,
+          end: 0,
+        ),
+        ScaleEffect(
+          curve: Curves.easeOut,
+          delay: 0.ms,
+          duration: 2000.ms,
+          begin: 1,
+          end: 5,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 2000.ms,
+          begin: Offset(-100, 100),
+          end: Offset(0, 0),
         ),
       ],
     ),
@@ -144,17 +151,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         .controller
                         .reverse));
       }
-      if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
-        setState(() => hasContainerTriggered1 = true);
-        SchedulerBinding.instance.addPostFrameCallback((_) async =>
-            animationsMap['containerOnActionTriggerAnimation1']!
-                .controller
-                .forward(from: 0.0)
-                .whenComplete(
-                    animationsMap['containerOnActionTriggerAnimation1']!
-                        .controller
-                        .reverse));
-      }
       if (animationsMap['containerOnActionTriggerAnimation2'] != null) {
         setState(() => hasContainerTriggered2 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -163,6 +159,17 @@ class _RedirectWidgetState extends State<RedirectWidget>
                 .forward(from: 0.0)
                 .whenComplete(
                     animationsMap['containerOnActionTriggerAnimation2']!
+                        .controller
+                        .reverse));
+      }
+      if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
+        setState(() => hasContainerTriggered1 = true);
+        SchedulerBinding.instance.addPostFrameCallback((_) async =>
+            animationsMap['containerOnActionTriggerAnimation1']!
+                .controller
+                .forward(from: 0.0)
+                .whenComplete(
+                    animationsMap['containerOnActionTriggerAnimation1']!
                         .controller
                         .reverse));
       }
@@ -317,26 +324,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
                       ),
                       child: Stack(
                         children: [
-                          if (responsiveVisibility(
-                            context: context,
-                            tabletLandscape: false,
-                            desktop: false,
-                          ))
-                            Align(
-                              alignment: AlignmentDirectional(2.5, -1.2),
-                              child: Container(
-                                width: 300,
-                                height: 300,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                              ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation1']!,
-                                  hasBeenTriggered: hasContainerTriggered1),
-                            ),
                           Align(
                             alignment: AlignmentDirectional(1, -1.4),
                             child: Container(
@@ -349,29 +336,39 @@ class _RedirectWidgetState extends State<RedirectWidget>
                               ),
                             ).animateOnActionTrigger(
                                 animationsMap[
+                                    'containerOnActionTriggerAnimation1']!,
+                                hasBeenTriggered: hasContainerTriggered1),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(0, 1),
+                            child: Container(
+                              width: 300,
+                              height: 300,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
                                     'containerOnActionTriggerAnimation2']!,
                                 hasBeenTriggered: hasContainerTriggered2),
                           ),
-                          if (responsiveVisibility(
-                            context: context,
-                            tabletLandscape: false,
-                            desktop: false,
-                          ))
-                            Align(
-                              alignment: AlignmentDirectional(-1, -1.5),
-                              child: Container(
-                                width: 350,
-                                height: 350,
-                                decoration: BoxDecoration(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                              ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation3']!,
-                                  hasBeenTriggered: hasContainerTriggered3),
-                            ),
+                          Align(
+                            alignment: AlignmentDirectional(-1, -1.5),
+                            child: Container(
+                              width: 350,
+                              height: 350,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation3']!,
+                                hasBeenTriggered: hasContainerTriggered3),
+                          ),
                         ],
                       ),
                     ),

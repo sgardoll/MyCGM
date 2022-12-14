@@ -187,7 +187,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                         ),
                         child: Container(
                           width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.65,
+                          height: isWeb == true ? 100.0 : 65.0,
                           decoration: BoxDecoration(
                             color: valueOrDefault<Color>(
                               () {
@@ -231,7 +231,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     Column(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Padding(
                                           padding:
@@ -253,10 +253,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                         widget.latestMmol!);
                                               }
                                             }(),
-                                            radius: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.375,
+                                            radius: 150,
                                             lineWidth: 40,
                                             animation: true,
                                             progressColor: Color(0x40FFFFFF),
@@ -307,28 +304,26 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             startAngle: 0,
                                           ),
                                         ),
-                                        Align(
-                                          alignment: AlignmentDirectional(0, 0),
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 12, 0, 0),
-                                            child: AuthUserStreamWidget(
-                                              child: Text(
-                                                valueOrDefault(
-                                                    currentUserDocument?.units,
-                                                    ''),
-                                                textAlign: TextAlign.center,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .title1
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                        ),
-                                              ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 100),
+                                          child: AuthUserStreamWidget(
+                                            child: Text(
+                                              valueOrDefault(
+                                                  currentUserDocument?.units,
+                                                  ''),
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .title1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                      ),
                                             ),
                                           ),
                                         ),

@@ -47,6 +47,7 @@ dependencies:
   fl_chart: 0.55.0
   flutter_animate: 1.0.0
   flutter_cache_manager: 3.3.0
+  flutter_keyboard_visibility: 5.2.0
   flutter_secure_storage: 6.0.0
   flutter_spinkit: 5.1.0
   font_awesome_flutter: 10.1.0
