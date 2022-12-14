@@ -21,15 +21,15 @@ class MainWidget extends StatefulWidget {
   const MainWidget({
     Key? key,
     this.apiResult,
-    this.mmolList,
     this.latestMmol,
     this.dateString,
+    this.sgvList,
   }) : super(key: key);
 
   final dynamic apiResult;
-  final List<double>? mmolList;
   final double? latestMmol;
   final List<String>? dateString;
+  final List<int>? sgvList;
 
   @override
   _MainWidgetState createState() => _MainWidgetState();
@@ -60,7 +60,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           delay: 0.ms,
           duration: 300.ms,
           begin: Offset(55, 0),
-          end: Offset(-12.5, -22.5),
+          end: Offset(-12.5, -30),
         ),
         FadeEffect(
           curve: Curves.easeInOut,
@@ -102,7 +102,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           delay: 200.ms,
           duration: 300.ms,
           begin: Offset(-55, 0),
-          end: Offset(12.5, -22.5),
+          end: Offset(12.5, -30),
         ),
         FadeEffect(
           curve: Curves.easeInOut,
@@ -359,8 +359,12 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       child: FlutterFlowLineChart(
                                         data: [
                                           FFLineChartData(
-                                            xData: widget.dateString!,
-                                            yData: widget.mmolList!,
+                                            xData: widget.dateString!
+                                                .map((e) => e)
+                                                .toList(),
+                                            yData: functions
+                                                .intListToMmolDoubleList(
+                                                    widget.sgvList!.toList()),
                                             settings: LineChartBarData(
                                               color: Color(0x7FFFFFFF),
                                               barWidth: 5,
@@ -369,7 +373,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                           )
                                         ],
                                         chartStylingInfo: ChartStylingInfo(
+                                          enableTooltip: true,
+                                          tooltipBackgroundColor:
+                                              Color(0x801E2429),
                                           backgroundColor: Colors.transparent,
+                                          showGrid: true,
                                           showBorder: false,
                                         ),
                                         axisBounds: AxisBounds(
@@ -640,8 +648,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             ),
                             size: 25,
                           ),
-                          onPressed: () {
-                            print('AddCarbsButton pressed ...');
+                          onPressed: () async {
+                            context.pushNamed('Carbs');
                           },
                         ).animateOnActionTrigger(
                           animationsMap['iconButtonOnActionTriggerAnimation1']!,
@@ -672,7 +680,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             size: 25,
                           ),
                           onPressed: () async {
-                            showModalBottomSheet(
+                            await showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               context: context,
@@ -716,7 +724,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             size: 25,
                           ),
                           onPressed: () async {
-                            showModalBottomSheet(
+                            await showModalBottomSheet(
                               isScrollControlled: true,
                               backgroundColor: Colors.transparent,
                               context: context,

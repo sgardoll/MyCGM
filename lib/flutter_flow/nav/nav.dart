@@ -94,17 +94,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               requireAuth: true,
               builder: (context, params) => MainWidget(
                 apiResult: params.getParam('apiResult', ParamType.JSON),
-                mmolList:
-                    params.getParam<double>('mmolList', ParamType.double, true),
                 latestMmol: params.getParam('latestMmol', ParamType.double),
                 dateString: params.getParam<String>(
                     'dateString', ParamType.String, true),
+                sgvList: params.getParam<int>('sgvList', ParamType.int, true),
               ),
             ),
             FFRoute(
               name: 'Settings',
               path: 'Settings',
               builder: (context, params) => SettingsWidget(),
+            ),
+            FFRoute(
+              name: 'Carbs',
+              path: 'carbs',
+              builder: (context, params) => CarbsWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

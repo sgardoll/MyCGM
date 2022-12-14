@@ -185,6 +185,12 @@ class _RedirectWidgetState extends State<RedirectWidget>
           token: valueOrDefault(currentUserDocument?.token, ''),
         );
         if ((apiResult?.succeeded ?? true)) {
+          if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
+            animationsMap['containerOnActionTriggerAnimation5']!
+                .controller
+                .forward(from: 0.0);
+          }
+
           context.pushNamed(
             'Main',
             queryParams: {
@@ -211,12 +217,11 @@ class _RedirectWidgetState extends State<RedirectWidget>
                 ParamType.String,
                 true,
               ),
-              'mmolList': serializeParam(
-                getJsonField(
+              'sgvList': serializeParam(
+                GetBloodGlucoseCall.sgv(
                   (apiResult?.jsonBody ?? ''),
-                  r'''$[:].sgv''',
                 ),
-                ParamType.double,
+                ParamType.int,
                 true,
               ),
             }.withoutNulls,
@@ -490,8 +495,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                             child: Container(
                               height: 50,
                               decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
+                                color: Color(0x00FFFFFF),
                                 boxShadow: [
                                   BoxShadow(
                                     blurRadius: 4,
@@ -556,8 +560,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                             child: Container(
                               height: 50,
                               decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .primaryBackground,
+                                color: Color(0x00FFFFFF),
                                 boxShadow: [
                                   BoxShadow(
                                     blurRadius: 4,
