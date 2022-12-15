@@ -177,12 +177,15 @@ class _RedirectWidgetState extends State<RedirectWidget>
               valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
           (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
               valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
-          (valueOrDefault(currentUserDocument?.units, '') != null &&
-              valueOrDefault(currentUserDocument?.units, '') != '') &&
           (valueOrDefault(currentUserDocument?.token, '') != null &&
               valueOrDefault(currentUserDocument?.token, '') != '')) {
         if (animationsMap['containerOnActionTriggerAnimation4'] != null) {
           animationsMap['containerOnActionTriggerAnimation4']!
+              .controller
+              .forward(from: 0.0);
+        }
+        if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
+          animationsMap['containerOnActionTriggerAnimation5']!
               .controller
               .forward(from: 0.0);
         }
@@ -192,12 +195,6 @@ class _RedirectWidgetState extends State<RedirectWidget>
           token: valueOrDefault(currentUserDocument?.token, ''),
         );
         if ((apiResult?.succeeded ?? true)) {
-          if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
-            animationsMap['containerOnActionTriggerAnimation5']!
-                .controller
-                .forward(from: 0.0);
-          }
-
           context.pushNamed(
             'Main',
             queryParams: {

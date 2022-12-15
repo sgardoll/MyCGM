@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "988337456155-ku9t4pq4co0ar4lbeomd78ricvr99mfe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.connectio.mycgm",
+            "certificate_hash": "8cff69986a4738aaad925b8ad0c37cc6fe49681d"
+          }
+        },
+        {
           "client_id": "988337456155-9jhkpbtd40aoos7b360bt25md8mrv9at.apps.googleusercontent.com",
           "client_type": 3
         }
