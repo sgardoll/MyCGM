@@ -285,7 +285,7 @@ class FFRoute {
                   color: Color(0xFF001219),
                   child: Center(
                     child: Image.asset(
-                      'assets/images/Heart-White-50.png',
+                      'assets/images/Icon.png',
                       width: MediaQuery.of(context).size.width * 0.3,
                       fit: BoxFit.cover,
                     ),
