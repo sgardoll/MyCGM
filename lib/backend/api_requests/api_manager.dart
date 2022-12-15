@@ -18,6 +18,7 @@ enum BodyType {
   JSON,
   TEXT,
   X_WWW_FORM_URL_ENCODED,
+  MULTIPART,
 }
 
 class ApiCallRecord extends Equatable {
@@ -122,6 +123,11 @@ class ApiManager {
       'Invalid ApiCallType $type for request with body',
     );
     final postBody = createBody(headers, params, body, bodyType);
+
+    if (bodyType == BodyType.MULTIPART) {
+      return multipartRequest(type, apiUrl, headers, params, returnBody);
+    }
+
     final requestFn = {
       ApiCallType.POST: http.post,
       ApiCallType.PUT: http.put,
@@ -129,6 +135,27 @@ class ApiManager {
     }[type]!;
     final response = await requestFn(Uri.parse(apiUrl),
         headers: toStringMap(headers), body: postBody);
+    return ApiCallResponse.fromHttpResponse(response, returnBody);
+  }
+
+  static Future<ApiCallResponse> multipartRequest(
+    ApiCallType? type,
+    String apiUrl,
+    Map<String, dynamic> headers,
+    Map<String, dynamic> params,
+    bool returnBody,
+  ) async {
+    final nonFileParams = toStringMap(params);
+    assert(
+      {ApiCallType.POST, ApiCallType.PUT, ApiCallType.PATCH}.contains(type),
+      'Invalid ApiCallType $type for request with body',
+    );
+    final request = http.MultipartRequest(
+        type.toString().split('.').last, Uri.parse(apiUrl))
+      ..headers.addAll(toStringMap(headers));
+    nonFileParams.forEach((key, value) => request.fields[key] = value);
+
+    final response = await http.Response.fromStream(await request.send());
     return ApiCallResponse.fromHttpResponse(response, returnBody);
   }
 
@@ -152,6 +179,10 @@ class ApiManager {
       case BodyType.X_WWW_FORM_URL_ENCODED:
         contentType = 'application/x-www-form-urlencoded';
         postBody = toStringMap(params ?? {});
+        break;
+      case BodyType.MULTIPART:
+        contentType = 'multipart/form-data';
+        postBody = params;
         break;
       case BodyType.NONE:
       case null:

@@ -1,6 +1,7 @@
 import 'package:built_value/serializer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../auth/auth_util.dart';
 
 import '../flutter_flow/flutter_flow_util.dart';
 
@@ -166,6 +167,7 @@ Future maybeCreateUser(User user) async {
   final userRecord = UsersRecord.collection.doc(user.uid);
   final userExists = await userRecord.get().then((u) => u.exists);
   if (userExists) {
+    currentUserDocument = await UsersRecord.getDocumentOnce(userRecord);
     return;
   }
 
@@ -179,4 +181,6 @@ Future maybeCreateUser(User user) async {
   );
 
   await userRecord.set(userData);
+  currentUserDocument =
+      serializers.deserializeWith(UsersRecord.serializer, userData);
 }
