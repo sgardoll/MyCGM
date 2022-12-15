@@ -282,13 +282,12 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: Color(0xCBFFFFFF),
+                  color: Color(0xFF001219),
                   child: Center(
                     child: Image.asset(
-                      'assets/images/Icon.png',
+                      'assets/images/Heart-White-50.png',
                       width: MediaQuery.of(context).size.width * 0.3,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 )
