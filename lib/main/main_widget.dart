@@ -187,7 +187,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                         ),
                         child: Container(
                           width: double.infinity,
-                          height: isWeb == true ? 100.0 : 65.0,
+                          height: MediaQuery.of(context).size.height * 0.65,
                           decoration: BoxDecoration(
                             color: valueOrDefault<Color>(
                               () {
