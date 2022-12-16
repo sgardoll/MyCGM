@@ -1,29 +1,27 @@
+# MyCGM
 
-<img src="https://www.getvalet.com.au/Header.jpg">
+Introducing MyCGM, the mobile app for diabetics who track their blood glucose levels, insulin treatments, and carb intake. With a clean, simple, and easy-to-use interface, MyCGM takes the hassle out of recording these crucial pieces of information. Simply link your Nightscout account to the app, and MyCGM does the rest, presenting everything in a beautiful interface.
 
-# Introducing Valet
+* Track your blood glucose levels, insulin treatments, and carb intake in a simple, clean, and efficient manner;
+* Featuring a visually appealing interface that shows your levels at a quick glance, with green indicating target range, orange indicating above range, and red indicating below range;
+* See a beautiful chart of your previous glucose readings and an easy-to-read glance of your treatments;
+* COMING SOON: Google Assistant integration will allow you to ask your smart speaker for your latest glucose levels and even add insulin treatments via voice.
+* COMING SOON: Add MyCGM into your smart home automations! Have Google Assistant automatically tell you your blood glucose levels as part of your 'Good Morning' or 'Goodnight' routines/automations.
+* COMING SOON: Get a visual alert when levels are outside range by linking MyCGM to your smart lights. For example, turn specific lights red when you need to take action!
 
-Valet is a fast, efficient and user-friendly hospitality management system that streamlines the operations of hospitality venues. 
-The Android and web-based applications combine to allow easy management of reservations, allocation of tables, menu management and ordering. Valet also integrates with the venue's existing website, allowing customers to make reservations online and ensures that all reservation information is easily accessible for venue staff. 
-With Valet, running a hospitality venue becomes a breeze – whatever’s on the menu - allowing you to focus on providing excellent service to your customers.
+MyCGM cuts through the clutter and gives users a quick, simple, and visually appealing way to track this important health data. 
 
-
-# Valet Android App
-
-The Valet Android app is specifically designed to streamline the operations of hospitality venues on the go.
-
-* Upon launch, staff are presented with the Dashboard with widgets that give staff a snapshot of the day, including information occupancy, reservations and orders.
-* Built from the ground up for speed and efficiency, with a UI that brings functionality to the forefront. 
-* Built using Flutter, making it a reliable and user-friendly tool for managing your venue's operations on the go, and providing the ability to easily extend to iOS, Mac or Windows apps in the future with the same codebase.
-
-
-# Try the Beta today!
-
-[<img src="https://lh3.googleusercontent.com/q1k2l5CwMV31JdDXcpN4Ey7O43PxnjAuZBTmcHEwQxVuv_2wCE2gAAQMWxwNUC2FYEOnYgFPOpw6kmHJWuEGeIBLTj9CuxcOEeU8UXyzWJq4NJM3lg=s0">](https://play.google.com/store/apps/details?id=com.flutterflow.valet)
-
-Available in beta on the Google Play Store.
-
-### [**Try it out here**](https://play.google.com/store/apps/details?id=com.flutterflow.valet) 
+Join the private beta today and take your CGM to the next level.
 
 
 
+## Getting Started
+
+For projects with Firestore integration, you must first run the following commands to ensure the project compiles:
+
+```
+flutter pub get
+flutter packages pub run build_runner build --delete-conflicting-outputs
+```
+
+This command creates the generated files that parse each Record from Firestore into a schema object.
