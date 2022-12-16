@@ -59,8 +59,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 300.ms,
-          begin: Offset(55, 0),
-          end: Offset(-12.5, -30),
+          begin: Offset(75, 37.5),
+          end: Offset(0, 0),
         ),
         FadeEffect(
           curve: Curves.easeInOut,
@@ -80,8 +80,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           curve: Curves.easeInOut,
           delay: 100.ms,
           duration: 300.ms,
-          begin: Offset(0, 0),
-          end: Offset(0, -55),
+          begin: Offset(0, 75),
+          end: Offset(0, 0),
         ),
         FadeEffect(
           curve: Curves.easeInOut,
@@ -101,8 +101,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           curve: Curves.easeInOut,
           delay: 200.ms,
           duration: 300.ms,
-          begin: Offset(-55, 0),
-          end: Offset(12.5, -30),
+          begin: Offset(-75, 37.5),
+          end: Offset(0, 0),
         ),
         FadeEffect(
           curve: Curves.easeInOut,
@@ -490,8 +490,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          width: 60,
-                          height: 60,
+                          width: 90,
+                          height: 90,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             boxShadow: [
@@ -599,7 +599,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             child: Icon(
                               Icons.add_rounded,
                               color: FlutterFlowTheme.of(context).secondaryText,
-                              size: 60,
+                              size: 75,
                             ),
                           ).animateOnActionTrigger(
                             animationsMap['iconOnActionTriggerAnimation']!,
@@ -614,128 +614,145 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
                     child: Row(
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 20,
-                          borderWidth: 1,
-                          buttonSize: 45,
-                          fillColor: FlutterFlowTheme.of(context).secondaryText,
-                          icon: Icon(
-                            Icons.local_dining_rounded,
-                            color: valueOrDefault<Color>(
-                              () {
-                                if (widget.latestMmol! < 3.9) {
-                                  return FlutterFlowTheme.of(context)
-                                      .tertiaryColor;
-                                } else if (widget.latestMmol! > 9.4) {
-                                  return FlutterFlowTheme.of(context)
-                                      .secondaryColor;
-                                } else {
-                                  return FlutterFlowTheme.of(context)
-                                      .primaryColor;
-                                }
-                              }(),
-                              FlutterFlowTheme.of(context).primaryColor,
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 15, 37.5),
+                          child: FlutterFlowIconButton(
+                            borderColor: Colors.transparent,
+                            borderRadius: 50,
+                            borderWidth: 1,
+                            buttonSize: 60,
+                            fillColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            icon: Icon(
+                              Icons.local_dining_rounded,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (widget.latestMmol! < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (widget.latestMmol! > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryColor,
+                              ),
+                              size: 30,
                             ),
-                            size: 25,
+                            onPressed: () async {
+                              context.pushNamed('Carbs');
+                            },
+                          ).animateOnActionTrigger(
+                            animationsMap[
+                                'iconButtonOnActionTriggerAnimation1']!,
                           ),
-                          onPressed: () async {
-                            context.pushNamed('Carbs');
-                          },
-                        ).animateOnActionTrigger(
-                          animationsMap['iconButtonOnActionTriggerAnimation1']!,
                         ),
-                        FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 20,
-                          borderWidth: 1,
-                          buttonSize: 45,
-                          fillColor: FlutterFlowTheme.of(context).secondaryText,
-                          icon: Icon(
-                            Icons.speed_rounded,
-                            color: valueOrDefault<Color>(
-                              () {
-                                if (widget.latestMmol! < 3.9) {
-                                  return FlutterFlowTheme.of(context)
-                                      .tertiaryColor;
-                                } else if (widget.latestMmol! > 9.4) {
-                                  return FlutterFlowTheme.of(context)
-                                      .secondaryColor;
-                                } else {
-                                  return FlutterFlowTheme.of(context)
-                                      .primaryColor;
-                                }
-                              }(),
-                              FlutterFlowTheme.of(context).primaryColor,
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 75),
+                          child: FlutterFlowIconButton(
+                            borderColor: Colors.transparent,
+                            borderRadius: 50,
+                            borderWidth: 1,
+                            buttonSize: 60,
+                            fillColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            icon: Icon(
+                              Icons.speed_rounded,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (widget.latestMmol! < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (widget.latestMmol! > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryColor,
+                              ),
+                              size: 30,
                             ),
-                            size: 25,
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                    padding: MediaQuery.of(context).viewInsets,
+                                    child: POSTInsulinWidget(
+                                      insulinType: 'Novorapid',
+                                      latestMmol: widget.latestMmol,
+                                    ),
+                                  );
+                                },
+                              ).then((value) => setState(() {}));
+                            },
+                          ).animateOnActionTrigger(
+                            animationsMap[
+                                'iconButtonOnActionTriggerAnimation2']!,
                           ),
-                          onPressed: () async {
-                            await showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              builder: (context) {
-                                return Padding(
-                                  padding: MediaQuery.of(context).viewInsets,
-                                  child: POSTInsulinWidget(
-                                    insulinType: 'Novorapid',
-                                    latestMmol: widget.latestMmol,
-                                  ),
-                                );
-                              },
-                            ).then((value) => setState(() {}));
-                          },
-                        ).animateOnActionTrigger(
-                          animationsMap['iconButtonOnActionTriggerAnimation2']!,
                         ),
-                        FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 20,
-                          borderWidth: 1,
-                          buttonSize: 45,
-                          fillColor: FlutterFlowTheme.of(context).secondaryText,
-                          icon: Icon(
-                            Icons.timelapse,
-                            color: valueOrDefault<Color>(
-                              () {
-                                if (widget.latestMmol! < 3.9) {
-                                  return FlutterFlowTheme.of(context)
-                                      .tertiaryColor;
-                                } else if (widget.latestMmol! > 9.4) {
-                                  return FlutterFlowTheme.of(context)
-                                      .secondaryColor;
-                                } else {
-                                  return FlutterFlowTheme.of(context)
-                                      .primaryColor;
-                                }
-                              }(),
-                              FlutterFlowTheme.of(context).primaryColor,
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(15, 0, 0, 37.5),
+                          child: FlutterFlowIconButton(
+                            borderColor: Colors.transparent,
+                            borderRadius: 50,
+                            borderWidth: 1,
+                            buttonSize: 60,
+                            fillColor:
+                                FlutterFlowTheme.of(context).secondaryText,
+                            icon: Icon(
+                              Icons.timelapse,
+                              color: valueOrDefault<Color>(
+                                () {
+                                  if (widget.latestMmol! < 3.9) {
+                                    return FlutterFlowTheme.of(context)
+                                        .tertiaryColor;
+                                  } else if (widget.latestMmol! > 9.4) {
+                                    return FlutterFlowTheme.of(context)
+                                        .secondaryColor;
+                                  } else {
+                                    return FlutterFlowTheme.of(context)
+                                        .primaryColor;
+                                  }
+                                }(),
+                                FlutterFlowTheme.of(context).primaryColor,
+                              ),
+                              size: 30,
                             ),
-                            size: 25,
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                    padding: MediaQuery.of(context).viewInsets,
+                                    child: POSTInsulinWidget(
+                                      insulinType: 'Optisulin',
+                                      latestMmol: widget.latestMmol,
+                                    ),
+                                  );
+                                },
+                              ).then((value) => setState(() {}));
+                            },
+                          ).animateOnActionTrigger(
+                            animationsMap[
+                                'iconButtonOnActionTriggerAnimation3']!,
                           ),
-                          onPressed: () async {
-                            await showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              builder: (context) {
-                                return Padding(
-                                  padding: MediaQuery.of(context).viewInsets,
-                                  child: POSTInsulinWidget(
-                                    insulinType: 'Optisulin',
-                                    latestMmol: widget.latestMmol,
-                                  ),
-                                );
-                              },
-                            ).then((value) => setState(() {}));
-                          },
-                        ).animateOnActionTrigger(
-                          animationsMap['iconButtonOnActionTriggerAnimation3']!,
                         ),
                       ],
                     ),
