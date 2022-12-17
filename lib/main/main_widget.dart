@@ -648,7 +648,16 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               size: 30,
                             ),
                             onPressed: () async {
-                              context.pushNamed('Carbs');
+                              context.pushNamed(
+                                'Carbs',
+                                extra: <String, dynamic>{
+                                  kTransitionInfoKey: TransitionInfo(
+                                    hasTransition: true,
+                                    transitionType: PageTransitionType.scale,
+                                    alignment: Alignment.bottomCenter,
+                                  ),
+                                },
+                              );
                             },
                           ).animateOnActionTrigger(
                             animationsMap[
