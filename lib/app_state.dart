@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:csv/csv.dart';
+import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/lat_lng.dart';
 
 class FFAppState extends ChangeNotifier {
@@ -119,6 +121,24 @@ class FFAppState extends ChangeNotifier {
   void deleteFABOpen() {
     notifyListeners();
     secureStorage.delete(key: 'ff_FABOpen');
+  }
+
+  List<DocumentReference> _carbSummary = [];
+  List<DocumentReference> get carbSummary => _carbSummary;
+  set carbSummary(List<DocumentReference> _value) {
+    notifyListeners();
+
+    _carbSummary = _value;
+  }
+
+  void addToCarbSummary(DocumentReference _value) {
+    notifyListeners();
+    _carbSummary.add(_value);
+  }
+
+  void removeFromCarbSummary(DocumentReference _value) {
+    notifyListeners();
+    _carbSummary.remove(_value);
   }
 }
 

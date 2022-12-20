@@ -90,6 +90,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => RedirectWidget(),
             ),
             FFRoute(
+              name: 'Settings',
+              path: 'Settings',
+              builder: (context, params) => SettingsWidget(),
+            ),
+            FFRoute(
               name: 'Main',
               path: 'Main',
               requireAuth: true,
@@ -100,16 +105,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     'dateString', ParamType.String, true),
                 sgvList: params.getParam<int>('sgvList', ParamType.int, true),
               ),
-            ),
-            FFRoute(
-              name: 'Settings',
-              path: 'Settings',
-              builder: (context, params) => SettingsWidget(),
-            ),
-            FFRoute(
-              name: 'Carbs',
-              path: 'carbs',
-              builder: (context, params) => CarbsWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
@@ -283,11 +278,11 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: Color(0xFF001219),
+                  color: FlutterFlowTheme.of(context).secondaryColor,
                   child: Center(
                     child: Image.asset(
-                      'assets/images/Icon.png',
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      'assets/images/Logo3.2-50Transparent.png',
+                      height: MediaQuery.of(context).size.height * 0.3,
                       fit: BoxFit.cover,
                     ),
                   ),

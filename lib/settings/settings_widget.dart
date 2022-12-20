@@ -630,6 +630,17 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                                child: Text(
+                                  'Food composition publications are licensed by Food Standards Australia New Zealand (FSANZ) under a licence based on a Creative Commons Attribution-ShareAlike 3.0 Australia licence. ',
+                                  style: TextStyle(
+                                    color: Color(0xBC000000),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),

@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(DataStruct.serializer)
+      ..add(FoodDataRecord.serializer)
       ..add(IconStruct.serializer)
       ..add(UsersRecord.serializer)
       ..addBuilderFactory(

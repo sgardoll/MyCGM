@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../components/p_o_s_t_carbs_widget.dart';
 import '../components/p_o_s_t_insulin_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_charts.dart';
@@ -256,8 +257,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             radius: 150,
                                             lineWidth: 40,
                                             animation: true,
-                                            progressColor: Color(0x40FFFFFF),
-                                            backgroundColor:
+                                            progressColor:
                                                 valueOrDefault<Color>(
                                               () {
                                                 if (widget.latestMmol! < 3.9) {
@@ -278,6 +278,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               FlutterFlowTheme.of(context)
                                                   .primaryBackground,
                                             ),
+                                            backgroundColor: Color(0x40FFFFFF),
                                             center: Text(
                                               formatNumber(
                                                 widget.latestMmol,
@@ -307,7 +308,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
-                                                  0, 0, 0, 100),
+                                                  0, 0, 0, 50),
                                           child: AuthUserStreamWidget(
                                             child: Text(
                                               valueOrDefault(
@@ -414,7 +415,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       },
                                       effect: smooth_page_indicator
                                           .ExpandingDotsEffect(
-                                        expansionFactor: 2,
+                                        expansionFactor: 5,
                                         spacing: 8,
                                         radius: 16,
                                         dotWidth: 16,
@@ -438,45 +439,111 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 ),
                 Align(
                   alignment: AlignmentDirectional(0, 1),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                  child: InkWell(
+                    onTap: () async {
+                      if (FFAppState().FABOpen) {
+                        if (animationsMap['iconOnActionTriggerAnimation'] !=
+                            null) {
+                          animationsMap['iconOnActionTriggerAnimation']!
+                              .controller
+                              .forward()
+                              .whenComplete(
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .reverse);
+                        }
+                        if (animationsMap[
+                                'iconButtonOnActionTriggerAnimation2'] !=
+                            null) {
+                          animationsMap['iconButtonOnActionTriggerAnimation2']!
+                              .controller
+                              .forward()
+                              .whenComplete(animationsMap[
+                                      'iconButtonOnActionTriggerAnimation2']!
+                                  .controller
+                                  .reverse);
+                        }
+                        if (animationsMap[
+                                'iconButtonOnActionTriggerAnimation1'] !=
+                            null) {
+                          animationsMap['iconButtonOnActionTriggerAnimation1']!
+                              .controller
+                              .forward()
+                              .whenComplete(animationsMap[
+                                      'iconButtonOnActionTriggerAnimation1']!
+                                  .controller
+                                  .reverse);
+                        }
+                        if (animationsMap[
+                                'iconButtonOnActionTriggerAnimation3'] !=
+                            null) {
+                          animationsMap['iconButtonOnActionTriggerAnimation3']!
+                              .controller
+                              .forward()
+                              .whenComplete(animationsMap[
+                                      'iconButtonOnActionTriggerAnimation3']!
+                                  .controller
+                                  .reverse);
+                        }
+                        setState(() {
+                          FFAppState().FABOpen = false;
+                        });
+                      } else {
+                        if (animationsMap['iconOnActionTriggerAnimation'] !=
+                            null) {
+                          animationsMap['iconOnActionTriggerAnimation']!
+                              .controller
+                              .forward(from: 0.0);
+                        }
+                        if (animationsMap[
+                                'iconButtonOnActionTriggerAnimation2'] !=
+                            null) {
+                          animationsMap['iconButtonOnActionTriggerAnimation2']!
+                              .controller
+                              .forward(from: 0.0);
+                        }
+                        if (animationsMap[
+                                'iconButtonOnActionTriggerAnimation1'] !=
+                            null) {
+                          animationsMap['iconButtonOnActionTriggerAnimation1']!
+                              .controller
+                              .forward(from: 0.0);
+                        }
+                        if (animationsMap[
+                                'iconButtonOnActionTriggerAnimation3'] !=
+                            null) {
+                          animationsMap['iconButtonOnActionTriggerAnimation3']!
+                              .controller
+                              .forward(from: 0.0);
+                        }
+                        setState(() {
+                          FFAppState().FABOpen = true;
+                        });
+                      }
+                    },
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0x00FFFFFF), Color(0x4D005F73)],
-                          stops: [0, 1],
-                          begin: AlignmentDirectional(0, -1),
-                          end: AlignmentDirectional(0, 1),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0, 1),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 60,
-                    child: custom_widgets.CurvedNavigationBarWidget(
-                      width: MediaQuery.of(context).size.width,
                       height: 60,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      backgroundColor: Colors.transparent,
-                      buttonBackgroundColor: valueOrDefault<Color>(
-                        () {
-                          if (widget.latestMmol! < 3.9) {
-                            return FlutterFlowTheme.of(context).tertiaryColor;
-                          } else if (widget.latestMmol! > 9.4) {
-                            return FlutterFlowTheme.of(context).secondaryColor;
-                          } else {
-                            return FlutterFlowTheme.of(context).primaryColor;
-                          }
-                        }(),
-                        FlutterFlowTheme.of(context).primaryColor,
+                      child: custom_widgets.CurvedNavigationBarWidget(
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        backgroundColor: Colors.transparent,
+                        buttonBackgroundColor: valueOrDefault<Color>(
+                          () {
+                            if (widget.latestMmol! < 3.9) {
+                              return FlutterFlowTheme.of(context).tertiaryColor;
+                            } else if (widget.latestMmol! > 9.4) {
+                              return FlutterFlowTheme.of(context)
+                                  .secondaryColor;
+                            } else {
+                              return FlutterFlowTheme.of(context).primaryColor;
+                            }
+                          }(),
+                          FlutterFlowTheme.of(context).primaryColor,
+                        ),
+                        index: 1,
                       ),
-                      index: 1,
                     ),
                   ),
                 ),
@@ -648,16 +715,105 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               size: 30,
                             ),
                             onPressed: () async {
-                              context.pushNamed(
-                                'Carbs',
-                                extra: <String, dynamic>{
-                                  kTransitionInfoKey: TransitionInfo(
-                                    hasTransition: true,
-                                    transitionType: PageTransitionType.scale,
-                                    alignment: Alignment.bottomCenter,
-                                  ),
+                              if (FFAppState().FABOpen) {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconOnActionTriggerAnimation']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation2']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation1']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation3']!
+                                          .controller
+                                          .reverse);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = false;
+                                });
+                              } else {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = true;
+                                });
+                              }
+
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) {
+                                  return Padding(
+                                    padding: MediaQuery.of(context).viewInsets,
+                                    child: POSTCarbsWidget(),
+                                  );
                                 },
-                              );
+                              ).then((value) => setState(() {}));
                             },
                           ).animateOnActionTrigger(
                             animationsMap[
@@ -693,6 +849,94 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               size: 30,
                             ),
                             onPressed: () async {
+                              if (FFAppState().FABOpen) {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconOnActionTriggerAnimation']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation2']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation1']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation3']!
+                                          .controller
+                                          .reverse);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = false;
+                                });
+                              } else {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = true;
+                                });
+                              }
+
                               await showModalBottomSheet(
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
@@ -743,6 +987,94 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               size: 30,
                             ),
                             onPressed: () async {
+                              if (FFAppState().FABOpen) {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconOnActionTriggerAnimation']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation2']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation1']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation3']!
+                                          .controller
+                                          .reverse);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = false;
+                                });
+                              } else {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward(from: 0.0);
+                                }
+                                setState(() {
+                                  FFAppState().FABOpen = true;
+                                });
+                              }
+
                               await showModalBottomSheet(
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
