@@ -33,7 +33,6 @@ class FFAppState extends ChangeNotifier {
   bool get recordInsulinWithCarbs => _recordInsulinWithCarbs;
   set recordInsulinWithCarbs(bool _value) {
     notifyListeners();
-
     _recordInsulinWithCarbs = _value;
   }
 
@@ -41,7 +40,6 @@ class FFAppState extends ChangeNotifier {
   String get carbValuForCalc => _carbValuForCalc;
   set carbValuForCalc(String _value) {
     notifyListeners();
-
     _carbValuForCalc = _value;
   }
 
@@ -49,7 +47,6 @@ class FFAppState extends ChangeNotifier {
   String get novoCalcField => _novoCalcField;
   set novoCalcField(String _value) {
     notifyListeners();
-
     _novoCalcField = _value;
   }
 
@@ -57,7 +54,6 @@ class FFAppState extends ChangeNotifier {
   String get ratio => _ratio;
   set ratio(String _value) {
     notifyListeners();
-
     _ratio = _value;
     secureStorage.setString('ff_ratio', _value);
   }
@@ -71,7 +67,6 @@ class FFAppState extends ChangeNotifier {
   String get rememberedPass => _rememberedPass;
   set rememberedPass(String _value) {
     notifyListeners();
-
     _rememberedPass = _value;
     secureStorage.setString('ff_rememberedPass', _value);
   }
@@ -85,7 +80,6 @@ class FFAppState extends ChangeNotifier {
   String get rememberedUser => _rememberedUser;
   set rememberedUser(String _value) {
     notifyListeners();
-
     _rememberedUser = _value;
     secureStorage.setString('ff_rememberedUser', _value);
   }
@@ -99,7 +93,6 @@ class FFAppState extends ChangeNotifier {
   bool get useBio => _useBio;
   set useBio(bool _value) {
     notifyListeners();
-
     _useBio = _value;
     secureStorage.setBool('ff_useBio', _value);
   }
@@ -113,7 +106,6 @@ class FFAppState extends ChangeNotifier {
   bool get FABOpen => _FABOpen;
   set FABOpen(bool _value) {
     notifyListeners();
-
     _FABOpen = _value;
     secureStorage.setBool('ff_FABOpen', _value);
   }
@@ -127,7 +119,6 @@ class FFAppState extends ChangeNotifier {
   List<DocumentReference> get carbSummary => _carbSummary;
   set carbSummary(List<DocumentReference> _value) {
     notifyListeners();
-
     _carbSummary = _value;
   }
 
@@ -153,6 +144,8 @@ LatLng? _latLngFromString(String? val) {
 }
 
 extension FlutterSecureStorageExtensions on FlutterSecureStorage {
+  void remove(String key) => delete(key: key);
+
   Future<String?> getString(String key) async => await read(key: key);
   Future<void> setString(String key, String value) async =>
       await write(key: key, value: value);

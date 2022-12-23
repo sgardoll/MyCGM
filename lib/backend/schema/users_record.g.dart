@@ -17,11 +17,7 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
   @override
   Iterable<Object?> serialize(Serializers serializers, UsersRecord object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'data',
-      serializers.serialize(object.data,
-          specifiedType: const FullType(DataStruct)),
-    ];
+    final result = <Object?>[];
     Object? value;
     value = object.email;
     if (value != null) {
@@ -155,10 +151,6 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
           result.token = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'data':
-          result.data.replace(serializers.deserialize(value,
-              specifiedType: const FullType(DataStruct))! as DataStruct);
-          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -194,8 +186,6 @@ class _$UsersRecord extends UsersRecord {
   @override
   final String? token;
   @override
-  final DataStruct data;
-  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$UsersRecord([void Function(UsersRecordBuilder)? updates]) =>
@@ -212,11 +202,8 @@ class _$UsersRecord extends UsersRecord {
       this.apiKey,
       this.units,
       this.token,
-      required this.data,
       this.ffRef})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(data, r'UsersRecord', 'data');
-  }
+      : super._();
 
   @override
   UsersRecord rebuild(void Function(UsersRecordBuilder) updates) =>
@@ -239,7 +226,6 @@ class _$UsersRecord extends UsersRecord {
         apiKey == other.apiKey &&
         units == other.units &&
         token == other.token &&
-        data == other.data &&
         ffRef == other.ffRef;
   }
 
@@ -254,18 +240,16 @@ class _$UsersRecord extends UsersRecord {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc(
-                                            $jc($jc(0, email.hashCode),
-                                                displayName.hashCode),
-                                            photoUrl.hashCode),
-                                        uid.hashCode),
-                                    createdTime.hashCode),
-                                phoneNumber.hashCode),
-                            nightscout.hashCode),
-                        apiKey.hashCode),
-                    units.hashCode),
-                token.hashCode),
-            data.hashCode),
+                                        $jc($jc(0, email.hashCode),
+                                            displayName.hashCode),
+                                        photoUrl.hashCode),
+                                    uid.hashCode),
+                                createdTime.hashCode),
+                            phoneNumber.hashCode),
+                        nightscout.hashCode),
+                    apiKey.hashCode),
+                units.hashCode),
+            token.hashCode),
         ffRef.hashCode));
   }
 
@@ -282,7 +266,6 @@ class _$UsersRecord extends UsersRecord {
           ..add('apiKey', apiKey)
           ..add('units', units)
           ..add('token', token)
-          ..add('data', data)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -331,10 +314,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   String? get token => _$this._token;
   set token(String? token) => _$this._token = token;
 
-  DataStructBuilder? _data;
-  DataStructBuilder get data => _$this._data ??= new DataStructBuilder();
-  set data(DataStructBuilder? data) => _$this._data = data;
-
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -356,7 +335,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _apiKey = $v.apiKey;
       _units = $v.units;
       _token = $v.token;
-      _data = $v.data.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -378,33 +356,19 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   UsersRecord build() => _build();
 
   _$UsersRecord _build() {
-    _$UsersRecord _$result;
-    try {
-      _$result = _$v ??
-          new _$UsersRecord._(
-              email: email,
-              displayName: displayName,
-              photoUrl: photoUrl,
-              uid: uid,
-              createdTime: createdTime,
-              phoneNumber: phoneNumber,
-              nightscout: nightscout,
-              apiKey: apiKey,
-              units: units,
-              token: token,
-              data: data.build(),
-              ffRef: ffRef);
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'data';
-        data.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'UsersRecord', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ??
+        new _$UsersRecord._(
+            email: email,
+            displayName: displayName,
+            photoUrl: photoUrl,
+            uid: uid,
+            createdTime: createdTime,
+            phoneNumber: phoneNumber,
+            nightscout: nightscout,
+            apiKey: apiKey,
+            units: units,
+            token: token,
+            ffRef: ffRef);
     replace(_$result);
     return _$result;
   }

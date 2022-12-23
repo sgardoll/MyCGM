@@ -357,7 +357,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   inputFormatters: [
                                                     FilteringTextInputFormatter
                                                         .allow(
-                                                            RegExp(r'[a-zA-Z]'))
+                                                            RegExp('[a-zA-Z]'))
                                                   ],
                                                 );
                                               },
@@ -543,7 +543,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   signed: true, decimal: true),
                                               inputFormatters: [
                                                 FilteringTextInputFormatter
-                                                    .allow(RegExp(r'[0-9]'))
+                                                    .allow(RegExp('[0-9]'))
                                               ],
                                             ),
                                           ),
@@ -666,7 +666,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                         decimal: true),
                                                 inputFormatters: [
                                                   FilteringTextInputFormatter
-                                                      .allow(RegExp(r'[0-9]'))
+                                                      .allow(RegExp('[0-9]'))
                                                 ],
                                               ),
                                             ),
@@ -1092,7 +1092,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                               signed: true, decimal: true),
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                                RegExp(r'[0-9]'))
+                                                RegExp('[0-9]'))
                                           ],
                                         ),
                                       ),

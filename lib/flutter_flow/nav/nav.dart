@@ -92,7 +92,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'Settings',
               path: 'Settings',
-              builder: (context, params) => SettingsWidget(),
+              builder: (context, params) => SettingsWidget(
+                latestMmol: params.getParam('latestMmol', ParamType.double),
+              ),
             ),
             FFRoute(
               name: 'Main',

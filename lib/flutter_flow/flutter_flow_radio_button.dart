@@ -46,7 +46,7 @@ class FlutterFlowRadioButton extends StatefulWidget {
   });
 
   final List<String> options;
-  final Function(String?) onChanged;
+  final Function(String?)? onChanged;
   final String initialValue;
   final double optionHeight;
   final TextStyle textStyle;
@@ -83,12 +83,14 @@ class _FlutterFlowRadioButtonState extends State<FlutterFlowRadioButton> {
       child: RadioGroup<String>.builder(
         direction: widget.direction,
         groupValue: groupValue,
-        onChanged: (value) {
-          widget.onChanged(value);
-          setState(() {
-            groupValue = value;
-          });
-        },
+        onChanged: widget.onChanged != null
+            ? (value) {
+                widget.onChanged!(value);
+                setState(() {
+                  groupValue = value;
+                });
+              }
+            : null,
         activeColor: widget.radioButtonColor,
         toggleable: widget.toggleable,
         textStyle: widget.textStyle,

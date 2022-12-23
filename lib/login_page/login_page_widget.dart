@@ -30,14 +30,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   TextEditingController? displayNameController;
   TextEditingController? emailAddressCreateController;
   TextEditingController? passwordCreateController;
-
   late bool passwordCreateVisibility;
   TextEditingController? passwordCreateConfirmController;
-
   late bool passwordCreateConfirmVisibility;
   TextEditingController? emailAddressController;
   TextEditingController? passwordController;
-
   late bool passwordVisibility;
   bool bioLoginResult = false;
   bool? checkboxValue;
@@ -127,6 +124,18 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           duration: 600.ms,
           begin: 0,
           end: 1,
+        ),
+      ],
+    ),
+    'imageOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(0, 200),
+          end: Offset(0, 0),
         ),
       ],
     ),
@@ -1683,7 +1692,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                               height: MediaQuery.of(context).size.height * 0.3,
                               fit: BoxFit.contain,
                             ),
-                          ),
+                          ).animateOnPageLoad(
+                              animationsMap['imageOnPageLoadAnimation']!),
                         ),
                     ],
                   ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import '../../flutter_flow/flutter_flow_util.dart';
 
@@ -37,6 +38,7 @@ class GetBloodGlucoseCall {
         'token': token,
       },
       returnBody: true,
+      decodeUtf8: false,
       cache: false,
     );
   }
@@ -96,6 +98,7 @@ class PostInsulinCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      decodeUtf8: false,
       cache: false,
     );
   }
@@ -135,6 +138,7 @@ class PostCarbsCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      decodeUtf8: false,
       cache: false,
     );
   }

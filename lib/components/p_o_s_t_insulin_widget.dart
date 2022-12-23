@@ -160,7 +160,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                         keyboardType: const TextInputType.numberWithOptions(
                             signed: true, decimal: true),
                         inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                          FilteringTextInputFormatter.allow(RegExp('[0-9]'))
                         ],
                       ),
                     ),

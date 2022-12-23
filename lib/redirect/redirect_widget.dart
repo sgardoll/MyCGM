@@ -472,7 +472,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
                                 child: Text(
-                                  'Loading latest data',
+                                  'Loading data',
                                   style: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
