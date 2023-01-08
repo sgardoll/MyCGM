@@ -50,6 +50,9 @@ abstract class FoodDataRecord
   @BuiltValueField(wireName: 'FoodNameFull')
   String? get foodNameFull;
 
+  @BuiltValueField(wireName: 'Source')
+  String? get source;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -67,7 +70,8 @@ abstract class FoodDataRecord
     ..foodDetail4 = ''
     ..foodDetail5 = ''
     ..foodDetail6 = ''
-    ..foodNameFull = '';
+    ..foodNameFull = ''
+    ..source = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('foodData');
@@ -104,6 +108,7 @@ Map<String, dynamic> createFoodDataRecordData({
   String? foodDetail5,
   String? foodDetail6,
   String? foodNameFull,
+  String? source,
 }) {
   final firestoreData = serializers.toFirestore(
     FoodDataRecord.serializer,
@@ -121,7 +126,8 @@ Map<String, dynamic> createFoodDataRecordData({
         ..foodDetail4 = foodDetail4
         ..foodDetail5 = foodDetail5
         ..foodDetail6 = foodDetail6
-        ..foodNameFull = foodNameFull,
+        ..foodNameFull = foodNameFull
+        ..source = source,
     ),
   );
 

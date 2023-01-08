@@ -134,3 +134,8 @@ double singleSgvToDouble(int singleSgv) {
   double i = singleSgv.toDouble();
   return i / 18;
 }
+
+double? stringToDouble(String? carbs) {
+  // convert string to a double
+  return double.tryParse(carbs ?? '');
+}

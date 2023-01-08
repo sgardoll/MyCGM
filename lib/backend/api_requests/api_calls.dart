@@ -38,6 +38,7 @@ class GetBloodGlucoseCall {
         'token': token,
       },
       returnBody: true,
+      encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
     );
@@ -98,6 +99,7 @@ class PostInsulinCall {
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
     );
@@ -108,36 +110,33 @@ class PostCarbsCall {
   static Future<ApiCallResponse> call({
     String? enteredBy = 'MyCGM_Carbs',
     String? eventType = 'Meal Bolus',
-    String? carbs = 'null',
-    String? insulinInjections = 'null',
-    String? insulin = 'null',
+    double? carbs,
+    String? nightscout = '',
+    String? token = '',
+    String? apiKey = '',
+    String? notes = '',
   }) {
     final body = '''
 [
   {
     "enteredBy": "${enteredBy}",
     "eventType": "${eventType}",
-    "carbs": "${carbs}",
-    "insulinInjections": [
-      {
-        "insulin": "Novorapid",
-        "units": "${insulin}.0"
-      }
-    ]
+    "carbs": ${carbs},
+    "notes": "${notes}"
   }
 ]''';
     return ApiManager.instance.makeApiCall(
       callName: 'PostCarbs',
-      apiUrl:
-          'https://stucgm.herokuapp.com/api/v1/treatments?token=mycgm-4eed72c0613bed6d',
+      apiUrl: 'https://${nightscout}/api/v1/treatments?token=${token}',
       callType: ApiCallType.POST,
       headers: {
-        'api-secret': 'Thisisnotadrill',
+        'api-secret': '${apiKey}',
       },
       params: {},
       body: body,
       bodyType: BodyType.JSON,
       returnBody: true,
+      encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
     );

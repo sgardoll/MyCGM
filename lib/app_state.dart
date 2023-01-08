@@ -19,117 +19,56 @@ class FFAppState extends ChangeNotifier {
   Future initializePersistedState() async {
     secureStorage = FlutterSecureStorage();
     _ratio = await secureStorage.getString('ff_ratio') ?? _ratio;
-    _rememberedPass =
-        await secureStorage.getString('ff_rememberedPass') ?? _rememberedPass;
-    _rememberedUser =
-        await secureStorage.getString('ff_rememberedUser') ?? _rememberedUser;
-    _useBio = await secureStorage.getBool('ff_useBio') ?? _useBio;
     _FABOpen = await secureStorage.getBool('ff_FABOpen') ?? _FABOpen;
+  }
+
+  void update(VoidCallback callback) {
+    callback();
+    notifyListeners();
   }
 
   late FlutterSecureStorage secureStorage;
 
-  bool _recordInsulinWithCarbs = true;
-  bool get recordInsulinWithCarbs => _recordInsulinWithCarbs;
-  set recordInsulinWithCarbs(bool _value) {
-    notifyListeners();
-    _recordInsulinWithCarbs = _value;
-  }
-
-  String _carbValuForCalc = '1';
-  String get carbValuForCalc => _carbValuForCalc;
-  set carbValuForCalc(String _value) {
-    notifyListeners();
-    _carbValuForCalc = _value;
-  }
-
-  String _novoCalcField = '';
-  String get novoCalcField => _novoCalcField;
-  set novoCalcField(String _value) {
-    notifyListeners();
-    _novoCalcField = _value;
-  }
-
   String _ratio = '15';
   String get ratio => _ratio;
   set ratio(String _value) {
-    notifyListeners();
     _ratio = _value;
     secureStorage.setString('ff_ratio', _value);
   }
 
   void deleteRatio() {
-    notifyListeners();
     secureStorage.delete(key: 'ff_ratio');
-  }
-
-  String _rememberedPass = '';
-  String get rememberedPass => _rememberedPass;
-  set rememberedPass(String _value) {
-    notifyListeners();
-    _rememberedPass = _value;
-    secureStorage.setString('ff_rememberedPass', _value);
-  }
-
-  void deleteRememberedPass() {
-    notifyListeners();
-    secureStorage.delete(key: 'ff_rememberedPass');
-  }
-
-  String _rememberedUser = '';
-  String get rememberedUser => _rememberedUser;
-  set rememberedUser(String _value) {
-    notifyListeners();
-    _rememberedUser = _value;
-    secureStorage.setString('ff_rememberedUser', _value);
-  }
-
-  void deleteRememberedUser() {
-    notifyListeners();
-    secureStorage.delete(key: 'ff_rememberedUser');
-  }
-
-  bool _useBio = false;
-  bool get useBio => _useBio;
-  set useBio(bool _value) {
-    notifyListeners();
-    _useBio = _value;
-    secureStorage.setBool('ff_useBio', _value);
-  }
-
-  void deleteUseBio() {
-    notifyListeners();
-    secureStorage.delete(key: 'ff_useBio');
   }
 
   bool _FABOpen = false;
   bool get FABOpen => _FABOpen;
   set FABOpen(bool _value) {
-    notifyListeners();
     _FABOpen = _value;
     secureStorage.setBool('ff_FABOpen', _value);
   }
 
   void deleteFABOpen() {
-    notifyListeners();
     secureStorage.delete(key: 'ff_FABOpen');
   }
 
   List<DocumentReference> _carbSummary = [];
   List<DocumentReference> get carbSummary => _carbSummary;
   set carbSummary(List<DocumentReference> _value) {
-    notifyListeners();
     _carbSummary = _value;
   }
 
   void addToCarbSummary(DocumentReference _value) {
-    notifyListeners();
     _carbSummary.add(_value);
   }
 
   void removeFromCarbSummary(DocumentReference _value) {
-    notifyListeners();
     _carbSummary.remove(_value);
+  }
+
+  double _carbsEntered = 0.0;
+  double get carbsEntered => _carbsEntered;
+  set carbsEntered(double _value) {
+    _carbsEntered = _value;
   }
 }
 

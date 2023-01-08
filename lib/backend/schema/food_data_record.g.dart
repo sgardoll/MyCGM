@@ -111,6 +111,13 @@ class _$FoodDataRecordSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.source;
+    if (value != null) {
+      result
+        ..add('Source')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -186,6 +193,10 @@ class _$FoodDataRecordSerializer
           result.foodNameFull = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'Source':
+          result.source = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -227,6 +238,8 @@ class _$FoodDataRecord extends FoodDataRecord {
   @override
   final String? foodNameFull;
   @override
+  final String? source;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$FoodDataRecord([void Function(FoodDataRecordBuilder)? updates]) =>
@@ -246,6 +259,7 @@ class _$FoodDataRecord extends FoodDataRecord {
       this.foodDetail5,
       this.foodDetail6,
       this.foodNameFull,
+      this.source,
       this.ffRef})
       : super._();
 
@@ -274,6 +288,7 @@ class _$FoodDataRecord extends FoodDataRecord {
         foodDetail5 == other.foodDetail5 &&
         foodDetail6 == other.foodDetail6 &&
         foodNameFull == other.foodNameFull &&
+        source == other.source &&
         ffRef == other.ffRef;
   }
 
@@ -293,22 +308,24 @@ class _$FoodDataRecord extends FoodDataRecord {
                                                 $jc(
                                                     $jc(
                                                         $jc(
-                                                            0,
-                                                            publicFoodKey
+                                                            $jc(
+                                                                0,
+                                                                publicFoodKey
+                                                                    .hashCode),
+                                                            classification
                                                                 .hashCode),
-                                                        classification
-                                                            .hashCode),
-                                                    foodName.hashCode),
-                                                totalsugarsg.hashCode),
-                                            addedsugarsg.hashCode),
-                                        freesugarsg.hashCode),
-                                    foodDetail1.hashCode),
-                                foodDetail2.hashCode),
-                            foodDetail3.hashCode),
-                        foodDetail4.hashCode),
-                    foodDetail5.hashCode),
-                foodDetail6.hashCode),
-            foodNameFull.hashCode),
+                                                        foodName.hashCode),
+                                                    totalsugarsg.hashCode),
+                                                addedsugarsg.hashCode),
+                                            freesugarsg.hashCode),
+                                        foodDetail1.hashCode),
+                                    foodDetail2.hashCode),
+                                foodDetail3.hashCode),
+                            foodDetail4.hashCode),
+                        foodDetail5.hashCode),
+                    foodDetail6.hashCode),
+                foodNameFull.hashCode),
+            source.hashCode),
         ffRef.hashCode));
   }
 
@@ -328,6 +345,7 @@ class _$FoodDataRecord extends FoodDataRecord {
           ..add('foodDetail5', foodDetail5)
           ..add('foodDetail6', foodDetail6)
           ..add('foodNameFull', foodNameFull)
+          ..add('source', source)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -391,6 +409,10 @@ class FoodDataRecordBuilder
   String? get foodNameFull => _$this._foodNameFull;
   set foodNameFull(String? foodNameFull) => _$this._foodNameFull = foodNameFull;
 
+  String? _source;
+  String? get source => _$this._source;
+  set source(String? source) => _$this._source = source;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -415,6 +437,7 @@ class FoodDataRecordBuilder
       _foodDetail5 = $v.foodDetail5;
       _foodDetail6 = $v.foodDetail6;
       _foodNameFull = $v.foodNameFull;
+      _source = $v.source;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -451,6 +474,7 @@ class FoodDataRecordBuilder
             foodDetail5: foodDetail5,
             foodDetail6: foodDetail6,
             foodNameFull: foodNameFull,
+            source: source,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

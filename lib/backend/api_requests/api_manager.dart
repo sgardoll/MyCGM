@@ -123,13 +123,15 @@ class ApiManager {
     String? body,
     BodyType? bodyType,
     bool returnBody,
+    bool encodeBodyUtf8,
     bool decodeUtf8,
   ) async {
     assert(
       {ApiCallType.POST, ApiCallType.PUT, ApiCallType.PATCH}.contains(type),
       'Invalid ApiCallType $type for request with body',
     );
-    final postBody = createBody(headers, params, body, bodyType);
+    final postBody =
+        createBody(headers, params, body, bodyType, encodeBodyUtf8);
 
     if (bodyType == BodyType.MULTIPART) {
       return multipartRequest(
@@ -178,6 +180,7 @@ class ApiManager {
     Map<String, dynamic>? params,
     String? body,
     BodyType? bodyType,
+    bool encodeBodyUtf8,
   ) {
     String? contentType;
     dynamic postBody;
@@ -202,10 +205,14 @@ class ApiManager {
       case null:
         break;
     }
-    if (contentType != null) {
+    // Set "Content-Type" header if it was previously unset.
+    if (contentType != null &&
+        !headers.keys.any((h) => h.toLowerCase() == 'content-type')) {
       headers['Content-Type'] = contentType;
     }
-    return postBody;
+    return encodeBodyUtf8 && postBody is String
+        ? utf8.encode(postBody)
+        : postBody;
   }
 
   Future<ApiCallResponse> makeApiCall({
@@ -217,6 +224,7 @@ class ApiManager {
     String? body,
     BodyType? bodyType,
     bool returnBody = true,
+    bool encodeBodyUtf8 = false,
     bool decodeUtf8 = false,
     bool cache = false,
   }) async {
@@ -260,6 +268,7 @@ class ApiManager {
           body,
           bodyType,
           returnBody,
+          encodeBodyUtf8,
           decodeUtf8,
         );
         break;

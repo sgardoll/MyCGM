@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 20.0.2+1
+version: 20.0.5+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -36,6 +36,9 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   easy_debounce: 2.0.1
   equatable: 2.0.3
+  firebase_analytics: 10.0.7
+  firebase_analytics_platform_interface: 3.3.15
+  firebase_analytics_web: 0.5.1+6
   firebase_auth: 4.2.0
   firebase_auth_platform_interface: 6.11.4
   firebase_auth_web: 5.2.0
@@ -61,11 +64,6 @@ dependencies:
   intl: 0.17.0
   json_path: 0.4.1
   json_serializable: 6.3.1
-  local_auth: 2.1.0
-  local_auth_android: 1.0.6
-  local_auth_ios: 1.0.7
-  local_auth_platform_interface: 1.0.4
-  local_auth_windows: 1.0.1
   page_transition: 2.0.4
   percent_indicator: 4.2.2
   plugin_platform_interface: 2.1.3

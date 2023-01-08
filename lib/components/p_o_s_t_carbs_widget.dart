@@ -1,9 +1,11 @@
 import '../auth/auth_util.dart';
+import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,32 +32,35 @@ class POSTCarbsWidget extends StatefulWidget {
 }
 
 class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
+  ApiCallResponse? apiResultPostCarbs;
+  FoodDataRecord? addFoodToDatabase;
+  TextEditingController? foodNameController;
+  TextEditingController? gramsCarbsController1;
+  bool? addCustomFoodToggleValue;
   List<FoodDataRecord> simpleSearchResults1 = [];
   final searchKey = GlobalKey();
   TextEditingController? searchController;
   String? searchSelectedOption;
-  TextEditingController? gramsCarbsController1;
-  bool? addCustomFoodValue;
-  TextEditingController? gramsCarbsController2;
   PageController? pageViewController;
   List<FoodDataRecord> simpleSearchResults2 = [];
-  TextEditingController? gramsCarbsController3;
+  TextEditingController? gramsCarbsController2;
+  final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    foodNameController = TextEditingController();
     gramsCarbsController1 = TextEditingController();
-    gramsCarbsController2 = TextEditingController();
     searchController = TextEditingController();
-    gramsCarbsController3 = TextEditingController();
+    gramsCarbsController2 = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
+    foodNameController?.dispose();
     gramsCarbsController1?.dispose();
     gramsCarbsController2?.dispose();
-    gramsCarbsController3?.dispose();
     super.dispose();
   }
 
@@ -203,7 +208,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       String>.empty();
                                                 }
                                                 return searchFoodDataRecordList
-                                                    .map((e) => e.foodNameFull!)
+                                                    .map((e) => e.foodNameFull)
+                                                    .withoutNulls
                                                     .toList()
                                                     .toList()
                                                     .where((option) {
@@ -399,6 +405,10 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       ),
                                       showLoadingIndicator: true,
                                       onPressed: () async {
+                                        logFirebaseEvent(
+                                            'P_O_S_T_CARBS_COMP_AddNewButton_ON_TAP');
+                                        logFirebaseEvent(
+                                            'AddNewButton_simple_search');
                                         await queryFoodDataRecordOnce()
                                             .then(
                                               (records) =>
@@ -425,6 +435,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             .whenComplete(
                                                 () => setState(() {}));
 
+                                        logFirebaseEvent(
+                                            'AddNewButton_page_view');
                                         await pageViewController?.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.ease,
@@ -460,142 +472,44 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16, 16, 0, 16),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 0, 16, 16),
-                                            child: TextFormField(
-                                              controller: gramsCarbsController1,
-                                              autofocus: true,
-                                              obscureText: false,
-                                              decoration: InputDecoration(
-                                                hintText: 'grams',
-                                                hintStyle: TextStyle(
-                                                  color: Color(0x7EFFFFFF),
-                                                  fontWeight: FontWeight.w300,
-                                                  fontSize: 16,
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Color(0x7EFFFFFF),
-                                                    width: 3,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Color(0x7EFFFFFF),
-                                                    width: 3,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Color(0x00000000),
-                                                    width: 3,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
-                                                focusedErrorBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Color(0x00000000),
-                                                    width: 3,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
-                                                contentPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            20, 32, 20, 12),
-                                              ),
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .title3
-                                                  .override(
-                                                    fontFamily: 'Poppins',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                              textAlign: TextAlign.start,
-                                              keyboardType: const TextInputType
-                                                      .numberWithOptions(
-                                                  signed: true, decimal: true),
-                                              inputFormatters: [
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp('[0-9]'))
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 0, 16, 0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Switch(
-                                                  value: addCustomFoodValue ??=
-                                                      false,
-                                                  onChanged: (newValue) async {
-                                                    setState(() =>
-                                                        addCustomFoodValue =
-                                                            newValue!);
-                                                  },
-                                                ),
-                                                Text(
-                                                  'Add To Database',
-                                                  maxLines: 2,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title3
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          if (addCustomFoodValue ?? true)
+                              Form(
+                                key: formKey,
+                                autovalidateMode: AutovalidateMode.always,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      16, 16, 0, 16),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
                                             Padding(
                                               padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 16, 16, 16),
+                                                  .fromSTEB(0, 0, 16, 16),
                                               child: TextFormField(
                                                 controller:
-                                                    gramsCarbsController2,
-                                                autofocus: true,
+                                                    gramsCarbsController1,
+                                                onChanged: (_) =>
+                                                    EasyDebounce.debounce(
+                                                  'gramsCarbsController1',
+                                                  Duration(milliseconds: 2000),
+                                                  () async {
+                                                    logFirebaseEvent(
+                                                        'P_O_S_T_CARBS_gramsCarbs_ON_TEXTFIELD_CH');
+                                                    logFirebaseEvent(
+                                                        'gramsCarbs_update_local_state');
+                                                    FFAppState().carbsEntered =
+                                                        functions.stringToDouble(
+                                                            gramsCarbsController2!
+                                                                .text)!;
+                                                  },
+                                                ),
                                                 obscureText: false,
                                                 decoration: InputDecoration(
-                                                  hintText: 'food name',
+                                                  hintText: 'grams',
                                                   hintStyle: TextStyle(
                                                     color: Color(0x7EFFFFFF),
                                                     fontWeight: FontWeight.w300,
@@ -659,67 +573,327 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                               FontWeight.w500,
                                                         ),
                                                 textAlign: TextAlign.start,
+                                                maxLines: null,
                                                 keyboardType:
-                                                    const TextInputType
-                                                            .numberWithOptions(
-                                                        signed: true,
-                                                        decimal: true),
+                                                    TextInputType.number,
+                                                validator: (val) {
+                                                  if (val == null ||
+                                                      val.isEmpty) {
+                                                    return 'Field is required';
+                                                  }
+
+                                                  if (!RegExp(
+                                                          '^\\d+(\\.\\d{1,2})?\$')
+                                                      .hasMatch(val)) {
+                                                    return 'Please enter a valid number';
+                                                  }
+                                                  return null;
+                                                },
                                                 inputFormatters: [
                                                   FilteringTextInputFormatter
                                                       .allow(RegExp('[0-9]'))
                                                 ],
                                               ),
                                             ),
-                                        ],
-                                      ),
-                                    ),
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 100,
-                                      borderWidth: 1,
-                                      buttonSize: 60,
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      icon: Icon(
-                                        Icons.arrow_forward_rounded,
-                                        color: valueOrDefault<Color>(
-                                          () {
-                                            if (widget.latestMmol! < 3.9) {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .tertiaryColor;
-                                            } else if (widget.latestMmol! >
-                                                9.4) {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .secondaryColor;
-                                            } else {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .primaryColor;
-                                            }
-                                          }(),
-                                          FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 16, 0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 6, 0),
+                                                    child: Switch.adaptive(
+                                                      value:
+                                                          addCustomFoodToggleValue ??=
+                                                              false,
+                                                      onChanged:
+                                                          (newValue) async {
+                                                        setState(() =>
+                                                            addCustomFoodToggleValue =
+                                                                newValue!);
+                                                      },
+                                                      activeColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .gray600,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'Add To Database',
+                                                    maxLines: 2,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .title3
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            if (addCustomFoodToggleValue ??
+                                                true)
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 16, 16, 16),
+                                                child: TextFormField(
+                                                  controller:
+                                                      foodNameController,
+                                                  obscureText: false,
+                                                  decoration: InputDecoration(
+                                                    hintText: 'food name',
+                                                    hintStyle: TextStyle(
+                                                      color: Color(0x7EFFFFFF),
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                      fontSize: 16,
+                                                    ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x7EFFFFFF),
+                                                        width: 3,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x7EFFFFFF),
+                                                        width: 3,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    errorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 3,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 3,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    contentPadding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                20, 32, 20, 12),
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .title3
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                          ],
                                         ),
-                                        size: 25,
                                       ),
-                                      showLoadingIndicator: true,
-                                      onPressed: () async {
-                                        final foodDataCreateData =
-                                            createFoodDataRecordData(
-                                          foodNameFull: searchSelectedOption,
-                                        );
-                                        await FoodDataRecord.collection
-                                            .doc()
-                                            .set(foodDataCreateData);
-                                        await pageViewController?.nextPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.ease,
-                                        );
-                                      },
-                                    ),
-                                  ],
+                                      FlutterFlowIconButton(
+                                        borderColor: Colors.transparent,
+                                        borderRadius: 100,
+                                        borderWidth: 1,
+                                        buttonSize: 60,
+                                        fillColor: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        disabledColor:
+                                            FlutterFlowTheme.of(context)
+                                                .gray600,
+                                        icon: Icon(
+                                          Icons.arrow_forward_rounded,
+                                          color: valueOrDefault<Color>(
+                                            () {
+                                              if (widget.latestMmol! < 3.9) {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .tertiaryColor;
+                                              } else if (widget.latestMmol! >
+                                                  9.4) {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .secondaryColor;
+                                              } else {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .primaryColor;
+                                              }
+                                            }(),
+                                            FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                          ),
+                                          size: 25,
+                                        ),
+                                        showLoadingIndicator: true,
+                                        onPressed: /* NOT RECOMMENDED */ gramsCarbsController2!
+                                                    .text ==
+                                                'true'
+                                            ? null
+                                            : () async {
+                                                logFirebaseEvent(
+                                                    'P_O_S_T_CARBS_arrow_forward_rounded_ICN_');
+                                                // Do the API call to just add carbs
+                                                logFirebaseEvent(
+                                                    'IconButton_backend_call');
+                                                apiResultPostCarbs =
+                                                    await PostCarbsCall.call(
+                                                  enteredBy: 'MyCGM',
+                                                  eventType: 'Carb Correction',
+                                                  carbs:
+                                                      FFAppState().carbsEntered,
+                                                  nightscout: valueOrDefault(
+                                                      currentUserDocument
+                                                          ?.nightscout,
+                                                      ''),
+                                                  token: valueOrDefault(
+                                                      currentUserDocument
+                                                          ?.token,
+                                                      ''),
+                                                  apiKey: valueOrDefault(
+                                                      currentUserDocument
+                                                          ?.apiKey,
+                                                      ''),
+                                                  notes: foodNameController!
+                                                                  .text !=
+                                                              null &&
+                                                          foodNameController!
+                                                                  .text !=
+                                                              ''
+                                                      ? foodNameController!.text
+                                                      : '',
+                                                );
+                                                if ((apiResultPostCarbs
+                                                        ?.succeeded ??
+                                                    true)) {
+                                                  logFirebaseEvent(
+                                                      'IconButton_show_snack_bar');
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'Carbs sent to Nightscout successfully',
+                                                        style: TextStyle(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                        ),
+                                                      ),
+                                                      duration: Duration(
+                                                          milliseconds: 4000),
+                                                      backgroundColor:
+                                                          Color(0x00000000),
+                                                    ),
+                                                  );
+                                                  if (addCustomFoodToggleValue !=
+                                                      null) {
+                                                    logFirebaseEvent(
+                                                        'IconButton_backend_call');
+
+                                                    final foodDataCreateData =
+                                                        createFoodDataRecordData(
+                                                      foodNameFull:
+                                                          foodNameController!
+                                                              .text,
+                                                      totalsugarsg: double.tryParse(
+                                                          gramsCarbsController2!
+                                                              .text),
+                                                      source: currentUserUid,
+                                                    );
+                                                    var foodDataRecordReference =
+                                                        FoodDataRecord
+                                                            .collection
+                                                            .doc();
+                                                    await foodDataRecordReference
+                                                        .set(
+                                                            foodDataCreateData);
+                                                    addFoodToDatabase = FoodDataRecord
+                                                        .getDocumentFromData(
+                                                            foodDataCreateData,
+                                                            foodDataRecordReference);
+                                                    logFirebaseEvent(
+                                                        'IconButton_page_view');
+                                                    await pageViewController
+                                                        ?.nextPage(
+                                                      duration: Duration(
+                                                          milliseconds: 300),
+                                                      curve: Curves.ease,
+                                                    );
+                                                  } else {
+                                                    logFirebaseEvent(
+                                                        'IconButton_page_view');
+                                                    await pageViewController
+                                                        ?.animateToPage(
+                                                      2,
+                                                      duration: Duration(
+                                                          milliseconds: 500),
+                                                      curve: Curves.ease,
+                                                    );
+                                                  }
+                                                } else {
+                                                  logFirebaseEvent(
+                                                      'IconButton_show_snack_bar');
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'That didn\'t work',
+                                                        style: TextStyle(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                        ),
+                                                      ),
+                                                      duration: Duration(
+                                                          milliseconds: 4000),
+                                                      backgroundColor:
+                                                          Color(0x00000000),
+                                                    ),
+                                                  );
+                                                }
+
+                                                setState(() {});
+                                              },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -742,33 +916,40 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                                 child: Builder(
                                   builder: (context) {
-                                    final searchResults = simpleSearchResults1
-                                        .map((e) => e)
-                                        .toList()
-                                        .where(
-                                            (e) => e.reference != e.reference)
-                                        .toList();
+                                    final searchResultsConfirmPage =
+                                        simpleSearchResults1
+                                            .map((e) => e)
+                                            .toList()
+                                            .where((e) =>
+                                                e.reference != e.reference)
+                                            .toList();
                                     return ListView.builder(
                                       padding: EdgeInsets.zero,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
-                                      itemCount: searchResults.length,
-                                      itemBuilder:
-                                          (context, searchResultsIndex) {
-                                        final searchResultsItem =
-                                            searchResults[searchResultsIndex];
+                                      itemCount:
+                                          searchResultsConfirmPage.length,
+                                      itemBuilder: (context,
+                                          searchResultsConfirmPageIndex) {
+                                        final searchResultsConfirmPageItem =
+                                            searchResultsConfirmPage[
+                                                searchResultsConfirmPageIndex];
                                         return InkWell(
                                           onTap: () async {
-                                            setState(() {
-                                              setState(() => FFAppState()
-                                                  .addToCarbSummary(
-                                                      searchResultsItem
-                                                          .reference));
+                                            logFirebaseEvent(
+                                                'P_O_S_T_CARBS_ListTile_w5hw4szw_ON_TAP');
+                                            logFirebaseEvent(
+                                                'ListTile_update_local_state');
+                                            FFAppState().update(() {
+                                              FFAppState().addToCarbSummary(
+                                                  searchResultsConfirmPageItem
+                                                      .reference);
                                             });
                                           },
                                           child: ListTile(
                                             title: Text(
-                                              searchResultsItem.foodName!,
+                                              searchResultsConfirmPageItem
+                                                  .foodName!,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .title3
@@ -782,7 +963,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       ),
                                             ),
                                             subtitle: Text(
-                                              '${searchResultsItem.foodDetail1}${searchResultsItem.foodDetail2}${searchResultsItem.foodDetail3}${searchResultsItem.foodDetail4}${searchResultsItem.foodDetail5}${searchResultsItem.foodDetail6}',
+                                              '${searchResultsConfirmPageItem.foodDetail1}${searchResultsConfirmPageItem.foodDetail2}${searchResultsConfirmPageItem.foodDetail3}${searchResultsConfirmPageItem.foodDetail4}${searchResultsConfirmPageItem.foodDetail5}${searchResultsConfirmPageItem.foodDetail6}',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyText1
@@ -820,7 +1001,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     16, 16, 0, 16),
                                 child: Text(
-                                  'Summary of Carb Intake',
+                                  'Summary',
                                   style: FlutterFlowTheme.of(context)
                                       .title3
                                       .override(
@@ -876,7 +1057,11 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  carbItemsListIndex.toString(),
+                                                  FFAppState()
+                                                      .carbSummary
+                                                      .contains(
+                                                          carbItemsListItem)
+                                                      .toString(),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyText1
@@ -971,6 +1156,10 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       ),
                                       showLoadingIndicator: true,
                                       onPressed: () async {
+                                        logFirebaseEvent(
+                                            'P_O_S_T_CARBS_COMP_AddNewButton_ON_TAP');
+                                        logFirebaseEvent(
+                                            'AddNewButton_simple_search');
                                         await queryFoodDataRecordOnce()
                                             .then(
                                               (records) =>
@@ -997,6 +1186,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             .whenComplete(
                                                 () => setState(() {}));
 
+                                        logFirebaseEvent(
+                                            'AddNewButton_page_view');
                                         await pageViewController?.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.ease,
@@ -1029,7 +1220,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 16, 0),
                                         child: TextFormField(
-                                          controller: gramsCarbsController3,
+                                          controller: gramsCarbsController2,
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
@@ -1201,6 +1392,9 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       ),
                                       showLoadingIndicator: true,
                                       onPressed: () async {
+                                        logFirebaseEvent(
+                                            'P_O_S_T_CARBS_COMP_Button_ON_TAP');
+                                        logFirebaseEvent('Button_bottom_sheet');
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -1209,7 +1403,6 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                               ),
                             ],
                           ),
-                          Container(),
                         ],
                       ),
                     ),
@@ -1220,7 +1413,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                         child: smooth_page_indicator.SmoothPageIndicator(
                           controller: pageViewController ??=
                               PageController(initialPage: 0),
-                          count: 4,
+                          count: 3,
                           axisDirection: Axis.vertical,
                           onDotClicked: (i) {
                             pageViewController!.animateToPage(

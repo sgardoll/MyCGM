@@ -452,6 +452,11 @@ List<double?> _dataToDouble(List<dynamic> data) {
   if (data.first is int) {
     return data.map((d) => (d as int).toDouble()).toList();
   }
+  if (data.first is DateTime) {
+    return data
+        .map((d) => (d as DateTime).millisecondsSinceEpoch.toDouble())
+        .toList();
+  }
   if (data.first is String) {
     // First try to parse as doubles
     if (double.tryParse(data.first as String) != null) {

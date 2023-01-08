@@ -13,16 +13,17 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class RedirectWidget extends StatefulWidget {
-  const RedirectWidget({Key? key}) : super(key: key);
+class NightscoutCheckWidget extends StatefulWidget {
+  const NightscoutCheckWidget({Key? key}) : super(key: key);
 
   @override
-  _RedirectWidgetState createState() => _RedirectWidgetState();
+  _NightscoutCheckWidgetState createState() => _NightscoutCheckWidgetState();
 }
 
-class _RedirectWidgetState extends State<RedirectWidget>
+class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
     with TickerProviderStateMixin {
   ApiCallResponse? apiResult;
+  final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
@@ -140,6 +141,8 @@ class _RedirectWidgetState extends State<RedirectWidget>
     super.initState();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      logFirebaseEvent('NIGHTSCOUT_CHECK_nightscoutCheck_ON_LOAD');
+      logFirebaseEvent('nightscoutCheck_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation2'] != null) {
         setState(() => hasContainerTriggered2 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -151,6 +154,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         .controller
                         .reverse));
       }
+      logFirebaseEvent('nightscoutCheck_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation3'] != null) {
         setState(() => hasContainerTriggered3 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -162,6 +166,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         .controller
                         .reverse));
       }
+      logFirebaseEvent('nightscoutCheck_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
         setState(() => hasContainerTriggered1 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -179,23 +184,28 @@ class _RedirectWidgetState extends State<RedirectWidget>
               valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
           (valueOrDefault(currentUserDocument?.token, '') != null &&
               valueOrDefault(currentUserDocument?.token, '') != '')) {
+        logFirebaseEvent('nightscoutCheck_widget_animation');
         if (animationsMap['containerOnActionTriggerAnimation4'] != null) {
           animationsMap['containerOnActionTriggerAnimation4']!
               .controller
               .forward(from: 0.0);
         }
+        logFirebaseEvent('nightscoutCheck_widget_animation');
         if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
           animationsMap['containerOnActionTriggerAnimation5']!
               .controller
               .forward(from: 0.0);
         }
+        logFirebaseEvent('nightscoutCheck_backend_call');
         apiResult = await GetBloodGlucoseCall.call(
           apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
           nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
           token: valueOrDefault(currentUserDocument?.token, ''),
         );
         if ((apiResult?.succeeded ?? true)) {
-          context.pushNamed(
+          logFirebaseEvent('nightscoutCheck_navigate_to');
+
+          context.goNamed(
             'Main',
             queryParams: {
               'apiResult': serializeParam(
@@ -237,7 +247,9 @@ class _RedirectWidgetState extends State<RedirectWidget>
             },
           );
         } else {
+          logFirebaseEvent('nightscoutCheck_haptic_feedback');
           HapticFeedback.vibrate();
+          logFirebaseEvent('nightscoutCheck_alert_dialog');
           await showDialog(
             context: context,
             builder: (alertDialogContext) {
@@ -254,10 +266,12 @@ class _RedirectWidgetState extends State<RedirectWidget>
               );
             },
           );
+          logFirebaseEvent('nightscoutCheck_navigate_to');
 
           context.pushNamed('Main');
         }
       } else {
+        logFirebaseEvent('nightscoutCheck_alert_dialog');
         var confirmDialogResponse = await showDialog<bool>(
               context: context,
               builder: (alertDialogContext) {
@@ -280,13 +294,19 @@ class _RedirectWidgetState extends State<RedirectWidget>
             ) ??
             false;
         if (confirmDialogResponse) {
+          logFirebaseEvent('nightscoutCheck_navigate_to');
+
           context.pushNamed('Settings');
         } else {
+          logFirebaseEvent('nightscoutCheck_navigate_to');
+
           context.pushNamed('loginPage');
         }
       }
     });
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'nightscoutCheck'});
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -298,17 +318,23 @@ class _RedirectWidgetState extends State<RedirectWidget>
   }
 
   @override
+  void dispose() {
+    _unfocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
     return Title(
-        title: 'redirect',
+        title: 'nightscoutCheck',
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           body: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
+            onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
             child: Stack(
               children: [
                 ClipRect(
@@ -522,7 +548,7 @@ class _RedirectWidgetState extends State<RedirectWidget>
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(2, 0, 12, 0),
                           child: AuthUserStreamWidget(
-                            child: Text(
+                            builder: (context) => Text(
                               currentUserDisplayName,
                               style:
                                   FlutterFlowTheme.of(context).title3.override(

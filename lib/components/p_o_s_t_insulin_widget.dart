@@ -191,6 +191,9 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                       ),
                       showLoadingIndicator: true,
                       onPressed: () async {
+                        logFirebaseEvent(
+                            'P_O_S_T_INSULIN_send_rounded_ICN_ON_TAP');
+                        logFirebaseEvent('IconButton_backend_call');
                         postInsulin = await PostInsulinCall.call(
                           insulin: valueOrDefault<String>(
                             functions
@@ -211,6 +214,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           token: valueOrDefault(currentUserDocument?.token, ''),
                         );
                         if ((postInsulin?.succeeded ?? true)) {
+                          logFirebaseEvent('IconButton_show_snack_bar');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -229,6 +233,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                             ),
                           );
                         } else {
+                          logFirebaseEvent('IconButton_show_snack_bar');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -247,6 +252,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           );
                         }
 
+                        logFirebaseEvent('IconButton_bottom_sheet');
                         Navigator.pop(context);
 
                         setState(() {});

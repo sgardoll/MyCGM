@@ -69,14 +69,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? RedirectWidget() : LoginPageWidget(),
+      errorBuilder: (context, _) => appStateNotifier.loggedIn
+          ? NightscoutCheckWidget()
+          : LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? RedirectWidget() : LoginPageWidget(),
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? NightscoutCheckWidget()
+              : LoginPageWidget(),
           routes: [
             FFRoute(
               name: 'loginPage',
@@ -84,17 +86,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => LoginPageWidget(),
             ),
             FFRoute(
-              name: 'redirect',
-              path: 'redirect',
+              name: 'nightscoutCheck',
+              path: 'nightscoutCheck',
               requireAuth: true,
-              builder: (context, params) => RedirectWidget(),
-            ),
-            FFRoute(
-              name: 'Settings',
-              path: 'Settings',
-              builder: (context, params) => SettingsWidget(
-                latestMmol: params.getParam('latestMmol', ParamType.double),
-              ),
+              builder: (context, params) => NightscoutCheckWidget(),
             ),
             FFRoute(
               name: 'Main',
@@ -106,6 +101,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 dateString: params.getParam<String>(
                     'dateString', ParamType.String, true),
                 sgvList: params.getParam<int>('sgvList', ParamType.int, true),
+              ),
+            ),
+            FFRoute(
+              name: 'Settings',
+              path: 'Settings',
+              builder: (context, params) => SettingsWidget(
+                latestMmol: params.getParam('latestMmol', ParamType.double),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -219,7 +221,7 @@ class FFParameters {
     String paramName,
     ParamType type, [
     bool isList = false,
-    String? collectionName,
+    List<String>? collectionNamePath,
   ]) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
@@ -233,7 +235,7 @@ class FFParameters {
       return param;
     }
     // Return serialized value.
-    return deserializeParam<T>(param, type, isList, collectionName);
+    return deserializeParam<T>(param, type, isList, collectionNamePath);
   }
 }
 
