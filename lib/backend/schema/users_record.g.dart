@@ -89,6 +89,20 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.highValue;
+    if (value != null) {
+      result
+        ..add('high_value')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
+    value = object.lowValue;
+    if (value != null) {
+      result
+        ..add('low_value')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -151,6 +165,14 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
           result.token = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'high_value':
+          result.highValue = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
+          break;
+        case 'low_value':
+          result.lowValue = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -186,6 +208,10 @@ class _$UsersRecord extends UsersRecord {
   @override
   final String? token;
   @override
+  final double? highValue;
+  @override
+  final double? lowValue;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$UsersRecord([void Function(UsersRecordBuilder)? updates]) =>
@@ -202,6 +228,8 @@ class _$UsersRecord extends UsersRecord {
       this.apiKey,
       this.units,
       this.token,
+      this.highValue,
+      this.lowValue,
       this.ffRef})
       : super._();
 
@@ -226,6 +254,8 @@ class _$UsersRecord extends UsersRecord {
         apiKey == other.apiKey &&
         units == other.units &&
         token == other.token &&
+        highValue == other.highValue &&
+        lowValue == other.lowValue &&
         ffRef == other.ffRef;
   }
 
@@ -240,16 +270,20 @@ class _$UsersRecord extends UsersRecord {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc($jc(0, email.hashCode),
-                                            displayName.hashCode),
-                                        photoUrl.hashCode),
-                                    uid.hashCode),
-                                createdTime.hashCode),
-                            phoneNumber.hashCode),
-                        nightscout.hashCode),
-                    apiKey.hashCode),
-                units.hashCode),
-            token.hashCode),
+                                        $jc(
+                                            $jc(
+                                                $jc($jc(0, email.hashCode),
+                                                    displayName.hashCode),
+                                                photoUrl.hashCode),
+                                            uid.hashCode),
+                                        createdTime.hashCode),
+                                    phoneNumber.hashCode),
+                                nightscout.hashCode),
+                            apiKey.hashCode),
+                        units.hashCode),
+                    token.hashCode),
+                highValue.hashCode),
+            lowValue.hashCode),
         ffRef.hashCode));
   }
 
@@ -266,6 +300,8 @@ class _$UsersRecord extends UsersRecord {
           ..add('apiKey', apiKey)
           ..add('units', units)
           ..add('token', token)
+          ..add('highValue', highValue)
+          ..add('lowValue', lowValue)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -314,6 +350,14 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   String? get token => _$this._token;
   set token(String? token) => _$this._token = token;
 
+  double? _highValue;
+  double? get highValue => _$this._highValue;
+  set highValue(double? highValue) => _$this._highValue = highValue;
+
+  double? _lowValue;
+  double? get lowValue => _$this._lowValue;
+  set lowValue(double? lowValue) => _$this._lowValue = lowValue;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -335,6 +379,8 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _apiKey = $v.apiKey;
       _units = $v.units;
       _token = $v.token;
+      _highValue = $v.highValue;
+      _lowValue = $v.lowValue;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -368,6 +414,8 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
             apiKey: apiKey,
             units: units,
             token: token,
+            highValue: highValue,
+            lowValue: lowValue,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

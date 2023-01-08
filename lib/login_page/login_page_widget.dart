@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../auth/firebase_user_provider.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -661,30 +660,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       return;
                                                                     }
 
-                                                                    if (loggedIn ==
-                                                                        true) {
-                                                                      logFirebaseEvent(
-                                                                          'Button-Login_navigate_to');
-
-                                                                      context
-                                                                          .pushNamedAuth(
-                                                                        'nightscoutCheck',
-                                                                        mounted,
-                                                                        extra: <
-                                                                            String,
-                                                                            dynamic>{
-                                                                          kTransitionInfoKey:
-                                                                              TransitionInfo(
-                                                                            hasTransition:
-                                                                                true,
-                                                                            transitionType:
-                                                                                PageTransitionType.fade,
-                                                                            duration:
-                                                                                Duration(milliseconds: 0),
-                                                                          ),
-                                                                        },
-                                                                      );
-                                                                    }
+                                                                    context.goNamedAuth(
+                                                                        'Main',
+                                                                        mounted);
                                                                   },
                                                                   text:
                                                                       'Sign In',
@@ -866,7 +844,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       }
 
                                                                       context.goNamedAuth(
-                                                                          'nightscoutCheck',
+                                                                          'Main',
                                                                           mounted);
                                                                     },
                                                                   ),
@@ -916,7 +894,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       }
 
                                                                       context.goNamedAuth(
-                                                                          'nightscoutCheck',
+                                                                          'Main',
                                                                           mounted);
                                                                     },
                                                                   ),
@@ -1488,7 +1466,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     .update(
                                                                         usersCreateData);
 
-                                                                context.goNamedAuth(
+                                                                logFirebaseEvent(
+                                                                    'Button-Login_navigate_to');
+
+                                                                context.pushNamedAuth(
                                                                     'nightscoutCheck',
                                                                     mounted);
                                                               },

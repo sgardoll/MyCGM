@@ -34,6 +34,12 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   String? get token;
 
+  @BuiltValueField(wireName: 'high_value')
+  double? get highValue;
+
+  @BuiltValueField(wireName: 'low_value')
+  double? get lowValue;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -47,7 +53,9 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..nightscout = ''
     ..apiKey = ''
     ..units = ''
-    ..token = '';
+    ..token = ''
+    ..highValue = 0.0
+    ..lowValue = 0.0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -81,6 +89,8 @@ Map<String, dynamic> createUsersRecordData({
   String? apiKey,
   String? units,
   String? token,
+  double? highValue,
+  double? lowValue,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -95,7 +105,9 @@ Map<String, dynamic> createUsersRecordData({
         ..nightscout = nightscout
         ..apiKey = apiKey
         ..units = units
-        ..token = token,
+        ..token = token
+        ..highValue = highValue
+        ..lowValue = lowValue,
     ),
   );
 

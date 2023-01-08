@@ -1,13 +1,16 @@
 import '../auth/auth_util.dart';
-import '../backend/api_requests/api_calls.dart';
+import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
-import '../flutter_flow/custom_functions.dart' as functions;
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +25,9 @@ class NightscoutCheckWidget extends StatefulWidget {
 
 class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
     with TickerProviderStateMixin {
-  ApiCallResponse? apiResult;
+  TextEditingController? apiController;
+  TextEditingController? nightscoutController;
+  TextEditingController? tokenController;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   var hasContainerTriggered1 = false;
@@ -85,55 +90,6 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
         ),
       ],
     ),
-    'containerOnActionTriggerAnimation4': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        MoveEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0, 100),
-          end: Offset(0, 0),
-        ),
-        FadeEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 800.ms,
-          begin: 0,
-          end: 1,
-        ),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 1000.ms,
-          duration: 600.ms,
-          begin: 1,
-          end: 0,
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation5': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 1000.ms),
-        MoveEffect(
-          curve: Curves.easeIn,
-          delay: 1000.ms,
-          duration: 600.ms,
-          begin: Offset(0, 100),
-          end: Offset(0, 0),
-        ),
-        FadeEffect(
-          curve: Curves.easeIn,
-          delay: 1000.ms,
-          duration: 600.ms,
-          begin: 0,
-          end: 1,
-        ),
-      ],
-    ),
   };
 
   @override
@@ -178,135 +134,13 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                         .controller
                         .reverse));
       }
-      if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
-              valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
-          (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
-              valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
-          (valueOrDefault(currentUserDocument?.token, '') != null &&
-              valueOrDefault(currentUserDocument?.token, '') != '')) {
-        logFirebaseEvent('nightscoutCheck_widget_animation');
-        if (animationsMap['containerOnActionTriggerAnimation4'] != null) {
-          animationsMap['containerOnActionTriggerAnimation4']!
-              .controller
-              .forward(from: 0.0);
-        }
-        logFirebaseEvent('nightscoutCheck_widget_animation');
-        if (animationsMap['containerOnActionTriggerAnimation5'] != null) {
-          animationsMap['containerOnActionTriggerAnimation5']!
-              .controller
-              .forward(from: 0.0);
-        }
-        logFirebaseEvent('nightscoutCheck_backend_call');
-        apiResult = await GetBloodGlucoseCall.call(
-          apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
-          nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
-          token: valueOrDefault(currentUserDocument?.token, ''),
-        );
-        if ((apiResult?.succeeded ?? true)) {
-          logFirebaseEvent('nightscoutCheck_navigate_to');
-
-          context.goNamed(
-            'Main',
-            queryParams: {
-              'apiResult': serializeParam(
-                (apiResult?.jsonBody ?? ''),
-                ParamType.JSON,
-              ),
-              'latestMmol': serializeParam(
-                valueOrDefault<double>(
-                  functions.singleSgvToDouble(getJsonField(
-                    (apiResult?.jsonBody ?? ''),
-                    r'''$[0].sgv''',
-                  )),
-                  18.0,
-                ),
-                ParamType.double,
-              ),
-              'dateString': serializeParam(
-                (GetBloodGlucoseCall.dateString(
-                  (apiResult?.jsonBody ?? ''),
-                ) as List)
-                    .map<String>((s) => s.toString())
-                    .toList(),
-                ParamType.String,
-                true,
-              ),
-              'sgvList': serializeParam(
-                GetBloodGlucoseCall.sgv(
-                  (apiResult?.jsonBody ?? ''),
-                ),
-                ParamType.int,
-                true,
-              ),
-            }.withoutNulls,
-            extra: <String, dynamic>{
-              kTransitionInfoKey: TransitionInfo(
-                hasTransition: true,
-                transitionType: PageTransitionType.fade,
-              ),
-            },
-          );
-        } else {
-          logFirebaseEvent('nightscoutCheck_haptic_feedback');
-          HapticFeedback.vibrate();
-          logFirebaseEvent('nightscoutCheck_alert_dialog');
-          await showDialog(
-            context: context,
-            builder: (alertDialogContext) {
-              return AlertDialog(
-                title: Text('Error'),
-                content:
-                    Text('Error getting latest Nightscout data from the API'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(alertDialogContext),
-                    child: Text('I understand that data won\'t be up to date'),
-                  ),
-                ],
-              );
-            },
-          );
-          logFirebaseEvent('nightscoutCheck_navigate_to');
-
-          context.pushNamed('Main');
-        }
-      } else {
-        logFirebaseEvent('nightscoutCheck_alert_dialog');
-        var confirmDialogResponse = await showDialog<bool>(
-              context: context,
-              builder: (alertDialogContext) {
-                return AlertDialog(
-                  title: Text('Nightscout details required'),
-                  content: Text(
-                      'Please enter your Nightscout details on the next screen to proceed'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext, false),
-                      child: Text('Back'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext, true),
-                      child: Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            ) ??
-            false;
-        if (confirmDialogResponse) {
-          logFirebaseEvent('nightscoutCheck_navigate_to');
-
-          context.pushNamed('Settings');
-        } else {
-          logFirebaseEvent('nightscoutCheck_navigate_to');
-
-          context.pushNamed('loginPage');
-        }
-      }
     });
 
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'nightscoutCheck'});
+    apiController = TextEditingController();
+    nightscoutController = TextEditingController();
+    tokenController = TextEditingController();
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -320,6 +154,9 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
   @override
   void dispose() {
     _unfocusNode.dispose();
+    apiController?.dispose();
+    nightscoutController?.dispose();
+    tokenController?.dispose();
     super.dispose();
   }
 
@@ -393,7 +230,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                   ),
                 ),
                 Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
@@ -401,6 +238,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: ClipRRect(
@@ -417,152 +255,562 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                         ],
                       ),
                     ),
-                    Align(
-                      alignment: AlignmentDirectional(0, 0),
+                    Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     12, 0, 12, 0),
-                                child: Container(
-                                  width: 45,
-                                  height: 45,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  alignment: AlignmentDirectional(0, 0),
-                                  child: Icon(
-                                    Icons.face_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    size: 45,
-                                  ),
+                                child: AutoSizeText(
+                                  'First , let\'s link your Nightscout account',
+                                  textAlign: TextAlign.center,
+                                  style: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                      ),
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                                child: Text(
-                                  'Authenticating Nightscout',
-                                  style: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.normal,
-                                      ),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16, 16, 16, 16),
+                                child: Card(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  color: Color(0xFFF5F5F5),
+                                  elevation: 12,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12, 12, 12, 8),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(12, 0, 12, 0),
+                                                child: Icon(
+                                                  Icons.security,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .alternate,
+                                                  size: 32,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(12, 12, 0, 12),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      AutoSizeText(
+                                                        'Enter your Nightscout details below so MyCGM can work its magic.',
+                                                        maxLines: 4,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText2
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Poppins',
+                                                                  color: Color(
+                                                                      0xFF57636C),
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12, 8, 12, 8),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: TextFormField(
+                                                  controller:
+                                                      nightscoutController,
+                                                  onChanged: (_) =>
+                                                      EasyDebounce.debounce(
+                                                    'nightscoutController',
+                                                    Duration(
+                                                        milliseconds: 2000),
+                                                    () => setState(() {}),
+                                                  ),
+                                                  autofocus: true,
+                                                  obscureText: false,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    labelText: 'Nightscout URL',
+                                                    labelStyle: FlutterFlowTheme
+                                                            .of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                        ),
+                                                    hintText:
+                                                        'Your Nightscout URL',
+                                                    hintStyle: FlutterFlowTheme
+                                                            .of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                        ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .gray600,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .gray600,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    errorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                      ),
+                                                  textAlign: TextAlign.start,
+                                                  keyboardType:
+                                                      TextInputType.url,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12, 8, 12, 8),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Expanded(
+                                                child: TextFormField(
+                                                  controller: apiController,
+                                                  onChanged: (_) =>
+                                                      EasyDebounce.debounce(
+                                                    'apiController',
+                                                    Duration(
+                                                        milliseconds: 2000),
+                                                    () => setState(() {}),
+                                                  ),
+                                                  obscureText: false,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    labelText: 'API Key',
+                                                    labelStyle: FlutterFlowTheme
+                                                            .of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                        ),
+                                                    hintText: 'API Key',
+                                                    hintStyle: FlutterFlowTheme
+                                                            .of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                        ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .gray600,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .gray600,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    errorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                      ),
+                                                  textAlign: TextAlign.start,
+                                                  maxLines: null,
+                                                ),
+                                              ),
+                                              FlutterFlowIconButton(
+                                                borderColor: Color(0xFFF1F4F8),
+                                                borderRadius: 8,
+                                                borderWidth: 2,
+                                                buttonSize: 40,
+                                                icon: Icon(
+                                                  Icons.info_outline_rounded,
+                                                  color: Color(0xFF57636C),
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {
+                                                  print(
+                                                      'IconButton pressed ...');
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12, 8, 12, 16),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Expanded(
+                                                child: TextFormField(
+                                                  controller: tokenController,
+                                                  onChanged: (_) =>
+                                                      EasyDebounce.debounce(
+                                                    'tokenController',
+                                                    Duration(
+                                                        milliseconds: 2000),
+                                                    () => setState(() {}),
+                                                  ),
+                                                  autofocus: true,
+                                                  obscureText: false,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    labelText: 'Token',
+                                                    labelStyle: FlutterFlowTheme
+                                                            .of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                        ),
+                                                    hintText: 'Token',
+                                                    hintStyle: FlutterFlowTheme
+                                                            .of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color:
+                                                              Color(0xFF57636C),
+                                                        ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .gray600,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .gray600,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    errorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
+                                                      ),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                              FlutterFlowIconButton(
+                                                borderColor: Color(0xFFF1F4F8),
+                                                borderRadius: 8,
+                                                borderWidth: 2,
+                                                buttonSize: 40,
+                                                icon: Icon(
+                                                  Icons.info_outline_rounded,
+                                                  color: Color(0xFF57636C),
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {
+                                                  print(
+                                                      'IconButton pressed ...');
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ).animateOnActionTrigger(
-                          animationsMap['containerOnActionTriggerAnimation4']!,
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(0x00FFFFFF),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12, 0, 12, 0),
-                                child: Container(
-                                  width: 45,
-                                  height: 45,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  alignment: AlignmentDirectional(0, 0),
-                                  child: Icon(
-                                    Icons.file_copy_rounded,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    size: 45,
-                                  ),
-                                ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                logFirebaseEvent(
+                                    'NIGHTSCOUT_CHECK_Button-Logout_ON_TAP');
+                                logFirebaseEvent('Button-Logout_navigate_back');
+                                context.pop();
+                              },
+                              text: '',
+                              icon: Icon(
+                                Icons.arrow_back_ios_rounded,
+                                size: 15,
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                                child: Text(
-                                  'Loading data',
-                                  style: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.normal,
-                                      ),
+                              options: FFButtonOptions(
+                                height: 50,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBtnText,
+                                    ),
+                                elevation: 3,
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
                                 ),
+                                borderRadius: BorderRadius.circular(50),
                               ),
-                            ],
+                            ),
                           ),
-                        ).animateOnActionTrigger(
-                          animationsMap['containerOnActionTriggerAnimation5']!,
-                        ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                            child: FFButtonWidget(
+                              onPressed: (nightscoutController!.text != null &&
+                                          nightscoutController!.text != '') &&
+                                      (apiController!.text != null &&
+                                          apiController!.text != '') &&
+                                      (tokenController!.text != null &&
+                                          tokenController!.text != '')
+                                  ? null
+                                  : () async {
+                                      logFirebaseEvent(
+                                          'NIGHTSCOUT_CHECK_Button-Next1_ON_TAP');
+                                      logFirebaseEvent(
+                                          'Button-Next1_backend_call');
+
+                                      final usersUpdateData =
+                                          createUsersRecordData(
+                                        nightscout: nightscoutController!.text,
+                                        apiKey: apiController!.text,
+                                        token: tokenController!.text,
+                                      );
+                                      await currentUserReference!
+                                          .update(usersUpdateData);
+                                      logFirebaseEvent(
+                                          'Button-Next1_navigate_to');
+
+                                      context.pushNamed('unitsCheck');
+
+                                      setState(() {});
+                                    },
+                              text: 'Next',
+                              options: FFButtonOptions(
+                                width: 130,
+                                height: 50,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBtnText,
+                                    ),
+                                elevation: 3,
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(50),
+                                disabledColor: Color(0xFF57636C),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0, -1),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 34, 16, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 2, 0),
-                          child: Text(
-                            'Welcome back',
-                            style: FlutterFlowTheme.of(context).title3.override(
-                                  fontFamily: 'Poppins',
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(2, 0, 12, 0),
-                          child: AuthUserStreamWidget(
-                            builder: (context) => Text(
-                              currentUserDisplayName,
-                              style:
-                                  FlutterFlowTheme.of(context).title3.override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),

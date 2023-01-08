@@ -40,6 +40,16 @@ abstract class FlutterFlowTheme {
   late Color customColor4;
   late Color white;
   late Color background;
+  late Color backgroundComponents;
+  late Color primary600;
+  late Color secondary600;
+  late Color tertiary600;
+  late Color darkBGstatic;
+  late Color secondary30;
+  late Color overlay0;
+  late Color overlay;
+  late Color primary30;
+  late Color customColor1;
 
   String get title1Family => typography.title1Family;
   TextStyle get title1 => typography.title1;
@@ -92,6 +102,16 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color customColor4 = Color(0xFF090F13);
   late Color white = Color(0xFFFFFFFF);
   late Color background = Color(0xFF1D2429);
+  late Color backgroundComponents = Color(0xFF1D2428);
+  late Color primary600 = Color(0xFF336A4A);
+  late Color secondary600 = Color(0xFF6D604A);
+  late Color tertiary600 = Color(0xFF0C2533);
+  late Color darkBGstatic = Color(0xFF0D1E23);
+  late Color secondary30 = Color(0x4D928163);
+  late Color overlay0 = Color(0x00FFFFFF);
+  late Color overlay = Color(0xB2FFFFFF);
+  late Color primary30 = Color(0x4D4B986C);
+  late Color customColor1 = Color(0xFF2FB73C);
 }
 
 abstract class Typography {

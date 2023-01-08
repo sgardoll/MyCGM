@@ -69,16 +69,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, _) => appStateNotifier.loggedIn
-          ? NightscoutCheckWidget()
-          : LoginPageWidget(),
+      errorBuilder: (context, _) =>
+          appStateNotifier.loggedIn ? MainWidget() : LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.loggedIn
-              ? NightscoutCheckWidget()
-              : LoginPageWidget(),
+          builder: (context, _) =>
+              appStateNotifier.loggedIn ? MainWidget() : LoginPageWidget(),
           routes: [
             FFRoute(
               name: 'loginPage',
@@ -86,10 +84,28 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => LoginPageWidget(),
             ),
             FFRoute(
+              name: 'onboardStart',
+              path: 'onboardStart',
+              requireAuth: true,
+              builder: (context, params) => OnboardStartWidget(),
+            ),
+            FFRoute(
               name: 'nightscoutCheck',
               path: 'nightscoutCheck',
               requireAuth: true,
               builder: (context, params) => NightscoutCheckWidget(),
+            ),
+            FFRoute(
+              name: 'unitsCheck',
+              path: 'unitsCheck',
+              requireAuth: true,
+              builder: (context, params) => UnitsCheckWidget(),
+            ),
+            FFRoute(
+              name: 'finalCheck',
+              path: 'finalCheck',
+              requireAuth: true,
+              builder: (context, params) => FinalCheckWidget(),
             ),
             FFRoute(
               name: 'Main',
@@ -109,6 +125,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => SettingsWidget(
                 latestMmol: params.getParam('latestMmol', ParamType.double),
               ),
+            ),
+            FFRoute(
+              name: 'nightscoutCheckCopy',
+              path: 'nightscoutCheckCopy',
+              requireAuth: true,
+              builder: (context, params) => NightscoutCheckCopyWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
