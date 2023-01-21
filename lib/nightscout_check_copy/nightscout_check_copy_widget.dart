@@ -5,7 +5,6 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -156,16 +155,6 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
               'apiResult': serializeParam(
                 (apiResult?.jsonBody ?? ''),
                 ParamType.JSON,
-              ),
-              'latestMmol': serializeParam(
-                valueOrDefault<double>(
-                  functions.singleSgvToDouble(getJsonField(
-                    (apiResult?.jsonBody ?? ''),
-                    r'''$[0].sgv''',
-                  )),
-                  18.0,
-                ),
-                ParamType.double,
               ),
               'dateString': serializeParam(
                 (GetBloodGlucoseCall.dateString(

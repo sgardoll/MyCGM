@@ -68,6 +68,12 @@ String? minutesAgo(List<String>? latestDate) {
   }
 }
 
+double sgvListToLatestMmol(List<int> sgvList) {
+  int firstInt = sgvList[0];
+  double firstIntAsDouble = firstInt.toDouble();
+  return firstIntAsDouble / 18;
+}
+
 List<double> intListToMmolDoubleList(List<int> sgv) {
   return sgv.map((e) => (e / 18.0).toDouble()).toList();
 }

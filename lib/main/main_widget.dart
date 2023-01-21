@@ -24,13 +24,11 @@ class MainWidget extends StatefulWidget {
   const MainWidget({
     Key? key,
     this.apiResult,
-    this.latestMmol,
     this.dateString,
     this.sgvList,
   }) : super(key: key);
 
   final dynamic apiResult;
-  final double? latestMmol;
   final List<String>? dateString;
   final List<int>? sgvList;
 
@@ -118,7 +116,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     ),
   };
   ApiCallResponse? apiResult;
-  ApiCallResponse? apiResultRefreshButton;
   late SwipeableCardSectionController swipeableStackController;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -133,6 +130,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       FFAppState().update(() {
         FFAppState().deleteFABOpen();
         FFAppState().FABOpen = false;
+
+        FFAppState().latestMmol =
+            functions.sgvListToLatestMmol(widget.sgvList!.toList());
       });
     });
 
@@ -174,9 +174,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                   decoration: BoxDecoration(
                     color: valueOrDefault<Color>(
                       () {
-                        if (widget.latestMmol! < 3.9) {
+                        if (FFAppState().latestMmol < 3.9) {
                           return FlutterFlowTheme.of(context).tertiaryColor;
-                        } else if (widget.latestMmol! > 9.4) {
+                        } else if (FFAppState().latestMmol > 9.4) {
                           return FlutterFlowTheme.of(context).secondaryColor;
                         } else {
                           return FlutterFlowTheme.of(context).primaryColor;
@@ -290,10 +290,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     decoration: BoxDecoration(
                                       color: valueOrDefault<Color>(
                                         () {
-                                          if (widget.latestMmol! < 3.9) {
+                                          if (FFAppState().latestMmol < 3.9) {
                                             return FlutterFlowTheme.of(context)
                                                 .tertiaryColor;
-                                          } else if (widget.latestMmol! > 9.4) {
+                                          } else if (FFAppState().latestMmol >
+                                              9.4) {
                                             return FlutterFlowTheme.of(context)
                                                 .secondaryColor;
                                           } else {
@@ -321,75 +322,84 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     child: Align(
                                       alignment: AlignmentDirectional(0, 0),
                                       child: Column(
-                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          CircularPercentIndicator(
-                                            percent: () {
-                                              if (widget.latestMmol == null) {
-                                                return 0.1;
-                                              } else if (widget.latestMmol! <
-                                                  3.9) {
-                                                return 0.1;
-                                              } else if (widget.latestMmol! >
-                                                  9.4) {
-                                                return 1.0;
-                                              } else {
-                                                return functions
-                                                    .quickProgressInd(
-                                                        widget.latestMmol!);
-                                              }
-                                            }(),
-                                            radius: 150,
-                                            lineWidth: 40,
-                                            animation: true,
-                                            progressColor: Color(0x80001219),
-                                            backgroundColor:
-                                                valueOrDefault<Color>(
-                                              () {
-                                                if (widget.latestMmol! < 3.9) {
-                                                  return FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryColor;
-                                                } else if (widget.latestMmol! >
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 50, 0, 0),
+                                            child: CircularPercentIndicator(
+                                              percent: () {
+                                                if (FFAppState().latestMmol ==
+                                                    null) {
+                                                  return 0.1;
+                                                } else if (FFAppState()
+                                                        .latestMmol <
+                                                    3.9) {
+                                                  return 0.1;
+                                                } else if (FFAppState()
+                                                        .latestMmol >
                                                     9.4) {
-                                                  return FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground;
+                                                  return 1.0;
                                                 } else {
-                                                  return FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryBackground;
+                                                  return functions
+                                                      .quickProgressInd(
+                                                          FFAppState()
+                                                              .latestMmol);
                                                 }
                                               }(),
-                                              FlutterFlowTheme.of(context)
-                                                  .primaryBackground,
-                                            ),
-                                            center: Text(
-                                              formatNumber(
-                                                widget.latestMmol,
-                                                formatType: FormatType.custom,
-                                                format: '#0.0',
-                                                locale: '',
-                                              ).maybeHandleOverflow(
-                                                maxChars: 20,
-                                                replacement: '…',
+                                              radius: 150,
+                                              lineWidth: 40,
+                                              animation: true,
+                                              progressColor: Color(0x80001219),
+                                              backgroundColor:
+                                                  valueOrDefault<Color>(
+                                                () {
+                                                  if (FFAppState().latestMmol <
+                                                      3.9) {
+                                                    return FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryColor;
+                                                  } else if (FFAppState()
+                                                          .latestMmol >
+                                                      9.4) {
+                                                    return FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground;
+                                                  } else {
+                                                    return FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryBackground;
+                                                  }
+                                                }(),
+                                                FlutterFlowTheme.of(context)
+                                                    .primaryBackground,
                                               ),
-                                              textAlign: TextAlign.center,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .title1
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 90,
-                                                      ),
+                                              center: Text(
+                                                functions
+                                                    .quickProgressInd(
+                                                        FFAppState().latestMmol)
+                                                    .toString()
+                                                    .maybeHandleOverflow(
+                                                      maxChars: 20,
+                                                      replacement: '…',
+                                                    ),
+                                                textAlign: TextAlign.center,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .title1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          fontSize: 90,
+                                                        ),
+                                              ),
+                                              startAngle: 0,
                                             ),
-                                            startAngle: 0,
                                           ),
                                           AuthUserStreamWidget(
                                             builder: (context) => Text(
@@ -428,6 +438,42 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                   ),
                                             ),
                                           ),
+                                          InkWell(
+                                            onTap: () async {
+                                              logFirebaseEvent(
+                                                  'MAIN_PAGE_Row_lb4jpp7o_ON_TAP');
+                                              logFirebaseEvent(
+                                                  'Row_swipeable_stack');
+                                              swipeableStackController
+                                                  .triggerSwipeUp();
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                FlutterFlowIconButton(
+                                                  borderColor:
+                                                      Colors.transparent,
+                                                  borderRadius: 30,
+                                                  borderWidth: 1,
+                                                  buttonSize: 60,
+                                                  icon: Icon(
+                                                    Icons
+                                                        .keyboard_arrow_up_rounded,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryText,
+                                                    size: 30,
+                                                  ),
+                                                  onPressed: () {
+                                                    print(
+                                                        'IconButton pressed ...');
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -450,9 +496,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     decoration: BoxDecoration(
                                       color: valueOrDefault<Color>(
                                         () {
-                                          if (widget.latestMmol! < 3.9) {
+                                          if (FFAppState().latestMmol < 3.9) {
                                             return Color(0xC0AE2012);
-                                          } else if (widget.latestMmol! > 9.4) {
+                                          } else if (FFAppState().latestMmol >
+                                              9.4) {
                                             return Color(0xC0CA6702);
                                           } else {
                                             return Color(0xBF0A9396);
@@ -495,9 +542,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               child: FlutterFlowLineChart(
                                                 data: [
                                                   FFLineChartData(
-                                                    xData: widget.dateString!
-                                                        .map((e) => e)
-                                                        .toList(),
+                                                    xData: widget.dateString!,
                                                     yData: functions
                                                         .intListToMmolDoubleList(
                                                             widget.sgvList!
@@ -560,9 +605,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     decoration: BoxDecoration(
                                       color: valueOrDefault<Color>(
                                         () {
-                                          if (widget.latestMmol! < 3.9) {
+                                          if (FFAppState().latestMmol < 3.9) {
                                             return Color(0x80AE2012);
-                                          } else if (widget.latestMmol! > 9.4) {
+                                          } else if (FFAppState().latestMmol >
+                                              9.4) {
                                             return Color(0x80CA6702);
                                           } else {
                                             return Color(0x820A9396);
@@ -609,107 +655,17 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       logFirebaseEvent(
                                           'MAIN_PAGE_RefreshButton_ON_TAP');
                                       logFirebaseEvent(
-                                          'RefreshButton_backend_call');
-                                      apiResultRefreshButton =
-                                          await GetBloodGlucoseCall.call(
-                                        apiKey: valueOrDefault(
-                                            currentUserDocument?.apiKey, ''),
-                                        nightscout: valueOrDefault(
-                                            currentUserDocument?.nightscout,
-                                            ''),
-                                        token: valueOrDefault(
-                                            currentUserDocument?.token, ''),
+                                          'RefreshButton_navigate_to');
+
+                                      context.pushNamed(
+                                        'loginPage',
+                                        queryParams: {
+                                          'loggedInUser': serializeParam(
+                                            currentUserReference,
+                                            ParamType.DocumentReference,
+                                          ),
+                                        }.withoutNulls,
                                       );
-                                      if ((apiResultRefreshButton?.succeeded ??
-                                          true)) {
-                                        logFirebaseEvent(
-                                            'RefreshButton_navigate_to');
-
-                                        context.goNamed(
-                                          'Main',
-                                          queryParams: {
-                                            'apiResult': serializeParam(
-                                              (apiResultRefreshButton
-                                                      ?.jsonBody ??
-                                                  ''),
-                                              ParamType.JSON,
-                                            ),
-                                            'latestMmol': serializeParam(
-                                              valueOrDefault<double>(
-                                                functions.singleSgvToDouble(
-                                                    getJsonField(
-                                                  (apiResultRefreshButton
-                                                          ?.jsonBody ??
-                                                      ''),
-                                                  r'''$[0].sgv''',
-                                                )),
-                                                18.0,
-                                              ),
-                                              ParamType.double,
-                                            ),
-                                            'dateString': serializeParam(
-                                              (GetBloodGlucoseCall.dateString(
-                                                (apiResultRefreshButton
-                                                        ?.jsonBody ??
-                                                    ''),
-                                              ) as List)
-                                                  .map<String>(
-                                                      (s) => s.toString())
-                                                  .toList(),
-                                              ParamType.String,
-                                              true,
-                                            ),
-                                            'sgvList': serializeParam(
-                                              GetBloodGlucoseCall.sgv(
-                                                (apiResultRefreshButton
-                                                        ?.jsonBody ??
-                                                    ''),
-                                              ),
-                                              ParamType.int,
-                                              true,
-                                            ),
-                                          }.withoutNulls,
-                                          extra: <String, dynamic>{
-                                            kTransitionInfoKey: TransitionInfo(
-                                              hasTransition: true,
-                                              transitionType:
-                                                  PageTransitionType.scale,
-                                              alignment: Alignment.bottomCenter,
-                                            ),
-                                          },
-                                        );
-                                      } else {
-                                        logFirebaseEvent(
-                                            'RefreshButton_haptic_feedback');
-                                        HapticFeedback.vibrate();
-                                        logFirebaseEvent(
-                                            'RefreshButton_alert_dialog');
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text('Error'),
-                                              content: Text(
-                                                  'Error getting latest Nightscout data from the API'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(
-                                                          alertDialogContext),
-                                                  child: Text(
-                                                      'I understand that data won\'t be up to date'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                        logFirebaseEvent(
-                                            'RefreshButton_navigate_to');
-
-                                        context.goNamed('Main');
-                                      }
-
-                                      setState(() {});
                                     },
                                   ),
                                 ),
@@ -735,9 +691,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                       backgroundColor: Colors.transparent,
                       buttonBackgroundColor: valueOrDefault<Color>(
                         () {
-                          if (widget.latestMmol! < 3.9) {
+                          if (FFAppState().latestMmol < 3.9) {
                             return FlutterFlowTheme.of(context).tertiaryColor;
-                          } else if (widget.latestMmol! > 9.4) {
+                          } else if (FFAppState().latestMmol > 9.4) {
                             return FlutterFlowTheme.of(context).secondaryColor;
                           } else {
                             return FlutterFlowTheme.of(context).primaryColor;
@@ -912,10 +868,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               Icons.local_dining_rounded,
                               color: valueOrDefault<Color>(
                                 () {
-                                  if (widget.latestMmol! < 3.9) {
+                                  if (FFAppState().latestMmol < 3.9) {
                                     return FlutterFlowTheme.of(context)
                                         .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
+                                  } else if (FFAppState().latestMmol > 9.4) {
                                     return FlutterFlowTheme.of(context)
                                         .secondaryColor;
                                   } else {
@@ -1047,7 +1003,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                   return Padding(
                                     padding: MediaQuery.of(context).viewInsets,
                                     child: POSTCarbsWidget(
-                                      latestMmol: widget.latestMmol,
+                                      latestMmol: FFAppState().latestMmol,
                                     ),
                                   );
                                 },
@@ -1071,10 +1027,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               FFIcons.kicon,
                               color: valueOrDefault<Color>(
                                 () {
-                                  if (widget.latestMmol! < 3.9) {
+                                  if (FFAppState().latestMmol < 3.9) {
                                     return FlutterFlowTheme.of(context)
                                         .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
+                                  } else if (FFAppState().latestMmol > 9.4) {
                                     return FlutterFlowTheme.of(context)
                                         .secondaryColor;
                                   } else {
@@ -1207,7 +1163,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     padding: MediaQuery.of(context).viewInsets,
                                     child: POSTInsulinWidget(
                                       insulinType: 'Novorapid',
-                                      latestMmol: widget.latestMmol,
+                                      latestMmol: FFAppState().latestMmol,
                                     ),
                                   );
                                 },
@@ -1232,10 +1188,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               FFIcons.k12Hour,
                               color: valueOrDefault<Color>(
                                 () {
-                                  if (widget.latestMmol! < 3.9) {
+                                  if (FFAppState().latestMmol < 3.9) {
                                     return FlutterFlowTheme.of(context)
                                         .tertiaryColor;
-                                  } else if (widget.latestMmol! > 9.4) {
+                                  } else if (FFAppState().latestMmol > 9.4) {
                                     return FlutterFlowTheme.of(context)
                                         .secondaryColor;
                                   } else {
@@ -1368,7 +1324,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     padding: MediaQuery.of(context).viewInsets,
                                     child: POSTInsulinWidget(
                                       insulinType: 'Optisulin',
-                                      latestMmol: widget.latestMmol,
+                                      latestMmol: FFAppState().latestMmol,
                                     ),
                                   );
                                 },
@@ -1449,7 +1405,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                         'Settings',
                         queryParams: {
                           'latestMmol': serializeParam(
-                            widget.latestMmol,
+                            FFAppState().latestMmol,
                             ParamType.double,
                           ),
                         }.withoutNulls,
@@ -1538,16 +1494,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             'apiResult': serializeParam(
                               (apiResult?.jsonBody ?? ''),
                               ParamType.JSON,
-                            ),
-                            'latestMmol': serializeParam(
-                              valueOrDefault<double>(
-                                functions.singleSgvToDouble(getJsonField(
-                                  (apiResult?.jsonBody ?? ''),
-                                  r'''$[0].sgv''',
-                                )),
-                                18.0,
-                              ),
-                              ParamType.double,
                             ),
                             'dateString': serializeParam(
                               (GetBloodGlucoseCall.dateString(

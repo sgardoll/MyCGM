@@ -76,7 +76,7 @@ dependencies:
   smooth_page_indicator: 1.0.0+2
   sqflite: 2.2.0+2
   substring_highlight: 1.0.33
-  swipeable_card_stack: ^0.0.5
+  swipeable_card_stack: 0.0.5
   text_search: 0.0.2
   timeago: 3.2.2
   url_launcher: 6.1.5

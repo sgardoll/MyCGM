@@ -6,6 +6,8 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
 
+import '../../flutter_flow/local_file.dart';
+
 enum ApiCallType {
   GET,
   POST,
@@ -161,10 +163,15 @@ class ApiManager {
       'Invalid ApiCallType $type for request with body',
     );
     final nonFileParams = toStringMap(
-        Map.fromEntries(params.entries.where((e) => e.value is! Uint8List)));
-    final files = params.entries
-        .where((e) => e.value is Uint8List)
-        .map((e) => http.MultipartFile.fromBytes(e.key, e.value as Uint8List));
+        Map.fromEntries(params.entries.where((e) => e.value is! FFLocalFile)));
+    final files = params.entries.where((e) => e.value is FFLocalFile).map((e) {
+      final localFile = e.value as FFLocalFile;
+      return http.MultipartFile.fromBytes(
+        e.key,
+        localFile.bytes ?? Uint8List.fromList([]),
+        filename: localFile.name,
+      );
+    });
     final request = http.MultipartRequest(
         type.toString().split('.').last, Uri.parse(apiUrl))
       ..headers.addAll(toStringMap(headers))

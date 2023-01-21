@@ -81,7 +81,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'loginPage',
               path: 'loginPage',
-              builder: (context, params) => LoginPageWidget(),
+              builder: (context, params) => LoginPageWidget(
+                loggedInUser: params.getParam('loggedInUser',
+                    ParamType.DocumentReference, false, ['users']),
+              ),
             ),
             FFRoute(
               name: 'onboardStart',
@@ -113,7 +116,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               requireAuth: true,
               builder: (context, params) => MainWidget(
                 apiResult: params.getParam('apiResult', ParamType.JSON),
-                latestMmol: params.getParam('latestMmol', ParamType.double),
                 dateString: params.getParam<String>(
                     'dateString', ParamType.String, true),
                 sgvList: params.getParam<int>('sgvList', ParamType.int, true),
