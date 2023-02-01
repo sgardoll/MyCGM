@@ -12,12 +12,7 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 /// Start Nightscout Group Code
 
-class NightscoutGroup {
-  static String baseUrl = 'https://[nightscout]/api/v1/';
-  static Map<String, String> headers = {
-    'api-secret': '[api_key]',
-  };
-}
+class NightscoutGroup {}
 
 /// End Nightscout Group Code
 

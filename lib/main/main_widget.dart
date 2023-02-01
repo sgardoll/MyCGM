@@ -3,9 +3,7 @@ import '../backend/api_requests/api_calls.dart';
 import '../components/p_o_s_t_carbs_widget.dart';
 import '../components/p_o_s_t_insulin_widget.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
-import '../flutter_flow/flutter_flow_charts.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_swipeable_stack.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../custom_code/widgets/index.dart' as custom_widgets;
@@ -18,7 +16,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:swipeable_card_stack/swipeable_card_stack.dart';
 
 class MainWidget extends StatefulWidget {
   const MainWidget({Key? key}) : super(key: key);
@@ -107,7 +104,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     ),
   };
   ApiCallResponse? apiResult;
-  late SwipeableCardSectionController swipeableStackController;
   ApiCallResponse? apiResultriPageLoad;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -118,42 +114,38 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       logFirebaseEvent('MAIN_PAGE_Main_ON_PAGE_LOAD');
-      if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
-              valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
-          (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
-              valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
-          (valueOrDefault(currentUserDocument?.token, '') != null &&
-              valueOrDefault(currentUserDocument?.token, '') != '')) {
-        logFirebaseEvent('Main_backend_call');
-        apiResultriPageLoad = await GetBloodGlucoseCall.call(
-          apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
-          nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
-          token: valueOrDefault(currentUserDocument?.token, ''),
-        );
-        if (!(apiResultriPageLoad?.succeeded ?? true)) {
-          logFirebaseEvent('Main_show_snack_bar');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Couldn\'t get data from Nightscout. API call unsuccessful.',
-                style: TextStyle(
-                  color: FlutterFlowTheme.of(context).primaryText,
-                ),
-              ),
-              duration: Duration(milliseconds: 4000),
-              backgroundColor: Color(0x00000000),
-            ),
-          );
-        }
+      logFirebaseEvent('Main_backend_call');
+      apiResultriPageLoad = await GetBloodGlucoseCall.call(
+        apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
+        nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
+        token: valueOrDefault(currentUserDocument?.token, ''),
+      );
+      if ((apiResultriPageLoad?.succeeded ?? true)) {
+        logFirebaseEvent('Main_update_local_state');
+        FFAppState().update(() {
+          FFAppState().latestMmol =
+              functions.sgvListToLatestMmol(GetBloodGlucoseCall.sgv(
+            (apiResultriPageLoad?.jsonBody ?? ''),
+          )?.toList())!;
+        });
       } else {
-        logFirebaseEvent('Main_navigate_to');
-
-        context.pushNamed('nightscoutCheck');
+        logFirebaseEvent('Main_show_snack_bar');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Couldn\'t get data from Nightscout. API call unsuccessful.',
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
       }
     });
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'Main'});
-    swipeableStackController = SwipeableCardSectionController();
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -202,515 +194,92 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: AlignmentDirectional(0, -4),
-                  child: Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.92,
-                    decoration: BoxDecoration(),
-                    child: Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: FlutterFlowSwipeableStack(
-                        topCardHeightFraction: 0.7,
-                        middleCardHeightFraction: 0.5,
-                        bottomCardHeightFraction: 0.5,
-                        topCardWidthFraction: 1,
-                        middleCardWidthFraction: 0.9,
-                        bottomCardWidthFraction: 0.8,
-                        onSwipeFn: (index) async {
-                          logFirebaseEvent(
-                              'MAIN_SwipeableStack_3k5lht6m_ON_WIDGET_S');
-                          if (FFAppState().FABOpen) {
-                            logFirebaseEvent('SwipeableStack_widget_animation');
-                            if (animationsMap['iconOnActionTriggerAnimation'] !=
-                                null) {
-                              animationsMap['iconOnActionTriggerAnimation']!
-                                  .controller
-                                  .forward()
-                                  .whenComplete(animationsMap[
-                                          'iconOnActionTriggerAnimation']!
-                                      .controller
-                                      .reverse);
-                            }
-                            logFirebaseEvent('SwipeableStack_widget_animation');
-                            if (animationsMap[
-                                    'iconButtonOnActionTriggerAnimation2'] !=
-                                null) {
-                              animationsMap[
-                                      'iconButtonOnActionTriggerAnimation2']!
-                                  .controller
-                                  .forward()
-                                  .whenComplete(animationsMap[
-                                          'iconButtonOnActionTriggerAnimation2']!
-                                      .controller
-                                      .reverse);
-                            }
-                            logFirebaseEvent('SwipeableStack_widget_animation');
-                            if (animationsMap[
-                                    'iconButtonOnActionTriggerAnimation1'] !=
-                                null) {
-                              animationsMap[
-                                      'iconButtonOnActionTriggerAnimation1']!
-                                  .controller
-                                  .forward()
-                                  .whenComplete(animationsMap[
-                                          'iconButtonOnActionTriggerAnimation1']!
-                                      .controller
-                                      .reverse);
-                            }
-                            logFirebaseEvent('SwipeableStack_widget_animation');
-                            if (animationsMap[
-                                    'iconButtonOnActionTriggerAnimation3'] !=
-                                null) {
-                              animationsMap[
-                                      'iconButtonOnActionTriggerAnimation3']!
-                                  .controller
-                                  .forward()
-                                  .whenComplete(animationsMap[
-                                          'iconButtonOnActionTriggerAnimation3']!
-                                      .controller
-                                      .reverse);
-                            }
-                            logFirebaseEvent(
-                                'SwipeableStack_update_local_state');
-                            FFAppState().update(() {
-                              FFAppState().FABOpen = false;
-                            });
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
+                      child: CircularPercentIndicator(
+                        percent: () {
+                          if (FFAppState().latestMmol == null) {
+                            return 0.1;
+                          } else if (FFAppState().latestMmol < 3.9) {
+                            return 0.1;
+                          } else if (FFAppState().latestMmol > 9.4) {
+                            return 1.0;
+                          } else {
+                            return functions
+                                .quickProgressInd(FFAppState().latestMmol);
                           }
-                        },
-                        onLeftSwipe: (index) {},
-                        onRightSwipe: (index) {},
-                        onUpSwipe: (index) async {
-                          logFirebaseEvent(
-                              'MAIN_SwipeableStack_3k5lht6m_ON_UP_SWIPE');
-                          logFirebaseEvent('SwipeableStack_swipeable_stack');
-                          swipeableStackController.triggerSwipeUp();
-                        },
-                        onDownSwipe: (index) {},
-                        itemBuilder: (context, index) {
-                          return [
-                            () => Material(
-                                  color: Colors.transparent,
-                                  elevation: 30,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(75),
-                                      bottomRight: Radius.circular(75),
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.75,
-                                    decoration: BoxDecoration(
-                                      color: valueOrDefault<Color>(
-                                        () {
-                                          if (FFAppState().latestMmol < 3.9) {
-                                            return FlutterFlowTheme.of(context)
-                                                .tertiaryColor;
-                                          } else if (FFAppState().latestMmol >
-                                              9.4) {
-                                            return FlutterFlowTheme.of(context)
-                                                .secondaryColor;
-                                          } else {
-                                            return FlutterFlowTheme.of(context)
-                                                .primaryColor;
-                                          }
-                                        }(),
-                                        FlutterFlowTheme.of(context)
-                                            .primaryColor,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 16,
-                                          color: Color(0x7F202529),
-                                          offset: Offset(2, 4),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(75),
-                                        bottomRight: Radius.circular(75),
-                                        topLeft: Radius.circular(0),
-                                        topRight: Radius.circular(0),
-                                      ),
-                                    ),
-                                    child: Align(
-                                      alignment: AlignmentDirectional(0, 0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 50, 0, 0),
-                                            child: CircularPercentIndicator(
-                                              percent: () {
-                                                if (FFAppState().latestMmol ==
-                                                    null) {
-                                                  return 0.1;
-                                                } else if (FFAppState()
-                                                        .latestMmol <
-                                                    3.9) {
-                                                  return 0.1;
-                                                } else if (FFAppState()
-                                                        .latestMmol >
-                                                    9.4) {
-                                                  return 1.0;
-                                                } else {
-                                                  return functions
-                                                      .quickProgressInd(
-                                                          FFAppState()
-                                                              .latestMmol);
-                                                }
-                                              }(),
-                                              radius: 150,
-                                              lineWidth: 40,
-                                              animation: true,
-                                              progressColor: Color(0x80001219),
-                                              backgroundColor:
-                                                  valueOrDefault<Color>(
-                                                () {
-                                                  if (FFAppState().latestMmol <
-                                                      3.9) {
-                                                    return FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryColor;
-                                                  } else if (FFAppState()
-                                                          .latestMmol >
-                                                      9.4) {
-                                                    return FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground;
-                                                  } else {
-                                                    return FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryBackground;
-                                                  }
-                                                }(),
-                                                FlutterFlowTheme.of(context)
-                                                    .primaryBackground,
-                                              ),
-                                              center: Text(
-                                                functions
-                                                    .quickProgressInd(
-                                                        FFAppState().latestMmol)
-                                                    .toString()
-                                                    .maybeHandleOverflow(
-                                                      maxChars: 20,
-                                                      replacement: '…',
-                                                    ),
-                                                textAlign: TextAlign.center,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .title1
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          fontSize: 90,
-                                                        ),
-                                              ),
-                                              startAngle: 0,
-                                            ),
-                                          ),
-                                          AuthUserStreamWidget(
-                                            builder: (context) => Text(
-                                              valueOrDefault(
-                                                  currentUserDocument?.units,
-                                                  ''),
-                                              textAlign: TextAlign.center,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .title1
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                      ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0, 0),
-                                            child: Text(
-                                              'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
-                                                (apiResultriPageLoad
-                                                        ?.jsonBody ??
-                                                    ''),
-                                              ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
-                                              textAlign: TextAlign.center,
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .title3
-                                                  .override(
-                                                    fontFamily: 'Poppins',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                            ),
-                                          ),
-                                          InkWell(
-                                            onTap: () async {
-                                              logFirebaseEvent(
-                                                  'MAIN_PAGE_Row_lb4jpp7o_ON_TAP');
-                                              logFirebaseEvent(
-                                                  'Row_swipeable_stack');
-                                              swipeableStackController
-                                                  .triggerSwipeUp();
-                                            },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                FlutterFlowIconButton(
-                                                  borderColor:
-                                                      Colors.transparent,
-                                                  borderRadius: 30,
-                                                  borderWidth: 1,
-                                                  buttonSize: 60,
-                                                  icon: Icon(
-                                                    Icons
-                                                        .keyboard_arrow_up_rounded,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    size: 30,
-                                                  ),
-                                                  onPressed: () {
-                                                    print(
-                                                        'IconButton pressed ...');
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            () => Material(
-                                  color: Colors.transparent,
-                                  elevation: 20,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(75),
-                                      bottomRight: Radius.circular(75),
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.75,
-                                    decoration: BoxDecoration(
-                                      color: valueOrDefault<Color>(
-                                        () {
-                                          if (FFAppState().latestMmol < 3.9) {
-                                            return Color(0xC0AE2012);
-                                          } else if (FFAppState().latestMmol >
-                                              9.4) {
-                                            return Color(0xC0CA6702);
-                                          } else {
-                                            return Color(0xBF0A9396);
-                                          }
-                                        }(),
-                                        Color(0xBF0A9396),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 8,
-                                          color: Color(0x7F202529),
-                                          offset: Offset(2, 4),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(75),
-                                        bottomRight: Radius.circular(75),
-                                        topLeft: Radius.circular(0),
-                                        topRight: Radius.circular(0),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    24, 24, 24, 24),
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  1,
-                                              child: FlutterFlowLineChart(
-                                                data: [
-                                                  FFLineChartData(
-                                                    xData: (GetBloodGlucoseCall
-                                                            .dateString(
-                                                      (apiResultriPageLoad
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    ) as List)
-                                                        .map<String>(
-                                                            (s) => s.toString())
-                                                        .toList()!,
-                                                    yData: functions
-                                                        .intListToMmolDoubleList(
-                                                            GetBloodGlucoseCall
-                                                                    .sgv(
-                                                      (apiResultriPageLoad
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                    )!
-                                                                .toList()),
-                                                    settings: LineChartBarData(
-                                                      color: Color(0x7FFFFFFF),
-                                                      barWidth: 5,
-                                                      isCurved: true,
-                                                    ),
-                                                  )
-                                                ],
-                                                chartStylingInfo:
-                                                    ChartStylingInfo(
-                                                  enableTooltip: true,
-                                                  tooltipBackgroundColor:
-                                                      Color(0x801E2429),
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  showGrid: true,
-                                                  showBorder: false,
-                                                ),
-                                                axisBounds: AxisBounds(
-                                                  minY: 0,
-                                                  maxY: 18,
-                                                ),
-                                                xAxisLabelInfo: AxisLabelInfo(),
-                                                yAxisLabelInfo: AxisLabelInfo(
-                                                  showLabels: true,
-                                                  labelTextStyle:
-                                                      GoogleFonts.getFont(
-                                                    'Open Sans',
-                                                    color: Color(0x7CFFFFFF),
-                                                    fontSize: 10,
-                                                  ),
-                                                  labelInterval: 5,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                            () => Material(
-                                  color: Colors.transparent,
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(75),
-                                      bottomRight: Radius.circular(75),
-                                      topLeft: Radius.circular(0),
-                                      topRight: Radius.circular(0),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.75,
-                                    decoration: BoxDecoration(
-                                      color: valueOrDefault<Color>(
-                                        () {
-                                          if (FFAppState().latestMmol < 3.9) {
-                                            return Color(0x80AE2012);
-                                          } else if (FFAppState().latestMmol >
-                                              9.4) {
-                                            return Color(0x80CA6702);
-                                          } else {
-                                            return Color(0x820A9396);
-                                          }
-                                        }(),
-                                        Color(0x800A9396),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 8,
-                                          color: Color(0x4D202529),
-                                          offset: Offset(2, 4),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(75),
-                                        bottomRight: Radius.circular(75),
-                                        topLeft: Radius.circular(0),
-                                        topRight: Radius.circular(0),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [],
-                                    ),
-                                  ),
-                                ),
-                            () => Align(
-                                  alignment: AlignmentDirectional(0, 0),
-                                  child: FlutterFlowIconButton(
-                                    borderColor: Colors.transparent,
-                                    borderRadius: 30,
-                                    borderWidth: 1,
-                                    buttonSize: 100,
-                                    icon: Icon(
-                                      Icons.refresh,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                      size: 50,
-                                    ),
-                                    onPressed: () async {
-                                      logFirebaseEvent(
-                                          'MAIN_PAGE_RefreshButton_ON_TAP');
-                                      logFirebaseEvent(
-                                          'RefreshButton_navigate_to');
-
-                                      context.pushNamed(
-                                        'loginPage',
-                                        queryParams: {
-                                          'loggedInUser': serializeParam(
-                                            currentUserReference,
-                                            ParamType.DocumentReference,
-                                          ),
-                                        }.withoutNulls,
-                                      );
-                                    },
-                                  ),
-                                ),
-                          ][index]();
-                        },
-                        itemCount: 4,
-                        controller: swipeableStackController,
-                        enableSwipeUp: true,
-                        enableSwipeDown: false,
+                        }(),
+                        radius: 150,
+                        lineWidth: 40,
+                        animation: true,
+                        progressColor: Color(0x80001219),
+                        backgroundColor: valueOrDefault<Color>(
+                          () {
+                            if (FFAppState().latestMmol < 3.9) {
+                              return FlutterFlowTheme.of(context)
+                                  .secondaryColor;
+                            } else if (FFAppState().latestMmol > 9.4) {
+                              return FlutterFlowTheme.of(context)
+                                  .secondaryBackground;
+                            } else {
+                              return FlutterFlowTheme.of(context)
+                                  .primaryBackground;
+                            }
+                          }(),
+                          FlutterFlowTheme.of(context).primaryBackground,
+                        ),
+                        center: Text(
+                          FFAppState()
+                              .latestMmol
+                              .toString()
+                              .maybeHandleOverflow(
+                                maxChars: 20,
+                                replacement: '…',
+                              ),
+                          textAlign: TextAlign.center,
+                          style: FlutterFlowTheme.of(context).title1.override(
+                                fontFamily: 'Poppins',
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                fontSize: 90,
+                              ),
+                        ),
+                        startAngle: 0,
                       ),
                     ),
-                  ),
+                    AuthUserStreamWidget(
+                      builder: (context) => Text(
+                        valueOrDefault<String>(
+                          valueOrDefault(currentUserDocument?.units, ''),
+                          'mmol',
+                        ),
+                        textAlign: TextAlign.center,
+                        style: FlutterFlowTheme.of(context).title1.override(
+                              fontFamily: 'Poppins',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                            ),
+                      ),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Text(
+                        'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
+                          (apiResultriPageLoad?.jsonBody ?? ''),
+                        ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
+                        textAlign: TextAlign.center,
+                        style: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Poppins',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
                 Align(
                   alignment: AlignmentDirectional(0, 1),

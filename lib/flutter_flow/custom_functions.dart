@@ -68,14 +68,23 @@ String? minutesAgo(List<String> latestDate) {
   }
 }
 
-double sgvListToLatestMmol(List<int> sgvList) {
+double? sgvListToLatestMmol(List<int>? sgvList) {
+  if (sgvList == null || sgvList.isEmpty) {
+    return 0;
+  }
+
   int firstInt = sgvList[0];
   double firstIntAsDouble = firstInt.toDouble();
-  return firstIntAsDouble / 18;
+  double result = (firstIntAsDouble / 18);
+  return double.parse(result.toStringAsFixed(1));
 }
 
-List<double> intListToMmolDoubleList(List<int> sgv) {
-  return sgv.map((e) => (e / 18.0).toDouble()).toList();
+List<double>? intListToMmolDoubleList(List<int>? sgv) {
+  if (sgv == null) {
+    return null;
+  }
+
+  return sgv.map((e) => (e / 18.0).toDouble()).toList() as List<double>;
 }
 
 String? novoCalcBasedOnRatio(
