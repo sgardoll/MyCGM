@@ -151,28 +151,6 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
 
           context.goNamed(
             'Main',
-            queryParams: {
-              'apiResult': serializeParam(
-                (apiResult?.jsonBody ?? ''),
-                ParamType.JSON,
-              ),
-              'dateString': serializeParam(
-                (GetBloodGlucoseCall.dateString(
-                  (apiResult?.jsonBody ?? ''),
-                ) as List)
-                    .map<String>((s) => s.toString())
-                    .toList(),
-                ParamType.String,
-                true,
-              ),
-              'sgvList': serializeParam(
-                GetBloodGlucoseCall.sgv(
-                  (apiResult?.jsonBody ?? ''),
-                ),
-                ParamType.int,
-                true,
-              ),
-            }.withoutNulls,
             extra: <String, dynamic>{
               kTransitionInfoKey: TransitionInfo(
                 hasTransition: true,

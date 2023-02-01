@@ -114,12 +114,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'Main',
               path: 'Main',
               requireAuth: true,
-              builder: (context, params) => MainWidget(
-                apiResult: params.getParam('apiResult', ParamType.JSON),
-                dateString: params.getParam<String>(
-                    'dateString', ParamType.String, true),
-                sgvList: params.getParam<int>('sgvList', ParamType.int, true),
-              ),
+              builder: (context, params) => MainWidget(),
             ),
             FFRoute(
               name: 'Settings',

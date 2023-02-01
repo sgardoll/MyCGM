@@ -21,16 +21,7 @@ import 'package:provider/provider.dart';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
 
 class MainWidget extends StatefulWidget {
-  const MainWidget({
-    Key? key,
-    this.apiResult,
-    this.dateString,
-    this.sgvList,
-  }) : super(key: key);
-
-  final dynamic apiResult;
-  final List<String>? dateString;
-  final List<int>? sgvList;
+  const MainWidget({Key? key}) : super(key: key);
 
   @override
   _MainWidgetState createState() => _MainWidgetState();
@@ -117,6 +108,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
   };
   ApiCallResponse? apiResult;
   late SwipeableCardSectionController swipeableStackController;
+  ApiCallResponse? apiResultriPageLoad;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -126,14 +118,38 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       logFirebaseEvent('MAIN_PAGE_Main_ON_PAGE_LOAD');
-      logFirebaseEvent('Main_update_local_state');
-      FFAppState().update(() {
-        FFAppState().deleteFABOpen();
-        FFAppState().FABOpen = false;
+      if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
+              valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
+          (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
+              valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
+          (valueOrDefault(currentUserDocument?.token, '') != null &&
+              valueOrDefault(currentUserDocument?.token, '') != '')) {
+        logFirebaseEvent('Main_backend_call');
+        apiResultriPageLoad = await GetBloodGlucoseCall.call(
+          apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
+          nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
+          token: valueOrDefault(currentUserDocument?.token, ''),
+        );
+        if (!(apiResultriPageLoad?.succeeded ?? true)) {
+          logFirebaseEvent('Main_show_snack_bar');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Couldn\'t get data from Nightscout. API call unsuccessful.',
+                style: TextStyle(
+                  color: FlutterFlowTheme.of(context).primaryText,
+                ),
+              ),
+              duration: Duration(milliseconds: 4000),
+              backgroundColor: Color(0x00000000),
+            ),
+          );
+        }
+      } else {
+        logFirebaseEvent('Main_navigate_to');
 
-        FFAppState().latestMmol =
-            functions.sgvListToLatestMmol(widget.sgvList!.toList());
-      });
+        context.pushNamed('nightscoutCheck');
+      }
     });
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'Main'});
@@ -423,7 +439,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             alignment:
                                                 AlignmentDirectional(0, 0),
                                             child: Text(
-                                              'as of ${functions.minutesAgo(widget.dateString?.toList())}',
+                                              'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
+                                                (apiResultriPageLoad
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
                                               textAlign: TextAlign.center,
                                               style: FlutterFlowTheme.of(
                                                       context)
@@ -542,10 +562,23 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               child: FlutterFlowLineChart(
                                                 data: [
                                                   FFLineChartData(
-                                                    xData: widget.dateString!,
+                                                    xData: (GetBloodGlucoseCall
+                                                            .dateString(
+                                                      (apiResultriPageLoad
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    ) as List)
+                                                        .map<String>(
+                                                            (s) => s.toString())
+                                                        .toList()!,
                                                     yData: functions
                                                         .intListToMmolDoubleList(
-                                                            widget.sgvList!
+                                                            GetBloodGlucoseCall
+                                                                    .sgv(
+                                                      (apiResultriPageLoad
+                                                              ?.jsonBody ??
+                                                          ''),
+                                                    )!
                                                                 .toList()),
                                                     settings: LineChartBarData(
                                                       color: Color(0x7FFFFFFF),
@@ -1490,28 +1523,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
                         context.goNamed(
                           'Main',
-                          queryParams: {
-                            'apiResult': serializeParam(
-                              (apiResult?.jsonBody ?? ''),
-                              ParamType.JSON,
-                            ),
-                            'dateString': serializeParam(
-                              (GetBloodGlucoseCall.dateString(
-                                (apiResult?.jsonBody ?? ''),
-                              ) as List)
-                                  .map<String>((s) => s.toString())
-                                  .toList(),
-                              ParamType.String,
-                              true,
-                            ),
-                            'sgvList': serializeParam(
-                              GetBloodGlucoseCall.sgv(
-                                (apiResult?.jsonBody ?? ''),
-                              ),
-                              ParamType.int,
-                              true,
-                            ),
-                          }.withoutNulls,
                           extra: <String, dynamic>{
                             kTransitionInfoKey: TransitionInfo(
                               hasTransition: true,

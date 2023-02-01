@@ -29,7 +29,7 @@ double? sgvToProgressInd(double? mmol) {
   }
 }
 
-String? minutesAgo(List<String>? latestDate) {
+String? minutesAgo(List<String> latestDate) {
 // calculate the difference between the latest date and now. The dateString is in the "2022-11-22T09:30:53.000Z" format
   final difference = DateTime.now().difference(DateTime.parse(latestDate![0]));
   final minutes = difference.inMinutes;

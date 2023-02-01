@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -8,7 +7,6 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
 import 'dart:ui';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -33,16 +31,15 @@ class LoginPageWidget extends StatefulWidget {
 
 class _LoginPageWidgetState extends State<LoginPageWidget>
     with TickerProviderStateMixin {
-  ApiCallResponse? apiResultri1;
-  TextEditingController? passwordController;
-  late bool passwordVisibility;
-  TextEditingController? emailAddressController;
   TextEditingController? displayNameController;
   TextEditingController? emailAddressCreateController;
   TextEditingController? passwordCreateController;
   late bool passwordCreateVisibility;
   TextEditingController? passwordCreateConfirmController;
   late bool passwordCreateConfirmVisibility;
+  TextEditingController? emailAddressController;
+  TextEditingController? passwordController;
+  late bool passwordVisibility;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
@@ -640,17 +637,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               .forward(from: 0.0));
                                                                     }
                                                                     logFirebaseEvent(
-                                                                        'Button-Login_widget_animation');
-                                                                    if (animationsMap[
-                                                                            'tabBarOnActionTriggerAnimation'] !=
-                                                                        null) {
-                                                                      animationsMap[
-                                                                              'tabBarOnActionTriggerAnimation']!
-                                                                          .controller
-                                                                          .forward(
-                                                                              from: 0.0);
-                                                                    }
-                                                                    logFirebaseEvent(
                                                                         'Button-Login_auth');
                                                                     GoRouter.of(
                                                                             context)
@@ -669,102 +655,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       return;
                                                                     }
 
-                                                                    if ((valueOrDefault(currentUserDocument?.nightscout, '') != null && valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
-                                                                        (valueOrDefault(currentUserDocument?.apiKey, '') !=
-                                                                                null &&
-                                                                            valueOrDefault(currentUserDocument?.apiKey, '') !=
-                                                                                '') &&
-                                                                        (valueOrDefault(currentUserDocument?.token, '') !=
-                                                                                null &&
-                                                                            valueOrDefault(currentUserDocument?.token, '') !=
-                                                                                '')) {
-                                                                      logFirebaseEvent(
-                                                                          'Button-Login_backend_call');
-                                                                      apiResultri1 =
-                                                                          await GetBloodGlucoseCall
-                                                                              .call(
-                                                                        apiKey: valueOrDefault(
-                                                                            currentUserDocument?.apiKey,
-                                                                            ''),
-                                                                        nightscout: valueOrDefault(
-                                                                            currentUserDocument?.nightscout,
-                                                                            ''),
-                                                                        token: valueOrDefault(
-                                                                            currentUserDocument?.token,
-                                                                            ''),
-                                                                      );
-                                                                      if ((apiResultri1
-                                                                              ?.succeeded ??
-                                                                          true)) {
-                                                                        logFirebaseEvent(
-                                                                            'Button-Login_navigate_to');
-
-                                                                        context
-                                                                            .pushNamedAuth(
-                                                                          'Main',
-                                                                          mounted,
-                                                                          queryParams:
-                                                                              {
-                                                                            'apiResult':
-                                                                                serializeParam(
-                                                                              (apiResultri1?.jsonBody ?? ''),
-                                                                              ParamType.JSON,
-                                                                            ),
-                                                                            'dateString':
-                                                                                serializeParam(
-                                                                              functions
-                                                                                  .dateStringToTimestamp((GetBloodGlucoseCall.dateString(
-                                                                                    (apiResultri1?.jsonBody ?? ''),
-                                                                                  ) as List)
-                                                                                      .map<String>((s) => s.toString())
-                                                                                      .toList()!
-                                                                                      .toList())
-                                                                                  .map((e) => dateTimeFormat('jm', e))
-                                                                                  .toList(),
-                                                                              ParamType.String,
-                                                                              true,
-                                                                            ),
-                                                                            'sgvList':
-                                                                                serializeParam(
-                                                                              GetBloodGlucoseCall.sgv(
-                                                                                (apiResultri1?.jsonBody ?? ''),
-                                                                              ),
-                                                                              ParamType.int,
-                                                                              true,
-                                                                            ),
-                                                                          }.withoutNulls,
-                                                                        );
-                                                                      } else {
-                                                                        logFirebaseEvent(
-                                                                            'Button-Login_show_snack_bar');
-                                                                        ScaffoldMessenger.of(context)
-                                                                            .showSnackBar(
-                                                                          SnackBar(
-                                                                            content:
-                                                                                Text(
-                                                                              'Couldn\'t get data from Nightscout. API call unsuccessful.',
-                                                                              style: TextStyle(
-                                                                                color: FlutterFlowTheme.of(context).primaryText,
-                                                                              ),
-                                                                            ),
-                                                                            duration:
-                                                                                Duration(milliseconds: 4000),
-                                                                            backgroundColor:
-                                                                                Color(0x00000000),
-                                                                          ),
-                                                                        );
-                                                                      }
-                                                                    } else {
-                                                                      logFirebaseEvent(
-                                                                          'Button-Login_navigate_to');
-
-                                                                      context.pushNamedAuth(
-                                                                          'nightscoutCheck',
-                                                                          mounted);
-                                                                    }
-
-                                                                    setState(
-                                                                        () {});
+                                                                    context.goNamedAuth(
+                                                                        'Main',
+                                                                        mounted);
                                                                   },
                                                                   text:
                                                                       'Sign In',
