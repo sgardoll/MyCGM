@@ -10,7 +10,6 @@ import '../custom_code/widgets/index.dart' as custom_widgets;
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -103,7 +102,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       ],
     ),
   };
-  ApiCallResponse? apiResult;
   ApiCallResponse? apiResultriPageLoad;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -124,9 +122,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         logFirebaseEvent('Main_update_local_state');
         FFAppState().update(() {
           FFAppState().latestMmol =
-              functions.sgvListToLatestMmol(GetBloodGlucoseCall.sgv(
+              functions.singleSgvToDouble(GetBloodGlucoseCall.singleSgv(
             (apiResultriPageLoad?.jsonBody ?? ''),
-          )?.toList())!;
+          ));
         });
       } else {
         logFirebaseEvent('Main_show_snack_bar');
@@ -1078,56 +1076,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           FFAppState().FABOpen = false;
                         });
                       }
-                      logFirebaseEvent('RightNavClick_backend_call');
-                      apiResult = await GetBloodGlucoseCall.call(
-                        apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
-                        nightscout:
-                            valueOrDefault(currentUserDocument?.nightscout, ''),
-                        token: valueOrDefault(currentUserDocument?.token, ''),
-                      );
-                      logFirebaseEvent('RightNavClick_wait__delay');
-                      await Future.delayed(const Duration(milliseconds: 200));
-                      if ((apiResult?.succeeded ?? true)) {
-                        logFirebaseEvent('RightNavClick_navigate_to');
+                      logFirebaseEvent('RightNavClick_navigate_to');
 
-                        context.goNamed(
-                          'Main',
-                          extra: <String, dynamic>{
-                            kTransitionInfoKey: TransitionInfo(
-                              hasTransition: true,
-                              transitionType: PageTransitionType.scale,
-                              alignment: Alignment.bottomCenter,
-                            ),
-                          },
-                        );
-                      } else {
-                        logFirebaseEvent('RightNavClick_haptic_feedback');
-                        HapticFeedback.vibrate();
-                        logFirebaseEvent('RightNavClick_alert_dialog');
-                        await showDialog(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: Text('Error'),
-                              content: Text(
-                                  'Error getting latest Nightscout data from the API'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext),
-                                  child: Text(
-                                      'I understand that data won\'t be up to date'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                        logFirebaseEvent('RightNavClick_navigate_to');
-
-                        context.goNamed('Main');
-                      }
-
-                      setState(() {});
+                      context.pushNamed('Main');
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.33,

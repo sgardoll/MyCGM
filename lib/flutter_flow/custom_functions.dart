@@ -146,8 +146,9 @@ double quickProgressInd(double latestMmol) {
 }
 
 double singleSgvToDouble(int singleSgv) {
-  double i = singleSgv.toDouble();
-  return i / 18;
+  double firstIntAsDouble = singleSgv.toDouble();
+  double result = (firstIntAsDouble / 18);
+  return double.parse(result.toStringAsFixed(1));
 }
 
 double? stringToDouble(String? carbs) {

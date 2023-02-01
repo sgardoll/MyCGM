@@ -21,19 +21,23 @@ class GetBloodGlucoseCall {
     String? apiKey = 'Thisisnotadrill',
     String? nightscout = 'stucgm',
     String? token = 'mycgm-4eed72c0613bed6d',
-  }) async {
-    final response = await makeCloudCall(
-      _kPrivateApiFunctionName,
-      {
-        'callName': 'GetBloodGlucoseCall',
-        'variables': {
-          'apiKey': apiKey,
-          'nightscout': nightscout,
-          'token': token,
-        },
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetBloodGlucose',
+      apiUrl: 'https://${nightscout}/api/v1/entries/sgv?count=30&',
+      callType: ApiCallType.GET,
+      headers: {
+        'accept': 'application/json',
+        'api-secret': '${apiKey}',
       },
+      params: {
+        'token': token,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
     );
-    return ApiCallResponse.fromCloudCallResponse(response);
   }
 
   static dynamic date(dynamic response) => getJsonField(
