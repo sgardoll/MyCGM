@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import '../../flutter_flow/flutter_flow_util.dart';
-import '../cloud_functions/cloud_functions.dart';
 
 import 'api_manager.dart';
 
@@ -12,7 +11,12 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 /// Start Nightscout Group Code
 
-class NightscoutGroup {}
+class NightscoutGroup {
+  static String baseUrl = 'https://[nightscout]/api/v1/';
+  static Map<String, String> headers = {
+    'api-secret': '[api_key]',
+  };
+}
 
 /// End Nightscout Group Code
 
@@ -75,23 +79,30 @@ class PostInsulinCall {
     String? apiKey = '',
     String? nightscout = '',
     String? token = '',
-  }) async {
-    final response = await makeCloudCall(
-      _kPrivateApiFunctionName,
-      {
-        'callName': 'PostInsulinCall',
-        'variables': {
-          'enteredBy': enteredBy,
-          'insulin': insulin,
-          'insulinInjections': insulinInjections,
-          'insulinType': insulinType,
-          'apiKey': apiKey,
-          'nightscout': nightscout,
-          'token': token,
-        },
+  }) {
+    final body = '''
+[
+  {
+    "enteredBy": "${enteredBy}",
+    "insulin": "${insulin}",
+    "insulinInjections": "[{\\"insulin\\":\\"${insulinType}\\",\\"units\\":${insulin}}]"
+  }
+]''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'PostInsulin',
+      apiUrl: 'https://${nightscout}/api/v1/treatments?token=${token}',
+      callType: ApiCallType.POST,
+      headers: {
+        'api-secret': '${apiKey}',
       },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
     );
-    return ApiCallResponse.fromCloudCallResponse(response);
   }
 }
 
@@ -104,23 +115,31 @@ class PostCarbsCall {
     String? token = '',
     String? apiKey = '',
     String? notes = '',
-  }) async {
-    final response = await makeCloudCall(
-      _kPrivateApiFunctionName,
-      {
-        'callName': 'PostCarbsCall',
-        'variables': {
-          'enteredBy': enteredBy,
-          'eventType': eventType,
-          'carbs': carbs,
-          'nightscout': nightscout,
-          'token': token,
-          'apiKey': apiKey,
-          'notes': notes,
-        },
+  }) {
+    final body = '''
+[
+  {
+    "enteredBy": "${enteredBy}",
+    "eventType": "${eventType}",
+    "carbs": ${carbs},
+    "notes": "${notes}"
+  }
+]''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'PostCarbs',
+      apiUrl: 'https://${nightscout}/api/v1/treatments?token=${token}',
+      callType: ApiCallType.POST,
+      headers: {
+        'api-secret': '${apiKey}',
       },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
     );
-    return ApiCallResponse.fromCloudCallResponse(response);
   }
 }
 

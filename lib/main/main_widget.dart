@@ -102,48 +102,12 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       ],
     ),
   };
-  ApiCallResponse? apiResultriPageLoad;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      logFirebaseEvent('MAIN_PAGE_Main_ON_PAGE_LOAD');
-      logFirebaseEvent('Main_backend_call');
-      apiResultriPageLoad = await GetBloodGlucoseCall.call(
-        apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
-        nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
-        token: valueOrDefault(currentUserDocument?.token, ''),
-      );
-      if ((apiResultriPageLoad?.succeeded ?? true)) {
-        logFirebaseEvent('Main_update_local_state');
-        FFAppState().update(() {
-          FFAppState().latestMmol =
-              functions.singleSgvToDouble(GetBloodGlucoseCall.singleSgv(
-            (apiResultriPageLoad?.jsonBody ?? ''),
-          ));
-        });
-      } else {
-        logFirebaseEvent('Main_show_snack_bar');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Couldn\'t get data from Nightscout. API call unsuccessful.',
-              style: TextStyle(
-                color: FlutterFlowTheme.of(context).primaryText,
-              ),
-            ),
-            duration: Duration(milliseconds: 4000),
-            backgroundColor: Color(0x00000000),
-          ),
-        );
-      }
-    });
-
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Main'});
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -151,6 +115,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       this,
     );
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Main'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -174,135 +139,233 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
             onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
             child: Stack(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 1,
-                  decoration: BoxDecoration(
-                    color: valueOrDefault<Color>(
-                      () {
-                        if (FFAppState().latestMmol < 3.9) {
-                          return FlutterFlowTheme.of(context).tertiaryColor;
-                        } else if (FFAppState().latestMmol > 9.4) {
-                          return FlutterFlowTheme.of(context).secondaryColor;
-                        } else {
-                          return FlutterFlowTheme.of(context).primaryColor;
-                        }
-                      }(),
-                      FlutterFlowTheme.of(context).primaryColor,
+                AuthUserStreamWidget(
+                  builder: (context) => FutureBuilder<ApiCallResponse>(
+                    future: GetBloodGlucoseCall.call(
+                      apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
+                      nightscout:
+                          valueOrDefault(currentUserDocument?.nightscout, ''),
+                      token: valueOrDefault(currentUserDocument?.token, ''),
                     ),
-                  ),
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
-                      child: CircularPercentIndicator(
-                        percent: () {
-                          if (FFAppState().latestMmol == null) {
-                            return 0.1;
-                          } else if (FFAppState().latestMmol < 3.9) {
-                            return 0.1;
-                          } else if (FFAppState().latestMmol > 9.4) {
-                            return 1.0;
-                          } else {
-                            return functions
-                                .quickProgressInd(FFAppState().latestMmol);
-                          }
-                        }(),
-                        radius: 150,
-                        lineWidth: 40,
-                        animation: true,
-                        progressColor: Color(0x80001219),
-                        backgroundColor: valueOrDefault<Color>(
-                          () {
-                            if (FFAppState().latestMmol < 3.9) {
-                              return FlutterFlowTheme.of(context)
-                                  .secondaryColor;
-                            } else if (FFAppState().latestMmol > 9.4) {
-                              return FlutterFlowTheme.of(context)
-                                  .secondaryBackground;
-                            } else {
-                              return FlutterFlowTheme.of(context)
-                                  .primaryBackground;
-                            }
-                          }(),
-                          FlutterFlowTheme.of(context).primaryBackground,
-                        ),
-                        center: Text(
-                          FFAppState()
-                              .latestMmol
-                              .toString()
-                              .maybeHandleOverflow(
-                                maxChars: 20,
-                                replacement: '…',
-                              ),
-                          textAlign: TextAlign.center,
-                          style: FlutterFlowTheme.of(context).title1.override(
-                                fontFamily: 'Poppins',
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                fontSize: 90,
-                              ),
-                        ),
-                        startAngle: 0,
-                      ),
-                    ),
-                    AuthUserStreamWidget(
-                      builder: (context) => Text(
-                        valueOrDefault<String>(
-                          valueOrDefault(currentUserDocument?.units, ''),
-                          'mmol',
-                        ),
-                        textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).title1.override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).secondaryText,
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: SpinKitRipple(
+                              color: FlutterFlowTheme.of(context).blueSapphire,
+                              size: 25,
                             ),
-                      ),
-                    ),
-                    Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Text(
-                        'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
-                          (apiResultriPageLoad?.jsonBody ?? ''),
-                        ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
-                        textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).title3.override(
-                              fontFamily: 'Poppins',
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                          ),
+                        );
+                      }
+                      final backgroundGetBloodGlucoseResponse = snapshot.data!;
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 1,
+                        decoration: BoxDecoration(
+                          color: valueOrDefault<Color>(
+                            () {
+                              if (GetBloodGlucoseCall.singleSgv(
+                                    backgroundGetBloodGlucoseResponse.jsonBody,
+                                  ) <
+                                  70) {
+                                return FlutterFlowTheme.of(context)
+                                    .tertiaryColor;
+                              } else if (GetBloodGlucoseCall.singleSgv(
+                                    backgroundGetBloodGlucoseResponse.jsonBody,
+                                  ) >
+                                  169) {
+                                return FlutterFlowTheme.of(context)
+                                    .secondaryColor;
+                              } else {
+                                return FlutterFlowTheme.of(context)
+                                    .primaryColor;
+                              }
+                            }(),
+                            FlutterFlowTheme.of(context).primaryColor,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 50, 0, 0),
+                                  child: CircularPercentIndicator(
+                                    percent: () {
+                                      if (GetBloodGlucoseCall.singleSgv(
+                                            backgroundGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ) ==
+                                          null) {
+                                        return 0.1;
+                                      } else if (GetBloodGlucoseCall.singleSgv(
+                                            backgroundGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ) <
+                                          70) {
+                                        return 0.1;
+                                      } else if (GetBloodGlucoseCall.singleSgv(
+                                            backgroundGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ) >
+                                          169) {
+                                        return 1.0;
+                                      } else {
+                                        return ((GetBloodGlucoseCall.singleSgv(
+                                                  backgroundGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) -
+                                                70) /
+                                            (169 - 70));
+                                      }
+                                    }(),
+                                    radius: 150,
+                                    lineWidth: 40,
+                                    animation: true,
+                                    progressColor: Color(0x80001219),
+                                    backgroundColor: valueOrDefault<Color>(
+                                      () {
+                                        if (GetBloodGlucoseCall.singleSgv(
+                                              backgroundGetBloodGlucoseResponse
+                                                  .jsonBody,
+                                            ) <
+                                            70) {
+                                          return FlutterFlowTheme.of(context)
+                                              .secondaryColor;
+                                        } else if (GetBloodGlucoseCall
+                                                .singleSgv(
+                                              backgroundGetBloodGlucoseResponse
+                                                  .jsonBody,
+                                            ) >
+                                            169) {
+                                          return FlutterFlowTheme.of(context)
+                                              .secondaryBackground;
+                                        } else {
+                                          return FlutterFlowTheme.of(context)
+                                              .primaryBackground;
+                                        }
+                                      }(),
+                                      FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                    ),
+                                    center: Text(
+                                      formatNumber(
+                                        GetBloodGlucoseCall.singleSgv(
+                                              backgroundGetBloodGlucoseResponse
+                                                  .jsonBody,
+                                            ) /
+                                            18.0,
+                                        formatType: FormatType.custom,
+                                        format: '#0.0',
+                                        locale: '',
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .title1
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            fontSize: 90,
+                                          ),
+                                    ),
+                                    startAngle: 0,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 40, 0, 0),
+                                  child: Text(
+                                    valueOrDefault<String>(
+                                      valueOrDefault(
+                                          currentUserDocument?.units, ''),
+                                      'mmol',
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .title1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryText,
+                                        ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional(0, 0),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 2, 0, 0),
+                                    child: Text(
+                                      'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
+                                        backgroundGetBloodGlucoseResponse
+                                            .jsonBody,
+                                      ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .title3
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                      ),
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0, 1),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 60,
-                    child: custom_widgets.CurvedNavigationBarWidget(
-                      width: MediaQuery.of(context).size.width,
-                      height: 60,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      backgroundColor: Colors.transparent,
-                      buttonBackgroundColor: valueOrDefault<Color>(
-                        () {
-                          if (FFAppState().latestMmol < 3.9) {
-                            return FlutterFlowTheme.of(context).tertiaryColor;
-                          } else if (FFAppState().latestMmol > 9.4) {
-                            return FlutterFlowTheme.of(context).secondaryColor;
-                          } else {
-                            return FlutterFlowTheme.of(context).primaryColor;
-                          }
-                        }(),
-                        FlutterFlowTheme.of(context).primaryColor,
-                      ),
-                      index: 1,
-                    ),
+                            Align(
+                              alignment: AlignmentDirectional(0, 1),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 60,
+                                child: custom_widgets.CurvedNavigationBarWidget(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 60,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  backgroundColor: Colors.transparent,
+                                  buttonBackgroundColor: valueOrDefault<Color>(
+                                    () {
+                                      if (GetBloodGlucoseCall.singleSgv(
+                                            backgroundGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ) <
+                                          70) {
+                                        return FlutterFlowTheme.of(context)
+                                            .tertiaryColor;
+                                      } else if (GetBloodGlucoseCall.singleSgv(
+                                            backgroundGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ) >
+                                          169) {
+                                        return FlutterFlowTheme.of(context)
+                                            .secondaryColor;
+                                      } else {
+                                        return FlutterFlowTheme.of(context)
+                                            .primaryColor;
+                                      }
+                                    }(),
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                  ),
+                                  index: 1,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
                 Align(
