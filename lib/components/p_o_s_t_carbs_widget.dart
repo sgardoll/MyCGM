@@ -189,7 +189,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   child: SpinKitRipple(
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .blueSapphire,
+                                                        .secondaryText,
                                                     size: 25,
                                                   ),
                                                 ),
@@ -1042,7 +1042,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   child: SpinKitRipple(
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .blueSapphire,
+                                                        .secondaryText,
                                                     size: 25,
                                                   ),
                                                 ),

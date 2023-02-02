@@ -40,7 +40,7 @@ String? minutesAgo(List<String> latestDate) {
   final years = (days / 365).floor();
 
   if (minutes < 1) {
-    return 'Just now';
+    return 'just now';
   } else if (minutes == 1) {
     return '1 minute ago';
   } else if (minutes < 60) {

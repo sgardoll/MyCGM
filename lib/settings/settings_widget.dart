@@ -13,7 +13,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SettingsWidget extends StatefulWidget {
-  const SettingsWidget({Key? key}) : super(key: key);
+  const SettingsWidget({
+    Key? key,
+    this.latestMmol,
+  }) : super(key: key);
+
+  final double? latestMmol;
 
   @override
   _SettingsWidgetState createState() => _SettingsWidgetState();
@@ -56,7 +61,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           appBar: responsiveVisibility(
             context: context,
             desktop: false,
@@ -99,7 +103,18 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 1,
                 decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).primaryBackground,
+                  color: valueOrDefault<Color>(
+                    () {
+                      if (widget.latestMmol! < 3.9) {
+                        return FlutterFlowTheme.of(context).tertiaryColor;
+                      } else if (widget.latestMmol! > 9.4) {
+                        return FlutterFlowTheme.of(context).secondaryColor;
+                      } else {
+                        return FlutterFlowTheme.of(context).primaryColor;
+                      }
+                    }(),
+                    FlutterFlowTheme.of(context).primaryColor,
+                  ),
                 ),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),

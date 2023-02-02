@@ -70,12 +70,6 @@ class FFAppState extends ChangeNotifier {
   set carbsEntered(double _value) {
     _carbsEntered = _value;
   }
-
-  double _latestMmol = 0.0;
-  double get latestMmol => _latestMmol;
-  set latestMmol(double _value) {
-    _latestMmol = _value;
-  }
 }
 
 LatLng? _latLngFromString(String? val) {

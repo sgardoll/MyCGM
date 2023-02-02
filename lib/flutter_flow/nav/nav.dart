@@ -119,7 +119,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'Settings',
               path: 'Settings',
-              builder: (context, params) => SettingsWidget(),
+              builder: (context, params) => SettingsWidget(
+                latestMmol: params.getParam('latestMmol', ParamType.double),
+              ),
             ),
             FFRoute(
               name: 'nightscoutCheckCopy',
@@ -299,7 +301,7 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: FlutterFlowTheme.of(context).secondaryColor,
+                  color: FlutterFlowTheme.of(context).tertiaryColor,
                   child: Center(
                     child: Image.asset(
                       'assets/images/Logo3.2-50Transparent.png',
