@@ -1,7 +1,7 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -13,19 +13,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SettingsWidget extends StatefulWidget {
-  const SettingsWidget({
-    Key? key,
-    this.latestMmol,
-  }) : super(key: key);
-
-  final double? latestMmol;
+  const SettingsWidget({Key? key}) : super(key: key);
 
   @override
   _SettingsWidgetState createState() => _SettingsWidgetState();
 }
 
 class _SettingsWidgetState extends State<SettingsWidget> {
-  String? catagoryFiltersValue;
+  String? dropDownValue;
   TextEditingController? aPISecretController;
   TextEditingController? nightscoutController;
   TextEditingController? tokenController;
@@ -61,7 +56,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         color: FlutterFlowTheme.of(context).primaryColor,
         child: Scaffold(
           key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           appBar: responsiveVisibility(
             context: context,
             desktop: false,
@@ -104,18 +99,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 1,
                 decoration: BoxDecoration(
-                  color: valueOrDefault<Color>(
-                    () {
-                      if (widget.latestMmol! < 3.9) {
-                        return FlutterFlowTheme.of(context).tertiaryColor;
-                      } else if (widget.latestMmol! > 9.4) {
-                        return FlutterFlowTheme.of(context).secondaryColor;
-                      } else {
-                        return FlutterFlowTheme.of(context).primaryColor;
-                      }
-                    }(),
-                    FlutterFlowTheme.of(context).primaryColor,
-                  ),
+                  color: FlutterFlowTheme.of(context).primaryBackground,
                 ),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
@@ -137,7 +121,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 16),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +136,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: FlutterFlowTheme.of(context)
-                                          .richBlackFOGRA29,
+                                          .secondaryText,
                                     ),
                               ),
                             ),
@@ -171,7 +155,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .richBlackFOGRA29,
+                                            .secondaryText,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(24),
@@ -179,7 +163,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .richBlackFOGRA29,
+                                            .secondaryText,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(24),
@@ -213,7 +197,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                               )
                                             : null,
                                   ),
-                                  style: FlutterFlowTheme.of(context).bodyText1,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                      ),
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -234,7 +224,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 16),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -254,7 +244,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .richBlackFOGRA29,
+                                            .secondaryText,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(24),
@@ -262,7 +252,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .richBlackFOGRA29,
+                                            .secondaryText,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(24),
@@ -296,7 +286,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                               )
                                             : null,
                                   ),
-                                  style: FlutterFlowTheme.of(context).bodyText1,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                      ),
                                 ),
                               ),
                             ),
@@ -316,7 +312,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 16),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -336,7 +332,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .richBlackFOGRA29,
+                                            .secondaryText,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(24),
@@ -344,7 +340,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
-                                            .richBlackFOGRA29,
+                                            .secondaryText,
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(24),
@@ -377,7 +373,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                           )
                                         : null,
                                   ),
-                                  style: FlutterFlowTheme.of(context).bodyText1,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                      ),
                                 ),
                               ),
                             ),
@@ -394,31 +396,39 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 16),
                         child: Row(
-                          mainAxisSize: MainAxisSize.max,
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: AuthUserStreamWidget(
-                                builder: (context) => FlutterFlowRadioButton(
-                                  options: ['mmol/L', 'mg/dL'].toList(),
-                                  onChanged: (val) => setState(
-                                      () => catagoryFiltersValue = val),
-                                  optionHeight: 36,
-                                  textStyle:
-                                      FlutterFlowTheme.of(context).bodyText2,
-                                  selectedTextStyle:
-                                      FlutterFlowTheme.of(context).bodyText1,
-                                  buttonPosition: RadioButtonPosition.left,
-                                  direction: Axis.vertical,
-                                  radioButtonColor:
-                                      FlutterFlowTheme.of(context).primaryColor,
-                                  inactiveRadioButtonColor:
-                                      FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                  toggleable: false,
-                                  horizontalAlignment: WrapAlignment.start,
-                                  verticalAlignment: WrapCrossAlignment.start,
+                                builder: (context) =>
+                                    FlutterFlowDropDown<String>(
+                                  initialOption: dropDownValue ??=
+                                      valueOrDefault(
+                                          currentUserDocument?.units, ''),
+                                  options: ['mmol/L', 'mg/dL'],
+                                  onChanged: (val) =>
+                                      setState(() => dropDownValue = val),
+                                  width: double.infinity,
+                                  height: 50,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                      ),
+                                  hintText: 'Please select...',
+                                  elevation: 2,
+                                  borderColor: FlutterFlowTheme.of(context)
+                                      .secondaryText,
+                                  borderWidth: 2,
+                                  borderRadius: 24,
+                                  margin: EdgeInsetsDirectional.fromSTEB(
+                                      12, 4, 12, 4),
+                                  hidesUnderline: true,
                                 ),
                               ),
                             ),
@@ -442,7 +452,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
 
                                   final usersUpdateData = createUsersRecordData(
                                     token: tokenController!.text,
-                                    units: catagoryFiltersValue,
+                                    units: dropDownValue,
                                     nightscout: nightscoutController!.text,
                                     apiKey: aPISecretController!.text,
                                   );
@@ -466,7 +476,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   logFirebaseEvent(
                                       'ButtonSaveChanges_navigate_to');
 
-                                  context.pushNamed('nightscoutCheck');
+                                  context.pushNamed('Main');
+
+                                  setState(() {});
                                 },
                                 text: 'Save Changes',
                                 icon: Icon(
@@ -535,7 +547,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                               child: Text(
                                 'Food composition publications are licensed by Food Standards Australia New Zealand (FSANZ) under a licence based on a Creative Commons Attribution-ShareAlike 3.0 Australia licence. ',
                                 style: TextStyle(
-                                  color: Color(0xBC000000),
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryText,
                                   fontSize: 12,
                                 ),
                               ),

@@ -1064,15 +1064,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                       await Future.delayed(const Duration(milliseconds: 200));
                       logFirebaseEvent('LeftNavClick_navigate_to');
 
-                      context.pushNamed(
-                        'Settings',
-                        queryParams: {
-                          'latestMmol': serializeParam(
-                            FFAppState().latestMmol,
-                            ParamType.double,
-                          ),
-                        }.withoutNulls,
-                      );
+                      context.pushNamed('Settings');
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.33,
