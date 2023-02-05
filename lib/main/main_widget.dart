@@ -37,7 +37,26 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         ),
       ],
     ),
-    'progressBarOnPageLoadAnimation': AnimationInfo(
+    'progressBarOnPageLoadAnimation1': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0,
+          end: 1,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(0, -54),
+          end: Offset(0, 0),
+        ),
+      ],
+    ),
+    'progressBarOnPageLoadAnimation2': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
         FadeEffect(
@@ -223,80 +242,204 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 50, 0, 0),
-                                  child: CircularPercentIndicator(
-                                    percent: () {
-                                      if (GetBloodGlucoseCall.singleSgv(
-                                            stackGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ) ==
-                                          null) {
-                                        return 0.1;
-                                      } else if (GetBloodGlucoseCall.singleSgv(
-                                            stackGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ) <
-                                          70) {
-                                        return 0.1;
-                                      } else if (GetBloodGlucoseCall.singleSgv(
-                                            stackGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ) >
-                                          169) {
-                                        return 1.0;
-                                      } else {
-                                        return ((GetBloodGlucoseCall.singleSgv(
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  if (valueOrDefault(
+                                          currentUserDocument?.units, '') ==
+                                      'mmol/L')
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 50, 0, 0),
+                                      child: CircularPercentIndicator(
+                                        percent: () {
+                                          if (GetBloodGlucoseCall.singleSgv(
+                                                stackGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) ==
+                                              null) {
+                                            return 0.1;
+                                          } else if (GetBloodGlucoseCall
+                                                  .singleSgv(
+                                                stackGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) <
+                                              70) {
+                                            return 0.1;
+                                          } else if (GetBloodGlucoseCall
+                                                  .singleSgv(
+                                                stackGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) >
+                                              169) {
+                                            return 1.0;
+                                          } else {
+                                            return ((GetBloodGlucoseCall
+                                                        .singleSgv(
+                                                      stackGetBloodGlucoseResponse
+                                                          .jsonBody,
+                                                    ) -
+                                                    70) /
+                                                (169 - 70));
+                                          }
+                                        }(),
+                                        radius: 150,
+                                        lineWidth: 40,
+                                        animation: true,
+                                        progressColor: Color(0x80001219),
+                                        backgroundColor: valueOrDefault<Color>(
+                                          () {
+                                            if (GetBloodGlucoseCall.singleSgv(
                                                   stackGetBloodGlucoseResponse
                                                       .jsonBody,
-                                                ) -
-                                                70) /
-                                            (169 - 70));
-                                      }
-                                    }(),
-                                    radius: 150,
-                                    lineWidth: 40,
-                                    animation: true,
-                                    progressColor: Color(0x80001219),
-                                    backgroundColor: valueOrDefault<Color>(
-                                      () {
-                                        if (GetBloodGlucoseCall.singleSgv(
-                                              stackGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) <
-                                            70) {
-                                          return FlutterFlowTheme.of(context)
-                                              .secondaryColor;
-                                        } else if (GetBloodGlucoseCall
-                                                .singleSgv(
-                                              stackGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) >
-                                            169) {
-                                          return FlutterFlowTheme.of(context)
-                                              .secondaryBackground;
-                                        } else {
-                                          return FlutterFlowTheme.of(context)
-                                              .primaryBackground;
-                                        }
-                                      }(),
-                                      FlutterFlowTheme.of(context)
-                                          .primaryBackground,
+                                                ) <
+                                                70) {
+                                              return FlutterFlowTheme.of(
+                                                      context)
+                                                  .secondaryColor;
+                                            } else if (GetBloodGlucoseCall
+                                                    .singleSgv(
+                                                  stackGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) >
+                                                169) {
+                                              return FlutterFlowTheme.of(
+                                                      context)
+                                                  .secondaryBackground;
+                                            } else {
+                                              return FlutterFlowTheme.of(
+                                                      context)
+                                                  .primaryBackground;
+                                            }
+                                          }(),
+                                          FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                        ),
+                                        center: Text(
+                                          formatNumber(
+                                            GetBloodGlucoseCall.singleSgv(
+                                                  stackGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) /
+                                                18.0,
+                                            formatType: FormatType.custom,
+                                            format: '#0.0',
+                                            locale: '',
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .title1
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                fontSize: 90,
+                                              ),
+                                        ),
+                                        startAngle: 0,
+                                      ).animateOnPageLoad(animationsMap[
+                                          'progressBarOnPageLoadAnimation1']!),
                                     ),
-                                    center: Text(
-                                      formatNumber(
-                                        GetBloodGlucoseCall.singleSgv(
-                                              stackGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) /
-                                            18.0,
-                                        formatType: FormatType.custom,
-                                        format: '#0.0',
-                                        locale: '',
+                                  if (valueOrDefault(
+                                          currentUserDocument?.units, '') !=
+                                      'mmol/L')
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 50, 0, 0),
+                                      child: CircularPercentIndicator(
+                                        percent: () {
+                                          if (GetBloodGlucoseCall.singleSgv(
+                                                stackGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) ==
+                                              null) {
+                                            return 0.1;
+                                          } else if (GetBloodGlucoseCall
+                                                  .singleSgv(
+                                                stackGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) <
+                                              70) {
+                                            return 0.1;
+                                          } else if (GetBloodGlucoseCall
+                                                  .singleSgv(
+                                                stackGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) >
+                                              169) {
+                                            return 1.0;
+                                          } else {
+                                            return ((GetBloodGlucoseCall
+                                                        .singleSgv(
+                                                      stackGetBloodGlucoseResponse
+                                                          .jsonBody,
+                                                    ) -
+                                                    70) /
+                                                (169 - 70));
+                                          }
+                                        }(),
+                                        radius: 150,
+                                        lineWidth: 40,
+                                        animation: true,
+                                        progressColor: Color(0x80001219),
+                                        backgroundColor: valueOrDefault<Color>(
+                                          () {
+                                            if (GetBloodGlucoseCall.singleSgv(
+                                                  stackGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) <
+                                                70) {
+                                              return FlutterFlowTheme.of(
+                                                      context)
+                                                  .secondaryColor;
+                                            } else if (GetBloodGlucoseCall
+                                                    .singleSgv(
+                                                  stackGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) >
+                                                169) {
+                                              return FlutterFlowTheme.of(
+                                                      context)
+                                                  .secondaryBackground;
+                                            } else {
+                                              return FlutterFlowTheme.of(
+                                                      context)
+                                                  .primaryBackground;
+                                            }
+                                          }(),
+                                          FlutterFlowTheme.of(context)
+                                              .primaryBackground,
+                                        ),
+                                        center: Text(
+                                          GetBloodGlucoseCall.singleSgv(
+                                            stackGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ).toString(),
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .title1
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                fontSize: 90,
+                                              ),
+                                        ),
+                                        startAngle: 0,
+                                      ).animateOnPageLoad(animationsMap[
+                                          'progressBarOnPageLoadAnimation2']!),
+                                    ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 40, 0, 0),
+                                    child: Text(
+                                      valueOrDefault<String>(
+                                        valueOrDefault(
+                                            currentUserDocument?.units, ''),
+                                        'mmol',
                                       ),
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context)
@@ -305,55 +448,34 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             fontFamily: 'Poppins',
                                             color: FlutterFlowTheme.of(context)
                                                 .secondaryText,
-                                            fontSize: 90,
-                                          ),
-                                    ),
-                                    startAngle: 0,
-                                  ).animateOnPageLoad(animationsMap[
-                                      'progressBarOnPageLoadAnimation']!),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 40, 0, 0),
-                                  child: Text(
-                                    valueOrDefault<String>(
-                                      valueOrDefault(
-                                          currentUserDocument?.units, ''),
-                                      'mmol',
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.of(context)
-                                        .title1
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                        ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(0, 0),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 2, 0, 0),
-                                    child: Text(
-                                      'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
-                                        stackGetBloodGlucoseResponse.jsonBody,
-                                      ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .title3
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
                                           ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Align(
+                                    alignment: AlignmentDirectional(0, 0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 2, 0, 0),
+                                      child: Text(
+                                        'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
+                                          stackGetBloodGlucoseResponse.jsonBody,
+                                        ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
+                                        textAlign: TextAlign.center,
+                                        style: FlutterFlowTheme.of(context)
+                                            .title3
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             Align(
                               alignment: AlignmentDirectional(0, 1),
