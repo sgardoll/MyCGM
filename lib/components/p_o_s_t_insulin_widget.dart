@@ -4,40 +4,53 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'p_o_s_t_insulin_model.dart';
+export 'p_o_s_t_insulin_model.dart';
 
 class POSTInsulinWidget extends StatefulWidget {
   const POSTInsulinWidget({
     Key? key,
     this.insulinType,
     this.latestMmol,
+    this.userRef,
   }) : super(key: key);
 
   final String? insulinType;
   final double? latestMmol;
+  final DocumentReference? userRef;
 
   @override
   _POSTInsulinWidgetState createState() => _POSTInsulinWidgetState();
 }
 
 class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
-  ApiCallResponse? postInsulin;
-  TextEditingController? unitsController;
+  late POSTInsulinModel _model;
+
+  @override
+  void setState(VoidCallback callback) {
+    super.setState(callback);
+    _model.onUpdate();
+  }
 
   @override
   void initState() {
     super.initState();
-    unitsController = TextEditingController();
+    _model = createModel(context, () => POSTInsulinModel());
+
+    _model.unitsController ??= TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
-    unitsController?.dispose();
+    _model.maybeDispose();
+
     super.dispose();
   }
 
@@ -116,7 +129,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
                       child: TextFormField(
-                        controller: unitsController,
+                        controller: _model.unitsController,
                         autofocus: true,
                         obscureText: false,
                         decoration: InputDecoration(
@@ -130,7 +143,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color(0x7EFFFFFF),
+                              color: Color(0x00000000),
                               width: 3,
                             ),
                             borderRadius: BorderRadius.circular(50),
@@ -159,6 +172,8 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                         textAlign: TextAlign.start,
                         keyboardType: const TextInputType.numberWithOptions(
                             signed: true, decimal: true),
+                        validator: _model.unitsControllerValidator
+                            .asValidator(context),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp('[0-9]'))
                         ],
@@ -191,13 +206,10 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                       ),
                       showLoadingIndicator: true,
                       onPressed: () async {
-                        logFirebaseEvent(
-                            'P_O_S_T_INSULIN_send_rounded_ICN_ON_TAP');
-                        logFirebaseEvent('IconButton_backend_call');
-                        postInsulin = await PostInsulinCall.call(
+                        _model.postInsulin = await PostInsulinCall.call(
                           insulin: valueOrDefault<String>(
-                            functions
-                                .novoTo1DecimalPlace(unitsController!.text),
+                            functions.novoTo1DecimalPlace(
+                                _model.unitsController.text),
                             '1.0',
                           ),
                           enteredBy: 'MyCGM',
@@ -213,8 +225,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                               currentUserDocument?.nightscout, ''),
                           token: valueOrDefault(currentUserDocument?.token, ''),
                         );
-                        if ((postInsulin?.succeeded ?? true)) {
-                          logFirebaseEvent('IconButton_show_snack_bar');
+                        if ((_model.postInsulin?.succeeded ?? true)) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -233,7 +244,6 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                             ),
                           );
                         } else {
-                          logFirebaseEvent('IconButton_show_snack_bar');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -252,7 +262,6 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           );
                         }
 
-                        logFirebaseEvent('IconButton_bottom_sheet');
                         Navigator.pop(context);
 
                         setState(() {});

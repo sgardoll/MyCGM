@@ -5,15 +5,23 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'onboard_start_model.dart';
+export 'onboard_start_model.dart';
 
 class OnboardStartWidget extends StatefulWidget {
-  const OnboardStartWidget({Key? key}) : super(key: key);
+  const OnboardStartWidget({
+    Key? key,
+    this.userRef,
+  }) : super(key: key);
+
+  final DocumentReference? userRef;
 
   @override
   _OnboardStartWidgetState createState() => _OnboardStartWidgetState();
@@ -21,8 +29,10 @@ class OnboardStartWidget extends StatefulWidget {
 
 class _OnboardStartWidgetState extends State<OnboardStartWidget>
     with TickerProviderStateMixin {
-  final _unfocusNode = FocusNode();
+  late OnboardStartModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -88,6 +98,34 @@ class _OnboardStartWidgetState extends State<OnboardStartWidget>
   @override
   void initState() {
     super.initState();
+    _model = createModel(context, () => OnboardStartModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (valueOrDefault(currentUserDocument?.nightscout, '') != null &&
+          valueOrDefault(currentUserDocument?.nightscout, '') != '') {
+        if (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
+            valueOrDefault(currentUserDocument?.apiKey, '') != '') {
+          if (valueOrDefault(currentUserDocument?.token, '') != null &&
+              valueOrDefault(currentUserDocument?.token, '') != '') {
+            if (valueOrDefault(currentUserDocument?.units, '') != null &&
+                valueOrDefault(currentUserDocument?.units, '') != '') {
+              if ((valueOrDefault(currentUserDocument?.highValue, 0.0) !=
+                      null) &&
+                  (valueOrDefault(currentUserDocument?.lowValue, 0.0) !=
+                      null)) {
+                context.pushNamed('Main');
+              } else {
+                context.pushNamed('finalCheck');
+              }
+            } else {
+              context.pushNamed('unitsCheck');
+            }
+          }
+        }
+      }
+    });
+
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -95,13 +133,13 @@ class _OnboardStartWidgetState extends State<OnboardStartWidget>
       this,
     );
 
-    logFirebaseEvent('screen_view',
-        parameters: {'screen_name': 'onboardStart'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -209,18 +247,16 @@ class _OnboardStartWidgetState extends State<OnboardStartWidget>
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AuthUserStreamWidget(
-                                builder: (context) => AutoSizeText(
-                                  'Welcome to MyCGM ${currentUserDisplayName}',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context)
-                                      .title1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                      ),
-                                ),
+                              AutoSizeText(
+                                'Welcome to MyCGM ',
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                    ),
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
@@ -253,13 +289,10 @@ class _OnboardStartWidgetState extends State<OnboardStartWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'ONBOARD_START_PAGE_Button-Logout_ON_TAP');
-                                logFirebaseEvent('Button-Logout_auth');
-                                GoRouter.of(context).prepareAuthEvent();
-                                await signOut();
-
-                                context.goNamedAuth('loginPage', mounted);
+                                if (Navigator.of(context).canPop()) {
+                                  context.pop();
+                                }
+                                context.pushNamed('loginPage');
                               },
                               text: '',
                               icon: Icon(
@@ -291,11 +324,15 @@ class _OnboardStartWidgetState extends State<OnboardStartWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'ONBOARD_START_PAGE_Button-Next_ON_TAP');
-                                logFirebaseEvent('Button-Next_navigate_to');
-
-                                context.pushNamed('nightscoutCheck');
+                                context.pushNamed(
+                                  'nightscoutCheck',
+                                  queryParams: {
+                                    'userRef': serializeParam(
+                                      currentUserReference,
+                                      ParamType.DocumentReference,
+                                    ),
+                                  }.withoutNulls,
+                                );
                               },
                               text: 'Get Started',
                               options: FFButtonOptions(

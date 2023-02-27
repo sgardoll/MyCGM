@@ -1,29 +1,20 @@
 {
   "project_info": {
-    "project_number": "988337456155",
-    "firebase_url": "https://pc-api-6683764265058024430-989-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "pc-api-6683764265058024430-989",
-    "storage_bucket": "pc-api-6683764265058024430-989.appspot.com"
+    "project_number": "889541076330",
+    "project_id": "mycgm-connectio",
+    "storage_bucket": "mycgm-connectio.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:988337456155:android:87be61e8e6e239bf59a4be",
+        "mobilesdk_app_id": "1:889541076330:android:5b2e823f9513802f31f113",
         "android_client_info": {
           "package_name": "com.connectio.mycgm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "988337456155-0gt7gjqipdv21r5fuqf1je1c9sb1na0d.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.connectio.mycgm",
-            "certificate_hash": "e49e22fc6b7516e43402738ae571713e30c464d8"
-          }
-        },
-        {
-          "client_id": "988337456155-26lbic8uk8v4ka9naviikurgknb2q8hv.apps.googleusercontent.com",
+          "client_id": "889541076330-ig1jq90uabj7smshe6i9ev8rmvq3nogv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.connectio.mycgm",
@@ -31,32 +22,24 @@
           }
         },
         {
-          "client_id": "988337456155-ku9t4pq4co0ar4lbeomd78ricvr99mfe.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.connectio.mycgm",
-            "certificate_hash": "8cff69986a4738aaad925b8ad0c37cc6fe49681d"
-          }
-        },
-        {
-          "client_id": "988337456155-9jhkpbtd40aoos7b360bt25md8mrv9at.apps.googleusercontent.com",
+          "client_id": "889541076330-5s33ctuh5l39rpvefi2mhtcja7aa14k7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCWMHPMP289ZmaXLkM69faK8Z11a0_xMFM"
+          "current_key": "AIzaSyBN8nRTmGri93zsV6OTU3U2oS1q8G1ATUs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "988337456155-9jhkpbtd40aoos7b360bt25md8mrv9at.apps.googleusercontent.com",
+              "client_id": "889541076330-5s33ctuh5l39rpvefi2mhtcja7aa14k7.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "988337456155-2av5j75bp6blmo4eek62h2f20ulole0q.apps.googleusercontent.com",
+              "client_id": "889541076330-3tps8a10932r2dpd2bo1q6qtukb9328s.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.connectio.mycgm"

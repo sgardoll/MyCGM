@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
@@ -11,14 +10,20 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'units_check_model.dart';
+export 'units_check_model.dart';
 
 class UnitsCheckWidget extends StatefulWidget {
-  const UnitsCheckWidget({Key? key}) : super(key: key);
+  const UnitsCheckWidget({
+    Key? key,
+    this.userRef,
+  }) : super(key: key);
+
+  final DocumentReference? userRef;
 
   @override
   _UnitsCheckWidgetState createState() => _UnitsCheckWidgetState();
@@ -26,10 +31,10 @@ class UnitsCheckWidget extends StatefulWidget {
 
 class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
     with TickerProviderStateMixin {
-  ApiCallResponse? apiResult;
-  final _unfocusNode = FocusNode();
+  late UnitsCheckModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String? dropDownValue;
+  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -95,129 +100,8 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      logFirebaseEvent('UNITS_CHECK_PAGE_unitsCheck_ON_PAGE_LOAD');
-      logFirebaseEvent('unitsCheck_widget_animation');
-      if (animationsMap['containerOnActionTriggerAnimation2'] != null) {
-        setState(() => hasContainerTriggered2 = true);
-        SchedulerBinding.instance.addPostFrameCallback((_) async =>
-            animationsMap['containerOnActionTriggerAnimation2']!
-                .controller
-                .forward(from: 0.0)
-                .whenComplete(
-                    animationsMap['containerOnActionTriggerAnimation2']!
-                        .controller
-                        .reverse));
-      }
-      logFirebaseEvent('unitsCheck_widget_animation');
-      if (animationsMap['containerOnActionTriggerAnimation3'] != null) {
-        setState(() => hasContainerTriggered3 = true);
-        SchedulerBinding.instance.addPostFrameCallback((_) async =>
-            animationsMap['containerOnActionTriggerAnimation3']!
-                .controller
-                .forward(from: 0.0)
-                .whenComplete(
-                    animationsMap['containerOnActionTriggerAnimation3']!
-                        .controller
-                        .reverse));
-      }
-      logFirebaseEvent('unitsCheck_widget_animation');
-      if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
-        setState(() => hasContainerTriggered1 = true);
-        SchedulerBinding.instance.addPostFrameCallback((_) async =>
-            animationsMap['containerOnActionTriggerAnimation1']!
-                .controller
-                .forward(from: 0.0)
-                .whenComplete(
-                    animationsMap['containerOnActionTriggerAnimation1']!
-                        .controller
-                        .reverse));
-      }
-      if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
-              valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
-          (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
-              valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
-          (valueOrDefault(currentUserDocument?.token, '') != null &&
-              valueOrDefault(currentUserDocument?.token, '') != '')) {
-        logFirebaseEvent('unitsCheck_backend_call');
-        apiResult = await GetBloodGlucoseCall.call(
-          apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
-          nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
-          token: valueOrDefault(currentUserDocument?.token, ''),
-        );
-        if ((apiResult?.succeeded ?? true)) {
-          logFirebaseEvent('unitsCheck_navigate_to');
+    _model = createModel(context, () => UnitsCheckModel());
 
-          context.goNamed(
-            'Main',
-            extra: <String, dynamic>{
-              kTransitionInfoKey: TransitionInfo(
-                hasTransition: true,
-                transitionType: PageTransitionType.fade,
-              ),
-            },
-          );
-        } else {
-          logFirebaseEvent('unitsCheck_haptic_feedback');
-          HapticFeedback.vibrate();
-          logFirebaseEvent('unitsCheck_alert_dialog');
-          await showDialog(
-            context: context,
-            builder: (alertDialogContext) {
-              return AlertDialog(
-                title: Text('Error'),
-                content:
-                    Text('Error getting latest Nightscout data from the API'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(alertDialogContext),
-                    child: Text('I understand that data won\'t be up to date'),
-                  ),
-                ],
-              );
-            },
-          );
-          logFirebaseEvent('unitsCheck_navigate_to');
-
-          context.pushNamed('Main');
-        }
-      } else {
-        logFirebaseEvent('unitsCheck_alert_dialog');
-        var confirmDialogResponse = await showDialog<bool>(
-              context: context,
-              builder: (alertDialogContext) {
-                return AlertDialog(
-                  title: Text('Nightscout details required'),
-                  content: Text(
-                      'Please enter your Nightscout details on the next screen to proceed'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext, false),
-                      child: Text('Back'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext, true),
-                      child: Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            ) ??
-            false;
-        if (confirmDialogResponse) {
-          logFirebaseEvent('unitsCheck_navigate_to');
-
-          context.pushNamed('Settings');
-        } else {
-          logFirebaseEvent('unitsCheck_navigate_to');
-
-          context.pushNamed('loginPage');
-        }
-      }
-    });
-
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'unitsCheck'});
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -230,6 +114,8 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -371,7 +257,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(12, 0, 12, 0),
                                               child: Icon(
-                                                Icons.place_outlined,
+                                                Icons.calculate,
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .alternate,
@@ -434,7 +320,8 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                                   FlutterFlowDropDown<String>(
                                                 options: ['mmol/L', 'mg/dL'],
                                                 onChanged: (val) => setState(
-                                                    () => dropDownValue = val),
+                                                    () => _model.dropDownValue =
+                                                        val),
                                                 width: double.infinity,
                                                 height: 50,
                                                 textStyle:
@@ -482,9 +369,6 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'UNITS_CHECK_PAGE_Button-Logout_ON_TAP');
-                                logFirebaseEvent('Button-Logout_auth');
                                 GoRouter.of(context).prepareAuthEvent();
                                 await signOut();
 
@@ -519,28 +403,15 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
-                              onPressed:
-                                  dropDownValue != null && dropDownValue != ''
-                                      ? null
-                                      : () async {
-                                          logFirebaseEvent(
-                                              'UNITS_CHECK_PAGE_Button-Logout_ON_TAP');
-                                          logFirebaseEvent(
-                                              'Button-Logout_backend_call');
+                              onPressed: () async {
+                                final usersUpdateData = createUsersRecordData(
+                                  units: _model.dropDownValue,
+                                );
+                                await currentUserReference!
+                                    .update(usersUpdateData);
 
-                                          final usersUpdateData =
-                                              createUsersRecordData(
-                                            units: dropDownValue,
-                                          );
-                                          await currentUserReference!
-                                              .update(usersUpdateData);
-                                          logFirebaseEvent(
-                                              'Button-Logout_navigate_to');
-
-                                          context.pushNamed('finalCheck');
-
-                                          setState(() {});
-                                        },
+                                context.pushNamed('Main');
+                              },
                               text: 'Next',
                               options: FFButtonOptions(
                                 width: 130,
@@ -560,7 +431,6 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                   width: 1,
                                 ),
                                 borderRadius: BorderRadius.circular(50),
-                                disabledColor: Color(0xFF57636C),
                               ),
                             ),
                           ),

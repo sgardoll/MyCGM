@@ -81,34 +81,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'loginPage',
               path: 'loginPage',
-              builder: (context, params) => LoginPageWidget(
-                loggedInUser: params.getParam('loggedInUser',
-                    ParamType.DocumentReference, false, ['users']),
-              ),
+              builder: (context, params) => LoginPageWidget(),
             ),
             FFRoute(
               name: 'onboardStart',
               path: 'onboardStart',
               requireAuth: true,
-              builder: (context, params) => OnboardStartWidget(),
-            ),
-            FFRoute(
-              name: 'nightscoutCheck',
-              path: 'nightscoutCheck',
-              requireAuth: true,
-              builder: (context, params) => NightscoutCheckWidget(),
-            ),
-            FFRoute(
-              name: 'unitsCheck',
-              path: 'unitsCheck',
-              requireAuth: true,
-              builder: (context, params) => UnitsCheckWidget(),
-            ),
-            FFRoute(
-              name: 'finalCheck',
-              path: 'finalCheck',
-              requireAuth: true,
-              builder: (context, params) => FinalCheckWidget(),
+              builder: (context, params) => OnboardStartWidget(
+                userRef: params.getParam(
+                    'userRef', ParamType.DocumentReference, false, ['users']),
+              ),
             ),
             FFRoute(
               name: 'Main',
@@ -117,10 +99,30 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => MainWidget(),
             ),
             FFRoute(
-              name: 'Settings',
-              path: 'Settings',
-              builder: (context, params) => SettingsWidget(
-                latestMmol: params.getParam('latestMmol', ParamType.double),
+              name: 'nightscoutCheck',
+              path: 'nightscoutCheck',
+              requireAuth: true,
+              builder: (context, params) => NightscoutCheckWidget(
+                userRef: params.getParam(
+                    'userRef', ParamType.DocumentReference, false, ['users']),
+              ),
+            ),
+            FFRoute(
+              name: 'unitsCheck',
+              path: 'unitsCheck',
+              requireAuth: true,
+              builder: (context, params) => UnitsCheckWidget(
+                userRef: params.getParam(
+                    'userRef', ParamType.DocumentReference, false, ['users']),
+              ),
+            ),
+            FFRoute(
+              name: 'finalCheck',
+              path: 'finalCheck',
+              requireAuth: true,
+              builder: (context, params) => FinalCheckWidget(
+                userRef: params.getParam(
+                    'userRef', ParamType.DocumentReference, false, ['users']),
               ),
             ),
             FFRoute(
@@ -128,6 +130,23 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'nightscoutCheckCopy',
               requireAuth: true,
               builder: (context, params) => NightscoutCheckCopyWidget(),
+            ),
+            FFRoute(
+              name: 'Settings',
+              path: 'Settings',
+              builder: (context, params) => SettingsWidget(
+                latestMmol: params.getParam('latestMmol', ParamType.double),
+                userRef: params.getParam(
+                    'userRef', ParamType.DocumentReference, false, ['users']),
+              ),
+            ),
+            FFRoute(
+              name: 'forgotPassword',
+              path: 'forgotPassword',
+              builder: (context, params) => ForgotPasswordWidget(
+                loggedInUser: params.getParam('loggedInUser',
+                    ParamType.DocumentReference, false, ['users']),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

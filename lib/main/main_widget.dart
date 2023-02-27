@@ -15,6 +15,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'main_model.dart';
+export 'main_model.dart';
 
 class MainWidget extends StatefulWidget {
   const MainWidget({Key? key}) : super(key: key);
@@ -24,6 +26,11 @@ class MainWidget extends StatefulWidget {
 }
 
 class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
+  late MainModel _model;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
+
   final animationsMap = {
     'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -152,12 +159,12 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       ],
     ),
   };
-  final _unfocusNode = FocusNode();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    _model = createModel(context, () => MainModel());
+
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -165,12 +172,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
       this,
     );
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Main'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -545,11 +553,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 ),
                                 child: InkWell(
                                   onTap: () async {
-                                    logFirebaseEvent(
-                                        'MAIN_PAGE_FABIcon_ON_TAP');
                                     if (FFAppState().FABOpen) {
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -562,8 +566,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -576,8 +578,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -590,8 +590,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -604,15 +602,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = false;
                                       });
                                       return;
                                     } else {
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -621,8 +615,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -631,8 +623,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -641,8 +631,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -651,8 +639,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'FABIcon_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = true;
                                       });
@@ -722,11 +708,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     size: 30,
                                   ),
                                   onPressed: () async {
-                                    logFirebaseEvent(
-                                        'MAIN_PAGE_AddCarbsButton_ON_TAP');
                                     if (FFAppState().FABOpen) {
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -739,8 +721,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -753,8 +733,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -767,8 +745,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -781,14 +757,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = false;
                                       });
                                     } else {
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -797,8 +769,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -807,8 +777,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -817,8 +785,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -827,15 +793,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddCarbsButton_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = true;
                                       });
                                     }
 
-                                    logFirebaseEvent(
-                                        'AddCarbsButton_bottom_sheet');
                                     showModalBottomSheet(
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
@@ -900,11 +862,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     size: 30,
                                   ),
                                   onPressed: () async {
-                                    logFirebaseEvent(
-                                        'MAIN_PAGE_AddNovoButton_ON_TAP');
                                     if (FFAppState().FABOpen) {
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -917,8 +875,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -931,8 +887,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -945,8 +899,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -959,14 +911,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = false;
                                       });
                                     } else {
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -975,8 +923,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -985,8 +931,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -995,8 +939,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -1005,15 +947,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddNovoButton_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = true;
                                       });
                                     }
 
-                                    logFirebaseEvent(
-                                        'AddNovoButton_bottom_sheet');
                                     showModalBottomSheet(
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
@@ -1079,11 +1017,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     size: 30,
                                   ),
                                   onPressed: () async {
-                                    logFirebaseEvent(
-                                        'MAIN_PAGE_AddOptiButton_ON_TAP');
                                     if (FFAppState().FABOpen) {
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -1096,8 +1030,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -1110,8 +1042,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -1124,8 +1054,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -1138,14 +1066,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                 .controller
                                                 .reverse);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = false;
                                       });
                                     } else {
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconOnActionTriggerAnimation'] !=
                                           null) {
@@ -1154,8 +1078,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation2'] !=
                                           null) {
@@ -1164,8 +1086,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation1'] !=
                                           null) {
@@ -1174,8 +1094,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_widget_animation');
                                       if (animationsMap[
                                               'iconButtonOnActionTriggerAnimation3'] !=
                                           null) {
@@ -1184,15 +1102,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             .controller
                                             .forward(from: 0.0);
                                       }
-                                      logFirebaseEvent(
-                                          'AddOptiButton_update_local_state');
                                       FFAppState().update(() {
                                         FFAppState().FABOpen = true;
                                       });
                                     }
 
-                                    logFirebaseEvent(
-                                        'AddOptiButton_bottom_sheet');
                                     showModalBottomSheet(
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
@@ -1227,9 +1141,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                         alignment: AlignmentDirectional(-1, 1),
                         child: InkWell(
                           onTap: () async {
-                            logFirebaseEvent('MAIN_PAGE_LeftNavClick_ON_TAP');
                             if (FFAppState().FABOpen) {
-                              logFirebaseEvent('LeftNavClick_widget_animation');
                               if (animationsMap[
                                       'iconOnActionTriggerAnimation'] !=
                                   null) {
@@ -1241,7 +1153,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent('LeftNavClick_widget_animation');
                               if (animationsMap[
                                       'iconButtonOnActionTriggerAnimation2'] !=
                                   null) {
@@ -1254,7 +1165,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent('LeftNavClick_widget_animation');
                               if (animationsMap[
                                       'iconButtonOnActionTriggerAnimation1'] !=
                                   null) {
@@ -1267,7 +1177,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent('LeftNavClick_widget_animation');
                               if (animationsMap[
                                       'iconButtonOnActionTriggerAnimation3'] !=
                                   null) {
@@ -1280,16 +1189,12 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent(
-                                  'LeftNavClick_update_local_state');
                               FFAppState().update(() {
                                 FFAppState().FABOpen = false;
                               });
                             }
-                            logFirebaseEvent('LeftNavClick_wait__delay');
                             await Future.delayed(
                                 const Duration(milliseconds: 200));
-                            logFirebaseEvent('LeftNavClick_navigate_to');
 
                             context.pushNamed(
                               'Settings',
@@ -1300,6 +1205,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       ) /
                                       18,
                                   ParamType.double,
+                                ),
+                                'userRef': serializeParam(
+                                  currentUserReference,
+                                  ParamType.DocumentReference,
                                 ),
                               }.withoutNulls,
                             );
@@ -1315,10 +1224,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                         alignment: AlignmentDirectional(1, 1),
                         child: InkWell(
                           onTap: () async {
-                            logFirebaseEvent('MAIN_PAGE_RightNavClick_ON_TAP');
                             if (FFAppState().FABOpen) {
-                              logFirebaseEvent(
-                                  'RightNavClick_widget_animation');
                               if (animationsMap[
                                       'iconOnActionTriggerAnimation'] !=
                                   null) {
@@ -1330,8 +1236,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent(
-                                  'RightNavClick_widget_animation');
                               if (animationsMap[
                                       'iconButtonOnActionTriggerAnimation2'] !=
                                   null) {
@@ -1344,8 +1248,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent(
-                                  'RightNavClick_widget_animation');
                               if (animationsMap[
                                       'iconButtonOnActionTriggerAnimation1'] !=
                                   null) {
@@ -1358,8 +1260,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent(
-                                  'RightNavClick_widget_animation');
                               if (animationsMap[
                                       'iconButtonOnActionTriggerAnimation3'] !=
                                   null) {
@@ -1372,13 +1272,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                         .controller
                                         .reverse);
                               }
-                              logFirebaseEvent(
-                                  'RightNavClick_update_local_state');
                               FFAppState().update(() {
                                 FFAppState().FABOpen = false;
                               });
                             }
-                            logFirebaseEvent('RightNavClick_navigate_to');
 
                             context.pushNamed(
                               'Main',

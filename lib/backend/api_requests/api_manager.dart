@@ -3,10 +3,11 @@ import 'dart:io';
 import 'dart:core';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
 
-import '../../flutter_flow/local_file.dart';
+import '../../flutter_flow/uploaded_file.dart';
 
 enum ApiCallType {
   GET,
@@ -162,16 +163,29 @@ class ApiManager {
       {ApiCallType.POST, ApiCallType.PUT, ApiCallType.PATCH}.contains(type),
       'Invalid ApiCallType $type for request with body',
     );
-    final nonFileParams = toStringMap(
-        Map.fromEntries(params.entries.where((e) => e.value is! FFLocalFile)));
-    final files = params.entries.where((e) => e.value is FFLocalFile).map((e) {
-      final localFile = e.value as FFLocalFile;
-      return http.MultipartFile.fromBytes(
-        e.key,
-        localFile.bytes ?? Uint8List.fromList([]),
-        filename: localFile.name,
-      );
+    bool Function(dynamic) _isFile = (e) =>
+        e is FFUploadedFile ||
+        e is List<FFUploadedFile> ||
+        (e is List && e.firstOrNull is FFUploadedFile);
+
+    final nonFileParams =
+        toStringMap(Map.fromEntries(params.entries.where((e) => !_isFile(e))));
+
+    List<http.MultipartFile> files = [];
+    params.entries.where((e) => _isFile(e)).map((e) {
+      final param = e.value;
+      final uploadedFiles = param is List
+          ? param as List<FFUploadedFile>
+          : [param as FFUploadedFile];
+      uploadedFiles.forEach((uploadedFile) => files.add(
+            http.MultipartFile.fromBytes(
+              e.key,
+              uploadedFile.bytes ?? Uint8List.fromList([]),
+              filename: uploadedFile.name,
+            ),
+          ));
     });
+
     final request = http.MultipartRequest(
         type.toString().split('.').last, Uri.parse(apiUrl))
       ..headers.addAll(toStringMap(headers))

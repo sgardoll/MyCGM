@@ -7,7 +7,6 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
 import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -16,14 +15,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'login_page_model.dart';
+export 'login_page_model.dart';
 
 class LoginPageWidget extends StatefulWidget {
-  const LoginPageWidget({
-    Key? key,
-    this.loggedInUser,
-  }) : super(key: key);
-
-  final DocumentReference? loggedInUser;
+  const LoginPageWidget({Key? key}) : super(key: key);
 
   @override
   _LoginPageWidgetState createState() => _LoginPageWidgetState();
@@ -31,17 +27,10 @@ class LoginPageWidget extends StatefulWidget {
 
 class _LoginPageWidgetState extends State<LoginPageWidget>
     with TickerProviderStateMixin {
-  TextEditingController? displayNameController;
-  TextEditingController? emailAddressCreateController;
-  TextEditingController? passwordCreateController;
-  late bool passwordCreateVisibility;
-  TextEditingController? passwordCreateConfirmController;
-  late bool passwordCreateConfirmVisibility;
-  TextEditingController? emailAddressController;
-  TextEditingController? passwordController;
-  late bool passwordVisibility;
-  final _unfocusNode = FocusNode();
+  late LoginPageModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
   var hasContainerTriggered1 = false;
@@ -147,12 +136,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   @override
   void initState() {
     super.initState();
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
+    _model = createModel(context, () => LoginPageModel());
 
     if (!isWeb) {
       _keyboardVisibilitySubscription =
@@ -163,31 +147,30 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
       });
     }
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
-    displayNameController = TextEditingController();
-    emailAddressCreateController = TextEditingController();
-    passwordCreateController = TextEditingController();
-    passwordCreateVisibility = false;
-    passwordCreateConfirmController = TextEditingController();
-    passwordCreateConfirmVisibility = false;
-    emailAddressController = TextEditingController();
-    passwordController = TextEditingController();
-    passwordVisibility = false;
+    _model.emailAddressController ??= TextEditingController();
+    _model.passwordController ??= TextEditingController();
+    _model.displayNameController ??= TextEditingController();
+    _model.emailAddressCreateController ??= TextEditingController();
+    _model.passwordCreateController ??= TextEditingController();
+    _model.passwordCreateConfirmController ??= TextEditingController();
+    setupAnimations(
+      animationsMap.values.where((anim) =>
+          anim.trigger == AnimationTrigger.onActionTrigger ||
+          !anim.applyInitialState),
+      this,
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     if (!isWeb) {
       _keyboardVisibilitySubscription.cancel();
     }
-    displayNameController?.dispose();
-    emailAddressCreateController?.dispose();
-    passwordCreateController?.dispose();
-    passwordCreateConfirmController?.dispose();
-    emailAddressController?.dispose();
-    passwordController?.dispose();
     super.dispose();
   }
 
@@ -337,13 +320,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                 EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         24,
-                                                                        20,
+                                                                        12,
                                                                         24,
                                                                         0),
                                                             child:
                                                                 TextFormField(
-                                                              controller:
-                                                                  emailAddressController,
+                                                              controller: _model
+                                                                  .emailAddressController,
                                                               autofocus: true,
                                                               obscureText:
                                                                   false,
@@ -376,9 +359,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     OutlineInputBorder(
                                                                   borderSide:
                                                                       BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .lineColor,
+                                                                    color: Color(
+                                                                        0x00000000),
                                                                     width: 2,
                                                                   ),
                                                                   borderRadius:
@@ -443,6 +425,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                               keyboardType:
                                                                   TextInputType
                                                                       .emailAddress,
+                                                              validator: _model
+                                                                  .emailAddressControllerValidator
+                                                                  .asValidator(
+                                                                      context),
                                                             ),
                                                           ),
                                                           Padding(
@@ -450,7 +436,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                 EdgeInsetsDirectional
                                                                     .fromSTEB(
                                                                         24,
-                                                                        24,
+                                                                        12,
                                                                         24,
                                                                         12),
                                                             child: Row(
@@ -473,11 +459,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     child:
                                                                         TextFormField(
                                                                       controller:
-                                                                          passwordController,
+                                                                          _model
+                                                                              .passwordController,
                                                                       autofocus:
                                                                           true,
                                                                       obscureText:
-                                                                          !passwordVisibility,
+                                                                          !_model
+                                                                              .passwordVisibility,
                                                                       decoration:
                                                                           InputDecoration(
                                                                         labelText:
@@ -503,7 +491,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           borderSide:
                                                                               BorderSide(
                                                                             color:
-                                                                                FlutterFlowTheme.of(context).lineColor,
+                                                                                Color(0x00000000),
                                                                             width:
                                                                                 2,
                                                                           ),
@@ -548,13 +536,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           onTap: () =>
                                                                               setState(
                                                                             () =>
-                                                                                passwordVisibility = !passwordVisibility,
+                                                                                _model.passwordVisibility = !_model.passwordVisibility,
                                                                           ),
                                                                           focusNode:
                                                                               FocusNode(skipTraversal: true),
                                                                           child:
                                                                               Icon(
-                                                                            passwordVisibility
+                                                                            _model.passwordVisibility
                                                                                 ? Icons.visibility_outlined
                                                                                 : Icons.visibility_off_outlined,
                                                                             color:
@@ -575,16 +563,16 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                             fontWeight:
                                                                                 FontWeight.normal,
                                                                           ),
+                                                                      validator: _model
+                                                                          .passwordControllerValidator
+                                                                          .asValidator(
+                                                                              context),
                                                                     ),
                                                                   ),
                                                                 ),
                                                                 FFButtonWidget(
                                                                   onPressed:
                                                                       () async {
-                                                                    logFirebaseEvent(
-                                                                        'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
-                                                                    logFirebaseEvent(
-                                                                        'Button-Login_widget_animation');
                                                                     if (animationsMap[
                                                                             'tabBarOnActionTriggerAnimation'] !=
                                                                         null) {
@@ -594,8 +582,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                           .forward(
                                                                               from: 0.0);
                                                                     }
-                                                                    logFirebaseEvent(
-                                                                        'Button-Login_widget_animation');
                                                                     if (animationsMap[
                                                                             'containerOnActionTriggerAnimation2'] !=
                                                                         null) {
@@ -608,8 +594,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               .controller
                                                                               .forward(from: 0.0));
                                                                     }
-                                                                    logFirebaseEvent(
-                                                                        'Button-Login_widget_animation');
                                                                     if (animationsMap[
                                                                             'containerOnActionTriggerAnimation3'] !=
                                                                         null) {
@@ -622,8 +606,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               .controller
                                                                               .forward(from: 0.0));
                                                                     }
-                                                                    logFirebaseEvent(
-                                                                        'Button-Login_widget_animation');
                                                                     if (animationsMap[
                                                                             'containerOnActionTriggerAnimation1'] !=
                                                                         null) {
@@ -636,8 +618,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                               .controller
                                                                               .forward(from: 0.0));
                                                                     }
-                                                                    logFirebaseEvent(
-                                                                        'Button-Login_auth');
                                                                     GoRouter.of(
                                                                             context)
                                                                         .prepareAuthEvent();
@@ -645,9 +625,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     final user =
                                                                         await signInWithEmail(
                                                                       context,
-                                                                      emailAddressController!
+                                                                      _model
+                                                                          .emailAddressController
                                                                           .text,
-                                                                      passwordController!
+                                                                      _model
+                                                                          .passwordController
                                                                           .text,
                                                                     );
                                                                     if (user ==
@@ -688,58 +670,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             60),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        0,
-                                                                        12,
-                                                                        0,
-                                                                        0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                FFButtonWidget(
-                                                                  onPressed:
-                                                                      () {
-                                                                    print(
-                                                                        'Button-ForgotPassword pressed ...');
-                                                                  },
-                                                                  text:
-                                                                      'Forgot Password?',
-                                                                  options:
-                                                                      FFButtonOptions(
-                                                                    width: 140,
-                                                                    height: 40,
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryColor,
-                                                                    textStyle:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                    ),
-                                                                    elevation:
-                                                                        3,
-                                                                    borderSide:
-                                                                        BorderSide(
-                                                                      color: Colors
-                                                                          .transparent,
-                                                                      width: 1,
-                                                                    ),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            50),
                                                                   ),
                                                                 ),
                                                               ],
@@ -838,10 +768,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       ),
                                                                       onPressed:
                                                                           () async {
-                                                                        logFirebaseEvent(
-                                                                            'LOGIN_PAGE_PAGE_google_ICN_ON_TAP');
-                                                                        logFirebaseEvent(
-                                                                            'IconButton_auth');
                                                                         GoRouter.of(context)
                                                                             .prepareAuthEvent();
                                                                         final user =
@@ -886,10 +812,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       ),
                                                                       onPressed:
                                                                           () async {
-                                                                        logFirebaseEvent(
-                                                                            'LOGIN_PAGE_PAGE_apple_ICN_ON_TAP');
-                                                                        logFirebaseEvent(
-                                                                            'IconButton_auth');
                                                                         GoRouter.of(context)
                                                                             .prepareAuthEvent();
                                                                         final user =
@@ -908,6 +830,243 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                 ],
                                                               ),
                                                             ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        12,
+                                                                        12,
+                                                                        12,
+                                                                        12),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          0,
+                                                                          24,
+                                                                          0),
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Text(
+                                                                        'or sign in with',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyText1
+                                                                            .override(
+                                                                              fontFamily: 'Poppins',
+                                                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                                                            ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    GoRouter.of(
+                                                                            context)
+                                                                        .prepareAuthEvent();
+                                                                    final user =
+                                                                        await signInWithGoogle(
+                                                                            context);
+                                                                    if (user ==
+                                                                        null) {
+                                                                      return;
+                                                                    }
+                                                                    if (valueOrDefault(currentUserDocument?.nightscout, '') !=
+                                                                            null &&
+                                                                        valueOrDefault(currentUserDocument?.nightscout,
+                                                                                '') !=
+                                                                            '') {
+                                                                      context.pushNamedAuth(
+                                                                          'Main',
+                                                                          mounted);
+                                                                    } else {
+                                                                      context.pushNamedAuth(
+                                                                          'onboardStart',
+                                                                          mounted);
+                                                                    }
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryColor,
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          blurRadius:
+                                                                              5,
+                                                                          color:
+                                                                              Color(0x3314181B),
+                                                                          offset: Offset(
+                                                                              0,
+                                                                              2),
+                                                                        )
+                                                                      ],
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                    ),
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            0,
+                                                                            0),
+                                                                    child:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .google,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      size: 24,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                if (responsiveVisibility(
+                                                                  context:
+                                                                      context,
+                                                                  phone: false,
+                                                                  tablet: false,
+                                                                  tabletLandscape:
+                                                                      false,
+                                                                  desktop:
+                                                                      false,
+                                                                ))
+                                                                  Container(
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Color(
+                                                                          0xFF090F13),
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          blurRadius:
+                                                                              5,
+                                                                          color:
+                                                                              Color(0x3314181B),
+                                                                          offset: Offset(
+                                                                              0,
+                                                                              2),
+                                                                        )
+                                                                      ],
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                    ),
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            0,
+                                                                            0),
+                                                                    child:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .apple,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      size: 24,
+                                                                    ),
+                                                                  ),
+                                                                if (responsiveVisibility(
+                                                                  context:
+                                                                      context,
+                                                                  phone: false,
+                                                                  tablet: false,
+                                                                  tabletLandscape:
+                                                                      false,
+                                                                  desktop:
+                                                                      false,
+                                                                ))
+                                                                  Container(
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Color(
+                                                                          0xFF090F13),
+                                                                      boxShadow: [
+                                                                        BoxShadow(
+                                                                          blurRadius:
+                                                                              5,
+                                                                          color:
+                                                                              Color(0x3314181B),
+                                                                          offset: Offset(
+                                                                              0,
+                                                                              2),
+                                                                        )
+                                                                      ],
+                                                                      shape: BoxShape
+                                                                          .circle,
+                                                                    ),
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            0,
+                                                                            0),
+                                                                    child:
+                                                                        FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .facebookF,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      size: 24,
+                                                                    ),
+                                                                  ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0,
+                                                                        12,
+                                                                        0,
+                                                                        0),
+                                                            child:
+                                                                FFButtonWidget(
+                                                              onPressed:
+                                                                  () async {
+                                                                context.pushNamed(
+                                                                    'forgotPassword');
+                                                              },
+                                                              text:
+                                                                  'Forgot Password?',
+                                                              options:
+                                                                  FFButtonOptions(
+                                                                width: 140,
+                                                                height: 40,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryColor,
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                  fontSize: 12,
+                                                                ),
+                                                                elevation: 3,
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Colors
+                                                                      .transparent,
+                                                                  width: 1,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50),
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -929,8 +1088,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         0),
                                                             child:
                                                                 TextFormField(
-                                                              controller:
-                                                                  displayNameController,
+                                                              controller: _model
+                                                                  .displayNameController,
                                                               obscureText:
                                                                   false,
                                                               decoration:
@@ -964,9 +1123,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     OutlineInputBorder(
                                                                   borderSide:
                                                                       BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .lineColor,
+                                                                    color: Color(
+                                                                        0x00000000),
                                                                     width: 2,
                                                                   ),
                                                                   borderRadius:
@@ -1028,6 +1186,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                             .normal,
                                                                   ),
                                                               maxLines: null,
+                                                              validator: _model
+                                                                  .displayNameControllerValidator
+                                                                  .asValidator(
+                                                                      context),
                                                             ),
                                                           ),
                                                           Padding(
@@ -1040,8 +1202,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         0),
                                                             child:
                                                                 TextFormField(
-                                                              controller:
-                                                                  emailAddressCreateController,
+                                                              controller: _model
+                                                                  .emailAddressCreateController,
                                                               obscureText:
                                                                   false,
                                                               decoration:
@@ -1075,9 +1237,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     OutlineInputBorder(
                                                                   borderSide:
                                                                       BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .lineColor,
+                                                                    color: Color(
+                                                                        0x00000000),
                                                                     width: 2,
                                                                   ),
                                                                   borderRadius:
@@ -1142,6 +1303,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                               keyboardType:
                                                                   TextInputType
                                                                       .emailAddress,
+                                                              validator: _model
+                                                                  .emailAddressCreateControllerValidator
+                                                                  .asValidator(
+                                                                      context),
                                                             ),
                                                           ),
                                                           Padding(
@@ -1154,10 +1319,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         0),
                                                             child:
                                                                 TextFormField(
-                                                              controller:
-                                                                  passwordCreateController,
-                                                              obscureText:
-                                                                  !passwordCreateVisibility,
+                                                              controller: _model
+                                                                  .passwordCreateController,
+                                                              obscureText: !_model
+                                                                  .passwordCreateVisibility,
                                                               decoration:
                                                                   InputDecoration(
                                                                 labelText:
@@ -1189,9 +1354,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     OutlineInputBorder(
                                                                   borderSide:
                                                                       BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .lineColor,
+                                                                    color: Color(
+                                                                        0x00000000),
                                                                     width: 2,
                                                                   ),
                                                                   borderRadius:
@@ -1242,14 +1406,16 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     InkWell(
                                                                   onTap: () =>
                                                                       setState(
-                                                                    () => passwordCreateVisibility =
-                                                                        !passwordCreateVisibility,
+                                                                    () => _model
+                                                                            .passwordCreateVisibility =
+                                                                        !_model
+                                                                            .passwordCreateVisibility,
                                                                   ),
                                                                   focusNode: FocusNode(
                                                                       skipTraversal:
                                                                           true),
                                                                   child: Icon(
-                                                                    passwordCreateVisibility
+                                                                    _model.passwordCreateVisibility
                                                                         ? Icons
                                                                             .visibility_outlined
                                                                         : Icons
@@ -1274,6 +1440,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
+                                                              validator: _model
+                                                                  .passwordCreateControllerValidator
+                                                                  .asValidator(
+                                                                      context),
                                                             ),
                                                           ),
                                                           Padding(
@@ -1286,10 +1456,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         0),
                                                             child:
                                                                 TextFormField(
-                                                              controller:
-                                                                  passwordCreateConfirmController,
-                                                              obscureText:
-                                                                  !passwordCreateConfirmVisibility,
+                                                              controller: _model
+                                                                  .passwordCreateConfirmController,
+                                                              obscureText: !_model
+                                                                  .passwordCreateConfirmVisibility,
                                                               decoration:
                                                                   InputDecoration(
                                                                 labelText:
@@ -1321,9 +1491,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     OutlineInputBorder(
                                                                   borderSide:
                                                                       BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .lineColor,
+                                                                    color: Color(
+                                                                        0x00000000),
                                                                     width: 2,
                                                                   ),
                                                                   borderRadius:
@@ -1374,14 +1543,16 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     InkWell(
                                                                   onTap: () =>
                                                                       setState(
-                                                                    () => passwordCreateConfirmVisibility =
-                                                                        !passwordCreateConfirmVisibility,
+                                                                    () => _model
+                                                                            .passwordCreateConfirmVisibility =
+                                                                        !_model
+                                                                            .passwordCreateConfirmVisibility,
                                                                   ),
                                                                   focusNode: FocusNode(
                                                                       skipTraversal:
                                                                           true),
                                                                   child: Icon(
-                                                                    passwordCreateConfirmVisibility
+                                                                    _model.passwordCreateConfirmVisibility
                                                                         ? Icons
                                                                             .visibility_outlined
                                                                         : Icons
@@ -1406,6 +1577,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                         FontWeight
                                                                             .normal,
                                                                   ),
+                                                              validator: _model
+                                                                  .passwordCreateConfirmControllerValidator
+                                                                  .asValidator(
+                                                                      context),
                                                             ),
                                                           ),
                                                           Padding(
@@ -1420,17 +1595,15 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                 FFButtonWidget(
                                                               onPressed:
                                                                   () async {
-                                                                logFirebaseEvent(
-                                                                    'LOGIN_PAGE_PAGE_Button-Login_ON_TAP');
-                                                                logFirebaseEvent(
-                                                                    'Button-Login_auth');
                                                                 GoRouter.of(
                                                                         context)
                                                                     .prepareAuthEvent();
-                                                                if (passwordCreateController
-                                                                        ?.text !=
-                                                                    passwordCreateConfirmController
-                                                                        ?.text) {
+                                                                if (_model
+                                                                        .passwordCreateController
+                                                                        .text !=
+                                                                    _model
+                                                                        .passwordCreateConfirmController
+                                                                        .text) {
                                                                   ScaffoldMessenger.of(
                                                                           context)
                                                                       .showSnackBar(
@@ -1447,9 +1620,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                 final user =
                                                                     await createAccountWithEmail(
                                                                   context,
-                                                                  emailAddressCreateController!
+                                                                  _model
+                                                                      .emailAddressCreateController
                                                                       .text,
-                                                                  passwordCreateController!
+                                                                  _model
+                                                                      .passwordCreateController
                                                                       .text,
                                                                 );
                                                                 if (user ==
@@ -1459,11 +1634,15 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
 
                                                                 final usersCreateData =
                                                                     createUsersRecordData(
+                                                                  email: _model
+                                                                      .emailAddressCreateController
+                                                                      .text,
+                                                                  displayName:
+                                                                      _model
+                                                                          .displayNameController
+                                                                          .text,
                                                                   createdTime:
                                                                       getCurrentTimestamp,
-                                                                  displayName:
-                                                                      displayNameController!
-                                                                          .text,
                                                                 );
                                                                 await UsersRecord
                                                                     .collection
@@ -1472,11 +1651,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                     .update(
                                                                         usersCreateData);
 
-                                                                logFirebaseEvent(
-                                                                    'Button-Login_navigate_to');
-
                                                                 context.pushNamedAuth(
-                                                                    'nightscoutCheck',
+                                                                    'onboardStart',
                                                                     mounted);
                                                               },
                                                               text:

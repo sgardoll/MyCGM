@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -10,14 +9,20 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'final_check_model.dart';
+export 'final_check_model.dart';
 
 class FinalCheckWidget extends StatefulWidget {
-  const FinalCheckWidget({Key? key}) : super(key: key);
+  const FinalCheckWidget({
+    Key? key,
+    this.userRef,
+  }) : super(key: key);
+
+  final DocumentReference? userRef;
 
   @override
   _FinalCheckWidgetState createState() => _FinalCheckWidgetState();
@@ -25,11 +30,10 @@ class FinalCheckWidget extends StatefulWidget {
 
 class _FinalCheckWidgetState extends State<FinalCheckWidget>
     with TickerProviderStateMixin {
-  ApiCallResponse? apiResult;
-  final _unfocusNode = FocusNode();
+  late FinalCheckModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController? highValueController;
-  TextEditingController? lowValueController;
+  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -95,138 +99,12 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
   @override
   void initState() {
     super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      logFirebaseEvent('FINAL_CHECK_PAGE_finalCheck_ON_PAGE_LOAD');
-      logFirebaseEvent('finalCheck_widget_animation');
-      if (animationsMap['containerOnActionTriggerAnimation2'] != null) {
-        setState(() => hasContainerTriggered2 = true);
-        SchedulerBinding.instance.addPostFrameCallback((_) async =>
-            animationsMap['containerOnActionTriggerAnimation2']!
-                .controller
-                .forward(from: 0.0)
-                .whenComplete(
-                    animationsMap['containerOnActionTriggerAnimation2']!
-                        .controller
-                        .reverse));
-      }
-      logFirebaseEvent('finalCheck_widget_animation');
-      if (animationsMap['containerOnActionTriggerAnimation3'] != null) {
-        setState(() => hasContainerTriggered3 = true);
-        SchedulerBinding.instance.addPostFrameCallback((_) async =>
-            animationsMap['containerOnActionTriggerAnimation3']!
-                .controller
-                .forward(from: 0.0)
-                .whenComplete(
-                    animationsMap['containerOnActionTriggerAnimation3']!
-                        .controller
-                        .reverse));
-      }
-      logFirebaseEvent('finalCheck_widget_animation');
-      if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
-        setState(() => hasContainerTriggered1 = true);
-        SchedulerBinding.instance.addPostFrameCallback((_) async =>
-            animationsMap['containerOnActionTriggerAnimation1']!
-                .controller
-                .forward(from: 0.0)
-                .whenComplete(
-                    animationsMap['containerOnActionTriggerAnimation1']!
-                        .controller
-                        .reverse));
-      }
-      if ((valueOrDefault(currentUserDocument?.nightscout, '') != null &&
-              valueOrDefault(currentUserDocument?.nightscout, '') != '') &&
-          (valueOrDefault(currentUserDocument?.apiKey, '') != null &&
-              valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
-          (valueOrDefault(currentUserDocument?.token, '') != null &&
-              valueOrDefault(currentUserDocument?.token, '') != '')) {
-        logFirebaseEvent('finalCheck_backend_call');
-        apiResult = await GetBloodGlucoseCall.call(
-          apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
-          nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
-          token: valueOrDefault(currentUserDocument?.token, ''),
-        );
-        if ((apiResult?.succeeded ?? true)) {
-          logFirebaseEvent('finalCheck_navigate_to');
+    _model = createModel(context, () => FinalCheckModel());
 
-          context.goNamed(
-            'Main',
-            extra: <String, dynamic>{
-              kTransitionInfoKey: TransitionInfo(
-                hasTransition: true,
-                transitionType: PageTransitionType.fade,
-              ),
-            },
-          );
-        } else {
-          logFirebaseEvent('finalCheck_haptic_feedback');
-          HapticFeedback.vibrate();
-          logFirebaseEvent('finalCheck_alert_dialog');
-          await showDialog(
-            context: context,
-            builder: (alertDialogContext) {
-              return AlertDialog(
-                title: Text('Error'),
-                content:
-                    Text('Error getting latest Nightscout data from the API'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(alertDialogContext),
-                    child: Text('I understand that data won\'t be up to date'),
-                  ),
-                ],
-              );
-            },
-          );
-          logFirebaseEvent('finalCheck_navigate_to');
-
-          context.pushNamed('Main');
-        }
-      } else {
-        logFirebaseEvent('finalCheck_alert_dialog');
-        var confirmDialogResponse = await showDialog<bool>(
-              context: context,
-              builder: (alertDialogContext) {
-                return AlertDialog(
-                  title: Text('Nightscout details required'),
-                  content: Text(
-                      'Please enter your Nightscout details on the next screen to proceed'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext, false),
-                      child: Text('Back'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext, true),
-                      child: Text('OK'),
-                    ),
-                  ],
-                );
-              },
-            ) ??
-            false;
-        if (confirmDialogResponse) {
-          logFirebaseEvent('finalCheck_navigate_to');
-
-          context.pushNamed('Settings');
-        } else {
-          logFirebaseEvent('finalCheck_navigate_to');
-
-          context.pushNamed('loginPage');
-        }
-      }
-    });
-
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'finalCheck'});
-    highValueController = TextEditingController(
-        text: valueOrDefault(currentUserDocument?.units, '') == 'mmol/L'
-            ? '9.4'
-            : '169.2');
-    lowValueController = TextEditingController(
-        text: (valueOrDefault(currentUserDocument?.units, '') == 'mmol/L'
-                ? 3.9
-                : 70.2)
-            .toString());
+    _model.highValueController ??= TextEditingController(
+        text: valueOrDefault(currentUserDocument?.highValue, 0.0).toString());
+    _model.lowValueController ??= TextEditingController(
+        text: valueOrDefault(currentUserDocument?.lowValue, 0.0).toString());
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -239,9 +117,9 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
-    highValueController?.dispose();
-    lowValueController?.dispose();
     super.dispose();
   }
 
@@ -443,12 +321,17 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                           AuthUserStreamWidget(
                                                         builder: (context) =>
                                                             TextFormField(
-                                                          controller:
-                                                              highValueController,
+                                                          controller: _model
+                                                              .highValueController,
                                                           autofocus: true,
                                                           obscureText: false,
                                                           decoration:
                                                               InputDecoration(
+                                                            labelText:
+                                                                valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.units,
+                                                                    ''),
                                                             hintStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -471,9 +354,8 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                                 OutlineInputBorder(
                                                               borderSide:
                                                                   BorderSide(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .gray600,
+                                                                color: Color(
+                                                                    0x00000000),
                                                                 width: 2,
                                                               ),
                                                               borderRadius:
@@ -520,6 +402,10 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                                   signed: true,
                                                                   decimal:
                                                                       true),
+                                                          validator: _model
+                                                              .highValueControllerValidator
+                                                              .asValidator(
+                                                                  context),
                                                         ),
                                                       ),
                                                     ),
@@ -620,12 +506,17 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                           AuthUserStreamWidget(
                                                         builder: (context) =>
                                                             TextFormField(
-                                                          controller:
-                                                              lowValueController,
+                                                          controller: _model
+                                                              .lowValueController,
                                                           autofocus: true,
                                                           obscureText: false,
                                                           decoration:
                                                               InputDecoration(
+                                                            labelText:
+                                                                valueOrDefault(
+                                                                    currentUserDocument
+                                                                        ?.units,
+                                                                    ''),
                                                             hintStyle:
                                                                 FlutterFlowTheme.of(
                                                                         context)
@@ -648,9 +539,8 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                                 OutlineInputBorder(
                                                               borderSide:
                                                                   BorderSide(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .gray600,
+                                                                color: Color(
+                                                                    0x00000000),
                                                                 width: 2,
                                                               ),
                                                               borderRadius:
@@ -697,6 +587,10 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                                   signed: true,
                                                                   decimal:
                                                                       true),
+                                                          validator: _model
+                                                              .lowValueControllerValidator
+                                                              .asValidator(
+                                                                  context),
                                                         ),
                                                       ),
                                                     ),
@@ -759,9 +653,6 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'FINAL_CHECK_PAGE_Button-Logout_ON_TAP');
-                                logFirebaseEvent('Button-Logout_navigate_back');
                                 context.pop();
                               },
                               text: '',
@@ -794,23 +685,16 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'FINAL_CHECK_PAGE_Button-Logout_ON_TAP');
-                                logFirebaseEvent('Button-Logout_backend_call');
-
                                 final usersUpdateData = createUsersRecordData(
                                   highValue: double.tryParse(
-                                      highValueController!.text),
-                                  lowValue:
-                                      double.tryParse(lowValueController!.text),
+                                      _model.highValueController.text),
+                                  lowValue: double.tryParse(
+                                      _model.lowValueController.text),
                                 );
                                 await currentUserReference!
                                     .update(usersUpdateData);
-                                logFirebaseEvent('Button-Logout_navigate_to');
 
                                 context.pushNamed('Main');
-
-                                setState(() {});
                               },
                               text: 'Finish',
                               options: FFButtonOptions(

@@ -15,6 +15,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'nightscout_check_copy_model.dart';
+export 'nightscout_check_copy_model.dart';
 
 class NightscoutCheckCopyWidget extends StatefulWidget {
   const NightscoutCheckCopyWidget({Key? key}) : super(key: key);
@@ -26,10 +28,10 @@ class NightscoutCheckCopyWidget extends StatefulWidget {
 
 class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
     with TickerProviderStateMixin {
-  ApiCallResponse? apiResult;
-  final _unfocusNode = FocusNode();
+  late NightscoutCheckCopyModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  PageController? pageViewController;
+  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -95,10 +97,10 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
   @override
   void initState() {
     super.initState();
+    _model = createModel(context, () => NightscoutCheckCopyModel());
+
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      logFirebaseEvent('NIGHTSCOUT_CHECK_COPY_nightscoutCheckCop');
-      logFirebaseEvent('nightscoutCheckCopy_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation2'] != null) {
         setState(() => hasContainerTriggered2 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -110,7 +112,6 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
                         .controller
                         .reverse));
       }
-      logFirebaseEvent('nightscoutCheckCopy_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation3'] != null) {
         setState(() => hasContainerTriggered3 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -122,7 +123,6 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
                         .controller
                         .reverse));
       }
-      logFirebaseEvent('nightscoutCheckCopy_widget_animation');
       if (animationsMap['containerOnActionTriggerAnimation1'] != null) {
         setState(() => hasContainerTriggered1 = true);
         SchedulerBinding.instance.addPostFrameCallback((_) async =>
@@ -140,15 +140,12 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
               valueOrDefault(currentUserDocument?.apiKey, '') != '') &&
           (valueOrDefault(currentUserDocument?.token, '') != null &&
               valueOrDefault(currentUserDocument?.token, '') != '')) {
-        logFirebaseEvent('nightscoutCheckCopy_backend_call');
-        apiResult = await GetBloodGlucoseCall.call(
+        _model.apiResult = await GetBloodGlucoseCall.call(
           apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
           nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
           token: valueOrDefault(currentUserDocument?.token, ''),
         );
-        if ((apiResult?.succeeded ?? true)) {
-          logFirebaseEvent('nightscoutCheckCopy_navigate_to');
-
+        if ((_model.apiResult?.succeeded ?? true)) {
           context.goNamed(
             'Main',
             extra: <String, dynamic>{
@@ -159,9 +156,7 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
             },
           );
         } else {
-          logFirebaseEvent('nightscoutCheckCopy_haptic_feedback');
           HapticFeedback.vibrate();
-          logFirebaseEvent('nightscoutCheckCopy_alert_dialog');
           await showDialog(
             context: context,
             builder: (alertDialogContext) {
@@ -178,12 +173,10 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
               );
             },
           );
-          logFirebaseEvent('nightscoutCheckCopy_navigate_to');
 
           context.pushNamed('Main');
         }
       } else {
-        logFirebaseEvent('nightscoutCheckCopy_alert_dialog');
         var confirmDialogResponse = await showDialog<bool>(
               context: context,
               builder: (alertDialogContext) {
@@ -206,19 +199,13 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
             ) ??
             false;
         if (confirmDialogResponse) {
-          logFirebaseEvent('nightscoutCheckCopy_navigate_to');
-
           context.pushNamed('Settings');
         } else {
-          logFirebaseEvent('nightscoutCheckCopy_navigate_to');
-
           context.pushNamed('loginPage');
         }
       }
     });
 
-    logFirebaseEvent('screen_view',
-        parameters: {'screen_name': 'nightscoutCheckCopy'});
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -231,6 +218,8 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -341,7 +330,7 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0, 16, 0, 50),
                                 child: PageView(
-                                  controller: pageViewController ??=
+                                  controller: _model.pageViewController ??=
                                       PageController(initialPage: 0),
                                   scrollDirection: Axis.horizontal,
                                   children: [
@@ -546,12 +535,12 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
                                       0, 0, 0, 10),
                                   child:
                                       smooth_page_indicator.SmoothPageIndicator(
-                                    controller: pageViewController ??=
+                                    controller: _model.pageViewController ??=
                                         PageController(initialPage: 0),
                                     count: 4,
                                     axisDirection: Axis.horizontal,
                                     onDotClicked: (i) {
-                                      pageViewController!.animateToPage(
+                                      _model.pageViewController!.animateToPage(
                                         i,
                                         duration: Duration(milliseconds: 500),
                                         curve: Curves.ease,
@@ -589,9 +578,6 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'NIGHTSCOUT_CHECK_COPY_Button-Logout_ON_T');
-                                logFirebaseEvent('Button-Logout_auth');
                                 GoRouter.of(context).prepareAuthEvent();
                                 await signOut();
 
@@ -627,18 +613,16 @@ class _NightscoutCheckCopyWidgetState extends State<NightscoutCheckCopyWidget>
                                 EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                logFirebaseEvent(
-                                    'NIGHTSCOUT_CHECK_COPY_Button-Logout_ON_T');
-                                logFirebaseEvent('Button-Logout_auth');
                                 GoRouter.of(context).prepareAuthEvent();
                                 await signOut();
 
                                 context.goNamedAuth('loginPage', mounted);
                               },
-                              text:
-                                  (pageViewController?.page?.round() ?? 0) == 0
-                                      ? 'Let\'s Begin'
-                                      : 'Next',
+                              text: (_model.pageViewController?.page?.round() ??
+                                          0) ==
+                                      0
+                                  ? 'Let\'s Begin'
+                                  : 'Next',
                               options: FFButtonOptions(
                                 width: 130,
                                 height: 50,

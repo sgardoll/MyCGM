@@ -1,7 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_autocomplete_options_list.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -16,6 +15,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:text_search/text_search.dart';
+import 'p_o_s_t_carbs_model.dart';
+export 'p_o_s_t_carbs_model.dart';
 
 class POSTCarbsWidget extends StatefulWidget {
   const POSTCarbsWidget({
@@ -32,35 +33,30 @@ class POSTCarbsWidget extends StatefulWidget {
 }
 
 class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
-  ApiCallResponse? apiResultPostCarbs;
-  FoodDataRecord? addFoodToDatabase;
-  TextEditingController? foodNameController;
-  TextEditingController? gramsCarbsController1;
-  bool? addCustomFoodToggleValue;
-  List<FoodDataRecord> simpleSearchResults1 = [];
-  final searchKey = GlobalKey();
-  TextEditingController? searchController;
-  String? searchSelectedOption;
-  PageController? pageViewController;
-  List<FoodDataRecord> simpleSearchResults2 = [];
-  TextEditingController? gramsCarbsController2;
-  final formKey = GlobalKey<FormState>();
+  late POSTCarbsModel _model;
+
+  @override
+  void setState(VoidCallback callback) {
+    super.setState(callback);
+    _model.onUpdate();
+  }
 
   @override
   void initState() {
     super.initState();
-    foodNameController = TextEditingController();
-    gramsCarbsController1 = TextEditingController();
-    searchController = TextEditingController();
-    gramsCarbsController2 = TextEditingController();
+    _model = createModel(context, () => POSTCarbsModel());
+
+    _model.searchFieldController ??= TextEditingController();
+    _model.gramsCarbsController1 ??= TextEditingController();
+    _model.foodNameController ??= TextEditingController();
+    _model.gramsCarbsController2 ??= TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
-    foodNameController?.dispose();
-    gramsCarbsController1?.dispose();
-    gramsCarbsController2?.dispose();
+    _model.maybeDispose();
+
     super.dispose();
   }
 
@@ -126,7 +122,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 50, 0),
                       child: PageView(
-                        controller: pageViewController ??=
+                        controller: _model.pageViewController ??=
                             PageController(initialPage: 0),
                         scrollDirection: Axis.vertical,
                         children: [
@@ -171,204 +167,82 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       child: Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 16, 0),
-                                        child:
-                                            StreamBuilder<List<FoodDataRecord>>(
-                                          stream: queryFoodDataRecord(
-                                            queryBuilder: (foodDataRecord) =>
-                                                foodDataRecord.where('FoodName',
-                                                    isEqualTo:
-                                                        searchSelectedOption),
+                                        child: TextFormField(
+                                          controller:
+                                              _model.searchFieldController,
+                                          onChanged: (_) =>
+                                              EasyDebounce.debounce(
+                                            '_model.searchFieldController',
+                                            Duration(milliseconds: 2000),
+                                            () async {
+                                              FFAppState().carbsEntered =
+                                                  functions.stringToDouble(
+                                                      _model
+                                                          .gramsCarbsController2
+                                                          .text)!;
+                                            },
                                           ),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 25,
-                                                  height: 25,
-                                                  child: SpinKitRipple(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            hintText: 'search',
+                                            hintStyle: TextStyle(
+                                              color: Color(0x7EFFFFFF),
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 16,
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0x7EFFFFFF),
+                                                width: 3,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0x00000000),
+                                                width: 3,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                            ),
+                                            errorBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0x00000000),
+                                                width: 3,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                            ),
+                                            focusedErrorBorder:
+                                                OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0x00000000),
+                                                width: 3,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                            ),
+                                            contentPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    20, 32, 20, 12),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
                                                         .secondaryText,
-                                                    size: 25,
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                            List<FoodDataRecord>
-                                                searchFoodDataRecordList =
-                                                snapshot.data!;
-                                            return Autocomplete<String>(
-                                              initialValue: TextEditingValue(),
-                                              optionsBuilder:
-                                                  (textEditingValue) {
-                                                if (textEditingValue.text ==
-                                                    '') {
-                                                  return const Iterable<
-                                                      String>.empty();
-                                                }
-                                                return searchFoodDataRecordList
-                                                    .map((e) => e.foodNameFull)
-                                                    .withoutNulls
-                                                    .toList()
-                                                    .toList()
-                                                    .where((option) {
-                                                  final lowercaseOption =
-                                                      option.toLowerCase();
-                                                  return lowercaseOption
-                                                      .contains(textEditingValue
-                                                          .text
-                                                          .toLowerCase());
-                                                });
-                                              },
-                                              optionsViewBuilder: (context,
-                                                  onSelected, options) {
-                                                return AutocompleteOptionsList(
-                                                  textFieldKey: searchKey,
-                                                  textController:
-                                                      searchController!,
-                                                  options: options.toList(),
-                                                  onSelected: onSelected,
-                                                  textStyle: FlutterFlowTheme
-                                                          .of(context)
-                                                      .title3
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                      ),
-                                                  textHighlightStyle:
-                                                      TextStyle(),
-                                                  textAlign: TextAlign.start,
-                                                  elevation: 4,
-                                                  optionBackgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primaryBackground,
-                                                  optionHighlightColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  maxHeight: 200,
-                                                );
-                                              },
-                                              onSelected: (String selection) {
-                                                setState(() =>
-                                                    searchSelectedOption =
-                                                        selection);
-                                                FocusScope.of(context)
-                                                    .unfocus();
-                                              },
-                                              fieldViewBuilder: (
-                                                context,
-                                                textEditingController,
-                                                focusNode,
-                                                onEditingComplete,
-                                              ) {
-                                                searchController =
-                                                    textEditingController;
-                                                return TextFormField(
-                                                  key: searchKey,
-                                                  controller:
-                                                      textEditingController,
-                                                  focusNode: focusNode,
-                                                  onEditingComplete:
-                                                      onEditingComplete,
-                                                  onChanged: (_) =>
-                                                      EasyDebounce.debounce(
-                                                    'searchController',
-                                                    Duration(
-                                                        milliseconds: 2000),
-                                                    () => setState(() {}),
-                                                  ),
-                                                  obscureText: false,
-                                                  decoration: InputDecoration(
-                                                    hintText: 'search',
-                                                    hintStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .title3
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color:
-                                                              Color(0x7EFFFFFF),
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Color(0x7EFFFFFF),
-                                                        width: 3,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Color(0x7EFFFFFF),
-                                                        width: 3,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                    errorBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Color(0x00000000),
-                                                        width: 3,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                    focusedErrorBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Color(0x00000000),
-                                                        width: 3,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                    ),
-                                                    contentPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                20, 32, 20, 12),
-                                                  ),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .title3
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                  textAlign: TextAlign.start,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .allow(
-                                                            RegExp('[a-zA-Z]'))
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                          textAlign: TextAlign.start,
+                                          maxLines: null,
+                                          validator: _model
+                                              .searchFieldControllerValidator
+                                              .asValidator(context),
                                         ),
                                       ),
                                     ),
@@ -405,39 +279,34 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       ),
                                       showLoadingIndicator: true,
                                       onPressed: () async {
-                                        logFirebaseEvent(
-                                            'P_O_S_T_CARBS_COMP_AddNewButton_ON_TAP');
-                                        logFirebaseEvent(
-                                            'AddNewButton_simple_search');
                                         await queryFoodDataRecordOnce()
                                             .then(
-                                              (records) =>
-                                                  simpleSearchResults1 =
-                                                      TextSearch(
+                                              (records) => _model
+                                                      .simpleSearchResults1 =
+                                                  TextSearch(
                                                 records
                                                     .map(
                                                       (record) =>
                                                           TextSearchItem(
                                                               record, [
-                                                        record.foodNameFull!
+                                                        record.foodName!
                                                       ]),
                                                     )
                                                     .toList(),
                                               )
-                                                          .search(
-                                                              searchController!
-                                                                  .text)
-                                                          .map((r) => r.object)
-                                                          .toList(),
+                                                      .search(_model
+                                                          .searchFieldController
+                                                          .text)
+                                                      .map((r) => r.object)
+                                                      .toList(),
                                             )
-                                            .onError((_, __) =>
-                                                simpleSearchResults1 = [])
+                                            .onError((_, __) => _model
+                                                .simpleSearchResults1 = [])
                                             .whenComplete(
                                                 () => setState(() {}));
 
-                                        logFirebaseEvent(
-                                            'AddNewButton_page_view');
-                                        await pageViewController?.nextPage(
+                                        await _model.pageViewController
+                                            ?.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.ease,
                                         );
@@ -473,7 +342,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                 ),
                               ),
                               Form(
-                                key: formKey,
+                                key: _model.formKey,
                                 autovalidateMode: AutovalidateMode.always,
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
@@ -490,20 +359,17 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(0, 0, 16, 16),
                                               child: TextFormField(
-                                                controller:
-                                                    gramsCarbsController1,
+                                                controller: _model
+                                                    .gramsCarbsController1,
                                                 onChanged: (_) =>
                                                     EasyDebounce.debounce(
-                                                  'gramsCarbsController1',
+                                                  '_model.gramsCarbsController1',
                                                   Duration(milliseconds: 2000),
                                                   () async {
-                                                    logFirebaseEvent(
-                                                        'P_O_S_T_CARBS_gramsCarbs_ON_TEXTFIELD_CH');
-                                                    logFirebaseEvent(
-                                                        'gramsCarbs_update_local_state');
                                                     FFAppState().carbsEntered =
                                                         functions.stringToDouble(
-                                                            gramsCarbsController2!
+                                                            _model
+                                                                .gramsCarbsController2
                                                                 .text)!;
                                                   },
                                                 ),
@@ -528,7 +394,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   focusedBorder:
                                                       OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                      color: Color(0x7EFFFFFF),
+                                                      color: Color(0x00000000),
                                                       width: 3,
                                                     ),
                                                     borderRadius:
@@ -575,20 +441,13 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                 textAlign: TextAlign.start,
                                                 maxLines: null,
                                                 keyboardType:
-                                                    TextInputType.number,
-                                                validator: (val) {
-                                                  if (val == null ||
-                                                      val.isEmpty) {
-                                                    return 'Field is required';
-                                                  }
-
-                                                  if (!RegExp(
-                                                          '^\\d+(\\.\\d{1,2})?\$')
-                                                      .hasMatch(val)) {
-                                                    return 'Please enter a valid number';
-                                                  }
-                                                  return null;
-                                                },
+                                                    const TextInputType
+                                                            .numberWithOptions(
+                                                        signed: true,
+                                                        decimal: true),
+                                                validator: _model
+                                                    .gramsCarbsController1Validator
+                                                    .asValidator(context),
                                                 inputFormatters: [
                                                   FilteringTextInputFormatter
                                                       .allow(RegExp('[0-9]'))
@@ -609,14 +468,14 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                             .fromSTEB(
                                                                 0, 0, 6, 0),
                                                     child: Switch.adaptive(
-                                                      value:
-                                                          addCustomFoodToggleValue ??=
-                                                              false,
+                                                      value: _model
+                                                              .addCustomFoodToggleValue ??=
+                                                          false,
                                                       onChanged:
                                                           (newValue) async {
-                                                        setState(() =>
-                                                            addCustomFoodToggleValue =
-                                                                newValue!);
+                                                        setState(() => _model
+                                                                .addCustomFoodToggleValue =
+                                                            newValue!);
                                                       },
                                                       activeColor:
                                                           FlutterFlowTheme.of(
@@ -643,14 +502,15 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                 ],
                                               ),
                                             ),
-                                            if (addCustomFoodToggleValue ??
+                                            if (_model
+                                                    .addCustomFoodToggleValue ??
                                                 true)
                                               Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(0, 16, 16, 16),
                                                 child: TextFormField(
                                                   controller:
-                                                      foodNameController,
+                                                      _model.foodNameController,
                                                   obscureText: false,
                                                   decoration: InputDecoration(
                                                     hintText: 'food name',
@@ -675,7 +535,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                         OutlineInputBorder(
                                                       borderSide: BorderSide(
                                                         color:
-                                                            Color(0x7EFFFFFF),
+                                                            Color(0x00000000),
                                                         width: 3,
                                                       ),
                                                       borderRadius:
@@ -723,6 +583,9 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                             FontWeight.w500,
                                                       ),
                                                   textAlign: TextAlign.start,
+                                                  validator: _model
+                                                      .foodNameControllerValidator
+                                                      .asValidator(context),
                                                 ),
                                               ),
                                           ],
@@ -763,17 +626,14 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                           size: 25,
                                         ),
                                         showLoadingIndicator: true,
-                                        onPressed: /* NOT RECOMMENDED */ gramsCarbsController2!
+                                        onPressed: /* NOT RECOMMENDED */ _model
+                                                    .gramsCarbsController2
                                                     .text ==
                                                 'true'
                                             ? null
                                             : () async {
-                                                logFirebaseEvent(
-                                                    'P_O_S_T_CARBS_arrow_forward_rounded_ICN_');
                                                 // Do the API call to just add carbs
-                                                logFirebaseEvent(
-                                                    'IconButton_backend_call');
-                                                apiResultPostCarbs =
+                                                _model.apiResultPostCarbs =
                                                     await PostCarbsCall.call(
                                                   enteredBy: 'MyCGM',
                                                   eventType: 'Carb Correction',
@@ -791,20 +651,20 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       currentUserDocument
                                                           ?.apiKey,
                                                       ''),
-                                                  notes: foodNameController!
+                                                  notes: _model.foodNameController
                                                                   .text !=
                                                               null &&
-                                                          foodNameController!
+                                                          _model.foodNameController
                                                                   .text !=
                                                               ''
-                                                      ? foodNameController!.text
+                                                      ? _model
+                                                          .foodNameController
+                                                          .text
                                                       : '',
                                                 );
-                                                if ((apiResultPostCarbs
+                                                if ((_model.apiResultPostCarbs
                                                         ?.succeeded ??
                                                     true)) {
-                                                  logFirebaseEvent(
-                                                      'IconButton_show_snack_bar');
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     SnackBar(
@@ -822,18 +682,17 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                           Color(0x00000000),
                                                     ),
                                                   );
-                                                  if (addCustomFoodToggleValue !=
+                                                  if (_model
+                                                          .addCustomFoodToggleValue !=
                                                       null) {
-                                                    logFirebaseEvent(
-                                                        'IconButton_backend_call');
-
                                                     final foodDataCreateData =
                                                         createFoodDataRecordData(
-                                                      foodNameFull:
-                                                          foodNameController!
-                                                              .text,
-                                                      totalsugarsg: double.tryParse(
-                                                          gramsCarbsController2!
+                                                      foodNameFull: _model
+                                                          .foodNameController
+                                                          .text,
+                                                      totalsugarsg:
+                                                          double.tryParse(_model
+                                                              .gramsCarbsController2
                                                               .text),
                                                       source: currentUserUid,
                                                     );
@@ -844,22 +703,21 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                     await foodDataRecordReference
                                                         .set(
                                                             foodDataCreateData);
-                                                    addFoodToDatabase = FoodDataRecord
-                                                        .getDocumentFromData(
-                                                            foodDataCreateData,
-                                                            foodDataRecordReference);
-                                                    logFirebaseEvent(
-                                                        'IconButton_page_view');
-                                                    await pageViewController
+                                                    _model.addFoodToDatabase =
+                                                        FoodDataRecord
+                                                            .getDocumentFromData(
+                                                                foodDataCreateData,
+                                                                foodDataRecordReference);
+                                                    await _model
+                                                        .pageViewController
                                                         ?.nextPage(
                                                       duration: Duration(
                                                           milliseconds: 300),
                                                       curve: Curves.ease,
                                                     );
                                                   } else {
-                                                    logFirebaseEvent(
-                                                        'IconButton_page_view');
-                                                    await pageViewController
+                                                    await _model
+                                                        .pageViewController
                                                         ?.animateToPage(
                                                       2,
                                                       duration: Duration(
@@ -868,8 +726,6 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                     );
                                                   }
                                                 } else {
-                                                  logFirebaseEvent(
-                                                      'IconButton_show_snack_bar');
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     SnackBar(
@@ -916,39 +772,29 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                                 child: Builder(
                                   builder: (context) {
-                                    final searchResultsConfirmPage =
-                                        simpleSearchResults1
-                                            .map((e) => e)
-                                            .toList()
-                                            .where((e) =>
-                                                e.reference != e.reference)
-                                            .toList();
+                                    final searchResultsListView =
+                                        _model.simpleSearchResults1.toList();
                                     return ListView.builder(
                                       padding: EdgeInsets.zero,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
-                                      itemCount:
-                                          searchResultsConfirmPage.length,
+                                      itemCount: searchResultsListView.length,
                                       itemBuilder: (context,
-                                          searchResultsConfirmPageIndex) {
-                                        final searchResultsConfirmPageItem =
-                                            searchResultsConfirmPage[
-                                                searchResultsConfirmPageIndex];
+                                          searchResultsListViewIndex) {
+                                        final searchResultsListViewItem =
+                                            searchResultsListView[
+                                                searchResultsListViewIndex];
                                         return InkWell(
                                           onTap: () async {
-                                            logFirebaseEvent(
-                                                'P_O_S_T_CARBS_ListTile_w5hw4szw_ON_TAP');
-                                            logFirebaseEvent(
-                                                'ListTile_update_local_state');
-                                            FFAppState().update(() {
-                                              FFAppState().addToCarbSummary(
-                                                  searchResultsConfirmPageItem
+                                            setState(() {
+                                              _model.addToCarbItemsSummary(
+                                                  searchResultsListViewItem
                                                       .reference);
                                             });
                                           },
                                           child: ListTile(
                                             title: Text(
-                                              searchResultsConfirmPageItem
+                                              searchResultsListViewItem
                                                   .foodName!,
                                               style:
                                                   FlutterFlowTheme.of(context)
@@ -963,7 +809,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       ),
                                             ),
                                             subtitle: Text(
-                                              '${searchResultsConfirmPageItem.foodDetail1}${searchResultsConfirmPageItem.foodDetail2}${searchResultsConfirmPageItem.foodDetail3}${searchResultsConfirmPageItem.foodDetail4}${searchResultsConfirmPageItem.foodDetail5}${searchResultsConfirmPageItem.foodDetail6}',
+                                              '${searchResultsListViewItem.foodDetail1}',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyText1
@@ -999,7 +845,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
-                                    16, 16, 0, 16),
+                                    16, 16, 0, 0),
                                 child: Text(
                                   'Summary',
                                   style: FlutterFlowTheme.of(context)
@@ -1014,94 +860,64 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16, 0, 0, 16),
-                                child: Builder(
-                                  builder: (context) {
-                                    final carbItemsList = FFAppState()
-                                        .carbSummary
-                                        .map((e) => e)
-                                        .toList();
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children:
-                                          List.generate(carbItemsList.length,
-                                              (carbItemsListIndex) {
-                                        final carbItemsListItem =
-                                            carbItemsList[carbItemsListIndex];
-                                        return StreamBuilder<FoodDataRecord>(
-                                          stream: FoodDataRecord.getDocument(
-                                              carbItemsListItem),
-                                          builder: (context, snapshot) {
-                                            // Customize what your widget looks like when it's loading.
-                                            if (!snapshot.hasData) {
-                                              return Center(
-                                                child: SizedBox(
-                                                  width: 25,
-                                                  height: 25,
-                                                  child: SpinKitRipple(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 16),
+                                      child: Builder(
+                                        builder: (context) {
+                                          final carbSummary =
+                                              _model.carbItemsSummary.toList();
+                                          return ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            itemCount: carbSummary.length,
+                                            itemBuilder:
+                                                (context, carbSummaryIndex) {
+                                              final carbSummaryItem =
+                                                  carbSummary[carbSummaryIndex];
+                                              return InkWell(
+                                                onTap: () async {
+                                                  setState(() {
+                                                    _model
+                                                        .removeFromCarbItemsSummary(
+                                                            carbSummaryItem);
+                                                  });
+                                                },
+                                                child: ListTile(
+                                                  title: Text(
+                                                    carbSummaryIndex.toString(),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText2
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                  ),
+                                                  trailing: Icon(
+                                                    Icons.remove_circle_rounded,
                                                     color: FlutterFlowTheme.of(
                                                             context)
                                                         .secondaryText,
-                                                    size: 25,
+                                                    size: 20,
                                                   ),
+                                                  tileColor: Color(0xFFF5F5F5),
+                                                  dense: false,
                                                 ),
                                               );
-                                            }
-                                            final rowFoodDataRecord =
-                                                snapshot.data!;
-                                            return Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  FFAppState()
-                                                      .carbSummary
-                                                      .contains(
-                                                          carbItemsListItem)
-                                                      .toString(),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                      ),
-                                                ),
-                                                Text(
-                                                  '${formatNumber(
-                                                    rowFoodDataRecord
-                                                        .totalsugarsg,
-                                                    formatType:
-                                                        FormatType.decimal,
-                                                    decimalType:
-                                                        DecimalType.automatic,
-                                                  )} grams',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      }),
-                                    );
-                                  },
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               Divider(
@@ -1156,15 +972,11 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       ),
                                       showLoadingIndicator: true,
                                       onPressed: () async {
-                                        logFirebaseEvent(
-                                            'P_O_S_T_CARBS_COMP_AddNewButton_ON_TAP');
-                                        logFirebaseEvent(
-                                            'AddNewButton_simple_search');
                                         await queryFoodDataRecordOnce()
                                             .then(
-                                              (records) =>
-                                                  simpleSearchResults2 =
-                                                      TextSearch(
+                                              (records) => _model
+                                                      .simpleSearchResults2 =
+                                                  TextSearch(
                                                 records
                                                     .map(
                                                       (record) =>
@@ -1175,20 +987,19 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                     )
                                                     .toList(),
                                               )
-                                                          .search(
-                                                              searchController!
-                                                                  .text)
-                                                          .map((r) => r.object)
-                                                          .toList(),
+                                                      .search(_model
+                                                          .searchFieldController
+                                                          .text)
+                                                      .map((r) => r.object)
+                                                      .toList(),
                                             )
-                                            .onError((_, __) =>
-                                                simpleSearchResults2 = [])
+                                            .onError((_, __) => _model
+                                                .simpleSearchResults2 = [])
                                             .whenComplete(
                                                 () => setState(() {}));
 
-                                        logFirebaseEvent(
-                                            'AddNewButton_page_view');
-                                        await pageViewController?.nextPage(
+                                        await _model.pageViewController
+                                            ?.nextPage(
                                           duration: Duration(milliseconds: 300),
                                           curve: Curves.ease,
                                         );
@@ -1220,7 +1031,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 16, 0),
                                         child: TextFormField(
-                                          controller: gramsCarbsController2,
+                                          controller:
+                                              _model.gramsCarbsController2,
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
@@ -1240,7 +1052,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: Color(0x7EFFFFFF),
+                                                color: Color(0x00000000),
                                                 width: 3,
                                               ),
                                               borderRadius:
@@ -1281,6 +1093,9 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                           keyboardType: const TextInputType
                                                   .numberWithOptions(
                                               signed: true, decimal: true),
+                                          validator: _model
+                                              .gramsCarbsController2Validator
+                                              .asValidator(context),
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
                                                 RegExp('[0-9]'))
@@ -1392,9 +1207,6 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       ),
                                       showLoadingIndicator: true,
                                       onPressed: () async {
-                                        logFirebaseEvent(
-                                            'P_O_S_T_CARBS_COMP_Button_ON_TAP');
-                                        logFirebaseEvent('Button_bottom_sheet');
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -1411,12 +1223,12 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
                         child: smooth_page_indicator.SmoothPageIndicator(
-                          controller: pageViewController ??=
+                          controller: _model.pageViewController ??=
                               PageController(initialPage: 0),
                           count: 3,
                           axisDirection: Axis.vertical,
                           onDotClicked: (i) {
-                            pageViewController!.animateToPage(
+                            _model.pageViewController!.animateToPage(
                               i,
                               duration: Duration(milliseconds: 500),
                               curve: Curves.ease,
