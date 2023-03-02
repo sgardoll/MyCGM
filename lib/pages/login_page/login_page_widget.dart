@@ -187,8 +187,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           body: GestureDetector(
             onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
             child: Container(
-              width: MediaQuery.of(context).size.width * 1.0,
-              height: MediaQuery.of(context).size.height * 1.0,
+              width: double.infinity,
+              height: double.infinity,
               child: Stack(
                 children: [
                   ClipRect(

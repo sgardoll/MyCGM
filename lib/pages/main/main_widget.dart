@@ -46,6 +46,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           begin: 0.0,
           end: 1.0,
         ),
+        BlurEffect(
+          curve: Curves.easeIn,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 5.0,
+          end: 0.0,
+        ),
       ],
     ),
     'progressBarOnPageLoadAnimation1': AnimationInfo(
@@ -847,7 +854,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                     .size
                                                     .height *
                                                 0.85,
-                                            child: POSTCarbsWidget(),
+                                            child: POSTCarbsWidget(
+                                              latestMmol:
+                                                  GetBloodGlucoseCall.singleSgv(
+                                                        mainGetBloodGlucoseResponse
+                                                            .jsonBody,
+                                                      ) /
+                                                      18.0,
+                                            ),
                                           ),
                                         );
                                       },

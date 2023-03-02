@@ -21,11 +21,9 @@ export 'p_o_s_t_carbs_model.dart';
 class POSTCarbsWidget extends StatefulWidget {
   const POSTCarbsWidget({
     Key? key,
-    this.insulinType,
     this.latestMmol,
   }) : super(key: key);
 
-  final String? insulinType;
   final double? latestMmol;
 
   @override
@@ -271,14 +269,14 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         await queryFoodDataRecordOnce()
                                             .then(
                                               (records) => _model
-                                                      .simpleSearchResults1 =
+                                                      .simpleSearchResults =
                                                   TextSearch(
                                                 records
                                                     .map(
                                                       (record) =>
                                                           TextSearchItem(
                                                               record, [
-                                                        record.foodName!
+                                                        record.foodNameFull!
                                                       ]),
                                                     )
                                                     .toList(),
@@ -289,8 +287,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       .map((r) => r.object)
                                                       .toList(),
                                             )
-                                            .onError((_, __) => _model
-                                                .simpleSearchResults1 = [])
+                                            .onError((_, __) =>
+                                                _model.simpleSearchResults = [])
                                             .whenComplete(
                                                 () => setState(() {}));
 
@@ -683,14 +681,12 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       null) {
                                                     final foodDataCreateData =
                                                         createFoodDataRecordData(
-                                                      foodNameFull: _model
-                                                          .foodNameController
-                                                          .text,
+                                                      source: currentUserUid,
+                                                      foodNameFull: '',
                                                       totalsugarsg:
                                                           double.tryParse(_model
                                                               .gramsCarbsController2
                                                               .text),
-                                                      source: currentUserUid,
                                                     );
                                                     var foodDataRecordReference =
                                                         FoodDataRecord
@@ -769,7 +765,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                 child: Builder(
                                   builder: (context) {
                                     final searchResultsListView =
-                                        _model.simpleSearchResults1.toList();
+                                        _model.simpleSearchResults.toList();
                                     return ListView.builder(
                                       padding: EdgeInsets.zero,
                                       shrinkWrap: true,
@@ -791,7 +787,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                           child: ListTile(
                                             title: Text(
                                               searchResultsListViewItem
-                                                  .foodName!,
+                                                  .foodNameFull!,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .title3
@@ -805,7 +801,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       ),
                                             ),
                                             subtitle: Text(
-                                              '${searchResultsListViewItem.foodDetail1}',
+                                              '${searchResultsListViewItem.totalsugarsg?.toString()} grams',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyText1
@@ -866,47 +862,40 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                           0.0, 0.0, 0.0, 16.0),
                                       child: Builder(
                                         builder: (context) {
-                                          final carbSummary =
-                                              _model.carbItemsSummary.toList();
+                                          final summary = _model
+                                              .carbItemsSummary
+                                              .map((e) => e.id)
+                                              .toList();
                                           return ListView.builder(
                                             padding: EdgeInsets.zero,
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
-                                            itemCount: carbSummary.length,
+                                            itemCount: summary.length,
                                             itemBuilder:
-                                                (context, carbSummaryIndex) {
-                                              final carbSummaryItem =
-                                                  carbSummary[carbSummaryIndex];
-                                              return InkWell(
-                                                onTap: () async {
-                                                  setState(() {
-                                                    _model
-                                                        .removeFromCarbItemsSummary(
-                                                            carbSummaryItem);
-                                                  });
-                                                },
-                                                child: ListTile(
-                                                  title: Text(
-                                                    carbSummaryIndex.toString(),
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyText2
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                  ),
-                                                  trailing: Icon(
-                                                    Icons.remove_circle_rounded,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    size: 20.0,
-                                                  ),
-                                                  tileColor: Color(0xFFF5F5F5),
-                                                  dense: false,
+                                                (context, summaryIndex) {
+                                              final summaryItem =
+                                                  summary[summaryIndex];
+                                              return ListTile(
+                                                title: Text(
+                                                  summaryItem,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText2
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
                                                 ),
+                                                trailing: Icon(
+                                                  Icons.remove_circle_rounded,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  size: 20.0,
+                                                ),
+                                                tileColor: Color(0xFFF5F5F5),
+                                                dense: false,
                                               );
                                             },
                                           );
@@ -968,32 +957,6 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       ),
                                       showLoadingIndicator: true,
                                       onPressed: () async {
-                                        await queryFoodDataRecordOnce()
-                                            .then(
-                                              (records) => _model
-                                                      .simpleSearchResults2 =
-                                                  TextSearch(
-                                                records
-                                                    .map(
-                                                      (record) =>
-                                                          TextSearchItem(
-                                                              record, [
-                                                        record.foodNameFull!
-                                                      ]),
-                                                    )
-                                                    .toList(),
-                                              )
-                                                      .search(_model
-                                                          .searchFieldController
-                                                          .text)
-                                                      .map((r) => r.object)
-                                                      .toList(),
-                                            )
-                                            .onError((_, __) => _model
-                                                .simpleSearchResults2 = [])
-                                            .whenComplete(
-                                                () => setState(() {}));
-
                                         await _model.pageViewController
                                             ?.nextPage(
                                           duration: Duration(milliseconds: 300),
@@ -1010,7 +973,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Offset with ?X gms of carbs with x units of ${widget.insulinType}',
+                                'Offset with ?X gms of carbs with x units of  insulin',
                                 textAlign: TextAlign.center,
                                 maxLines: 2,
                                 style: FlutterFlowTheme.of(context).title2,

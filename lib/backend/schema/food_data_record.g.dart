@@ -21,102 +21,102 @@ class _$FoodDataRecordSerializer
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.publicFoodKey;
-    if (value != null) {
-      result
-        ..add('PublicFoodKey')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.classification;
-    if (value != null) {
-      result
-        ..add('Classification')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.foodName;
-    if (value != null) {
-      result
-        ..add('FoodName')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.totalsugarsg;
-    if (value != null) {
-      result
-        ..add('Totalsugarsg')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
-    }
-    value = object.addedsugarsg;
-    if (value != null) {
-      result
-        ..add('Addedsugarsg')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
-    }
-    value = object.freesugarsg;
-    if (value != null) {
-      result
-        ..add('Freesugarsg')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
-    }
-    value = object.foodDetail1;
-    if (value != null) {
-      result
-        ..add('FoodDetail1')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.foodDetail2;
-    if (value != null) {
-      result
-        ..add('FoodDetail2')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.foodDetail3;
-    if (value != null) {
-      result
-        ..add('FoodDetail3')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.foodDetail4;
-    if (value != null) {
-      result
-        ..add('FoodDetail4')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.foodDetail5;
-    if (value != null) {
-      result
-        ..add('FoodDetail5')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.foodDetail6;
-    if (value != null) {
-      result
-        ..add('FoodDetail6')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.foodNameFull;
-    if (value != null) {
-      result
-        ..add('FoodNameFull')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
     value = object.source;
     if (value != null) {
       result
         ..add('Source')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.publicFoodKey;
+    if (value != null) {
+      result
+        ..add('publicFoodKey')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.classification;
+    if (value != null) {
+      result
+        ..add('classification')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.foodName;
+    if (value != null) {
+      result
+        ..add('foodName')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.foodDetail1;
+    if (value != null) {
+      result
+        ..add('foodDetail1')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.foodDetail2;
+    if (value != null) {
+      result
+        ..add('foodDetail2')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.foodDetail3;
+    if (value != null) {
+      result
+        ..add('foodDetail3')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.foodDetail4;
+    if (value != null) {
+      result
+        ..add('foodDetail4')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.foodDetail5;
+    if (value != null) {
+      result
+        ..add('foodDetail5')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.foodDetail6;
+    if (value != null) {
+      result
+        ..add('foodDetail6')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.foodNameFull;
+    if (value != null) {
+      result
+        ..add('foodNameFull')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.totalsugarsg;
+    if (value != null) {
+      result
+        ..add('totalsugarsg')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
+    value = object.addedsugarsg;
+    if (value != null) {
+      result
+        ..add('addedsugarsg')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
+    value = object.freesugarsg;
+    if (value != null) {
+      result
+        ..add('freesugarsg')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
     }
     value = object.ffRef;
     if (value != null) {
@@ -141,61 +141,61 @@ class _$FoodDataRecordSerializer
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'PublicFoodKey':
-          result.publicFoodKey = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'Classification':
-          result.classification = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
-        case 'FoodName':
-          result.foodName = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'Totalsugarsg':
-          result.totalsugarsg = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
-          break;
-        case 'Addedsugarsg':
-          result.addedsugarsg = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
-          break;
-        case 'Freesugarsg':
-          result.freesugarsg = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
-          break;
-        case 'FoodDetail1':
-          result.foodDetail1 = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'FoodDetail2':
-          result.foodDetail2 = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'FoodDetail3':
-          result.foodDetail3 = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'FoodDetail4':
-          result.foodDetail4 = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'FoodDetail5':
-          result.foodDetail5 = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'FoodDetail6':
-          result.foodDetail6 = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'FoodNameFull':
-          result.foodNameFull = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
         case 'Source':
           result.source = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
+          break;
+        case 'publicFoodKey':
+          result.publicFoodKey = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'classification':
+          result.classification = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'foodName':
+          result.foodName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'foodDetail1':
+          result.foodDetail1 = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'foodDetail2':
+          result.foodDetail2 = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'foodDetail3':
+          result.foodDetail3 = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'foodDetail4':
+          result.foodDetail4 = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'foodDetail5':
+          result.foodDetail5 = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'foodDetail6':
+          result.foodDetail6 = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'foodNameFull':
+          result.foodNameFull = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'totalsugarsg':
+          result.totalsugarsg = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
+          break;
+        case 'addedsugarsg':
+          result.addedsugarsg = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
+          break;
+        case 'freesugarsg':
+          result.freesugarsg = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -212,17 +212,13 @@ class _$FoodDataRecordSerializer
 
 class _$FoodDataRecord extends FoodDataRecord {
   @override
+  final String? source;
+  @override
   final String? publicFoodKey;
   @override
   final int? classification;
   @override
   final String? foodName;
-  @override
-  final double? totalsugarsg;
-  @override
-  final double? addedsugarsg;
-  @override
-  final double? freesugarsg;
   @override
   final String? foodDetail1;
   @override
@@ -238,7 +234,11 @@ class _$FoodDataRecord extends FoodDataRecord {
   @override
   final String? foodNameFull;
   @override
-  final String? source;
+  final double? totalsugarsg;
+  @override
+  final double? addedsugarsg;
+  @override
+  final double? freesugarsg;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -246,12 +246,10 @@ class _$FoodDataRecord extends FoodDataRecord {
       (new FoodDataRecordBuilder()..update(updates))._build();
 
   _$FoodDataRecord._(
-      {this.publicFoodKey,
+      {this.source,
+      this.publicFoodKey,
       this.classification,
       this.foodName,
-      this.totalsugarsg,
-      this.addedsugarsg,
-      this.freesugarsg,
       this.foodDetail1,
       this.foodDetail2,
       this.foodDetail3,
@@ -259,7 +257,9 @@ class _$FoodDataRecord extends FoodDataRecord {
       this.foodDetail5,
       this.foodDetail6,
       this.foodNameFull,
-      this.source,
+      this.totalsugarsg,
+      this.addedsugarsg,
+      this.freesugarsg,
       this.ffRef})
       : super._();
 
@@ -275,12 +275,10 @@ class _$FoodDataRecord extends FoodDataRecord {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is FoodDataRecord &&
+        source == other.source &&
         publicFoodKey == other.publicFoodKey &&
         classification == other.classification &&
         foodName == other.foodName &&
-        totalsugarsg == other.totalsugarsg &&
-        addedsugarsg == other.addedsugarsg &&
-        freesugarsg == other.freesugarsg &&
         foodDetail1 == other.foodDetail1 &&
         foodDetail2 == other.foodDetail2 &&
         foodDetail3 == other.foodDetail3 &&
@@ -288,7 +286,9 @@ class _$FoodDataRecord extends FoodDataRecord {
         foodDetail5 == other.foodDetail5 &&
         foodDetail6 == other.foodDetail6 &&
         foodNameFull == other.foodNameFull &&
-        source == other.source &&
+        totalsugarsg == other.totalsugarsg &&
+        addedsugarsg == other.addedsugarsg &&
+        freesugarsg == other.freesugarsg &&
         ffRef == other.ffRef;
   }
 
@@ -310,34 +310,33 @@ class _$FoodDataRecord extends FoodDataRecord {
                                                         $jc(
                                                             $jc(
                                                                 0,
-                                                                publicFoodKey
+                                                                source
                                                                     .hashCode),
-                                                            classification
+                                                            publicFoodKey
                                                                 .hashCode),
-                                                        foodName.hashCode),
-                                                    totalsugarsg.hashCode),
-                                                addedsugarsg.hashCode),
-                                            freesugarsg.hashCode),
-                                        foodDetail1.hashCode),
-                                    foodDetail2.hashCode),
-                                foodDetail3.hashCode),
-                            foodDetail4.hashCode),
-                        foodDetail5.hashCode),
-                    foodDetail6.hashCode),
-                foodNameFull.hashCode),
-            source.hashCode),
+                                                        classification
+                                                            .hashCode),
+                                                    foodName.hashCode),
+                                                foodDetail1.hashCode),
+                                            foodDetail2.hashCode),
+                                        foodDetail3.hashCode),
+                                    foodDetail4.hashCode),
+                                foodDetail5.hashCode),
+                            foodDetail6.hashCode),
+                        foodNameFull.hashCode),
+                    totalsugarsg.hashCode),
+                addedsugarsg.hashCode),
+            freesugarsg.hashCode),
         ffRef.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'FoodDataRecord')
+          ..add('source', source)
           ..add('publicFoodKey', publicFoodKey)
           ..add('classification', classification)
           ..add('foodName', foodName)
-          ..add('totalsugarsg', totalsugarsg)
-          ..add('addedsugarsg', addedsugarsg)
-          ..add('freesugarsg', freesugarsg)
           ..add('foodDetail1', foodDetail1)
           ..add('foodDetail2', foodDetail2)
           ..add('foodDetail3', foodDetail3)
@@ -345,7 +344,9 @@ class _$FoodDataRecord extends FoodDataRecord {
           ..add('foodDetail5', foodDetail5)
           ..add('foodDetail6', foodDetail6)
           ..add('foodNameFull', foodNameFull)
-          ..add('source', source)
+          ..add('totalsugarsg', totalsugarsg)
+          ..add('addedsugarsg', addedsugarsg)
+          ..add('freesugarsg', freesugarsg)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -354,6 +355,10 @@ class _$FoodDataRecord extends FoodDataRecord {
 class FoodDataRecordBuilder
     implements Builder<FoodDataRecord, FoodDataRecordBuilder> {
   _$FoodDataRecord? _$v;
+
+  String? _source;
+  String? get source => _$this._source;
+  set source(String? source) => _$this._source = source;
 
   String? _publicFoodKey;
   String? get publicFoodKey => _$this._publicFoodKey;
@@ -368,18 +373,6 @@ class FoodDataRecordBuilder
   String? _foodName;
   String? get foodName => _$this._foodName;
   set foodName(String? foodName) => _$this._foodName = foodName;
-
-  double? _totalsugarsg;
-  double? get totalsugarsg => _$this._totalsugarsg;
-  set totalsugarsg(double? totalsugarsg) => _$this._totalsugarsg = totalsugarsg;
-
-  double? _addedsugarsg;
-  double? get addedsugarsg => _$this._addedsugarsg;
-  set addedsugarsg(double? addedsugarsg) => _$this._addedsugarsg = addedsugarsg;
-
-  double? _freesugarsg;
-  double? get freesugarsg => _$this._freesugarsg;
-  set freesugarsg(double? freesugarsg) => _$this._freesugarsg = freesugarsg;
 
   String? _foodDetail1;
   String? get foodDetail1 => _$this._foodDetail1;
@@ -409,9 +402,17 @@ class FoodDataRecordBuilder
   String? get foodNameFull => _$this._foodNameFull;
   set foodNameFull(String? foodNameFull) => _$this._foodNameFull = foodNameFull;
 
-  String? _source;
-  String? get source => _$this._source;
-  set source(String? source) => _$this._source = source;
+  double? _totalsugarsg;
+  double? get totalsugarsg => _$this._totalsugarsg;
+  set totalsugarsg(double? totalsugarsg) => _$this._totalsugarsg = totalsugarsg;
+
+  double? _addedsugarsg;
+  double? get addedsugarsg => _$this._addedsugarsg;
+  set addedsugarsg(double? addedsugarsg) => _$this._addedsugarsg = addedsugarsg;
+
+  double? _freesugarsg;
+  double? get freesugarsg => _$this._freesugarsg;
+  set freesugarsg(double? freesugarsg) => _$this._freesugarsg = freesugarsg;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -424,12 +425,10 @@ class FoodDataRecordBuilder
   FoodDataRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _source = $v.source;
       _publicFoodKey = $v.publicFoodKey;
       _classification = $v.classification;
       _foodName = $v.foodName;
-      _totalsugarsg = $v.totalsugarsg;
-      _addedsugarsg = $v.addedsugarsg;
-      _freesugarsg = $v.freesugarsg;
       _foodDetail1 = $v.foodDetail1;
       _foodDetail2 = $v.foodDetail2;
       _foodDetail3 = $v.foodDetail3;
@@ -437,7 +436,9 @@ class FoodDataRecordBuilder
       _foodDetail5 = $v.foodDetail5;
       _foodDetail6 = $v.foodDetail6;
       _foodNameFull = $v.foodNameFull;
-      _source = $v.source;
+      _totalsugarsg = $v.totalsugarsg;
+      _addedsugarsg = $v.addedsugarsg;
+      _freesugarsg = $v.freesugarsg;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -461,12 +462,10 @@ class FoodDataRecordBuilder
   _$FoodDataRecord _build() {
     final _$result = _$v ??
         new _$FoodDataRecord._(
+            source: source,
             publicFoodKey: publicFoodKey,
             classification: classification,
             foodName: foodName,
-            totalsugarsg: totalsugarsg,
-            addedsugarsg: addedsugarsg,
-            freesugarsg: freesugarsg,
             foodDetail1: foodDetail1,
             foodDetail2: foodDetail2,
             foodDetail3: foodDetail3,
@@ -474,7 +473,9 @@ class FoodDataRecordBuilder
             foodDetail5: foodDetail5,
             foodDetail6: foodDetail6,
             foodNameFull: foodNameFull,
-            source: source,
+            totalsugarsg: totalsugarsg,
+            addedsugarsg: addedsugarsg,
+            freesugarsg: freesugarsg,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

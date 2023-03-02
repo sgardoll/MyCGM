@@ -11,59 +11,44 @@ abstract class FoodDataRecord
   static Serializer<FoodDataRecord> get serializer =>
       _$foodDataRecordSerializer;
 
-  @BuiltValueField(wireName: 'PublicFoodKey')
-  String? get publicFoodKey;
-
-  @BuiltValueField(wireName: 'Classification')
-  int? get classification;
-
-  @BuiltValueField(wireName: 'FoodName')
-  String? get foodName;
-
-  @BuiltValueField(wireName: 'Totalsugarsg')
-  double? get totalsugarsg;
-
-  @BuiltValueField(wireName: 'Addedsugarsg')
-  double? get addedsugarsg;
-
-  @BuiltValueField(wireName: 'Freesugarsg')
-  double? get freesugarsg;
-
-  @BuiltValueField(wireName: 'FoodDetail1')
-  String? get foodDetail1;
-
-  @BuiltValueField(wireName: 'FoodDetail2')
-  String? get foodDetail2;
-
-  @BuiltValueField(wireName: 'FoodDetail3')
-  String? get foodDetail3;
-
-  @BuiltValueField(wireName: 'FoodDetail4')
-  String? get foodDetail4;
-
-  @BuiltValueField(wireName: 'FoodDetail5')
-  String? get foodDetail5;
-
-  @BuiltValueField(wireName: 'FoodDetail6')
-  String? get foodDetail6;
-
-  @BuiltValueField(wireName: 'FoodNameFull')
-  String? get foodNameFull;
-
   @BuiltValueField(wireName: 'Source')
   String? get source;
+
+  String? get publicFoodKey;
+
+  int? get classification;
+
+  String? get foodName;
+
+  String? get foodDetail1;
+
+  String? get foodDetail2;
+
+  String? get foodDetail3;
+
+  String? get foodDetail4;
+
+  String? get foodDetail5;
+
+  String? get foodDetail6;
+
+  String? get foodNameFull;
+
+  double? get totalsugarsg;
+
+  double? get addedsugarsg;
+
+  double? get freesugarsg;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(FoodDataRecordBuilder builder) => builder
+    ..source = ''
     ..publicFoodKey = ''
     ..classification = 0
     ..foodName = ''
-    ..totalsugarsg = 0.0
-    ..addedsugarsg = 0.0
-    ..freesugarsg = 0.0
     ..foodDetail1 = ''
     ..foodDetail2 = ''
     ..foodDetail3 = ''
@@ -71,7 +56,9 @@ abstract class FoodDataRecord
     ..foodDetail5 = ''
     ..foodDetail6 = ''
     ..foodNameFull = ''
-    ..source = '';
+    ..totalsugarsg = 0.0
+    ..addedsugarsg = 0.0
+    ..freesugarsg = 0.0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('foodData');
@@ -95,12 +82,10 @@ abstract class FoodDataRecord
 }
 
 Map<String, dynamic> createFoodDataRecordData({
+  String? source,
   String? publicFoodKey,
   int? classification,
   String? foodName,
-  double? totalsugarsg,
-  double? addedsugarsg,
-  double? freesugarsg,
   String? foodDetail1,
   String? foodDetail2,
   String? foodDetail3,
@@ -108,18 +93,18 @@ Map<String, dynamic> createFoodDataRecordData({
   String? foodDetail5,
   String? foodDetail6,
   String? foodNameFull,
-  String? source,
+  double? totalsugarsg,
+  double? addedsugarsg,
+  double? freesugarsg,
 }) {
   final firestoreData = serializers.toFirestore(
     FoodDataRecord.serializer,
     FoodDataRecord(
       (f) => f
+        ..source = source
         ..publicFoodKey = publicFoodKey
         ..classification = classification
         ..foodName = foodName
-        ..totalsugarsg = totalsugarsg
-        ..addedsugarsg = addedsugarsg
-        ..freesugarsg = freesugarsg
         ..foodDetail1 = foodDetail1
         ..foodDetail2 = foodDetail2
         ..foodDetail3 = foodDetail3
@@ -127,7 +112,9 @@ Map<String, dynamic> createFoodDataRecordData({
         ..foodDetail5 = foodDetail5
         ..foodDetail6 = foodDetail6
         ..foodNameFull = foodNameFull
-        ..source = source,
+        ..totalsugarsg = totalsugarsg
+        ..addedsugarsg = addedsugarsg
+        ..freesugarsg = freesugarsg,
     ),
   );
 

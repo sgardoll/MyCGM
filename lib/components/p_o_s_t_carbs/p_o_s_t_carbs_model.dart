@@ -35,7 +35,7 @@ class POSTCarbsModel extends FlutterFlowModel {
   // State field(s) for searchField widget.
   TextEditingController? searchFieldController;
   String? Function(BuildContext, String?)? searchFieldControllerValidator;
-  List<FoodDataRecord> simpleSearchResults1 = [];
+  List<FoodDataRecord> simpleSearchResults = [];
   // State field(s) for gramsCarbs widget.
   TextEditingController? gramsCarbsController1;
   String? Function(BuildContext, String?)? gramsCarbsController1Validator;
@@ -59,7 +59,6 @@ class POSTCarbsModel extends FlutterFlowModel {
   ApiCallResponse? apiResultPostCarbs;
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
   FoodDataRecord? addFoodToDatabase;
-  List<FoodDataRecord> simpleSearchResults2 = [];
   // State field(s) for gramsCarbs widget.
   TextEditingController? gramsCarbsController2;
   String? Function(BuildContext, String?)? gramsCarbsController2Validator;
