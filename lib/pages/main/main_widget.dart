@@ -251,480 +251,303 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
               color: FlutterFlowTheme.of(context).primaryColor,
               child: Scaffold(
                 key: scaffoldKey,
-                body: GestureDetector(
-                  onTap: () =>
-                      FocusScope.of(context).requestFocus(_unfocusNode),
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 1.0,
-                        height: MediaQuery.of(context).size.height * 1.0,
-                        decoration: BoxDecoration(
-                          color: valueOrDefault<Color>(
-                            () {
-                              if (GetBloodGlucoseCall.singleSgv(
-                                    mainGetBloodGlucoseResponse.jsonBody,
-                                  ) <
-                                  70) {
-                                return FlutterFlowTheme.of(context)
-                                    .tertiaryColor;
-                              } else if (GetBloodGlucoseCall.singleSgv(
-                                    mainGetBloodGlucoseResponse.jsonBody,
-                                  ) >
-                                  169) {
-                                return FlutterFlowTheme.of(context)
-                                    .secondaryColor;
-                              } else {
-                                return FlutterFlowTheme.of(context)
-                                    .primaryColor;
-                              }
-                            }(),
-                            FlutterFlowTheme.of(context).primaryColor,
+                body: SafeArea(
+                  child: GestureDetector(
+                    onTap: () =>
+                        FocusScope.of(context).requestFocus(_unfocusNode),
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 1.0,
+                          height: MediaQuery.of(context).size.height * 1.0,
+                          decoration: BoxDecoration(
+                            color: valueOrDefault<Color>(
+                              () {
+                                if (GetBloodGlucoseCall.singleSgv(
+                                      mainGetBloodGlucoseResponse.jsonBody,
+                                    ) <
+                                    70) {
+                                  return FlutterFlowTheme.of(context)
+                                      .tertiaryColor;
+                                } else if (GetBloodGlucoseCall.singleSgv(
+                                      mainGetBloodGlucoseResponse.jsonBody,
+                                    ) >
+                                    169) {
+                                  return FlutterFlowTheme.of(context)
+                                      .secondaryColor;
+                                } else {
+                                  return FlutterFlowTheme.of(context)
+                                      .primaryColor;
+                                }
+                              }(),
+                              FlutterFlowTheme.of(context).primaryColor,
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  if (valueOrDefault<bool>(
-                                    valueOrDefault(
-                                            currentUserDocument?.units, '') ==
-                                        'mmol/L',
-                                    true,
-                                  ))
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 50.0, 0.0, 0.0),
-                                      child: CircularPercentIndicator(
-                                        percent: () {
-                                          if (GetBloodGlucoseCall.singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) ==
-                                              null) {
-                                            return 0.1;
-                                          } else if (GetBloodGlucoseCall
-                                                  .singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) <
-                                              70) {
-                                            return 0.1;
-                                          } else if (GetBloodGlucoseCall
-                                                  .singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) >
-                                              169) {
-                                            return 1.0;
-                                          } else {
-                                            return ((GetBloodGlucoseCall
-                                                        .singleSgv(
-                                                      mainGetBloodGlucoseResponse
-                                                          .jsonBody,
-                                                    ) -
-                                                    70) /
-                                                (169 - 70));
-                                          }
-                                        }(),
-                                        radius: 150.0,
-                                        lineWidth: 40.0,
-                                        animation: true,
-                                        progressColor: Color(0x80001219),
-                                        backgroundColor: valueOrDefault<Color>(
-                                          () {
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    if (valueOrDefault<bool>(
+                                      valueOrDefault(
+                                              currentUserDocument?.units, '') ==
+                                          'mmol/L',
+                                      true,
+                                    ))
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 50.0, 0.0, 0.0),
+                                        child: CircularPercentIndicator(
+                                          percent: () {
                                             if (GetBloodGlucoseCall.singleSgv(
+                                                  mainGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) ==
+                                                null) {
+                                              return 0.1;
+                                            } else if (GetBloodGlucoseCall
+                                                    .singleSgv(
                                                   mainGetBloodGlucoseResponse
                                                       .jsonBody,
                                                 ) <
                                                 70) {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .secondaryColor;
+                                              return 0.1;
                                             } else if (GetBloodGlucoseCall
                                                     .singleSgv(
                                                   mainGetBloodGlucoseResponse
                                                       .jsonBody,
                                                 ) >
                                                 169) {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .secondaryBackground;
+                                              return 1.0;
                                             } else {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .primaryBackground;
+                                              return ((GetBloodGlucoseCall
+                                                          .singleSgv(
+                                                        mainGetBloodGlucoseResponse
+                                                            .jsonBody,
+                                                      ) -
+                                                      70) /
+                                                  (169 - 70));
                                             }
                                           }(),
-                                          FlutterFlowTheme.of(context)
-                                              .primaryBackground,
-                                        ),
-                                        center: Text(
-                                          formatNumber(
-                                            GetBloodGlucoseCall.singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) /
-                                                18.0,
-                                            formatType: FormatType.custom,
-                                            format: '#0.0',
-                                            locale: '',
+                                          radius: 150.0,
+                                          lineWidth: 40.0,
+                                          animation: true,
+                                          progressColor: Color(0x80001219),
+                                          backgroundColor:
+                                              valueOrDefault<Color>(
+                                            () {
+                                              if (GetBloodGlucoseCall.singleSgv(
+                                                    mainGetBloodGlucoseResponse
+                                                        .jsonBody,
+                                                  ) <
+                                                  70) {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .secondaryColor;
+                                              } else if (GetBloodGlucoseCall
+                                                      .singleSgv(
+                                                    mainGetBloodGlucoseResponse
+                                                        .jsonBody,
+                                                  ) >
+                                                  169) {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .secondaryBackground;
+                                              } else {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .primaryBackground;
+                                              }
+                                            }(),
+                                            FlutterFlowTheme.of(context)
+                                                .primaryBackground,
                                           ),
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .title1
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                fontSize: 90.0,
-                                              ),
-                                        ),
-                                        startAngle: 0.0,
-                                      ).animateOnPageLoad(animationsMap[
-                                          'progressBarOnPageLoadAnimation1']!),
-                                    ),
-                                  if (valueOrDefault<bool>(
-                                    valueOrDefault(
-                                            currentUserDocument?.units, '') !=
-                                        'mmol/L',
-                                    false,
-                                  ))
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 50.0, 0.0, 0.0),
-                                      child: CircularPercentIndicator(
-                                        percent: () {
-                                          if (GetBloodGlucoseCall.singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) ==
-                                              null) {
-                                            return 0.1;
-                                          } else if (GetBloodGlucoseCall
-                                                  .singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) <
-                                              70) {
-                                            return 0.1;
-                                          } else if (GetBloodGlucoseCall
-                                                  .singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) >
-                                              169) {
-                                            return 1.0;
-                                          } else {
-                                            return ((GetBloodGlucoseCall
-                                                        .singleSgv(
-                                                      mainGetBloodGlucoseResponse
-                                                          .jsonBody,
-                                                    ) -
-                                                    70) /
-                                                (169 - 70));
-                                          }
-                                        }(),
-                                        radius: 150.0,
-                                        lineWidth: 40.0,
-                                        animation: true,
-                                        progressColor: Color(0x80001219),
-                                        backgroundColor: valueOrDefault<Color>(
-                                          () {
-                                            if (GetBloodGlucoseCall.singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) <
-                                                70) {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .secondaryColor;
-                                            } else if (GetBloodGlucoseCall
-                                                    .singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) >
-                                                169) {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .secondaryBackground;
-                                            } else {
-                                              return FlutterFlowTheme.of(
-                                                      context)
-                                                  .primaryBackground;
-                                            }
-                                          }(),
-                                          FlutterFlowTheme.of(context)
-                                              .primaryBackground,
-                                        ),
-                                        center: Text(
-                                          GetBloodGlucoseCall.singleSgv(
-                                            mainGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ).toString(),
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .title1
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                fontSize: 90.0,
-                                              ),
-                                        ),
-                                        startAngle: 0.0,
-                                      ).animateOnPageLoad(animationsMap[
-                                          'progressBarOnPageLoadAnimation2']!),
-                                    ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 40.0, 0.0, 0.0),
-                                    child: Text(
-                                      valueOrDefault<String>(
-                                        valueOrDefault(
-                                            currentUserDocument?.units, ''),
-                                        'mmol',
+                                          center: Text(
+                                            formatNumber(
+                                              GetBloodGlucoseCall.singleSgv(
+                                                    mainGetBloodGlucoseResponse
+                                                        .jsonBody,
+                                                  ) /
+                                                  18.0,
+                                              formatType: FormatType.custom,
+                                              format: '#0.0',
+                                              locale: '',
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .title1
+                                                .override(
+                                                  fontFamily: 'Poppins',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  fontSize: 90.0,
+                                                ),
+                                          ),
+                                          startAngle: 0.0,
+                                        ).animateOnPageLoad(animationsMap[
+                                            'progressBarOnPageLoadAnimation1']!),
                                       ),
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .title1
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
+                                    if (valueOrDefault<bool>(
+                                      valueOrDefault(
+                                              currentUserDocument?.units, '') !=
+                                          'mmol/L',
+                                      false,
+                                    ))
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 50.0, 0.0, 0.0),
+                                        child: CircularPercentIndicator(
+                                          percent: () {
+                                            if (GetBloodGlucoseCall.singleSgv(
+                                                  mainGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) ==
+                                                null) {
+                                              return 0.1;
+                                            } else if (GetBloodGlucoseCall
+                                                    .singleSgv(
+                                                  mainGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) <
+                                                70) {
+                                              return 0.1;
+                                            } else if (GetBloodGlucoseCall
+                                                    .singleSgv(
+                                                  mainGetBloodGlucoseResponse
+                                                      .jsonBody,
+                                                ) >
+                                                169) {
+                                              return 1.0;
+                                            } else {
+                                              return ((GetBloodGlucoseCall
+                                                          .singleSgv(
+                                                        mainGetBloodGlucoseResponse
+                                                            .jsonBody,
+                                                      ) -
+                                                      70) /
+                                                  (169 - 70));
+                                            }
+                                          }(),
+                                          radius: 150.0,
+                                          lineWidth: 40.0,
+                                          animation: true,
+                                          progressColor: Color(0x80001219),
+                                          backgroundColor:
+                                              valueOrDefault<Color>(
+                                            () {
+                                              if (GetBloodGlucoseCall.singleSgv(
+                                                    mainGetBloodGlucoseResponse
+                                                        .jsonBody,
+                                                  ) <
+                                                  70) {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .secondaryColor;
+                                              } else if (GetBloodGlucoseCall
+                                                      .singleSgv(
+                                                    mainGetBloodGlucoseResponse
+                                                        .jsonBody,
+                                                  ) >
+                                                  169) {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .secondaryBackground;
+                                              } else {
+                                                return FlutterFlowTheme.of(
+                                                        context)
+                                                    .primaryBackground;
+                                              }
+                                            }(),
+                                            FlutterFlowTheme.of(context)
+                                                .primaryBackground,
                                           ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
-                                    child: Padding(
+                                          center: Text(
+                                            GetBloodGlucoseCall.singleSgv(
+                                              mainGetBloodGlucoseResponse
+                                                  .jsonBody,
+                                            ).toString(),
+                                            textAlign: TextAlign.center,
+                                            style: FlutterFlowTheme.of(context)
+                                                .title1
+                                                .override(
+                                                  fontFamily: 'Poppins',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  fontSize: 90.0,
+                                                ),
+                                          ),
+                                          startAngle: 0.0,
+                                        ).animateOnPageLoad(animationsMap[
+                                            'progressBarOnPageLoadAnimation2']!),
+                                      ),
+                                    Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 2.0, 0.0, 0.0),
+                                          0.0, 40.0, 0.0, 0.0),
                                       child: Text(
-                                        'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
-                                          mainGetBloodGlucoseResponse.jsonBody,
-                                        ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
+                                        valueOrDefault<String>(
+                                          valueOrDefault(
+                                              currentUserDocument?.units, ''),
+                                          'mmol',
+                                        ),
                                         textAlign: TextAlign.center,
                                         style: FlutterFlowTheme.of(context)
-                                            .title3
+                                            .title1
                                             .override(
                                               fontFamily: 'Poppins',
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500,
                                             ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 2.0, 0.0, 0.0),
+                                        child: Text(
+                                          'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
+                                            mainGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(0.0, 1.0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 1.0,
-                                height: 60.0,
-                                child: custom_widgets.CurvedNavigationBarWidget(
+                              Align(
+                                alignment: AlignmentDirectional(0.0, 1.0),
+                                child: Container(
                                   width:
                                       MediaQuery.of(context).size.width * 1.0,
                                   height: 60.0,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  backgroundColor: Colors.transparent,
-                                  buttonBackgroundColor: valueOrDefault<Color>(
-                                    () {
-                                      if (GetBloodGlucoseCall.singleSgv(
-                                            mainGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ) <
-                                          70) {
-                                        return FlutterFlowTheme.of(context)
-                                            .tertiaryColor;
-                                      } else if (GetBloodGlucoseCall.singleSgv(
-                                            mainGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ) >
-                                          169) {
-                                        return FlutterFlowTheme.of(context)
-                                            .secondaryColor;
-                                      } else {
-                                        return FlutterFlowTheme.of(context)
-                                            .primaryColor;
-                                      }
-                                    }(),
-                                    FlutterFlowTheme.of(context).primaryColor,
-                                  ),
-                                  index: 1,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ).animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation']!),
-                      Align(
-                        alignment: AlignmentDirectional(0.0, 1.0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 30.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                width: 90.0,
-                                height: 90.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 24.0,
-                                      color: Color(0x40000000),
-                                      offset: Offset(0.0, 2.0),
-                                      spreadRadius: 12.0,
-                                    )
-                                  ],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: InkWell(
-                                  onTap: () async {
-                                    if (FFAppState().FABOpen) {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconOnActionTriggerAnimation']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation2']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation1']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation3']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = false;
-                                      });
-                                    } else {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = true;
-                                      });
-                                    }
-                                  },
-                                  child: Icon(
-                                    Icons.add_rounded,
+                                  child:
+                                      custom_widgets.CurvedNavigationBarWidget(
+                                    width:
+                                        MediaQuery.of(context).size.width * 1.0,
+                                    height: 60.0,
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryText,
-                                    size: 75.0,
-                                  ),
-                                ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'iconOnActionTriggerAnimation']!,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0.0, 1.0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 40.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 15.0, 37.5),
-                                child: FlutterFlowIconButton(
-                                  borderColor: Colors.transparent,
-                                  borderRadius: 50.0,
-                                  borderWidth: 1.0,
-                                  buttonSize: 60.0,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  icon: Icon(
-                                    Icons.local_dining_rounded,
-                                    color: valueOrDefault<Color>(
+                                    backgroundColor: Colors.transparent,
+                                    buttonBackgroundColor:
+                                        valueOrDefault<Color>(
                                       () {
                                         if (GetBloodGlucoseCall.singleSgv(
                                               mainGetBloodGlucoseResponse
@@ -748,603 +571,793 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       }(),
                                       FlutterFlowTheme.of(context).primaryColor,
                                     ),
-                                    size: 30.0,
+                                    index: 1,
                                   ),
-                                  onPressed: () async {
-                                    if (FFAppState().FABOpen) {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconOnActionTriggerAnimation']!
-                                                .controller
-                                                .reverse);
+                                ),
+                              ),
+                            ],
+                          ),
+                        ).animateOnPageLoad(
+                            animationsMap['containerOnPageLoadAnimation']!),
+                        Align(
+                          alignment: AlignmentDirectional(0.0, 1.0),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 30.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Container(
+                                  width: 90.0,
+                                  height: 90.0,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 24.0,
+                                        color: Color(0x40000000),
+                                        offset: Offset(0.0, 2.0),
+                                        spreadRadius: 12.0,
+                                      )
+                                    ],
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (FFAppState().FABOpen) {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconOnActionTriggerAnimation']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation2']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation1']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation3']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = false;
+                                        });
+                                      } else {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = true;
+                                        });
                                       }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation2']!
-                                                .controller
-                                                .reverse);
+                                    },
+                                    child: Icon(
+                                      Icons.add_rounded,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      size: 75.0,
+                                    ),
+                                  ).animateOnActionTrigger(
+                                    animationsMap[
+                                        'iconOnActionTriggerAnimation']!,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(0.0, 1.0),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 40.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 15.0, 37.5),
+                                  child: FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 50.0,
+                                    borderWidth: 1.0,
+                                    buttonSize: 60.0,
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    icon: Icon(
+                                      Icons.local_dining_rounded,
+                                      color: valueOrDefault<Color>(
+                                        () {
+                                          if (GetBloodGlucoseCall.singleSgv(
+                                                mainGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) <
+                                              70) {
+                                            return FlutterFlowTheme.of(context)
+                                                .tertiaryColor;
+                                          } else if (GetBloodGlucoseCall
+                                                  .singleSgv(
+                                                mainGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) >
+                                              169) {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryColor;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .primaryColor;
+                                          }
+                                        }(),
+                                        FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                      ),
+                                      size: 30.0,
+                                    ),
+                                    onPressed: () async {
+                                      if (FFAppState().FABOpen) {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconOnActionTriggerAnimation']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation2']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation1']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation3']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = false;
+                                        });
+                                      } else {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = true;
+                                        });
                                       }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation1']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation3']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = false;
-                                      });
-                                    } else {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = true;
-                                      });
-                                    }
 
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return Padding(
-                                          padding:
-                                              MediaQuery.of(context).viewInsets,
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.85,
-                                            child: POSTCarbsWidget(
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: MediaQuery.of(context)
+                                                .viewInsets,
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.85,
+                                              child: POSTCarbsWidget(
+                                                latestMmol: GetBloodGlucoseCall
+                                                        .singleSgv(
+                                                      mainGetBloodGlucoseResponse
+                                                          .jsonBody,
+                                                    ) /
+                                                    18.0,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ).then((value) => setState(() {}));
+                                    },
+                                  ).animateOnActionTrigger(
+                                    animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1']!,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 75.0),
+                                  child: FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 50.0,
+                                    borderWidth: 1.0,
+                                    buttonSize: 60.0,
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    icon: Icon(
+                                      FFIcons.kicon,
+                                      color: valueOrDefault<Color>(
+                                        () {
+                                          if (GetBloodGlucoseCall.singleSgv(
+                                                mainGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) <
+                                              70) {
+                                            return FlutterFlowTheme.of(context)
+                                                .tertiaryColor;
+                                          } else if (GetBloodGlucoseCall
+                                                  .singleSgv(
+                                                mainGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) >
+                                              169) {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryColor;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .primaryColor;
+                                          }
+                                        }(),
+                                        FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                      ),
+                                      size: 30.0,
+                                    ),
+                                    onPressed: () async {
+                                      if (FFAppState().FABOpen) {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconOnActionTriggerAnimation']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation2']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation1']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation3']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = false;
+                                        });
+                                      } else {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = true;
+                                        });
+                                      }
+
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: MediaQuery.of(context)
+                                                .viewInsets,
+                                            child: POSTInsulinWidget(
+                                              insulinType: 'Novorapid',
                                               latestMmol:
                                                   GetBloodGlucoseCall.singleSgv(
                                                         mainGetBloodGlucoseResponse
                                                             .jsonBody,
                                                       ) /
-                                                      18.0,
+                                                      18,
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => setState(() {}));
-                                  },
-                                ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'iconButtonOnActionTriggerAnimation1']!,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 75.0),
-                                child: FlutterFlowIconButton(
-                                  borderColor: Colors.transparent,
-                                  borderRadius: 50.0,
-                                  borderWidth: 1.0,
-                                  buttonSize: 60.0,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  icon: Icon(
-                                    FFIcons.kicon,
-                                    color: valueOrDefault<Color>(
-                                      () {
-                                        if (GetBloodGlucoseCall.singleSgv(
-                                              mainGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) <
-                                            70) {
-                                          return FlutterFlowTheme.of(context)
-                                              .tertiaryColor;
-                                        } else if (GetBloodGlucoseCall
-                                                .singleSgv(
-                                              mainGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) >
-                                            169) {
-                                          return FlutterFlowTheme.of(context)
-                                              .secondaryColor;
-                                        } else {
-                                          return FlutterFlowTheme.of(context)
-                                              .primaryColor;
-                                        }
-                                      }(),
-                                      FlutterFlowTheme.of(context).primaryColor,
-                                    ),
-                                    size: 30.0,
+                                          );
+                                        },
+                                      ).then((value) => setState(() {}));
+                                    },
+                                  ).animateOnActionTrigger(
+                                    animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2']!,
                                   ),
-                                  onPressed: () async {
-                                    if (FFAppState().FABOpen) {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconOnActionTriggerAnimation']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation2']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation1']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation3']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = false;
-                                      });
-                                    } else {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = true;
-                                      });
-                                    }
-
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return Padding(
-                                          padding:
-                                              MediaQuery.of(context).viewInsets,
-                                          child: POSTInsulinWidget(
-                                            insulinType: 'Novorapid',
-                                            latestMmol:
-                                                GetBloodGlucoseCall.singleSgv(
-                                                      mainGetBloodGlucoseResponse
-                                                          .jsonBody,
-                                                    ) /
-                                                    18,
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => setState(() {}));
-                                  },
-                                ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'iconButtonOnActionTriggerAnimation2']!,
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 0.0, 37.5),
-                                child: FlutterFlowIconButton(
-                                  borderColor: Colors.transparent,
-                                  borderRadius: 50.0,
-                                  borderWidth: 1.0,
-                                  buttonSize: 60.0,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  icon: Icon(
-                                    FFIcons.k12Hour,
-                                    color: valueOrDefault<Color>(
-                                      () {
-                                        if (GetBloodGlucoseCall.singleSgv(
-                                              mainGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) <
-                                            70) {
-                                          return FlutterFlowTheme.of(context)
-                                              .tertiaryColor;
-                                        } else if (GetBloodGlucoseCall
-                                                .singleSgv(
-                                              mainGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) >
-                                            169) {
-                                          return FlutterFlowTheme.of(context)
-                                              .secondaryColor;
-                                        } else {
-                                          return FlutterFlowTheme.of(context)
-                                              .primaryColor;
-                                        }
-                                      }(),
-                                      FlutterFlowTheme.of(context).primaryColor,
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      15.0, 0.0, 0.0, 37.5),
+                                  child: FlutterFlowIconButton(
+                                    borderColor: Colors.transparent,
+                                    borderRadius: 50.0,
+                                    borderWidth: 1.0,
+                                    buttonSize: 60.0,
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    icon: Icon(
+                                      FFIcons.k12Hour,
+                                      color: valueOrDefault<Color>(
+                                        () {
+                                          if (GetBloodGlucoseCall.singleSgv(
+                                                mainGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) <
+                                              70) {
+                                            return FlutterFlowTheme.of(context)
+                                                .tertiaryColor;
+                                          } else if (GetBloodGlucoseCall
+                                                  .singleSgv(
+                                                mainGetBloodGlucoseResponse
+                                                    .jsonBody,
+                                              ) >
+                                              169) {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryColor;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .primaryColor;
+                                          }
+                                        }(),
+                                        FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                      ),
+                                      size: 30.0,
                                     ),
-                                    size: 30.0,
+                                    onPressed: () async {
+                                      if (FFAppState().FABOpen) {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconOnActionTriggerAnimation']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation2']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation1']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward()
+                                              .whenComplete(animationsMap[
+                                                      'iconButtonOnActionTriggerAnimation3']!
+                                                  .controller
+                                                  .reverse);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = false;
+                                        });
+                                      } else {
+                                        if (animationsMap[
+                                                'iconOnActionTriggerAnimation'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconOnActionTriggerAnimation']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation2'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation2']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation1'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation1']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        if (animationsMap[
+                                                'iconButtonOnActionTriggerAnimation3'] !=
+                                            null) {
+                                          animationsMap[
+                                                  'iconButtonOnActionTriggerAnimation3']!
+                                              .controller
+                                              .forward(from: 0.0);
+                                        }
+                                        FFAppState().update(() {
+                                          FFAppState().FABOpen = true;
+                                        });
+                                      }
+
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: MediaQuery.of(context)
+                                                .viewInsets,
+                                            child: POSTInsulinWidget(
+                                              insulinType: 'Optisulin',
+                                              latestMmol:
+                                                  GetBloodGlucoseCall.singleSgv(
+                                                        mainGetBloodGlucoseResponse
+                                                            .jsonBody,
+                                                      ) /
+                                                      18,
+                                            ),
+                                          );
+                                        },
+                                      ).then((value) => setState(() {}));
+                                    },
+                                  ).animateOnActionTrigger(
+                                    animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3']!,
                                   ),
-                                  onPressed: () async {
-                                    if (FFAppState().FABOpen) {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconOnActionTriggerAnimation']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation2']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation1']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward()
-                                            .whenComplete(animationsMap[
-                                                    'iconButtonOnActionTriggerAnimation3']!
-                                                .controller
-                                                .reverse);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = false;
-                                      });
-                                    } else {
-                                      if (animationsMap[
-                                              'iconOnActionTriggerAnimation'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconOnActionTriggerAnimation']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation2'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation2']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation1'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation1']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      if (animationsMap[
-                                              'iconButtonOnActionTriggerAnimation3'] !=
-                                          null) {
-                                        animationsMap[
-                                                'iconButtonOnActionTriggerAnimation3']!
-                                            .controller
-                                            .forward(from: 0.0);
-                                      }
-                                      FFAppState().update(() {
-                                        FFAppState().FABOpen = true;
-                                      });
-                                    }
-
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return Padding(
-                                          padding:
-                                              MediaQuery.of(context).viewInsets,
-                                          child: POSTInsulinWidget(
-                                            insulinType: 'Optisulin',
-                                            latestMmol:
-                                                GetBloodGlucoseCall.singleSgv(
-                                                      mainGetBloodGlucoseResponse
-                                                          .jsonBody,
-                                                    ) /
-                                                    18,
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => setState(() {}));
-                                  },
-                                ).animateOnActionTrigger(
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(-1.0, 1.0),
+                          child: InkWell(
+                            onTap: () async {
+                              if (FFAppState().FABOpen) {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconOnActionTriggerAnimation']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
                                   animationsMap[
-                                      'iconButtonOnActionTriggerAnimation3']!,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(-1.0, 1.0),
-                        child: InkWell(
-                          onTap: () async {
-                            if (FFAppState().FABOpen) {
-                              if (animationsMap[
-                                      'iconOnActionTriggerAnimation'] !=
-                                  null) {
-                                animationsMap['iconOnActionTriggerAnimation']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconOnActionTriggerAnimation']!
-                                        .controller
-                                        .reverse);
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation2']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation1']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation3']!
+                                          .controller
+                                          .reverse);
+                                }
+                                FFAppState().update(() {
+                                  FFAppState().FABOpen = false;
+                                });
                               }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation2'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation2']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconButtonOnActionTriggerAnimation2']!
-                                        .controller
-                                        .reverse);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation1'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation1']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconButtonOnActionTriggerAnimation1']!
-                                        .controller
-                                        .reverse);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation3'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation3']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconButtonOnActionTriggerAnimation3']!
-                                        .controller
-                                        .reverse);
-                              }
-                              FFAppState().update(() {
-                                FFAppState().FABOpen = false;
-                              });
-                            }
-                            await Future.delayed(
-                                const Duration(milliseconds: 200));
+                              await Future.delayed(
+                                  const Duration(milliseconds: 200));
 
-                            context.pushNamed(
-                              'Settings',
-                              queryParams: {
-                                'latestMmol': serializeParam(
-                                  GetBloodGlucoseCall.singleSgv(
-                                        mainGetBloodGlucoseResponse.jsonBody,
-                                      ) /
-                                      18,
-                                  ParamType.double,
-                                ),
-                                'userRef': serializeParam(
-                                  currentUserReference,
-                                  ParamType.DocumentReference,
-                                ),
-                              }.withoutNulls,
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.33,
-                            height: 60.0,
-                            decoration: BoxDecoration(),
+                              context.pushNamed(
+                                'Settings',
+                                queryParams: {
+                                  'latestMmol': serializeParam(
+                                    GetBloodGlucoseCall.singleSgv(
+                                          mainGetBloodGlucoseResponse.jsonBody,
+                                        ) /
+                                        18,
+                                    ParamType.double,
+                                  ),
+                                  'userRef': serializeParam(
+                                    currentUserReference,
+                                    ParamType.DocumentReference,
+                                  ),
+                                }.withoutNulls,
+                              );
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.33,
+                              height: 60.0,
+                              decoration: BoxDecoration(),
+                            ),
                           ),
                         ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(1.0, 1.0),
-                        child: InkWell(
-                          onTap: () async {
-                            if (FFAppState().FABOpen) {
-                              if (animationsMap[
-                                      'iconOnActionTriggerAnimation'] !=
-                                  null) {
-                                animationsMap['iconOnActionTriggerAnimation']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconOnActionTriggerAnimation']!
-                                        .controller
-                                        .reverse);
+                        Align(
+                          alignment: AlignmentDirectional(1.0, 1.0),
+                          child: InkWell(
+                            onTap: () async {
+                              if (FFAppState().FABOpen) {
+                                if (animationsMap[
+                                        'iconOnActionTriggerAnimation'] !=
+                                    null) {
+                                  animationsMap['iconOnActionTriggerAnimation']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconOnActionTriggerAnimation']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation2'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation2']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation2']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation1'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation1']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation1']!
+                                          .controller
+                                          .reverse);
+                                }
+                                if (animationsMap[
+                                        'iconButtonOnActionTriggerAnimation3'] !=
+                                    null) {
+                                  animationsMap[
+                                          'iconButtonOnActionTriggerAnimation3']!
+                                      .controller
+                                      .forward()
+                                      .whenComplete(animationsMap[
+                                              'iconButtonOnActionTriggerAnimation3']!
+                                          .controller
+                                          .reverse);
+                                }
+                                FFAppState().update(() {
+                                  FFAppState().FABOpen = false;
+                                });
                               }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation2'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation2']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconButtonOnActionTriggerAnimation2']!
-                                        .controller
-                                        .reverse);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation1'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation1']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconButtonOnActionTriggerAnimation1']!
-                                        .controller
-                                        .reverse);
-                              }
-                              if (animationsMap[
-                                      'iconButtonOnActionTriggerAnimation3'] !=
-                                  null) {
-                                animationsMap[
-                                        'iconButtonOnActionTriggerAnimation3']!
-                                    .controller
-                                    .forward()
-                                    .whenComplete(animationsMap[
-                                            'iconButtonOnActionTriggerAnimation3']!
-                                        .controller
-                                        .reverse);
-                              }
-                              FFAppState().update(() {
-                                FFAppState().FABOpen = false;
-                              });
-                            }
 
-                            context.pushNamed(
-                              'Main',
-                              extra: <String, dynamic>{
-                                kTransitionInfoKey: TransitionInfo(
-                                  hasTransition: true,
-                                  transitionType: PageTransitionType.scale,
-                                  alignment: Alignment.bottomCenter,
-                                ),
-                              },
-                            );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.33,
-                            height: 60.0,
-                            decoration: BoxDecoration(),
+                              context.pushNamed(
+                                'Main',
+                                extra: <String, dynamic>{
+                                  kTransitionInfoKey: TransitionInfo(
+                                    hasTransition: true,
+                                    transitionType: PageTransitionType.scale,
+                                    alignment: Alignment.bottomCenter,
+                                  ),
+                                },
+                              );
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.33,
+                              height: 60.0,
+                              decoration: BoxDecoration(),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ));

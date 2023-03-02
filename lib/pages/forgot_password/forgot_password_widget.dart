@@ -184,563 +184,558 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-          body: GestureDetector(
-            onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-            child: Stack(
-              children: [
-                ClipRect(
-                  child: ImageFiltered(
-                    imageFilter: ImageFilter.blur(
-                      sigmaX: 40.0,
-                      sigmaY: 40.0,
-                    ),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional(1.0, -1.0),
-                          child: Container(
-                            width: 300.0,
-                            height: 400.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).tertiaryColor,
-                              shape: BoxShape.rectangle,
-                            ),
-                          ).animateOnActionTrigger(
-                              animationsMap[
-                                  'containerOnActionTriggerAnimation1']!,
-                              hasBeenTriggered: hasContainerTriggered1),
-                        ),
-                        Align(
-                          alignment: AlignmentDirectional(-3.27, -1.29),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            height: MediaQuery.of(context).size.width * 0.75,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).primaryColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ).animateOnActionTrigger(
-                              animationsMap[
-                                  'containerOnActionTriggerAnimation2']!,
-                              hasBeenTriggered: hasContainerTriggered2),
-                        ),
-                        Align(
-                          alignment: AlignmentDirectional(0.0, 0.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            height: MediaQuery.of(context).size.width * 0.7,
-                            decoration: BoxDecoration(
-                              color:
-                                  FlutterFlowTheme.of(context).secondaryColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ).animateOnActionTrigger(
-                              animationsMap[
-                                  'containerOnActionTriggerAnimation3']!,
-                              hasBeenTriggered: hasContainerTriggered3),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0.0, 1.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(),
-                    alignment: AlignmentDirectional(0.0, 1.0),
-                    child: Align(
-                      alignment: AlignmentDirectional(0.0, 1.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
+          body: SafeArea(
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+              child: Stack(
+                children: [
+                  ClipRect(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(
+                        sigmaX: 40.0,
+                        sigmaY: 40.0,
+                      ),
+                      child: Stack(
                         children: [
-                          Expanded(
-                            child: Align(
-                              alignment: AlignmentDirectional(0.0, 1.0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 500.0,
-                                constraints: BoxConstraints(
-                                  maxWidth: 570.0,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: DefaultTabController(
-                                        length: 1,
-                                        initialIndex: 0,
-                                        child: Column(
-                                          children: [
-                                            TabBar(
-                                              isScrollable: true,
-                                              labelColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              unselectedLabelColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .gray600,
-                                              labelPadding:
-                                                  EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          24.0, 0.0, 24.0, 0.0),
-                                              labelStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .subtitle1,
-                                              indicatorColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              indicatorWeight: 3.0,
-                                              tabs: [
-                                                Tab(
-                                                  text:
-                                                      'Enter your e-mail address',
-                                                ),
-                                              ],
-                                            ),
-                                            Expanded(
-                                              child: TabBarView(
-                                                children: [
-                                                  KeepAliveWidgetWrapper(
-                                                    builder: (context) =>
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        24.0,
-                                                                        20.0,
-                                                                        24.0,
-                                                                        0.0),
-                                                            child:
-                                                                TextFormField(
-                                                              controller: _model
-                                                                  .emailAddressController,
-                                                              autofocus: true,
-                                                              obscureText:
-                                                                  false,
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                labelText:
-                                                                    'Email Address',
-                                                                labelStyle:
-                                                                    FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyText2,
-                                                                hintStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText2,
-                                                                enabledBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .lineColor,
-                                                                    width: 2.0,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              60.0),
-                                                                ),
-                                                                focusedBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                    color: Color(
-                                                                        0x00000000),
-                                                                    width: 2.0,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              60.0),
-                                                                ),
-                                                                errorBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryColor,
-                                                                    width: 2.0,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              60.0),
-                                                                ),
-                                                                focusedErrorBorder:
-                                                                    OutlineInputBorder(
-                                                                  borderSide:
-                                                                      BorderSide(
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .primaryColor,
-                                                                    width: 2.0,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              60.0),
-                                                                ),
-                                                                filled: true,
-                                                                fillColor: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryBackground,
-                                                                contentPadding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            20.0,
-                                                                            24.0,
-                                                                            20.0,
-                                                                            24.0),
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyText1
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Poppins',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryText,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  ),
-                                                              maxLines: null,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .emailAddress,
-                                                              validator: _model
-                                                                  .emailAddressControllerValidator
-                                                                  .asValidator(
-                                                                      context),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        24.0,
-                                                                        24.0,
-                                                                        24.0,
-                                                                        12.0),
-                                                            child: Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                FFButtonWidget(
-                                                                  onPressed:
-                                                                      () async {
-                                                                    if (_model
-                                                                        .emailAddressController
-                                                                        .text
-                                                                        .isEmpty) {
-                                                                      ScaffoldMessenger.of(
-                                                                              context)
-                                                                          .showSnackBar(
-                                                                        SnackBar(
-                                                                          content:
-                                                                              Text(
-                                                                            'Email required!',
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                      return;
-                                                                    }
-                                                                    await resetPassword(
-                                                                      email: _model
-                                                                          .emailAddressController
-                                                                          .text,
-                                                                      context:
-                                                                          context,
-                                                                    );
-                                                                  },
-                                                                  text:
-                                                                      'Reset Password',
-                                                                  options:
-                                                                      FFButtonOptions(
-                                                                    width:
-                                                                        130.0,
-                                                                    height:
-                                                                        50.0,
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    iconPadding:
-                                                                        EdgeInsetsDirectional.fromSTEB(
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryColor,
-                                                                    textStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .subtitle2
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Poppins',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).primaryBtnText,
-                                                                        ),
-                                                                    elevation:
-                                                                        3.0,
-                                                                    borderSide:
-                                                                        BorderSide(
-                                                                      color: Colors
-                                                                          .transparent,
-                                                                      width:
-                                                                          1.0,
-                                                                    ),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            60.0),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                            tabletLandscape:
-                                                                false,
-                                                            desktop: false,
-                                                          ))
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          20.0,
-                                                                          0.0,
-                                                                          20.0,
-                                                                          0.0),
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0.0,
-                                                                            12.0,
-                                                                            0.0,
-                                                                            0.0),
-                                                                    child: Text(
-                                                                      'Or use a social account to login',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .bodyText2,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          if (responsiveVisibility(
-                                                            context: context,
-                                                            phone: false,
-                                                            tablet: false,
-                                                            tabletLandscape:
-                                                                false,
-                                                          ))
-                                                            Padding(
-                                                              padding:
-                                                                  EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          4.0,
-                                                                          0.0,
-                                                                          0.0),
-                                                              child: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            8.0,
-                                                                            8.0,
-                                                                            8.0,
-                                                                            8.0),
-                                                                    child:
-                                                                        FlutterFlowIconButton(
-                                                                      borderColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .lineColor,
-                                                                      borderRadius:
-                                                                          12.0,
-                                                                      borderWidth:
-                                                                          2.0,
-                                                                      buttonSize:
-                                                                          44.0,
-                                                                      icon:
-                                                                          FaIcon(
-                                                                        FontAwesomeIcons
-                                                                            .google,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .gray600,
-                                                                        size:
-                                                                            16.0,
-                                                                      ),
-                                                                      onPressed:
-                                                                          () async {
-                                                                        GoRouter.of(context)
-                                                                            .prepareAuthEvent();
-                                                                        final user =
-                                                                            await signInWithGoogle(context);
-                                                                        if (user ==
-                                                                            null) {
-                                                                          return;
-                                                                        }
-
-                                                                        context.goNamedAuth(
-                                                                            'Main',
-                                                                            mounted);
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
-                                                                    padding: EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            8.0,
-                                                                            8.0,
-                                                                            8.0,
-                                                                            8.0),
-                                                                    child:
-                                                                        FlutterFlowIconButton(
-                                                                      borderColor:
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .lineColor,
-                                                                      borderRadius:
-                                                                          12.0,
-                                                                      borderWidth:
-                                                                          2.0,
-                                                                      buttonSize:
-                                                                          44.0,
-                                                                      icon:
-                                                                          FaIcon(
-                                                                        FontAwesomeIcons
-                                                                            .apple,
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .gray600,
-                                                                        size:
-                                                                            16.0,
-                                                                      ),
-                                                                      onPressed:
-                                                                          () async {
-                                                                        GoRouter.of(context)
-                                                                            .prepareAuthEvent();
-                                                                        final user =
-                                                                            await signInWithApple(context);
-                                                                        if (user ==
-                                                                            null) {
-                                                                          return;
-                                                                        }
-
-                                                                        context.goNamedAuth(
-                                                                            'Main',
-                                                                            mounted);
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                          .animateOnPageLoad(animationsMap[
-                                              'tabBarOnPageLoadAnimation']!)
-                                          .animateOnActionTrigger(
-                                            animationsMap[
-                                                'tabBarOnActionTriggerAnimation']!,
-                                          ),
-                                    ),
-                                  ],
-                                ),
+                          Align(
+                            alignment: AlignmentDirectional(1.0, -1.0),
+                            child: Container(
+                              width: 300.0,
+                              height: 400.0,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                shape: BoxShape.rectangle,
                               ),
-                            ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation1']!,
+                                hasBeenTriggered: hasContainerTriggered1),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(-3.27, -1.29),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              height: MediaQuery.of(context).size.width * 0.75,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation2']!,
+                                hasBeenTriggered: hasContainerTriggered2),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(0.0, 0.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: MediaQuery.of(context).size.width * 0.7,
+                              decoration: BoxDecoration(
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation3']!,
+                                hasBeenTriggered: hasContainerTriggered3),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 64.0, 0.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (() {
-                        if ((MediaQuery.of(context).size.height > 800.0) &&
-                            (isWeb
-                                ? MediaQuery.of(context).viewInsets.bottom > 0
-                                : _isKeyboardVisible)) {
-                          return true;
-                        } else if (((isAndroid == true) || (isiOS == true)) &&
-                            (isWeb
-                                ? MediaQuery.of(context).viewInsets.bottom > 0
-                                : _isKeyboardVisible)) {
-                          return false;
-                        } else {
-                          return true;
-                        }
-                      }())
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.asset(
-                              'assets/images/Logo3.2-50Transparent.png',
-                              width: MediaQuery.of(context).size.width * 0.3,
-                              height: MediaQuery.of(context).size.height * 0.3,
-                              fit: BoxFit.contain,
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 1.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: BoxDecoration(),
+                      alignment: AlignmentDirectional(0.0, 1.0),
+                      child: Align(
+                        alignment: AlignmentDirectional(0.0, 1.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional(0.0, 1.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 500.0,
+                                  constraints: BoxConstraints(
+                                    maxWidth: 570.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: DefaultTabController(
+                                          length: 1,
+                                          initialIndex: 0,
+                                          child: Column(
+                                            children: [
+                                              TabBar(
+                                                isScrollable: true,
+                                                labelColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                unselectedLabelColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .gray600,
+                                                labelPadding:
+                                                    EdgeInsetsDirectional
+                                                        .fromSTEB(24.0, 0.0,
+                                                            24.0, 0.0),
+                                                labelStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .subtitle1,
+                                                indicatorColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                indicatorWeight: 3.0,
+                                                tabs: [
+                                                  Tab(
+                                                    text:
+                                                        'Enter your e-mail address',
+                                                  ),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                child: TabBarView(
+                                                  children: [
+                                                    KeepAliveWidgetWrapper(
+                                                      builder: (context) =>
+                                                          SingleChildScrollView(
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          24.0,
+                                                                          20.0,
+                                                                          24.0,
+                                                                          0.0),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller: _model
+                                                                    .emailAddressController,
+                                                                autofocus: true,
+                                                                obscureText:
+                                                                    false,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  labelText:
+                                                                      'Email Address',
+                                                                  labelStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText2,
+                                                                  hintStyle: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText2,
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .lineColor,
+                                                                      width:
+                                                                          2.0,
+                                                                    ),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            60.0),
+                                                                  ),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: Color(
+                                                                          0x00000000),
+                                                                      width:
+                                                                          2.0,
+                                                                    ),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            60.0),
+                                                                  ),
+                                                                  errorBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                      width:
+                                                                          2.0,
+                                                                    ),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            60.0),
+                                                                  ),
+                                                                  focusedErrorBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                      width:
+                                                                          2.0,
+                                                                    ),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            60.0),
+                                                                  ),
+                                                                  filled: true,
+                                                                  fillColor: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryBackground,
+                                                                  contentPadding:
+                                                                      EdgeInsetsDirectional.fromSTEB(
+                                                                          20.0,
+                                                                          24.0,
+                                                                          20.0,
+                                                                          24.0),
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Poppins',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryText,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
+                                                                maxLines: null,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .emailAddress,
+                                                                validator: _model
+                                                                    .emailAddressControllerValidator
+                                                                    .asValidator(
+                                                                        context),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          24.0,
+                                                                          24.0,
+                                                                          24.0,
+                                                                          12.0),
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  FFButtonWidget(
+                                                                    onPressed:
+                                                                        () async {
+                                                                      if (_model
+                                                                          .emailAddressController
+                                                                          .text
+                                                                          .isEmpty) {
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(
+                                                                          SnackBar(
+                                                                            content:
+                                                                                Text(
+                                                                              'Email required!',
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                        return;
+                                                                      }
+                                                                      await resetPassword(
+                                                                        email: _model
+                                                                            .emailAddressController
+                                                                            .text,
+                                                                        context:
+                                                                            context,
+                                                                      );
+                                                                    },
+                                                                    text:
+                                                                        'Reset Password',
+                                                                    options:
+                                                                        FFButtonOptions(
+                                                                      width:
+                                                                          130.0,
+                                                                      height:
+                                                                          50.0,
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryColor,
+                                                                      textStyle: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .subtitle2
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'Poppins',
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).primaryBtnText,
+                                                                          ),
+                                                                      elevation:
+                                                                          3.0,
+                                                                      borderSide:
+                                                                          BorderSide(
+                                                                        color: Colors
+                                                                            .transparent,
+                                                                        width:
+                                                                            1.0,
+                                                                      ),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              60.0),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            if (responsiveVisibility(
+                                                              context: context,
+                                                              phone: false,
+                                                              tablet: false,
+                                                              tabletLandscape:
+                                                                  false,
+                                                              desktop: false,
+                                                            ))
+                                                              Padding(
+                                                                padding: EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        20.0,
+                                                                        0.0,
+                                                                        20.0,
+                                                                        0.0),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          0.0,
+                                                                          12.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                                      child:
+                                                                          Text(
+                                                                        'Or use a social account to login',
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyText2,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            if (responsiveVisibility(
+                                                              context: context,
+                                                              phone: false,
+                                                              tablet: false,
+                                                              tabletLandscape:
+                                                                  false,
+                                                            ))
+                                                              Padding(
+                                                                padding:
+                                                                    EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            4.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                child: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          8.0,
+                                                                          8.0,
+                                                                          8.0,
+                                                                          8.0),
+                                                                      child:
+                                                                          FlutterFlowIconButton(
+                                                                        borderColor:
+                                                                            FlutterFlowTheme.of(context).lineColor,
+                                                                        borderRadius:
+                                                                            12.0,
+                                                                        borderWidth:
+                                                                            2.0,
+                                                                        buttonSize:
+                                                                            44.0,
+                                                                        icon:
+                                                                            FaIcon(
+                                                                          FontAwesomeIcons
+                                                                              .google,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).gray600,
+                                                                          size:
+                                                                              16.0,
+                                                                        ),
+                                                                        onPressed:
+                                                                            () async {
+                                                                          GoRouter.of(context)
+                                                                              .prepareAuthEvent();
+                                                                          final user =
+                                                                              await signInWithGoogle(context);
+                                                                          if (user ==
+                                                                              null) {
+                                                                            return;
+                                                                          }
+
+                                                                          context.goNamedAuth(
+                                                                              'MainTV',
+                                                                              mounted);
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                                                          8.0,
+                                                                          8.0,
+                                                                          8.0,
+                                                                          8.0),
+                                                                      child:
+                                                                          FlutterFlowIconButton(
+                                                                        borderColor:
+                                                                            FlutterFlowTheme.of(context).lineColor,
+                                                                        borderRadius:
+                                                                            12.0,
+                                                                        borderWidth:
+                                                                            2.0,
+                                                                        buttonSize:
+                                                                            44.0,
+                                                                        icon:
+                                                                            FaIcon(
+                                                                          FontAwesomeIcons
+                                                                              .apple,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).gray600,
+                                                                          size:
+                                                                              16.0,
+                                                                        ),
+                                                                        onPressed:
+                                                                            () async {
+                                                                          GoRouter.of(context)
+                                                                              .prepareAuthEvent();
+                                                                          final user =
+                                                                              await signInWithApple(context);
+                                                                          if (user ==
+                                                                              null) {
+                                                                            return;
+                                                                          }
+
+                                                                          context.goNamedAuth(
+                                                                              'MainTV',
+                                                                              mounted);
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                            .animateOnPageLoad(animationsMap[
+                                                'tabBarOnPageLoadAnimation']!)
+                                            .animateOnActionTrigger(
+                                              animationsMap[
+                                                  'tabBarOnActionTriggerAnimation']!,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ).animateOnPageLoad(
-                              animationsMap['imageOnPageLoadAnimation']!),
+                          ],
                         ),
-                    ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 64.0, 0.0, 0.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (() {
+                          if ((MediaQuery.of(context).size.height > 800.0) &&
+                              (isWeb
+                                  ? MediaQuery.of(context).viewInsets.bottom > 0
+                                  : _isKeyboardVisible)) {
+                            return true;
+                          } else if (((isAndroid == true) || (isiOS == true)) &&
+                              (isWeb
+                                  ? MediaQuery.of(context).viewInsets.bottom > 0
+                                  : _isKeyboardVisible)) {
+                            return false;
+                          } else {
+                            return true;
+                          }
+                        }())
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: Image.asset(
+                                'assets/images/Logo3.2-50Transparent.png',
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                fit: BoxFit.contain,
+                              ),
+                            ).animateOnPageLoad(
+                                animationsMap['imageOnPageLoadAnimation']!),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ));

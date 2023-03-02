@@ -12,3 +12,4 @@ export '/pages/forgot_password/forgot_password_widget.dart'
     show ForgotPasswordWidget;
 export '/onboarding/carb_ratio_check/carb_ratio_check_widget.dart'
     show CarbRatioCheckWidget;
+export '/main_t_v/main_t_v_widget.dart' show MainTVWidget;

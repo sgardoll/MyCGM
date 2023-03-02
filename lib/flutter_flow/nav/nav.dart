@@ -74,14 +74,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? MainWidget() : LoginPageWidget(),
+          appStateNotifier.loggedIn ? MainTVWidget() : LoginPageWidget(),
       navigatorBuilder: (_, __, child) => DynamicLinksHandler(child: child),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? MainWidget() : LoginPageWidget(),
+              appStateNotifier.loggedIn ? MainTVWidget() : LoginPageWidget(),
           routes: [
             FFRoute(
               name: 'loginPage',
@@ -153,6 +153,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 userRef: params.getParam(
                     'userRef', ParamType.DocumentReference, false, ['users']),
               ),
+            ),
+            FFRoute(
+              name: 'MainTV',
+              path: 'MainTV',
+              requireAuth: true,
+              builder: (context, params) => MainTVWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
