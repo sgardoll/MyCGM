@@ -13,18 +13,16 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 class NightscoutGroup {
   static String baseUrl = 'https://[nightscout]/api/v1/';
-  static Map<String, String> headers = {
-    'api-secret': '[api_key]',
-  };
+  static Map<String, String> headers = {};
 }
 
 /// End Nightscout Group Code
 
 class GetBloodGlucoseCall {
   static Future<ApiCallResponse> call({
-    String? apiKey = 'Thisisnotadrill',
-    String? nightscout = 'stucgm',
-    String? token = 'mycgm-4eed72c0613bed6d',
+    String? apiKey = '',
+    String? nightscout = '',
+    String? token = '',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GetBloodGlucose',

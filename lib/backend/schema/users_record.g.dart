@@ -103,6 +103,13 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(double)));
     }
+    value = object.carbRatio;
+    if (value != null) {
+      result
+        ..add('carbRatio')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -173,6 +180,10 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
           result.lowValue = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double?;
           break;
+        case 'carbRatio':
+          result.carbRatio = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -212,6 +223,8 @@ class _$UsersRecord extends UsersRecord {
   @override
   final double? lowValue;
   @override
+  final double? carbRatio;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$UsersRecord([void Function(UsersRecordBuilder)? updates]) =>
@@ -230,6 +243,7 @@ class _$UsersRecord extends UsersRecord {
       this.token,
       this.highValue,
       this.lowValue,
+      this.carbRatio,
       this.ffRef})
       : super._();
 
@@ -256,6 +270,7 @@ class _$UsersRecord extends UsersRecord {
         token == other.token &&
         highValue == other.highValue &&
         lowValue == other.lowValue &&
+        carbRatio == other.carbRatio &&
         ffRef == other.ffRef;
   }
 
@@ -272,18 +287,20 @@ class _$UsersRecord extends UsersRecord {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, email.hashCode),
-                                                    displayName.hashCode),
-                                                photoUrl.hashCode),
-                                            uid.hashCode),
-                                        createdTime.hashCode),
-                                    phoneNumber.hashCode),
-                                nightscout.hashCode),
-                            apiKey.hashCode),
-                        units.hashCode),
-                    token.hashCode),
-                highValue.hashCode),
-            lowValue.hashCode),
+                                                $jc(
+                                                    $jc($jc(0, email.hashCode),
+                                                        displayName.hashCode),
+                                                    photoUrl.hashCode),
+                                                uid.hashCode),
+                                            createdTime.hashCode),
+                                        phoneNumber.hashCode),
+                                    nightscout.hashCode),
+                                apiKey.hashCode),
+                            units.hashCode),
+                        token.hashCode),
+                    highValue.hashCode),
+                lowValue.hashCode),
+            carbRatio.hashCode),
         ffRef.hashCode));
   }
 
@@ -302,6 +319,7 @@ class _$UsersRecord extends UsersRecord {
           ..add('token', token)
           ..add('highValue', highValue)
           ..add('lowValue', lowValue)
+          ..add('carbRatio', carbRatio)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -358,6 +376,10 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   double? get lowValue => _$this._lowValue;
   set lowValue(double? lowValue) => _$this._lowValue = lowValue;
 
+  double? _carbRatio;
+  double? get carbRatio => _$this._carbRatio;
+  set carbRatio(double? carbRatio) => _$this._carbRatio = carbRatio;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -381,6 +403,7 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _token = $v.token;
       _highValue = $v.highValue;
       _lowValue = $v.lowValue;
+      _carbRatio = $v.carbRatio;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -416,6 +439,7 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
             token: token,
             highValue: highValue,
             lowValue: lowValue,
+            carbRatio: carbRatio,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

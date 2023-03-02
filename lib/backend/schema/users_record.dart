@@ -40,6 +40,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   @BuiltValueField(wireName: 'low_value')
   double? get lowValue;
 
+  double? get carbRatio;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -55,7 +57,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..units = ''
     ..token = ''
     ..highValue = 0.0
-    ..lowValue = 0.0;
+    ..lowValue = 0.0
+    ..carbRatio = 0.0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -91,6 +94,7 @@ Map<String, dynamic> createUsersRecordData({
   String? token,
   double? highValue,
   double? lowValue,
+  double? carbRatio,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -107,7 +111,8 @@ Map<String, dynamic> createUsersRecordData({
         ..units = units
         ..token = token
         ..highValue = highValue
-        ..lowValue = lowValue,
+        ..lowValue = lowValue
+        ..carbRatio = carbRatio,
     ),
   );
 

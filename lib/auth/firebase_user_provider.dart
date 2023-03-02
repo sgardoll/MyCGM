@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 class MyCGMFirebaseUser {
   MyCGMFirebaseUser(this.user);
@@ -17,6 +19,9 @@ Stream<MyCGMFirebaseUser> myCGMFirebaseUserStream() => FirebaseAuth.instance
         .map<MyCGMFirebaseUser>(
       (user) {
         currentUser = MyCGMFirebaseUser(user);
+        if (!kIsWeb) {
+          FirebaseCrashlytics.instance.setUserIdentifier(user?.uid ?? '');
+        }
         return currentUser!;
       },
     );

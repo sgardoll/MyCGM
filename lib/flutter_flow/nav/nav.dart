@@ -9,6 +9,8 @@ import '../../backend/backend.dart';
 
 import '../../auth/firebase_user_provider.dart';
 
+import '../../backend/firebase_dynamic_links/firebase_dynamic_links.dart'
+    show DynamicLinksHandler;
 import '../../index.dart';
 import '../../main.dart';
 import '../lat_lng.dart';
@@ -17,6 +19,8 @@ import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
+export '../../backend/firebase_dynamic_links/firebase_dynamic_links.dart'
+    show generateCurrentPageLink;
 
 const kTransitionInfoKey = '__transition_info__';
 
@@ -71,6 +75,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
           appStateNotifier.loggedIn ? MainWidget() : LoginPageWidget(),
+      navigatorBuilder: (_, __, child) => DynamicLinksHandler(child: child),
       routes: [
         FFRoute(
           name: '_initialize',
@@ -102,10 +107,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'nightscoutCheck',
               path: 'nightscoutCheck',
               requireAuth: true,
-              builder: (context, params) => NightscoutCheckWidget(
-                userRef: params.getParam(
-                    'userRef', ParamType.DocumentReference, false, ['users']),
-              ),
+              builder: (context, params) => NightscoutCheckWidget(),
             ),
             FFRoute(
               name: 'unitsCheck',
@@ -126,14 +128,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'nightscoutCheckCopy',
-              path: 'nightscoutCheckCopy',
-              requireAuth: true,
-              builder: (context, params) => NightscoutCheckCopyWidget(),
-            ),
-            FFRoute(
               name: 'Settings',
               path: 'Settings',
+              requireAuth: true,
               builder: (context, params) => SettingsWidget(
                 latestMmol: params.getParam('latestMmol', ParamType.double),
                 userRef: params.getParam(
@@ -146,6 +143,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => ForgotPasswordWidget(
                 loggedInUser: params.getParam('loggedInUser',
                     ParamType.DocumentReference, false, ['users']),
+              ),
+            ),
+            FFRoute(
+              name: 'carbRatioCheck',
+              path: 'carbRatioCheck',
+              requireAuth: true,
+              builder: (context, params) => CarbRatioCheckWidget(
+                userRef: params.getParam(
+                    'userRef', ParamType.DocumentReference, false, ['users']),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

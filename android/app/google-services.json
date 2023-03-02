@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "889541076330-ec4l486t6kv9hl6e1b42srlr8k3h3du7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.connectio.mycgm",
+            "certificate_hash": "b19893bef8cc08bc1b4395750a0cd5f9913e1037"
+          }
+        },
+        {
           "client_id": "889541076330-ig1jq90uabj7smshe6i9ev8rmvq3nogv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +30,15 @@
           }
         },
         {
-          "client_id": "889541076330-5s33ctuh5l39rpvefi2mhtcja7aa14k7.apps.googleusercontent.com",
+          "client_id": "889541076330-u28k5bccnk4219scta8ui6uk3ojuilpb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.connectio.mycgm",
+            "certificate_hash": "3131efe8fc318a823ffe9ee43fec9bd7cd181f43"
+          }
+        },
+        {
+          "client_id": "889541076330-6o3sg4cp1nnhk3hd5i6hdcknflq8o2hq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

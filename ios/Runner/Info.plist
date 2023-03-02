@@ -29,7 +29,7 @@
             <key>CFBundleURLSchemes</key>
             <array>
                 <string>com.googleusercontent.apps.889541076330-3tps8a10932r2dpd2bo1q6qtukb9328s</string>
-                
+                <string>fb207202158553167</string>
             </array>
         </dict>
 
@@ -37,16 +37,20 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>HomePage</string>
+        <string>my_c_g_m</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>mycgm</string>
+        <string>com.connectio.mycgm</string>
         </array>
         </dict>
     </array>
     <key>FlutterDeepLinkingEnabled</key>
     <true/>
 
+    <key>FacebookAppID</key>
+    <string>207202158553167</string>
+    <key>FacebookDisplayName</key>
+    <string>MyCGM</string>
 
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -56,6 +60,25 @@
 
 
 
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fbapi20130214</string>
+      <string>fbapi20130410</string>
+      <string>fbapi20130702</string>
+      <string>fbapi20131010</string>
+      <string>fbapi20131219</string>
+      <string>fbapi20140410</string>
+      <string>fbapi20140116</string>
+      <string>fbapi20150313</string>
+      <string>fbapi20150629</string>
+      <string>fbapi20160328</string>
+      <string>fbauth</string>
+      <string>fb-messenger-share-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+
+    </array>
 
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

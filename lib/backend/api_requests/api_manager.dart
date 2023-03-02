@@ -168,11 +168,11 @@ class ApiManager {
         e is List<FFUploadedFile> ||
         (e is List && e.firstOrNull is FFUploadedFile);
 
-    final nonFileParams =
-        toStringMap(Map.fromEntries(params.entries.where((e) => !_isFile(e))));
+    final nonFileParams = toStringMap(
+        Map.fromEntries(params.entries.where((e) => !_isFile(e.value))));
 
     List<http.MultipartFile> files = [];
-    params.entries.where((e) => _isFile(e)).map((e) {
+    params.entries.where((e) => _isFile(e.value)).forEach((e) {
       final param = e.value;
       final uploadedFiles = param is List
           ? param as List<FFUploadedFile>
