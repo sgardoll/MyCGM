@@ -38,6 +38,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
     'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
+        VisibilityEffect(duration: 1.ms),
         FadeEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
@@ -228,11 +229,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           if (!snapshot.hasData) {
             return Center(
               child: SizedBox(
-                width: 25.0,
-                height: 25.0,
+                width: 40.0,
+                height: 40.0,
                 child: SpinKitRipple(
                   color: FlutterFlowTheme.of(context).secondaryText,
-                  size: 25.0,
+                  size: 40.0,
                 ),
               ),
             );
@@ -243,7 +244,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
               color: FlutterFlowTheme.of(context).primaryColor,
               child: Scaffold(
                 key: scaffoldKey,
-                backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
                 body: GestureDetector(
                   onTap: () =>
                       FocusScope.of(context).requestFocus(_unfocusNode),
