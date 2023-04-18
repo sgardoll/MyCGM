@@ -170,8 +170,55 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() => _model.apiRequestCompleter = null);
-      await _model.waitForApiRequestCompleted(maxWait: 4000);
+      _model.pageLoadAPICall = await GetBloodGlucoseCall.call(
+        apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
+        nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
+        token: valueOrDefault(currentUserDocument?.token, ''),
+        count: '1',
+      );
+      if ((_model.pageLoadAPICall?.succeeded ?? true)) {
+        setState(() {
+          _model.sgv = valueOrDefault<int>(
+            getJsonField(
+              (_model.pageLoadAPICall?.jsonBody ?? ''),
+              r'''$[0].sgv''',
+            ),
+            18,
+          );
+        });
+        if (_model.sgv != null) {
+          setState(() {
+            _model.mmol = valueOrDefault<double>(
+              _model.sgv! / 18,
+              1.0,
+            );
+            _model.mainColor = valueOrDefault<Color>(
+              () {
+                if (_model.sgv! < 70) {
+                  return FlutterFlowTheme.of(context).tertiary;
+                } else if (_model.sgv! > 169) {
+                  return FlutterFlowTheme.of(context).secondary;
+                } else {
+                  return FlutterFlowTheme.of(context).primary;
+                }
+              }(),
+              FlutterFlowTheme.of(context).primary,
+            );
+            _model.bgColor = valueOrDefault<Color>(
+              () {
+                if (_model.sgv! < 70) {
+                  return FlutterFlowTheme.of(context).tertiary;
+                } else if (_model.sgv! > 169) {
+                  return FlutterFlowTheme.of(context).secondary;
+                } else {
+                  return FlutterFlowTheme.of(context).primary;
+                }
+              }(),
+              FlutterFlowTheme.of(context).primary,
+            );
+          });
+        }
+      }
     });
 
     setupAnimations(
@@ -231,29 +278,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
                 child: Scaffold(
                   key: scaffoldKey,
-                  backgroundColor: valueOrDefault<Color>(
-                    () {
-                      if (GetBloodGlucoseCall.singleSgv(
-                            mainGetBloodGlucoseResponse.jsonBody,
-                          ) <
-                          70) {
-                        return FlutterFlowTheme.of(context).secondary;
-                      } else if (GetBloodGlucoseCall.singleSgv(
-                            mainGetBloodGlucoseResponse.jsonBody,
-                          ) >
-                          169) {
-                        return FlutterFlowTheme.of(context).secondaryBackground;
-                      } else if (GetBloodGlucoseCall.singleSgv(
-                            mainGetBloodGlucoseResponse.jsonBody,
-                          ) ==
-                          null) {
-                        return FlutterFlowTheme.of(context).primaryBackground;
-                      } else {
-                        return FlutterFlowTheme.of(context).primaryBackground;
-                      }
-                    }(),
-                    FlutterFlowTheme.of(context).primaryBackground,
-                  ),
+                  backgroundColor:
+                      FlutterFlowTheme.of(context).primaryBackground,
                   body: SafeArea(
                     child: Stack(
                       children: [
@@ -261,24 +287,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                           width: MediaQuery.of(context).size.width * 1.0,
                           height: MediaQuery.of(context).size.height * 1.0,
                           decoration: BoxDecoration(
-                            color: valueOrDefault<Color>(
-                              () {
-                                if (GetBloodGlucoseCall.singleSgv(
-                                      mainGetBloodGlucoseResponse.jsonBody,
-                                    ) <
-                                    70) {
-                                  return FlutterFlowTheme.of(context).tertiary;
-                                } else if (GetBloodGlucoseCall.singleSgv(
-                                      mainGetBloodGlucoseResponse.jsonBody,
-                                    ) >
-                                    169) {
-                                  return FlutterFlowTheme.of(context).secondary;
-                                } else {
-                                  return FlutterFlowTheme.of(context).primary;
-                                }
-                              }(),
-                              FlutterFlowTheme.of(context).primary,
-                            ),
+                            color: _model.bgColor,
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -543,36 +552,18 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                   percent:
                                                       valueOrDefault<double>(
                                                     () {
-                                                      if (GetBloodGlucoseCall
-                                                              .singleSgv(
-                                                            mainGetBloodGlucoseResponse
-                                                                .jsonBody,
-                                                          ) ==
-                                                          null) {
+                                                      if (_model.sgv == null) {
                                                         return 0.1;
-                                                      } else if (GetBloodGlucoseCall
-                                                              .singleSgv(
-                                                            mainGetBloodGlucoseResponse
-                                                                .jsonBody,
-                                                          ) <
+                                                      } else if (_model.sgv! <
                                                           70) {
                                                         return 0.1;
-                                                      } else if (GetBloodGlucoseCall
-                                                              .singleSgv(
-                                                            mainGetBloodGlucoseResponse
-                                                                .jsonBody,
-                                                          ) >
+                                                      } else if (_model.sgv! >
                                                           169) {
                                                         return 1.0;
                                                       } else {
                                                         return valueOrDefault<
                                                             double>(
-                                                          (GetBloodGlucoseCall
-                                                                      .singleSgv(
-                                                                    mainGetBloodGlucoseResponse
-                                                                        .jsonBody,
-                                                                  ) -
-                                                                  70) /
+                                                          (_model.sgv! - 70) /
                                                               (169 - 70),
                                                           0.1,
                                                         );
@@ -587,42 +578,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                       Color(0x80001219),
                                                   backgroundColor:
                                                       valueOrDefault<Color>(
-                                                    () {
-                                                      if (GetBloodGlucoseCall
-                                                              .singleSgv(
-                                                            mainGetBloodGlucoseResponse
-                                                                .jsonBody,
-                                                          ) <
-                                                          70) {
-                                                        return FlutterFlowTheme
-                                                                .of(context)
-                                                            .secondary;
-                                                      } else if (GetBloodGlucoseCall
-                                                              .singleSgv(
-                                                            mainGetBloodGlucoseResponse
-                                                                .jsonBody,
-                                                          ) >
-                                                          169) {
-                                                        return FlutterFlowTheme
-                                                                .of(context)
-                                                            .secondaryBackground;
-                                                      } else if (GetBloodGlucoseCall
-                                                              .singleSgv(
-                                                            mainGetBloodGlucoseResponse
-                                                                .jsonBody,
-                                                          ) ==
-                                                          null) {
-                                                        return FlutterFlowTheme
-                                                                .of(context)
-                                                            .primaryBackground;
-                                                      } else {
-                                                        return FlutterFlowTheme
-                                                                .of(context)
-                                                            .primaryBackground;
-                                                      }
-                                                    }(),
+                                                    _model.mainColor,
                                                     FlutterFlowTheme.of(context)
-                                                        .primaryBackground,
+                                                        .primary,
                                                   ),
                                                   center: Text(
                                                     valueOrDefault<String>(
@@ -1354,28 +1312,9 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     backgroundColor: Colors.transparent,
                                     buttonBackgroundColor:
                                         valueOrDefault<Color>(
-                                      () {
-                                        if (GetBloodGlucoseCall.singleSgv(
-                                              mainGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) <
-                                            70) {
-                                          return FlutterFlowTheme.of(context)
-                                              .tertiary;
-                                        } else if (GetBloodGlucoseCall
-                                                .singleSgv(
-                                              mainGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ) >
-                                            169) {
-                                          return FlutterFlowTheme.of(context)
-                                              .secondary;
-                                        } else {
-                                          return FlutterFlowTheme.of(context)
-                                              .primary;
-                                        }
-                                      }(),
-                                      FlutterFlowTheme.of(context).primary,
+                                      _model.bgColor,
+                                      FlutterFlowTheme.of(context)
+                                          .primaryBackground,
                                     ),
                                     index: 1,
                                   ),
@@ -1539,27 +1478,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     icon: Icon(
                                       Icons.local_dining_rounded,
                                       color: valueOrDefault<Color>(
-                                        () {
-                                          if (GetBloodGlucoseCall.singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) <
-                                              70) {
-                                            return FlutterFlowTheme.of(context)
-                                                .tertiary;
-                                          } else if (GetBloodGlucoseCall
-                                                  .singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) >
-                                              169) {
-                                            return FlutterFlowTheme.of(context)
-                                                .secondary;
-                                          } else {
-                                            return FlutterFlowTheme.of(context)
-                                                .primary;
-                                          }
-                                        }(),
+                                        _model.mainColor,
                                         FlutterFlowTheme.of(context).primary,
                                       ),
                                       size: 30.0,
@@ -1709,27 +1628,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     icon: Icon(
                                       FFIcons.kicon,
                                       color: valueOrDefault<Color>(
-                                        () {
-                                          if (GetBloodGlucoseCall.singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) <
-                                              70) {
-                                            return FlutterFlowTheme.of(context)
-                                                .tertiary;
-                                          } else if (GetBloodGlucoseCall
-                                                  .singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) >
-                                              169) {
-                                            return FlutterFlowTheme.of(context)
-                                                .secondary;
-                                          } else {
-                                            return FlutterFlowTheme.of(context)
-                                                .primary;
-                                          }
-                                        }(),
+                                        _model.mainColor,
                                         FlutterFlowTheme.of(context).primary,
                                       ),
                                       size: 30.0,
@@ -1873,27 +1772,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     icon: Icon(
                                       FFIcons.k12Hour,
                                       color: valueOrDefault<Color>(
-                                        () {
-                                          if (GetBloodGlucoseCall.singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) <
-                                              70) {
-                                            return FlutterFlowTheme.of(context)
-                                                .tertiary;
-                                          } else if (GetBloodGlucoseCall
-                                                  .singleSgv(
-                                                mainGetBloodGlucoseResponse
-                                                    .jsonBody,
-                                              ) >
-                                              169) {
-                                            return FlutterFlowTheme.of(context)
-                                                .secondary;
-                                          } else {
-                                            return FlutterFlowTheme.of(context)
-                                                .primary;
-                                          }
-                                        }(),
+                                        _model.mainColor,
                                         FlutterFlowTheme.of(context).primary,
                                       ),
                                       size: 30.0,
@@ -2092,12 +1971,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 queryParams: {
                                   'latestMmol': serializeParam(
                                     valueOrDefault<double>(
-                                      GetBloodGlucoseCall.singleSgv(
-                                            mainGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ) /
-                                          18,
-                                      0.1,
+                                      _model.mmol,
+                                      1.0,
                                     ),
                                     ParamType.double,
                                   ),

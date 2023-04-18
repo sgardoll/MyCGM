@@ -25,14 +25,26 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class MainModel extends FlutterFlowModel {
+  ///  Local state fields for this page.
+
+  double? mmol = 1.0;
+
+  int? sgv = 18;
+
+  Color? mainColor = const Color(0xFF0A9396);
+
+  Color? bgColor = const Color(0x4D005F73);
+
   ///  State fields for stateful widgets in this page.
 
-  Completer<ApiCallResponse>? apiRequestCompleter;
+  // Stores action output result for [Backend Call - API (GetBloodGlucose)] action in Main widget.
+  ApiCallResponse? pageLoadAPICall;
   // State field(s) for PageView widget.
   PageController? pageViewController;
   // State field(s) for DropDown widget.
   String? dropDownValue1;
   FormFieldController<String>? dropDownValueController1;
+  Completer<ApiCallResponse>? apiRequestCompleter;
   // State field(s) for DropDown widget.
   String? dropDownValue2;
   FormFieldController<String>? dropDownValueController2;

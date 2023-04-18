@@ -20,11 +20,12 @@ export 'settings_model.dart';
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({
     Key? key,
-    this.latestMmol,
+    double? latestMmol,
     this.userRef,
-  }) : super(key: key);
+  })  : this.latestMmol = latestMmol ?? 1.0,
+        super(key: key);
 
-  final double? latestMmol;
+  final double latestMmol;
   final DocumentReference? userRef;
 
   @override
@@ -119,9 +120,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   decoration: BoxDecoration(
                     color: valueOrDefault<Color>(
                       () {
-                        if (widget.latestMmol! < 3.9) {
+                        if (widget.latestMmol < 3.9) {
                           return FlutterFlowTheme.of(context).tertiary;
-                        } else if (widget.latestMmol! > 9.4) {
+                        } else if (widget.latestMmol > 9.4) {
                           return FlutterFlowTheme.of(context).secondary;
                         } else {
                           return FlutterFlowTheme.of(context).primary;
