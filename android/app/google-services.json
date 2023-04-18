@@ -55,10 +55,11 @@
               "client_type": 3
             },
             {
-              "client_id": "889541076330-3tps8a10932r2dpd2bo1q6qtukb9328s.apps.googleusercontent.com",
+              "client_id": "889541076330-68f1qpgrtaj1pr6qu5r8pf9ib4tl1eeb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.connectio.mycgm"
+                "bundle_id": "com.connectio.mycgm",
+                "app_store_id": "1663650386"
               }
             }
           ]

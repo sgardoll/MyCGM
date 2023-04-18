@@ -1,10 +1,11 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -70,45 +71,46 @@ class _SettingsWidgetState extends State<SettingsWidget> {
 
     return Title(
         title: 'Settings',
-        color: FlutterFlowTheme.of(context).primaryColor,
-        child: Scaffold(
-          key: scaffoldKey,
-          appBar: responsiveVisibility(
-            context: context,
-            desktop: false,
-          )
-              ? AppBar(
-                  backgroundColor: FlutterFlowTheme.of(context).secondaryText,
-                  automaticallyImplyLeading: false,
-                  leading: FlutterFlowIconButton(
-                    borderColor: Colors.transparent,
-                    borderRadius: 30.0,
-                    borderWidth: 1.0,
-                    buttonSize: 60.0,
-                    icon: Icon(
-                      Icons.arrow_back_sharp,
-                      color: FlutterFlowTheme.of(context).primaryText,
-                      size: 30.0,
+        color: FlutterFlowTheme.of(context).primary,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          child: Scaffold(
+            key: scaffoldKey,
+            appBar: responsiveVisibility(
+              context: context,
+              desktop: false,
+            )
+                ? AppBar(
+                    backgroundColor: FlutterFlowTheme.of(context).secondaryText,
+                    automaticallyImplyLeading: false,
+                    leading: FlutterFlowIconButton(
+                      borderColor: Colors.transparent,
+                      borderRadius: 30.0,
+                      borderWidth: 1.0,
+                      buttonSize: 60.0,
+                      icon: Icon(
+                        Icons.arrow_back_sharp,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        size: 30.0,
+                      ),
+                      onPressed: () async {
+                        context.pushNamed('Main');
+                      },
                     ),
-                    onPressed: () async {
-                      context.pushNamed('Main');
-                    },
-                  ),
-                  title: Text(
-                    'Settings',
-                    style: FlutterFlowTheme.of(context).title2.override(
-                          fontFamily: 'Poppins',
-                          color: FlutterFlowTheme.of(context).primaryText,
-                        ),
-                  ),
-                  actions: [],
-                  centerTitle: true,
-                  elevation: 0.0,
-                )
-              : null,
-          body: SafeArea(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+                    title: Text(
+                      'Settings',
+                      style:
+                          FlutterFlowTheme.of(context).headlineMedium.override(
+                                fontFamily: 'Poppins',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                    ),
+                    actions: [],
+                    centerTitle: true,
+                    elevation: 0.0,
+                  )
+                : null,
+            body: SafeArea(
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
                 child: Container(
@@ -118,14 +120,14 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     color: valueOrDefault<Color>(
                       () {
                         if (widget.latestMmol! < 3.9) {
-                          return FlutterFlowTheme.of(context).tertiaryColor;
+                          return FlutterFlowTheme.of(context).tertiary;
                         } else if (widget.latestMmol! > 9.4) {
-                          return FlutterFlowTheme.of(context).secondaryColor;
+                          return FlutterFlowTheme.of(context).secondary;
                         } else {
-                          return FlutterFlowTheme.of(context).primaryColor;
+                          return FlutterFlowTheme.of(context).primary;
                         }
                       }(),
-                      FlutterFlowTheme.of(context).primaryColor,
+                      FlutterFlowTheme.of(context).primary,
                     ),
                   ),
                   child: Padding(
@@ -191,7 +193,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                     'Nightscout',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .title3,
+                                                        .headlineSmall,
                                                   ),
                                                 ],
                                               ),
@@ -250,7 +252,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                     maxLines: 4,
                                                                     style: FlutterFlowTheme.of(
                                                                             context)
-                                                                        .bodyText2
+                                                                        .bodySmall
                                                                         .override(
                                                                           fontFamily:
                                                                               'Poppins',
@@ -288,7 +290,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                             'https://',
                                                             style: FlutterFlowTheme
                                                                     .of(context)
-                                                                .bodyText1,
+                                                                .bodyMedium,
                                                           ),
                                                           Expanded(
                                                             child:
@@ -326,7 +328,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       'Nightscout URL',
                                                                   labelStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText1
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
                                                                             'Poppins',
@@ -337,7 +339,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       'Your Nightscout URL',
                                                                   hintStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText1
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
                                                                             'Poppins',
@@ -407,7 +409,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1
+                                                                    .bodyMedium
                                                                     .override(
                                                                       fontFamily:
                                                                           'Poppins',
@@ -477,7 +479,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       'API Key',
                                                                   labelStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText1
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
                                                                             'Poppins',
@@ -488,7 +490,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       'API Key',
                                                                   hintStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText1
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
                                                                             'Poppins',
@@ -558,7 +560,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1
+                                                                    .bodyMedium
                                                                     .override(
                                                                       fontFamily:
                                                                           'Poppins',
@@ -628,7 +630,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       'Token',
                                                                   labelStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText1
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
                                                                             'Poppins',
@@ -639,7 +641,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       'Token',
                                                                   hintStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText1
+                                                                      .bodyMedium
                                                                       .override(
                                                                         fontFamily:
                                                                             'Poppins',
@@ -709,7 +711,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1
+                                                                    .bodyMedium
                                                                     .override(
                                                                       fontFamily:
                                                                           'Poppins',
@@ -818,7 +820,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                     'Units',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .title3,
+                                                        .headlineSmall,
                                                   ),
                                                 ],
                                               ),
@@ -855,12 +857,16 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                               builder: (context) =>
                                                                   FlutterFlowDropDown<
                                                                       String>(
-                                                                initialOption: _model
-                                                                        .dropDownValue ??=
-                                                                    valueOrDefault(
-                                                                        currentUserDocument
-                                                                            ?.units,
-                                                                        ''),
+                                                                controller: _model
+                                                                        .dropDownValueController ??=
+                                                                    FormFieldController<
+                                                                        String>(
+                                                                  _model.dropDownValue ??=
+                                                                      valueOrDefault(
+                                                                          currentUserDocument
+                                                                              ?.units,
+                                                                          ''),
+                                                                ),
                                                                 options: [
                                                                   'mmol/L',
                                                                   'mg/dL'
@@ -885,7 +891,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 height: 50.0,
                                                                 textStyle: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1
+                                                                    .bodyMedium
                                                                     .override(
                                                                       fontFamily:
                                                                           'Poppins',
@@ -915,6 +921,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                         4.0),
                                                                 hidesUnderline:
                                                                     true,
+                                                                isSearchable:
+                                                                    false,
                                                               ),
                                                             ),
                                                           ),
@@ -1008,7 +1016,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                     'Diabetes',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .title3,
+                                                        .headlineSmall,
                                                   ),
                                                 ],
                                               ),
@@ -1055,7 +1063,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                               maxLines: 4,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
-                                                                  .bodyText2
+                                                                  .bodySmall
                                                                   .override(
                                                                     fontFamily:
                                                                         'Poppins',
@@ -1106,7 +1114,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       ''),
                                                                   hintStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText2,
+                                                                      .bodySmall,
                                                                   enabledBorder:
                                                                       OutlineInputBorder(
                                                                     borderSide:
@@ -1171,7 +1179,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1,
+                                                                    .bodyMedium,
                                                                 textAlign:
                                                                     TextAlign
                                                                         .start,
@@ -1220,7 +1228,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                               maxLines: 4,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
-                                                                  .bodyText2
+                                                                  .bodySmall
                                                                   .override(
                                                                     fontFamily:
                                                                         'Poppins',
@@ -1271,7 +1279,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       ''),
                                                                   hintStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText2,
+                                                                      .bodySmall,
                                                                   enabledBorder:
                                                                       OutlineInputBorder(
                                                                     borderSide:
@@ -1336,7 +1344,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1,
+                                                                    .bodyMedium,
                                                                 textAlign:
                                                                     TextAlign
                                                                         .start,
@@ -1388,7 +1396,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 maxLines: 4,
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText2
+                                                                    .bodySmall
                                                                     .override(
                                                                       fontFamily:
                                                                           'Poppins',
@@ -1439,7 +1447,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       'grams of carbs',
                                                                   hintStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText2,
+                                                                      .bodySmall,
                                                                   enabledBorder:
                                                                       OutlineInputBorder(
                                                                     borderSide:
@@ -1504,7 +1512,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1,
+                                                                    .bodyMedium,
                                                                 textAlign:
                                                                     TextAlign
                                                                         .start,
@@ -1612,7 +1620,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                     'Account & App',
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .title3,
+                                                        .headlineSmall,
                                                   ),
                                                 ],
                                               ),
@@ -1682,12 +1690,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                               ) ??
                                                               false;
                                                       if (confirmDialogResponse) {
-                                                        await deleteUser(
-                                                            context);
+                                                        await authManager
+                                                            .deleteUser(
+                                                                context);
                                                       }
 
                                                       context.goNamedAuth(
-                                                          'MainTV', mounted);
+                                                          'Main', mounted);
                                                     },
                                                     text: 'Delete Account',
                                                     options: FFButtonOptions(
@@ -1710,17 +1719,18 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                       color:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .tertiaryColor,
+                                                              .tertiary,
                                                       textStyle:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .subtitle2
+                                                              .titleSmall
                                                               .override(
                                                                 fontFamily:
                                                                     'Poppins',
                                                                 color: Colors
                                                                     .white,
                                                               ),
+                                                      elevation: 2.0,
                                                       borderSide: BorderSide(
                                                         color:
                                                             Colors.transparent,
@@ -1766,7 +1776,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             child: FFButtonWidget(
                               onPressed: () async {
                                 GoRouter.of(context).prepareAuthEvent();
-                                await signOut();
+                                await authManager.signOut();
+                                GoRouter.of(context).clearRedirectLocation();
 
                                 context.goNamedAuth('loginPage', mounted);
                               },
@@ -1784,11 +1795,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     0.0, 0.0, 0.0, 0.0),
                                 color: FlutterFlowTheme.of(context).primaryText,
                                 textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
+                                    .titleSmall
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: Colors.white,
                                     ),
+                                elevation: 2.0,
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1.0,

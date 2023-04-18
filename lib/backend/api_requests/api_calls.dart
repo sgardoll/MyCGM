@@ -14,19 +14,113 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 class NightscoutGroup {
   static String baseUrl = 'https://[nightscout]/api/v1/';
   static Map<String, String> headers = {};
+  static GetTreatmentsCall getTreatmentsCall = GetTreatmentsCall();
+}
+
+class GetTreatmentsCall {
+  Future<ApiCallResponse> call({
+    String? count = '',
+    String? token = '',
+    String? nightscout = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetTreatments',
+      apiUrl:
+          '${NightscoutGroup.baseUrl}treatments?count=${count}&token=${token}',
+      callType: ApiCallType.GET,
+      headers: {
+        ...NightscoutGroup.headers,
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+
+  dynamic enteredBy(dynamic response) => getJsonField(
+        response,
+        r'''$[:].enteredBy''',
+        true,
+      );
+  dynamic insulin(dynamic response) => getJsonField(
+        response,
+        r'''$[:].insulin''',
+        true,
+      );
+  dynamic insulinInjections(dynamic response) => getJsonField(
+        response,
+        r'''$[:].insulinInjections''',
+        true,
+      );
+  dynamic createdAt(dynamic response) => getJsonField(
+        response,
+        r'''$[:].created_at''',
+        true,
+      );
 }
 
 /// End Nightscout Group Code
+
+/// Start OpenAI Group Code
+
+class OpenAIGroup {
+  static String baseUrl = 'https://api.openai.com/v1';
+  static Map<String, String> headers = {
+    'Content-Type': 'application/json',
+  };
+  static ChatCompletionsCall chatCompletionsCall = ChatCompletionsCall();
+}
+
+class ChatCompletionsCall {
+  Future<ApiCallResponse> call({
+    String? apiKey = '',
+    String? content = '',
+    dynamic? jsonJson,
+  }) {
+    final json = _serializeJson(jsonJson);
+    final body = '''
+{
+  "model": "gpt-4",
+  "messages": [
+    {
+      "role": "user",
+      "content": "${content}: `${json}`"
+    }
+  ]
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Chat Completions',
+      apiUrl: '${OpenAIGroup.baseUrl}/chat/completions',
+      callType: ApiCallType.POST,
+      headers: {
+        ...OpenAIGroup.headers,
+        'Authorization': 'Bearer ${apiKey}',
+      },
+      params: {},
+      body: body,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+}
+
+/// End OpenAI Group Code
 
 class GetBloodGlucoseCall {
   static Future<ApiCallResponse> call({
     String? apiKey = '',
     String? nightscout = '',
     String? token = '',
+    String? count = '30',
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'GetBloodGlucose',
-      apiUrl: 'https://${nightscout}/api/v1/entries/sgv?count=30&',
+      apiUrl: 'https://${nightscout}/api/v1/entries/sgv?count=${count}&',
       callType: ApiCallType.GET,
       headers: {
         'accept': 'application/json',
@@ -65,6 +159,20 @@ class GetBloodGlucoseCall {
   static dynamic singleSgv(dynamic response) => getJsonField(
         response,
         r'''$[0].sgv''',
+      );
+  static dynamic singleDateInt(dynamic response) => getJsonField(
+        response,
+        r'''$[0].date''',
+      );
+  static dynamic device(dynamic response) => getJsonField(
+        response,
+        r'''$[:].device''',
+        true,
+      );
+  static dynamic direction(dynamic response) => getJsonField(
+        response,
+        r'''$[:].direction''',
+        true,
       );
 }
 

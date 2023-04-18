@@ -1,10 +1,11 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -126,13 +127,13 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
 
     return Title(
         title: 'unitsCheck',
-        color: FlutterFlowTheme.of(context).primaryColor,
-        child: Scaffold(
-          key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          body: SafeArea(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+        color: FlutterFlowTheme.of(context).primary,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          child: Scaffold(
+            key: scaffoldKey,
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            body: SafeArea(
               child: Stack(
                 children: [
                   ClipRect(
@@ -149,8 +150,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                               width: 300.0,
                               height: 400.0,
                               decoration: BoxDecoration(
-                                color:
-                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                color: FlutterFlowTheme.of(context).tertiary,
                                 shape: BoxShape.rectangle,
                               ),
                             ).animateOnActionTrigger(
@@ -164,8 +164,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                               width: MediaQuery.of(context).size.width * 0.75,
                               height: MediaQuery.of(context).size.width * 0.75,
                               decoration: BoxDecoration(
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
+                                color: FlutterFlowTheme.of(context).primary,
                                 shape: BoxShape.circle,
                               ),
                             ).animateOnActionTrigger(
@@ -179,8 +178,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                               width: MediaQuery.of(context).size.width * 0.7,
                               height: MediaQuery.of(context).size.width * 0.7,
                               decoration: BoxDecoration(
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryColor,
+                                color: FlutterFlowTheme.of(context).secondary,
                                 shape: BoxShape.circle,
                               ),
                             ).animateOnActionTrigger(
@@ -232,7 +230,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                 'Next, let\'s talk units of measurement',
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
-                                    .title1
+                                    .displaySmall
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: FlutterFlowTheme.of(context)
@@ -302,7 +300,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                                           maxLines: 4,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .bodyText2
+                                                              .bodySmall
                                                               .override(
                                                                 fontFamily:
                                                                     'Poppins',
@@ -334,6 +332,10 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                               Expanded(
                                                 child:
                                                     FlutterFlowDropDown<String>(
+                                                  controller: _model
+                                                          .dropDownValueController ??=
+                                                      FormFieldController<
+                                                          String>(null),
                                                   options: ['mmol/L', 'mg/dL'],
                                                   onChanged: (val) => setState(
                                                       () => _model
@@ -342,7 +344,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                                   height: 50.0,
                                                   textStyle: FlutterFlowTheme
                                                           .of(context)
-                                                      .bodyText1
+                                                      .bodyMedium
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         color:
@@ -363,6 +365,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                                       .fromSTEB(
                                                           12.0, 4.0, 12.0, 4.0),
                                                   hidesUnderline: true,
+                                                  isSearchable: false,
                                                 ),
                                               ),
                                             ],
@@ -390,7 +393,8 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   GoRouter.of(context).prepareAuthEvent();
-                                  await signOut();
+                                  await authManager.signOut();
+                                  GoRouter.of(context).clearRedirectLocation();
 
                                   context.goNamedAuth('loginPage', mounted);
                                 },
@@ -405,10 +409,9 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                       0.0, 0.0, 0.0, 0.0),
                                   iconPadding: EdgeInsetsDirectional.fromSTEB(
                                       6.0, 0.0, 0.0, 0.0),
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
+                                  color: FlutterFlowTheme.of(context).secondary,
                                   textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
+                                      .titleSmall
                                       .override(
                                         fontFamily: 'Poppins',
                                         color: FlutterFlowTheme.of(context)
@@ -444,10 +447,9 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                       0.0, 0.0, 0.0, 0.0),
                                   iconPadding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
+                                  color: FlutterFlowTheme.of(context).secondary,
                                   textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
+                                      .titleSmall
                                       .override(
                                         fontFamily: 'Poppins',
                                         color: FlutterFlowTheme.of(context)

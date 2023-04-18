@@ -9,29 +9,14 @@ import 'lat_lng.dart';
 import 'place.dart';
 import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../auth/auth_util.dart';
+import '../../auth/firebase_auth/auth_util.dart';
 
-double? sgvToProgressInd(double? mmol) {
-  double i = 1.0;
-  if (mmol == null) {
-    i = 0.1;
-    return i;
+String? minutesAgo(dynamic timestamp) {
+  if (timestamp == null) {
+    return "";
   }
-  if (mmol < 3.9) {
-    i = 0.1;
-    return i;
-  }
-  if (mmol > 9.4) {
-    i = 1.0;
-    return i;
-  } else {
-    return (mmol - 3.9) / (9.4 - 3.9);
-  }
-}
-
-String? minutesAgo(List<String> latestDate) {
-// calculate the difference between the latest date and now. The dateString is in the "2022-11-22T09:30:53.000Z" format
-  final difference = DateTime.now().difference(DateTime.parse(latestDate![0]));
+  final latestDate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  final difference = DateTime.now().difference(latestDate);
   final minutes = difference.inMinutes;
   final hours = difference.inHours;
   final days = difference.inDays;
@@ -68,23 +53,11 @@ String? minutesAgo(List<String> latestDate) {
   }
 }
 
-double? sgvListToLatestMmol(List<int>? sgvList) {
-  if (sgvList == null || sgvList.isEmpty) {
-    return 0;
-  }
-
-  int firstInt = sgvList[0];
-  double firstIntAsDouble = firstInt.toDouble();
-  double result = (firstIntAsDouble / 18);
-  return double.parse(result.toStringAsFixed(1));
-}
-
-List<double>? intListToMmolDoubleList(List<int>? sgv) {
-  if (sgv == null) {
+DateTime? unixToDateTime(dynamic timestamp) {
+  if (timestamp == null) {
     return null;
   }
-
-  return sgv.map((e) => (e / 18.0).toDouble()).toList() as List<double>;
+  return DateTime.fromMillisecondsSinceEpoch(timestamp);
 }
 
 String? novoCalcBasedOnRatio(
@@ -103,36 +76,6 @@ String? novoCalcBasedOnRatio(
   return carbs.toStringAsFixed(1);
 }
 
-double? mmolListToLatestMmolFirebase(List<double>? sgvToMmolList) {
-  if (sgvToMmolList == null) {
-    return 0.0;
-  }
-  if (sgvToMmolList.isEmpty) {
-    return 0.0;
-  }
-  return sgvToMmolList.first;
-}
-
-List<DateTime> dateStringToTimestamp(List<String> date) {
-  // convert a list of dateStrings to a list of timestamp
-  // dateStrings are in the format of "2022-11-22T07:30:53.000Z"
-
-  List<DateTime> timestamp = [];
-  for (var i = 0; i < date.length; i++) {
-    timestamp.add(DateTime.parse(date[i]));
-  }
-  return timestamp;
-}
-
-List<double> stringListToDoubleList(List<String>? sgvToMmolList) {
-  // parse a list of Strings to a list of doubles
-  var lst = <double>[];
-  sgvToMmolList?.forEach((element) {
-    lst.add(double.parse(element));
-  });
-  return lst;
-}
-
 String novoTo1DecimalPlace(String units) {
   // if units is a number without a decimal place add .0 to it
   if (units.contains('.'))
@@ -141,17 +84,13 @@ String novoTo1DecimalPlace(String units) {
     return units + '.0';
 }
 
-double quickProgressInd(double latestMmol) {
-  return (latestMmol - 3.9) / (9.4 - 3.9);
-}
-
-double singleSgvToDouble(int singleSgv) {
-  double firstIntAsDouble = singleSgv.toDouble();
-  double result = (firstIntAsDouble / 18);
-  return double.parse(result.toStringAsFixed(1));
-}
-
 double? stringToDouble(String? carbs) {
   // convert string to a double
   return double.tryParse(carbs ?? '');
+}
+
+List<double> sgvDivideBy18(List<dynamic> sgv) {
+  List<dynamic> values = sgv ?? [];
+  List<double> doubles = values.map((i) => (i as num) / 18).toList();
+  return doubles;
 }

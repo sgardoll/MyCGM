@@ -1,16 +1,21 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/components/p_o_s_t_carbs/p_o_s_t_carbs_widget.dart';
 import '/components/p_o_s_t_insulin/p_o_s_t_insulin_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
+import '/flutter_flow/flutter_flow_charts.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/instant_timer.dart';
-import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/form_field_controller.dart';
+import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'dart:async';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart'
+    as smooth_page_indicator;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -33,63 +38,50 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
-
+  int get pageViewCurrentIndex => _model.pageViewController != null &&
+          _model.pageViewController!.hasClients &&
+          _model.pageViewController!.page != null
+      ? _model.pageViewController!.page!.round()
+      : 0;
+  var hasTextTriggered = false;
   final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
+    'progressBarOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(0.0, -54.0),
+          end: Offset(0.0, 0.0),
+        ),
+      ],
+    ),
+    'textOnActionTriggerAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onActionTrigger,
+      applyInitialState: true,
       effects: [
         VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        BlurEffect(
-          curve: Curves.easeIn,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 5.0,
-          end: 0.0,
-        ),
-      ],
-    ),
-    'progressBarOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
         MoveEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
-          begin: Offset(0.0, -54.0),
+          begin: Offset(0.0, -25.0),
           end: Offset(0.0, 0.0),
         ),
-      ],
-    ),
-    'progressBarOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
         FadeEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
           begin: 0.0,
           end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, -54.0),
-          end: Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -178,26 +170,8 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (isAndroid) {
-        await actions.updateCheck(
-          context,
-        );
-      } else {
-        if (isiOS) {
-          await actions.updateCheckIos(
-            context,
-          );
-        }
-      }
-
-      _model.refreshTimer = InstantTimer.periodic(
-        duration: Duration(milliseconds: 240000),
-        callback: (timer) async {
-          setState(() => _model.apiRequestCompleter = null);
-          await _model.waitForApiRequestCompleter(minWait: 10000);
-        },
-        startImmediately: true,
-      );
+      setState(() => _model.apiRequestCompleter = null);
+      await _model.waitForApiRequestCompleted(maxWait: 4000);
     });
 
     setupAnimations(
@@ -229,6 +203,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                 apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
                 nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
                 token: valueOrDefault(currentUserDocument?.token, ''),
+                count: valueOrDefault<String>(
+                  FFAppState().count,
+                  '30',
+                ),
               )))
             .future,
         builder: (context, snapshot) {
@@ -236,11 +214,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           if (!snapshot.hasData) {
             return Center(
               child: SizedBox(
-                width: 40.0,
-                height: 40.0,
+                width: 25.0,
+                height: 25.0,
                 child: SpinKitRipple(
                   color: FlutterFlowTheme.of(context).secondaryText,
-                  size: 40.0,
+                  size: 25.0,
                 ),
               ),
             );
@@ -248,13 +226,35 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
           final mainGetBloodGlucoseResponse = snapshot.data!;
           return Title(
               title: 'Main',
-              color: FlutterFlowTheme.of(context).primaryColor,
-              child: Scaffold(
-                key: scaffoldKey,
-                body: SafeArea(
-                  child: GestureDetector(
-                    onTap: () =>
-                        FocusScope.of(context).requestFocus(_unfocusNode),
+              color: FlutterFlowTheme.of(context).primary,
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+                child: Scaffold(
+                  key: scaffoldKey,
+                  backgroundColor: valueOrDefault<Color>(
+                    () {
+                      if (GetBloodGlucoseCall.singleSgv(
+                            mainGetBloodGlucoseResponse.jsonBody,
+                          ) <
+                          70) {
+                        return FlutterFlowTheme.of(context).secondary;
+                      } else if (GetBloodGlucoseCall.singleSgv(
+                            mainGetBloodGlucoseResponse.jsonBody,
+                          ) >
+                          169) {
+                        return FlutterFlowTheme.of(context).secondaryBackground;
+                      } else if (GetBloodGlucoseCall.singleSgv(
+                            mainGetBloodGlucoseResponse.jsonBody,
+                          ) ==
+                          null) {
+                        return FlutterFlowTheme.of(context).primaryBackground;
+                      } else {
+                        return FlutterFlowTheme.of(context).primaryBackground;
+                      }
+                    }(),
+                    FlutterFlowTheme.of(context).primaryBackground,
+                  ),
+                  body: SafeArea(
                     child: Stack(
                       children: [
                         Container(
@@ -267,20 +267,17 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       mainGetBloodGlucoseResponse.jsonBody,
                                     ) <
                                     70) {
-                                  return FlutterFlowTheme.of(context)
-                                      .tertiaryColor;
+                                  return FlutterFlowTheme.of(context).tertiary;
                                 } else if (GetBloodGlucoseCall.singleSgv(
                                       mainGetBloodGlucoseResponse.jsonBody,
                                     ) >
                                     169) {
-                                  return FlutterFlowTheme.of(context)
-                                      .secondaryColor;
+                                  return FlutterFlowTheme.of(context).secondary;
                                 } else {
-                                  return FlutterFlowTheme.of(context)
-                                      .primaryColor;
+                                  return FlutterFlowTheme.of(context).primary;
                                 }
                               }(),
-                              FlutterFlowTheme.of(context).primaryColor,
+                              FlutterFlowTheme.of(context).primary,
                             ),
                           ),
                           child: Column(
@@ -288,248 +285,1057 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    if (valueOrDefault<bool>(
-                                      valueOrDefault(
-                                              currentUserDocument?.units, '') ==
-                                          'mmol/L',
-                                      true,
-                                    ))
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 50.0, 0.0, 0.0),
-                                        child: CircularPercentIndicator(
-                                          percent: () {
-                                            if (GetBloodGlucoseCall.singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) ==
-                                                null) {
-                                              return 0.1;
-                                            } else if (GetBloodGlucoseCall
-                                                    .singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) <
-                                                70) {
-                                              return 0.1;
-                                            } else if (GetBloodGlucoseCall
-                                                    .singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) >
-                                                169) {
-                                              return 1.0;
-                                            } else {
-                                              return ((GetBloodGlucoseCall
-                                                          .singleSgv(
-                                                        mainGetBloodGlucoseResponse
-                                                            .jsonBody,
-                                                      ) -
-                                                      70) /
-                                                  (169 - 70));
-                                            }
-                                          }(),
-                                          radius: 150.0,
-                                          lineWidth: 40.0,
-                                          animation: true,
-                                          progressColor: Color(0x80001219),
-                                          backgroundColor:
-                                              valueOrDefault<Color>(
-                                            () {
-                                              if (GetBloodGlucoseCall.singleSgv(
-                                                    mainGetBloodGlucoseResponse
-                                                        .jsonBody,
-                                                  ) <
-                                                  70) {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .secondaryColor;
-                                              } else if (GetBloodGlucoseCall
-                                                      .singleSgv(
-                                                    mainGetBloodGlucoseResponse
-                                                        .jsonBody,
-                                                  ) >
-                                                  169) {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .secondaryBackground;
-                                              } else {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .primaryBackground;
-                                              }
-                                            }(),
-                                            FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                          ),
-                                          center: Text(
-                                            formatNumber(
-                                              GetBloodGlucoseCall.singleSgv(
-                                                    mainGetBloodGlucoseResponse
-                                                        .jsonBody,
-                                                  ) /
-                                                  18.0,
-                                              formatType: FormatType.custom,
-                                              format: '#0.0',
-                                              locale: '',
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.of(context)
-                                                .title1
-                                                .override(
-                                                  fontFamily: 'Poppins',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryText,
-                                                  fontSize: 90.0,
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 1.0,
+                                  height: 500.0,
+                                  child: Stack(
+                                    children: [
+                                      PageView(
+                                        controller:
+                                            _model.pageViewController ??=
+                                                PageController(initialPage: 2),
+                                        onPageChanged: (_) => setState(() {}),
+                                        scrollDirection: Axis.horizontal,
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 0.0, 16.0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    8.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          'last',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .titleMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Poppins',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    8.0,
+                                                                    0.0),
+                                                        child:
+                                                            FlutterFlowDropDown<
+                                                                String>(
+                                                          controller: _model
+                                                                  .dropDownValueController1 ??=
+                                                              FormFieldController<
+                                                                  String>(
+                                                            _model.dropDownValue1 ??=
+                                                                valueOrDefault<
+                                                                    String>(
+                                                              FFAppState()
+                                                                  .count,
+                                                              '30',
+                                                            ),
+                                                          ),
+                                                          options: [
+                                                            '30',
+                                                            '60',
+                                                            '90',
+                                                            '120',
+                                                            '150',
+                                                            '180',
+                                                            '210',
+                                                            '240',
+                                                            '270',
+                                                            '300'
+                                                          ],
+                                                          onChanged:
+                                                              (val) async {
+                                                            setState(() => _model
+                                                                    .dropDownValue1 =
+                                                                val);
+                                                            setState(() {
+                                                              FFAppState()
+                                                                      .count =
+                                                                  _model
+                                                                      .dropDownValue1!;
+                                                            });
+                                                            setState(() => _model
+                                                                    .apiRequestCompleter =
+                                                                null);
+                                                            await _model
+                                                                .waitForApiRequestCompleted(
+                                                                    maxWait:
+                                                                        5000);
+                                                          },
+                                                          width: 75.0,
+                                                          height: 30.0,
+                                                          searchHintTextStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyLarge
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                  ),
+                                                          textStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium,
+                                                          searchHintText:
+                                                              'Search for an item...',
+                                                          fillColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .secondaryText,
+                                                          elevation: 2.0,
+                                                          borderColor: Colors
+                                                              .transparent,
+                                                          borderWidth: 0.0,
+                                                          borderRadius: 12.0,
+                                                          margin:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      4.0,
+                                                                      12.0,
+                                                                      4.0),
+                                                          hidesUnderline: true,
+                                                          isSearchable: false,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        'readings',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Poppins',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                          ),
-                                          startAngle: 0.0,
-                                        ).animateOnPageLoad(animationsMap[
-                                            'progressBarOnPageLoadAnimation1']!),
-                                      ),
-                                    if (valueOrDefault<bool>(
-                                      valueOrDefault(
-                                              currentUserDocument?.units, '') !=
-                                          'mmol/L',
-                                      false,
-                                    ))
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 50.0, 0.0, 0.0),
-                                        child: CircularPercentIndicator(
-                                          percent: () {
-                                            if (GetBloodGlucoseCall.singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) ==
-                                                null) {
-                                              return 0.1;
-                                            } else if (GetBloodGlucoseCall
-                                                    .singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) <
-                                                70) {
-                                              return 0.1;
-                                            } else if (GetBloodGlucoseCall
-                                                    .singleSgv(
-                                                  mainGetBloodGlucoseResponse
-                                                      .jsonBody,
-                                                ) >
-                                                169) {
-                                              return 1.0;
-                                            } else {
-                                              return ((GetBloodGlucoseCall
-                                                          .singleSgv(
-                                                        mainGetBloodGlucoseResponse
-                                                            .jsonBody,
-                                                      ) -
-                                                      70) /
-                                                  (169 - 70));
-                                            }
-                                          }(),
-                                          radius: 150.0,
-                                          lineWidth: 40.0,
-                                          animation: true,
-                                          progressColor: Color(0x80001219),
-                                          backgroundColor:
-                                              valueOrDefault<Color>(
-                                            () {
-                                              if (GetBloodGlucoseCall.singleSgv(
-                                                    mainGetBloodGlucoseResponse
-                                                        .jsonBody,
-                                                  ) <
-                                                  70) {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .secondaryColor;
-                                              } else if (GetBloodGlucoseCall
-                                                      .singleSgv(
-                                                    mainGetBloodGlucoseResponse
-                                                        .jsonBody,
-                                                  ) >
-                                                  169) {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .secondaryBackground;
-                                              } else {
-                                                return FlutterFlowTheme.of(
-                                                        context)
-                                                    .primaryBackground;
-                                              }
-                                            }(),
-                                            FlutterFlowTheme.of(context)
-                                                .primaryBackground,
-                                          ),
-                                          center: Text(
-                                            GetBloodGlucoseCall.singleSgv(
-                                              mainGetBloodGlucoseResponse
-                                                  .jsonBody,
-                                            ).toString(),
-                                            textAlign: TextAlign.center,
-                                            style: FlutterFlowTheme.of(context)
-                                                .title1
-                                                .override(
-                                                  fontFamily: 'Poppins',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryText,
-                                                  fontSize: 90.0,
+                                              ),
+                                              Expanded(
+                                                flex: 5,
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      1.0,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      1.0,
+                                                  child: FlutterFlowLineChart(
+                                                    data: [
+                                                      FFLineChartData(
+                                                        xData: getJsonField(
+                                                          mainGetBloodGlucoseResponse
+                                                              .jsonBody,
+                                                          r'''$.date''',
+                                                        ),
+                                                        yData: functions
+                                                            .sgvDivideBy18(
+                                                                getJsonField(
+                                                          mainGetBloodGlucoseResponse
+                                                              .jsonBody,
+                                                          r'''$.sgv''',
+                                                        )),
+                                                        settings:
+                                                            LineChartBarData(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .accent3,
+                                                          barWidth: 3.0,
+                                                          isCurved: true,
+                                                          belowBarData:
+                                                              BarAreaData(
+                                                            show: true,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryBackground,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                    chartStylingInfo:
+                                                        ChartStylingInfo(
+                                                      enableTooltip: true,
+                                                      tooltipBackgroundColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryText,
+                                                      backgroundColor:
+                                                          Color(0x00FFFFFF),
+                                                      showBorder: false,
+                                                    ),
+                                                    axisBounds: AxisBounds(
+                                                      minY: 0.0,
+                                                      maxY: 20.0,
+                                                    ),
+                                                    xAxisLabelInfo:
+                                                        AxisLabelInfo(),
+                                                    yAxisLabelInfo:
+                                                        AxisLabelInfo(),
+                                                  ),
                                                 ),
+                                              ),
+                                            ],
                                           ),
-                                          startAngle: 0.0,
-                                        ).animateOnPageLoad(animationsMap[
-                                            'progressBarOnPageLoadAnimation2']!),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [],
+                                                ),
+                                              ),
+                                              if (valueOrDefault<bool>(
+                                                valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.units,
+                                                        '') ==
+                                                    'mmol/L',
+                                                true,
+                                              ))
+                                                CircularPercentIndicator(
+                                                  percent:
+                                                      valueOrDefault<double>(
+                                                    () {
+                                                      if (GetBloodGlucoseCall
+                                                              .singleSgv(
+                                                            mainGetBloodGlucoseResponse
+                                                                .jsonBody,
+                                                          ) ==
+                                                          null) {
+                                                        return 0.1;
+                                                      } else if (GetBloodGlucoseCall
+                                                              .singleSgv(
+                                                            mainGetBloodGlucoseResponse
+                                                                .jsonBody,
+                                                          ) <
+                                                          70) {
+                                                        return 0.1;
+                                                      } else if (GetBloodGlucoseCall
+                                                              .singleSgv(
+                                                            mainGetBloodGlucoseResponse
+                                                                .jsonBody,
+                                                          ) >
+                                                          169) {
+                                                        return 1.0;
+                                                      } else {
+                                                        return valueOrDefault<
+                                                            double>(
+                                                          (GetBloodGlucoseCall
+                                                                      .singleSgv(
+                                                                    mainGetBloodGlucoseResponse
+                                                                        .jsonBody,
+                                                                  ) -
+                                                                  70) /
+                                                              (169 - 70),
+                                                          0.1,
+                                                        );
+                                                      }
+                                                    }(),
+                                                    0.1,
+                                                  ),
+                                                  radius: 150.0,
+                                                  lineWidth: 40.0,
+                                                  animation: true,
+                                                  progressColor:
+                                                      Color(0x80001219),
+                                                  backgroundColor:
+                                                      valueOrDefault<Color>(
+                                                    () {
+                                                      if (GetBloodGlucoseCall
+                                                              .singleSgv(
+                                                            mainGetBloodGlucoseResponse
+                                                                .jsonBody,
+                                                          ) <
+                                                          70) {
+                                                        return FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondary;
+                                                      } else if (GetBloodGlucoseCall
+                                                              .singleSgv(
+                                                            mainGetBloodGlucoseResponse
+                                                                .jsonBody,
+                                                          ) >
+                                                          169) {
+                                                        return FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground;
+                                                      } else if (GetBloodGlucoseCall
+                                                              .singleSgv(
+                                                            mainGetBloodGlucoseResponse
+                                                                .jsonBody,
+                                                          ) ==
+                                                          null) {
+                                                        return FlutterFlowTheme
+                                                                .of(context)
+                                                            .primaryBackground;
+                                                      } else {
+                                                        return FlutterFlowTheme
+                                                                .of(context)
+                                                            .primaryBackground;
+                                                      }
+                                                    }(),
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryBackground,
+                                                  ),
+                                                  center: Text(
+                                                    valueOrDefault<String>(
+                                                      formatNumber(
+                                                        GetBloodGlucoseCall
+                                                                .singleSgv(
+                                                              mainGetBloodGlucoseResponse
+                                                                  .jsonBody,
+                                                            ) /
+                                                            18.0,
+                                                        formatType:
+                                                            FormatType.custom,
+                                                        format: '#0.0',
+                                                        locale: 'en_AU',
+                                                      ),
+                                                      '1',
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .displaySmall
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          fontSize: 90.0,
+                                                        ),
+                                                  ),
+                                                  startAngle: 0.0,
+                                                ).animateOnPageLoad(animationsMap[
+                                                    'progressBarOnPageLoadAnimation']!),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 40.0, 0.0, 0.0),
+                                                child: Text(
+                                                  valueOrDefault<String>(
+                                                    valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.units,
+                                                        ''),
+                                                    'mmol/L',
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .headlineMedium,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 0.0, 0.0, 16.0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    8.0,
+                                                                    0.0),
+                                                        child: Text(
+                                                          'last',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .titleMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Poppins',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryText,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    8.0,
+                                                                    0.0),
+                                                        child:
+                                                            FlutterFlowDropDown<
+                                                                String>(
+                                                          controller: _model
+                                                                  .dropDownValueController2 ??=
+                                                              FormFieldController<
+                                                                  String>(
+                                                            _model.dropDownValue2 ??=
+                                                                valueOrDefault<
+                                                                    String>(
+                                                              FFAppState()
+                                                                  .count,
+                                                              '30',
+                                                            ),
+                                                          ),
+                                                          options: [
+                                                            '30',
+                                                            '60',
+                                                            '90',
+                                                            '120',
+                                                            '150',
+                                                            '180',
+                                                            '210',
+                                                            '240',
+                                                            '270',
+                                                            '300'
+                                                          ],
+                                                          onChanged:
+                                                              (val) async {
+                                                            setState(() => _model
+                                                                    .dropDownValue2 =
+                                                                val);
+                                                            setState(() {
+                                                              FFAppState()
+                                                                      .count =
+                                                                  _model
+                                                                      .dropDownValue2!;
+                                                            });
+                                                            setState(() => _model
+                                                                    .apiRequestCompleter =
+                                                                null);
+                                                            await _model
+                                                                .waitForApiRequestCompleted(
+                                                                    maxWait:
+                                                                        5000);
+                                                          },
+                                                          width: 75.0,
+                                                          height: 30.0,
+                                                          searchHintTextStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyLarge
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryText,
+                                                                  ),
+                                                          textStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium,
+                                                          searchHintText:
+                                                              'Search for an item...',
+                                                          fillColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .secondaryText,
+                                                          elevation: 2.0,
+                                                          borderColor: Colors
+                                                              .transparent,
+                                                          borderWidth: 0.0,
+                                                          borderRadius: 12.0,
+                                                          margin:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      12.0,
+                                                                      4.0,
+                                                                      12.0,
+                                                                      4.0),
+                                                          hidesUnderline: true,
+                                                          isSearchable: false,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        'readings',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Poppins',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          16.0, 0.0, 16.0, 0.0),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            1.0,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  8.0,
+                                                                  8.0,
+                                                                  8.0,
+                                                                  8.0),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        8.0,
+                                                                        0.0,
+                                                                        8.0,
+                                                                        0.0),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                Expanded(
+                                                                  flex: 1,
+                                                                  child: Text(
+                                                                    valueOrDefault(
+                                                                        currentUserDocument
+                                                                            ?.units,
+                                                                        ''),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodySmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Poppins',
+                                                                          fontSize:
+                                                                              12.0,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          12.0,
+                                                                          0.0),
+                                                                  child:
+                                                                      Container(
+                                                                    width: 24.0,
+                                                                    height: 1.0,
+                                                                    decoration:
+                                                                        BoxDecoration(),
+                                                                  ),
+                                                                ),
+                                                                if (responsiveVisibility(
+                                                                  context:
+                                                                      context,
+                                                                  phone: false,
+                                                                  tablet: false,
+                                                                ))
+                                                                  Expanded(
+                                                                    flex: 1,
+                                                                    child: Text(
+                                                                      'direction',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodySmall,
+                                                                    ),
+                                                                  ),
+                                                                if (responsiveVisibility(
+                                                                  context:
+                                                                      context,
+                                                                  phone: false,
+                                                                  tablet: false,
+                                                                ))
+                                                                  Expanded(
+                                                                    flex: 3,
+                                                                    child: Text(
+                                                                      'recorded by',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodySmall,
+                                                                    ),
+                                                                  ),
+                                                                Expanded(
+                                                                  flex: 2,
+                                                                  child: Text(
+                                                                    'as of',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .end,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodySmall
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Poppins',
+                                                                          fontSize:
+                                                                              12.0,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Divider(
+                                                            thickness: 1.0,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .accent4,
+                                                          ),
+                                                          if (FFAppState()
+                                                              .refresh)
+                                                            Text(
+                                                              'refreshing...',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .headlineMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .accent4,
+                                                                  ),
+                                                            ).animateOnActionTrigger(
+                                                                animationsMap[
+                                                                    'textOnActionTriggerAnimation']!,
+                                                                hasBeenTriggered:
+                                                                    hasTextTriggered),
+                                                          Expanded(
+                                                            child: Stack(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          0.0,
+                                                                          0.0,
+                                                                          16.0),
+                                                                  child:
+                                                                      Builder(
+                                                                    builder:
+                                                                        (context) {
+                                                                      final entries =
+                                                                          getJsonField(
+                                                                        mainGetBloodGlucoseResponse
+                                                                            .jsonBody,
+                                                                        r'''$.sgv''',
+                                                                      ).toList();
+                                                                      return RefreshIndicator(
+                                                                        onRefresh:
+                                                                            () async {
+                                                                          setState(
+                                                                              () {
+                                                                            FFAppState().refresh =
+                                                                                true;
+                                                                          });
+                                                                          if (animationsMap['textOnActionTriggerAnimation'] !=
+                                                                              null) {
+                                                                            setState(() =>
+                                                                                hasTextTriggered = true);
+                                                                            SchedulerBinding.instance.addPostFrameCallback((_) async =>
+                                                                                animationsMap['textOnActionTriggerAnimation']!.controller.forward(from: 0.0));
+                                                                          }
+                                                                          setState(() =>
+                                                                              _model.apiRequestCompleter = null);
+                                                                          await _model.waitForApiRequestCompleted(
+                                                                              maxWait: 4000);
+                                                                          setState(
+                                                                              () {
+                                                                            FFAppState().refresh =
+                                                                                false;
+                                                                          });
+                                                                        },
+                                                                        child: ListView
+                                                                            .builder(
+                                                                          padding:
+                                                                              EdgeInsets.zero,
+                                                                          shrinkWrap:
+                                                                              true,
+                                                                          scrollDirection:
+                                                                              Axis.vertical,
+                                                                          itemCount:
+                                                                              entries.length,
+                                                                          itemBuilder:
+                                                                              (context, entriesIndex) {
+                                                                            final entriesItem =
+                                                                                entries[entriesIndex];
+                                                                            return Column(
+                                                                              mainAxisSize: MainAxisSize.min,
+                                                                              children: [
+                                                                                Material(
+                                                                                  color: Colors.transparent,
+                                                                                  elevation: 2.0,
+                                                                                  child: Container(
+                                                                                    width: double.infinity,
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: Color(0x80001219),
+                                                                                    ),
+                                                                                    child: Padding(
+                                                                                      padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
+                                                                                      child: Row(
+                                                                                        mainAxisSize: MainAxisSize.max,
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                        children: [
+                                                                                          Expanded(
+                                                                                            flex: 1,
+                                                                                            child: Row(
+                                                                                              mainAxisSize: MainAxisSize.max,
+                                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                                              children: [
+                                                                                                AutoSizeText(
+                                                                                                  formatNumber(
+                                                                                                    getJsonField(
+                                                                                                          entriesItem,
+                                                                                                          r'''$.sgv''',
+                                                                                                        ) /
+                                                                                                        18,
+                                                                                                    formatType: FormatType.custom,
+                                                                                                    format: '###.0',
+                                                                                                    locale: 'en_AU',
+                                                                                                  ).maybeHandleOverflow(
+                                                                                                    maxChars: 32,
+                                                                                                    replacement: '…',
+                                                                                                  ),
+                                                                                                  style: FlutterFlowTheme.of(context).titleMedium.override(
+                                                                                                        fontFamily: 'Poppins',
+                                                                                                        color: FlutterFlowTheme.of(context).accent3,
+                                                                                                        fontWeight: FontWeight.normal,
+                                                                                                      ),
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ),
+                                                                                          Padding(
+                                                                                            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),
+                                                                                            child: Container(
+                                                                                              width: 24.0,
+                                                                                              height: 24.0,
+                                                                                              child: custom_widgets.DirectionIcon(
+                                                                                                width: 24.0,
+                                                                                                height: 24.0,
+                                                                                                direction: getJsonField(
+                                                                                                  entriesItem,
+                                                                                                  r'''$.direction''',
+                                                                                                ),
+                                                                                                color: FlutterFlowTheme.of(context).accent4,
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                          if (responsiveVisibility(
+                                                                                            context: context,
+                                                                                            phone: false,
+                                                                                            tablet: false,
+                                                                                          ))
+                                                                                            Expanded(
+                                                                                              flex: 1,
+                                                                                              child: Text(
+                                                                                                getJsonField(
+                                                                                                  entriesItem,
+                                                                                                  r'''$.direction''',
+                                                                                                ).toString(),
+                                                                                                textAlign: TextAlign.start,
+                                                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                      fontFamily: 'Poppins',
+                                                                                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                                    ),
+                                                                                              ),
+                                                                                            ),
+                                                                                          if (responsiveVisibility(
+                                                                                            context: context,
+                                                                                            phone: false,
+                                                                                            tablet: false,
+                                                                                          ))
+                                                                                            Expanded(
+                                                                                              flex: 3,
+                                                                                              child: Text(
+                                                                                                getJsonField(
+                                                                                                  entriesItem,
+                                                                                                  r'''$.device''',
+                                                                                                ).toString(),
+                                                                                                textAlign: TextAlign.center,
+                                                                                                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                                      fontFamily: 'Poppins',
+                                                                                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                                    ),
+                                                                                              ),
+                                                                                            ),
+                                                                                          Expanded(
+                                                                                            flex: 2,
+                                                                                            child: Column(
+                                                                                              mainAxisSize: MainAxisSize.max,
+                                                                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                              children: [
+                                                                                                Padding(
+                                                                                                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 2.0, 0.0, 0.0),
+                                                                                                  child: Text(
+                                                                                                    valueOrDefault<String>(
+                                                                                                      dateTimeFormat(
+                                                                                                        'relative',
+                                                                                                        functions.unixToDateTime(getJsonField(
+                                                                                                          entriesItem,
+                                                                                                          r'''$.date''',
+                                                                                                        )),
+                                                                                                        locale: FFLocalizations.of(context).languageCode,
+                                                                                                      ),
+                                                                                                      '1',
+                                                                                                    ),
+                                                                                                    style: FlutterFlowTheme.of(context).bodySmall.override(
+                                                                                                          fontFamily: 'Poppins',
+                                                                                                          color: FlutterFlowTheme.of(context).accent3,
+                                                                                                          fontWeight: FontWeight.w300,
+                                                                                                        ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                Divider(
+                                                                                  thickness: 1.0,
+                                                                                  color: FlutterFlowTheme.of(context).accent3,
+                                                                                ),
+                                                                              ],
+                                                                            );
+                                                                          },
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                if (responsiveVisibility(
+                                                                  context:
+                                                                      context,
+                                                                  phone: false,
+                                                                  tablet: false,
+                                                                  tabletLandscape:
+                                                                      false,
+                                                                  desktop:
+                                                                      false,
+                                                                ))
+                                                                  Stack(
+                                                                    children: [
+                                                                      Align(
+                                                                        alignment: AlignmentDirectional(
+                                                                            0.0,
+                                                                            0.7),
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width * 0.75,
+                                                                          height:
+                                                                              100.0,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                Color(0x41001219),
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8.0),
+                                                                          ),
+                                                                          child:
+                                                                              ClipRRect(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(0.0),
+                                                                            child:
+                                                                                BackdropFilter(
+                                                                              filter: ImageFilter.blur(
+                                                                                sigmaX: 2.0,
+                                                                                sigmaY: 2.0,
+                                                                              ),
+                                                                              child: Row(
+                                                                                mainAxisSize: MainAxisSize.max,
+                                                                                children: [
+                                                                                  Expanded(
+                                                                                    child: Padding(
+                                                                                      padding: EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
+                                                                                      child: AutoSizeText(
+                                                                                        'Hello World',
+                                                                                        textAlign: TextAlign.center,
+                                                                                        maxLines: 10,
+                                                                                        style: FlutterFlowTheme.of(context).labelMedium.override(
+                                                                                              fontFamily: 'Poppins',
+                                                                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                            ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Align(
+                                                                        alignment: AlignmentDirectional(
+                                                                            -0.9,
+                                                                            0.5),
+                                                                        child:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .info_rounded,
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).accent3,
+                                                                          size:
+                                                                              36.0,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 40.0, 0.0, 0.0),
-                                      child: Text(
-                                        valueOrDefault<String>(
-                                          valueOrDefault(
-                                              currentUserDocument?.units, ''),
-                                          'mmol',
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        style: FlutterFlowTheme.of(context)
-                                            .title1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color:
+                                      Align(
+                                        alignment:
+                                            AlignmentDirectional(0.0, -1.0),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 16.0, 0.0, 0.0),
+                                          child: smooth_page_indicator
+                                              .SmoothPageIndicator(
+                                            controller: _model
+                                                    .pageViewController ??=
+                                                PageController(initialPage: 2),
+                                            count: 3,
+                                            axisDirection: Axis.horizontal,
+                                            onDotClicked: (i) async {
+                                              await _model.pageViewController!
+                                                  .animateToPage(
+                                                i,
+                                                duration:
+                                                    Duration(milliseconds: 500),
+                                                curve: Curves.ease,
+                                              );
+                                            },
+                                            effect: smooth_page_indicator
+                                                .ExpandingDotsEffect(
+                                              expansionFactor: 4.0,
+                                              spacing: 16.0,
+                                              radius: 16.0,
+                                              dotWidth: 16.0,
+                                              dotHeight: 16.0,
+                                              dotColor: Color(0x80001219),
+                                              activeDotColor:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
+                                              paintStyle: PaintingStyle.fill,
                                             ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(0.0, 0.0),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 2.0, 0.0, 0.0),
-                                        child: Text(
-                                          'as of ${functions.minutesAgo((GetBloodGlucoseCall.dateString(
-                                            mainGetBloodGlucoseResponse
-                                                .jsonBody,
-                                          ) as List).map<String>((s) => s.toString()).toList()!.toList())}',
-                                          textAlign: TextAlign.center,
-                                          style: FlutterFlowTheme.of(context)
-                                              .title3
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryText,
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                               Align(
@@ -555,7 +1361,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             ) <
                                             70) {
                                           return FlutterFlowTheme.of(context)
-                                              .tertiaryColor;
+                                              .tertiary;
                                         } else if (GetBloodGlucoseCall
                                                 .singleSgv(
                                               mainGetBloodGlucoseResponse
@@ -563,13 +1369,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                             ) >
                                             169) {
                                           return FlutterFlowTheme.of(context)
-                                              .secondaryColor;
+                                              .secondary;
                                         } else {
                                           return FlutterFlowTheme.of(context)
-                                              .primaryColor;
+                                              .primary;
                                         }
                                       }(),
-                                      FlutterFlowTheme.of(context).primaryColor,
+                                      FlutterFlowTheme.of(context).primary,
                                     ),
                                     index: 1,
                                   ),
@@ -577,8 +1383,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                               ),
                             ],
                           ),
-                        ).animateOnPageLoad(
-                            animationsMap['containerOnPageLoadAnimation']!),
+                        ),
                         Align(
                           alignment: AlignmentDirectional(0.0, 1.0),
                           child: Padding(
@@ -741,7 +1546,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               ) <
                                               70) {
                                             return FlutterFlowTheme.of(context)
-                                                .tertiaryColor;
+                                                .tertiary;
                                           } else if (GetBloodGlucoseCall
                                                   .singleSgv(
                                                 mainGetBloodGlucoseResponse
@@ -749,14 +1554,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               ) >
                                               169) {
                                             return FlutterFlowTheme.of(context)
-                                                .secondaryColor;
+                                                .secondary;
                                           } else {
                                             return FlutterFlowTheme.of(context)
-                                                .primaryColor;
+                                                .primary;
                                           }
                                         }(),
-                                        FlutterFlowTheme.of(context)
-                                            .primaryColor,
+                                        FlutterFlowTheme.of(context).primary,
                                       ),
                                       size: 30.0,
                                     ),
@@ -854,23 +1658,33 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       showModalBottomSheet(
                                         isScrollControlled: true,
                                         backgroundColor: Colors.transparent,
+                                        barrierColor: Color(0x00000000),
                                         context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: MediaQuery.of(context)
-                                                .viewInsets,
-                                            child: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.85,
-                                              child: POSTCarbsWidget(
-                                                latestMmol: GetBloodGlucoseCall
-                                                        .singleSgv(
-                                                      mainGetBloodGlucoseResponse
-                                                          .jsonBody,
-                                                    ) /
-                                                    18.0,
+                                        builder: (bottomSheetContext) {
+                                          return GestureDetector(
+                                            onTap: () => FocusScope.of(context)
+                                                .requestFocus(_unfocusNode),
+                                            child: Padding(
+                                              padding: MediaQuery.of(
+                                                      bottomSheetContext)
+                                                  .viewInsets,
+                                              child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.85,
+                                                child: POSTCarbsWidget(
+                                                  latestMmol:
+                                                      valueOrDefault<double>(
+                                                    GetBloodGlucoseCall
+                                                            .singleSgv(
+                                                          mainGetBloodGlucoseResponse
+                                                              .jsonBody,
+                                                        ) /
+                                                        18.0,
+                                                    0.1,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           );
@@ -902,7 +1716,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               ) <
                                               70) {
                                             return FlutterFlowTheme.of(context)
-                                                .tertiaryColor;
+                                                .tertiary;
                                           } else if (GetBloodGlucoseCall
                                                   .singleSgv(
                                                 mainGetBloodGlucoseResponse
@@ -910,14 +1724,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               ) >
                                               169) {
                                             return FlutterFlowTheme.of(context)
-                                                .secondaryColor;
+                                                .secondary;
                                           } else {
                                             return FlutterFlowTheme.of(context)
-                                                .primaryColor;
+                                                .primary;
                                           }
                                         }(),
-                                        FlutterFlowTheme.of(context)
-                                            .primaryColor,
+                                        FlutterFlowTheme.of(context).primary,
                                       ),
                                       size: 30.0,
                                     ),
@@ -1015,19 +1828,28 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       showModalBottomSheet(
                                         isScrollControlled: true,
                                         backgroundColor: Colors.transparent,
+                                        barrierColor: Color(0x00000000),
                                         context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: MediaQuery.of(context)
-                                                .viewInsets,
-                                            child: POSTInsulinWidget(
-                                              insulinType: 'Novorapid',
-                                              latestMmol:
+                                        builder: (bottomSheetContext) {
+                                          return GestureDetector(
+                                            onTap: () => FocusScope.of(context)
+                                                .requestFocus(_unfocusNode),
+                                            child: Padding(
+                                              padding: MediaQuery.of(
+                                                      bottomSheetContext)
+                                                  .viewInsets,
+                                              child: POSTInsulinWidget(
+                                                insulinType: 'Novorapid',
+                                                latestMmol:
+                                                    valueOrDefault<double>(
                                                   GetBloodGlucoseCall.singleSgv(
                                                         mainGetBloodGlucoseResponse
                                                             .jsonBody,
                                                       ) /
                                                       18,
+                                                  0.1,
+                                                ),
+                                              ),
                                             ),
                                           );
                                         },
@@ -1058,7 +1880,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               ) <
                                               70) {
                                             return FlutterFlowTheme.of(context)
-                                                .tertiaryColor;
+                                                .tertiary;
                                           } else if (GetBloodGlucoseCall
                                                   .singleSgv(
                                                 mainGetBloodGlucoseResponse
@@ -1066,14 +1888,13 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               ) >
                                               169) {
                                             return FlutterFlowTheme.of(context)
-                                                .secondaryColor;
+                                                .secondary;
                                           } else {
                                             return FlutterFlowTheme.of(context)
-                                                .primaryColor;
+                                                .primary;
                                           }
                                         }(),
-                                        FlutterFlowTheme.of(context)
-                                            .primaryColor,
+                                        FlutterFlowTheme.of(context).primary,
                                       ),
                                       size: 30.0,
                                     ),
@@ -1171,19 +1992,28 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       showModalBottomSheet(
                                         isScrollControlled: true,
                                         backgroundColor: Colors.transparent,
+                                        barrierColor: Color(0x00000000),
                                         context: context,
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: MediaQuery.of(context)
-                                                .viewInsets,
-                                            child: POSTInsulinWidget(
-                                              insulinType: 'Optisulin',
-                                              latestMmol:
+                                        builder: (bottomSheetContext) {
+                                          return GestureDetector(
+                                            onTap: () => FocusScope.of(context)
+                                                .requestFocus(_unfocusNode),
+                                            child: Padding(
+                                              padding: MediaQuery.of(
+                                                      bottomSheetContext)
+                                                  .viewInsets,
+                                              child: POSTInsulinWidget(
+                                                insulinType: 'Optisulin',
+                                                latestMmol:
+                                                    valueOrDefault<double>(
                                                   GetBloodGlucoseCall.singleSgv(
                                                         mainGetBloodGlucoseResponse
                                                             .jsonBody,
                                                       ) /
                                                       18,
+                                                  0.1,
+                                                ),
+                                              ),
                                             ),
                                           );
                                         },
@@ -1261,10 +2091,14 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                 'Settings',
                                 queryParams: {
                                   'latestMmol': serializeParam(
-                                    GetBloodGlucoseCall.singleSgv(
-                                          mainGetBloodGlucoseResponse.jsonBody,
-                                        ) /
-                                        18,
+                                    valueOrDefault<double>(
+                                      GetBloodGlucoseCall.singleSgv(
+                                            mainGetBloodGlucoseResponse
+                                                .jsonBody,
+                                          ) /
+                                          18,
+                                      0.1,
+                                    ),
                                     ParamType.double,
                                   ),
                                   'userRef': serializeParam(

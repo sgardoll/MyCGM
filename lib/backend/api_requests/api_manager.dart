@@ -6,6 +6,8 @@ import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime_type/mime_type.dart';
 
 import '../../flutter_flow/uploaded_file.dart';
 
@@ -41,13 +43,24 @@ class ApiCallRecord extends Equatable {
 }
 
 class ApiCallResponse {
-  const ApiCallResponse(this.jsonBody, this.headers, this.statusCode);
+  const ApiCallResponse(
+    this.jsonBody,
+    this.headers,
+    this.statusCode, {
+    this.response,
+  });
   final dynamic jsonBody;
   final Map<String, String> headers;
   final int statusCode;
+  final http.Response? response;
   // Whether we received a 2xx status (which generally marks success).
   bool get succeeded => statusCode >= 200 && statusCode < 300;
   String getHeader(String headerName) => headers[headerName] ?? '';
+  // Return the raw body from the response, or if this came from a cloud call
+  // and the body is not a string, then the json encoded body.
+  String get bodyText =>
+      response?.body ??
+      (jsonBody is String ? jsonBody as String : jsonEncode(jsonBody));
 
   static ApiCallResponse fromHttpResponse(
     http.Response response,
@@ -61,7 +74,12 @@ class ApiCallResponse {
           : response.body;
       jsonBody = returnBody ? json.decode(responseBody) : null;
     } catch (_) {}
-    return ApiCallResponse(jsonBody, response.headers, response.statusCode);
+    return ApiCallResponse(
+      jsonBody,
+      response.headers,
+      response.statusCode,
+      response: response,
+    );
   }
 
   static ApiCallResponse fromCloudCallResponse(Map<String, dynamic> response) =>
@@ -182,6 +200,7 @@ class ApiManager {
               e.key,
               uploadedFile.bytes ?? Uint8List.fromList([]),
               filename: uploadedFile.name,
+              contentType: _getMediaType(uploadedFile.name),
             ),
           ));
     });
@@ -194,6 +213,18 @@ class ApiManager {
 
     final response = await http.Response.fromStream(await request.send());
     return ApiCallResponse.fromHttpResponse(response, returnBody, decodeUtf8);
+  }
+
+  static MediaType? _getMediaType(String? filename) {
+    final contentType = mime(filename);
+    if (contentType == null) {
+      return null;
+    }
+    final parts = contentType.split('/');
+    if (parts.length != 2) {
+      return null;
+    }
+    return MediaType(parts.first, parts.last);
   }
 
   static dynamic createBody(

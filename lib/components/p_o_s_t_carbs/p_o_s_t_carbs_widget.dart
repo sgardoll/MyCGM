@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -32,6 +32,12 @@ class POSTCarbsWidget extends StatefulWidget {
 
 class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
   late POSTCarbsModel _model;
+
+  int get pageViewCurrentIndex => _model.pageViewController != null &&
+          _model.pageViewController!.hasClients &&
+          _model.pageViewController!.page != null
+      ? _model.pageViewController!.page!.round()
+      : 0;
 
   @override
   void setState(VoidCallback callback) {
@@ -80,14 +86,14 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
           color: valueOrDefault<Color>(
             () {
               if (widget.latestMmol! < 3.9) {
-                return FlutterFlowTheme.of(context).tertiaryColor;
+                return FlutterFlowTheme.of(context).tertiary;
               } else if (widget.latestMmol! > 9.4) {
-                return FlutterFlowTheme.of(context).secondaryColor;
+                return FlutterFlowTheme.of(context).secondary;
               } else {
-                return FlutterFlowTheme.of(context).primaryColor;
+                return FlutterFlowTheme.of(context).primary;
               }
             }(),
-            FlutterFlowTheme.of(context).primaryColor,
+            FlutterFlowTheme.of(context).primary,
           ),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(0.0),
@@ -131,7 +137,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                               Text(
                                 'Select an option below',
                                 maxLines: 2,
-                                style: FlutterFlowTheme.of(context).title2,
+                                style:
+                                    FlutterFlowTheme.of(context).headlineMedium,
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
@@ -142,7 +149,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                     Text(
                                       'Search Food Database',
                                       style: FlutterFlowTheme.of(context)
-                                          .title3
+                                          .headlineSmall
                                           .override(
                                             fontFamily: 'Poppins',
                                             color: FlutterFlowTheme.of(context)
@@ -188,7 +195,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                color: Color(0x00000000),
+                                                color: Color(0x7EFFFFFF),
                                                 width: 3.0,
                                               ),
                                               borderRadius:
@@ -216,7 +223,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                     20.0, 32.0, 20.0, 12.0),
                                           ),
                                           style: FlutterFlowTheme.of(context)
-                                              .title3
+                                              .headlineSmall
                                               .override(
                                                 fontFamily: 'Poppins',
                                                 color:
@@ -247,20 +254,19 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             if (widget.latestMmol! < 3.9) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .tertiaryColor;
+                                                  .tertiary;
                                             } else if (widget.latestMmol! >
                                                 9.4) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .secondaryColor;
+                                                  .secondary;
                                             } else {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .primaryColor;
+                                                  .primary;
                                             }
                                           }(),
-                                          FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                          FlutterFlowTheme.of(context).primary,
                                         ),
                                         size: 25.0,
                                       ),
@@ -317,7 +323,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                     Text(
                                       'Manually Enter Carbs',
                                       style: FlutterFlowTheme.of(context)
-                                          .title3
+                                          .headlineSmall
                                           .override(
                                             fontFamily: 'Poppins',
                                             color: FlutterFlowTheme.of(context)
@@ -382,7 +388,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   focusedBorder:
                                                       OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                      color: Color(0x00000000),
+                                                      color: Color(0x7EFFFFFF),
                                                       width: 3.0,
                                                     ),
                                                     borderRadius:
@@ -416,7 +422,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                 ),
                                                 style:
                                                     FlutterFlowTheme.of(context)
-                                                        .title3
+                                                        .headlineSmall
                                                         .override(
                                                           fontFamily: 'Poppins',
                                                           color: FlutterFlowTheme
@@ -477,7 +483,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                     maxLines: 2,
                                                     style: FlutterFlowTheme.of(
                                                             context)
-                                                        .title3
+                                                        .headlineSmall
                                                         .override(
                                                           fontFamily: 'Poppins',
                                                           color: FlutterFlowTheme
@@ -525,7 +531,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                         OutlineInputBorder(
                                                       borderSide: BorderSide(
                                                         color:
-                                                            Color(0x00000000),
+                                                            Color(0x7EFFFFFF),
                                                         width: 3.0,
                                                       ),
                                                       borderRadius:
@@ -564,7 +570,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   ),
                                                   style: FlutterFlowTheme.of(
                                                           context)
-                                                      .title3
+                                                      .headlineSmall
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         color:
@@ -601,20 +607,20 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                               if (widget.latestMmol! < 3.9) {
                                                 return FlutterFlowTheme.of(
                                                         context)
-                                                    .tertiaryColor;
+                                                    .tertiary;
                                               } else if (widget.latestMmol! >
                                                   9.4) {
                                                 return FlutterFlowTheme.of(
                                                         context)
-                                                    .secondaryColor;
+                                                    .secondary;
                                               } else {
                                                 return FlutterFlowTheme.of(
                                                         context)
-                                                    .primaryColor;
+                                                    .primary;
                                               }
                                             }(),
                                             FlutterFlowTheme.of(context)
-                                                .primaryColor,
+                                                .primary,
                                           ),
                                           size: 25.0,
                                         ),
@@ -756,7 +762,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                 child: Text(
                                   'Confirm Carb Intake',
                                   maxLines: 2,
-                                  style: FlutterFlowTheme.of(context).title2,
+                                  style: FlutterFlowTheme.of(context)
+                                      .headlineMedium,
                                 ),
                               ),
                               Padding(
@@ -790,7 +797,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   .foodNameFull!,
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .title3
+                                                      .headlineSmall
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         color:
@@ -804,7 +811,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                               '${searchResultsListViewItem.totalsugarsg?.toString()} grams',
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText1
+                                                      .bodyMedium
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         color:
@@ -841,7 +848,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                 child: Text(
                                   'Summary',
                                   style: FlutterFlowTheme.of(context)
-                                      .title3
+                                      .headlineSmall
                                       .override(
                                         fontFamily: 'Poppins',
                                         color: FlutterFlowTheme.of(context)
@@ -880,7 +887,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   summaryItem,
                                                   style: FlutterFlowTheme.of(
                                                           context)
-                                                      .bodyText2
+                                                      .bodySmall
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontWeight:
@@ -921,8 +928,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                   children: [
                                     Text(
                                       'Record X grams',
-                                      style:
-                                          FlutterFlowTheme.of(context).title2,
+                                      style: FlutterFlowTheme.of(context)
+                                          .headlineMedium,
                                     ),
                                     FlutterFlowIconButton(
                                       borderColor: Colors.transparent,
@@ -938,20 +945,19 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             if (widget.latestMmol! < 3.9) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .tertiaryColor;
+                                                  .tertiary;
                                             } else if (widget.latestMmol! >
                                                 9.4) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .secondaryColor;
+                                                  .secondary;
                                             } else {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .primaryColor;
+                                                  .primary;
                                             }
                                           }(),
-                                          FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                          FlutterFlowTheme.of(context).primary,
                                         ),
                                         size: 25.0,
                                       ),
@@ -976,7 +982,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                 'Offset with ?X gms of carbs with x units of  insulin',
                                 textAlign: TextAlign.center,
                                 maxLines: 2,
-                                style: FlutterFlowTheme.of(context).title2,
+                                style:
+                                    FlutterFlowTheme.of(context).headlineMedium,
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
@@ -1039,7 +1046,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                     20.0, 32.0, 20.0, 12.0),
                                           ),
                                           style: FlutterFlowTheme.of(context)
-                                              .title3
+                                              .headlineSmall
                                               .override(
                                                 fontFamily: 'Poppins',
                                                 color:
@@ -1076,20 +1083,19 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             if (widget.latestMmol! < 3.9) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .tertiaryColor;
+                                                  .tertiary;
                                             } else if (widget.latestMmol! >
                                                 9.4) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .secondaryColor;
+                                                  .secondary;
                                             } else {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .primaryColor;
+                                                  .primary;
                                             }
                                           }(),
-                                          FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                          FlutterFlowTheme.of(context).primary,
                                         ),
                                         size: 25.0,
                                       ),
@@ -1122,7 +1128,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         'Do not record insulin ',
                                         maxLines: 2,
                                         style: FlutterFlowTheme.of(context)
-                                            .title3
+                                            .headlineSmall
                                             .override(
                                               fontFamily: 'Poppins',
                                               color:
@@ -1147,20 +1153,19 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             if (widget.latestMmol! < 3.9) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .tertiaryColor;
+                                                  .tertiary;
                                             } else if (widget.latestMmol! >
                                                 9.4) {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .secondaryColor;
+                                                  .secondary;
                                             } else {
                                               return FlutterFlowTheme.of(
                                                       context)
-                                                  .primaryColor;
+                                                  .primary;
                                             }
                                           }(),
-                                          FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                                          FlutterFlowTheme.of(context).primary,
                                         ),
                                         size: 30.0,
                                       ),
@@ -1187,8 +1192,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                               PageController(initialPage: 0),
                           count: 3,
                           axisDirection: Axis.vertical,
-                          onDotClicked: (i) {
-                            _model.pageViewController!.animateToPage(
+                          onDotClicked: (i) async {
+                            await _model.pageViewController!.animateToPage(
                               i,
                               duration: Duration(milliseconds: 500),
                               curve: Curves.ease,

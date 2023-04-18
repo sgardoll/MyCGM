@@ -15,8 +15,6 @@ const kDocumentReferenceField = 'Document__Reference__Field';
 @SerializersFor(const [
   UsersRecord,
   FoodDataRecord,
-  DataStruct,
-  IconStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())
@@ -201,6 +199,9 @@ Map<String, dynamic> mapToFirestore(Map<String, dynamic> data) =>
       }
       return MapEntry(key, value);
     });
+
+List<GeoPoint>? convertToGeoPointList(List<LatLng>? list) =>
+    list?.map((e) => e.toGeoPoint()).toList();
 
 extension GeoPointExtension on LatLng {
   GeoPoint toGeoPoint() => GeoPoint(latitude, longitude);

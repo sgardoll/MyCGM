@@ -294,40 +294,24 @@ class _$FoodDataRecord extends FoodDataRecord {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc(
-                                            $jc(
-                                                $jc(
-                                                    $jc(
-                                                        $jc(
-                                                            $jc(
-                                                                0,
-                                                                source
-                                                                    .hashCode),
-                                                            publicFoodKey
-                                                                .hashCode),
-                                                        classification
-                                                            .hashCode),
-                                                    foodName.hashCode),
-                                                foodDetail1.hashCode),
-                                            foodDetail2.hashCode),
-                                        foodDetail3.hashCode),
-                                    foodDetail4.hashCode),
-                                foodDetail5.hashCode),
-                            foodDetail6.hashCode),
-                        foodNameFull.hashCode),
-                    totalsugarsg.hashCode),
-                addedsugarsg.hashCode),
-            freesugarsg.hashCode),
-        ffRef.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, source.hashCode);
+    _$hash = $jc(_$hash, publicFoodKey.hashCode);
+    _$hash = $jc(_$hash, classification.hashCode);
+    _$hash = $jc(_$hash, foodName.hashCode);
+    _$hash = $jc(_$hash, foodDetail1.hashCode);
+    _$hash = $jc(_$hash, foodDetail2.hashCode);
+    _$hash = $jc(_$hash, foodDetail3.hashCode);
+    _$hash = $jc(_$hash, foodDetail4.hashCode);
+    _$hash = $jc(_$hash, foodDetail5.hashCode);
+    _$hash = $jc(_$hash, foodDetail6.hashCode);
+    _$hash = $jc(_$hash, foodNameFull.hashCode);
+    _$hash = $jc(_$hash, totalsugarsg.hashCode);
+    _$hash = $jc(_$hash, addedsugarsg.hashCode);
+    _$hash = $jc(_$hash, freesugarsg.hashCode);
+    _$hash = $jc(_$hash, ffRef.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
@@ -482,4 +466,4 @@ class FoodDataRecordBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

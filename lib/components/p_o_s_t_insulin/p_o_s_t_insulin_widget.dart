@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -76,14 +76,14 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
           color: valueOrDefault<Color>(
             () {
               if (widget.latestMmol! < 3.9) {
-                return FlutterFlowTheme.of(context).tertiaryColor;
+                return FlutterFlowTheme.of(context).tertiary;
               } else if (widget.latestMmol! > 9.4) {
-                return FlutterFlowTheme.of(context).secondaryColor;
+                return FlutterFlowTheme.of(context).secondary;
               } else {
-                return FlutterFlowTheme.of(context).primaryColor;
+                return FlutterFlowTheme.of(context).primary;
               }
             }(),
-            FlutterFlowTheme.of(context).primaryColor,
+            FlutterFlowTheme.of(context).primary,
           ),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(0.0),
@@ -113,7 +113,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                 children: [
                   Text(
                     'Add ${widget.insulinType}',
-                    style: FlutterFlowTheme.of(context).title2,
+                    style: FlutterFlowTheme.of(context).headlineMedium,
                   ),
                 ],
               ),
@@ -144,7 +144,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color(0x00000000),
+                              color: Color(0x7EFFFFFF),
                               width: 3.0,
                             ),
                             borderRadius: BorderRadius.circular(50.0),
@@ -166,7 +166,9 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           contentPadding: EdgeInsetsDirectional.fromSTEB(
                               20.0, 32.0, 20.0, 12.0),
                         ),
-                        style: FlutterFlowTheme.of(context).title3.override(
+                        style: FlutterFlowTheme.of(context)
+                            .headlineSmall
+                            .override(
                               fontFamily: 'Poppins',
                               color: FlutterFlowTheme.of(context).secondaryText,
                             ),
@@ -193,15 +195,14 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                         color: valueOrDefault<Color>(
                           () {
                             if (widget.latestMmol! < 3.9) {
-                              return FlutterFlowTheme.of(context).tertiaryColor;
+                              return FlutterFlowTheme.of(context).tertiary;
                             } else if (widget.latestMmol! > 9.4) {
-                              return FlutterFlowTheme.of(context)
-                                  .secondaryColor;
+                              return FlutterFlowTheme.of(context).secondary;
                             } else {
-                              return FlutterFlowTheme.of(context).primaryColor;
+                              return FlutterFlowTheme.of(context).primary;
                             }
                           }(),
-                          FlutterFlowTheme.of(context).primaryColor,
+                          FlutterFlowTheme.of(context).primary,
                         ),
                         size: 30.0,
                       ),
@@ -232,7 +233,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                               content: Text(
                                 'Submission to Nightscout Successful',
                                 style: FlutterFlowTheme.of(context)
-                                    .bodyText2
+                                    .bodySmall
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: FlutterFlowTheme.of(context)
@@ -250,7 +251,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                               content: Text(
                                 'Post Was Unsuccessful',
                                 style: FlutterFlowTheme.of(context)
-                                    .bodyText2
+                                    .bodySmall
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: FlutterFlowTheme.of(context).rust,

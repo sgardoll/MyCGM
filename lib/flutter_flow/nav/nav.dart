@@ -7,7 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
 import '../../backend/backend.dart';
 
-import '../../auth/firebase_user_provider.dart';
+import '../../auth/base_auth_user_provider.dart';
 
 import '../../backend/firebase_dynamic_links/firebase_dynamic_links.dart'
     show DynamicLinksHandler;
@@ -25,8 +25,8 @@ export '../../backend/firebase_dynamic_links/firebase_dynamic_links.dart'
 const kTransitionInfoKey = '__transition_info__';
 
 class AppStateNotifier extends ChangeNotifier {
-  MyCGMFirebaseUser? initialUser;
-  MyCGMFirebaseUser? user;
+  BaseAuthUser? initialUser;
+  BaseAuthUser? user;
   bool showSplashImage = true;
   String? _redirectLocation;
 
@@ -51,7 +51,7 @@ class AppStateNotifier extends ChangeNotifier {
   /// to perform subsequent actions (such as navigation) afterwards.
   void updateNotifyOnAuthChange(bool notify) => notifyOnAuthChange = notify;
 
-  void update(MyCGMFirebaseUser newUser) {
+  void update(BaseAuthUser newUser) {
     initialUser ??= newUser;
     user = newUser;
     // Refresh the app on auth change unless explicitly marked otherwise.
@@ -74,14 +74,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, _) =>
-          appStateNotifier.loggedIn ? MainTVWidget() : LoginPageWidget(),
+          appStateNotifier.loggedIn ? MainWidget() : LoginPageWidget(),
       navigatorBuilder: (_, __, child) => DynamicLinksHandler(child: child),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? MainTVWidget() : LoginPageWidget(),
+              appStateNotifier.loggedIn ? MainWidget() : LoginPageWidget(),
           routes: [
             FFRoute(
               name: 'loginPage',
@@ -161,8 +161,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => MainTVWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
-        ).toRoute(appStateNotifier),
-      ],
+        ),
+      ].map((r) => r.toRoute(appStateNotifier)).toList(),
       urlPathStrategy: UrlPathStrategy.path,
     );
 
@@ -208,6 +208,16 @@ extension NavigationExtensions on BuildContext {
               queryParams: queryParams,
               extra: extra,
             );
+
+  void safePop() {
+    // If there is only one route on the stack, navigate to the initial
+    // page instead of popping.
+    if (GoRouter.of(this).routerDelegate.matches.length <= 1) {
+      go('/');
+    } else {
+      pop();
+    }
+  }
 }
 
 extension GoRouterExtensions on GoRouter {
@@ -219,6 +229,7 @@ extension GoRouterExtensions on GoRouter {
           : appState.updateNotifyOnAuthChange(false);
   bool shouldRedirect(bool ignoreRedirect) =>
       !ignoreRedirect && appState.hasRedirect();
+  void clearRedirectLocation() => appState.clearRedirectLocation();
   void setRedirectLocationIfUnset(String location) =>
       (routerDelegate.refreshListenable as AppStateNotifier)
           .updateNotifyOnAuthChange(false);
@@ -332,7 +343,7 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: FlutterFlowTheme.of(context).tertiaryColor,
+                  color: Color(0xFF1D2324),
                   child: Center(
                     child: Image.asset(
                       'assets/images/Logo3.2-50Transparent.png',

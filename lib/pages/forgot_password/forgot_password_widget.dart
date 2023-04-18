@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -180,13 +180,13 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
 
     return Title(
         title: 'forgotPassword',
-        color: FlutterFlowTheme.of(context).primaryColor,
-        child: Scaffold(
-          key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-          body: SafeArea(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+        color: FlutterFlowTheme.of(context).primary,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          child: Scaffold(
+            key: scaffoldKey,
+            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+            body: SafeArea(
               child: Stack(
                 children: [
                   ClipRect(
@@ -203,8 +203,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                               width: 300.0,
                               height: 400.0,
                               decoration: BoxDecoration(
-                                color:
-                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                color: FlutterFlowTheme.of(context).tertiary,
                                 shape: BoxShape.rectangle,
                               ),
                             ).animateOnActionTrigger(
@@ -218,8 +217,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                               width: MediaQuery.of(context).size.width * 0.75,
                               height: MediaQuery.of(context).size.width * 0.75,
                               decoration: BoxDecoration(
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
+                                color: FlutterFlowTheme.of(context).primary,
                                 shape: BoxShape.circle,
                               ),
                             ).animateOnActionTrigger(
@@ -233,8 +231,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                               width: MediaQuery.of(context).size.width * 0.7,
                               height: MediaQuery.of(context).size.width * 0.7,
                               decoration: BoxDecoration(
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryColor,
+                                color: FlutterFlowTheme.of(context).secondary,
                                 shape: BoxShape.circle,
                               ),
                             ).animateOnActionTrigger(
@@ -295,7 +292,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                             24.0, 0.0),
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
-                                                        .subtitle1,
+                                                        .titleMedium,
                                                 indicatorColor:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryText,
@@ -338,10 +335,10 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                       'Email Address',
                                                                   labelStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText2,
+                                                                      .bodySmall,
                                                                   hintStyle: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .bodyText2,
+                                                                      .bodySmall,
                                                                   enabledBorder:
                                                                       OutlineInputBorder(
                                                                     borderSide:
@@ -375,7 +372,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                         BorderSide(
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .primaryColor,
+                                                                          .primary,
                                                                       width:
                                                                           2.0,
                                                                     ),
@@ -389,7 +386,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                         BorderSide(
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .primaryColor,
+                                                                          .primary,
                                                                       width:
                                                                           2.0,
                                                                     ),
@@ -410,7 +407,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                 ),
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .bodyText1
+                                                                    .bodyMedium
                                                                     .override(
                                                                       fontFamily:
                                                                           'Poppins',
@@ -465,7 +462,8 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                         );
                                                                         return;
                                                                       }
-                                                                      await resetPassword(
+                                                                      await authManager
+                                                                          .resetPassword(
                                                                         email: _model
                                                                             .emailAddressController
                                                                             .text,
@@ -493,10 +491,10 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                           0.0),
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .secondaryColor,
+                                                                          .secondary,
                                                                       textStyle: FlutterFlowTheme.of(
                                                                               context)
-                                                                          .subtitle2
+                                                                          .titleSmall
                                                                           .override(
                                                                             fontFamily:
                                                                                 'Poppins',
@@ -553,7 +551,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                           Text(
                                                                         'Or use a social account to login',
                                                                         style: FlutterFlowTheme.of(context)
-                                                                            .bodyText2,
+                                                                            .bodySmall,
                                                                       ),
                                                                     ),
                                                                   ],
@@ -612,14 +610,14 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                           GoRouter.of(context)
                                                                               .prepareAuthEvent();
                                                                           final user =
-                                                                              await signInWithGoogle(context);
+                                                                              await authManager.signInWithGoogle(context);
                                                                           if (user ==
                                                                               null) {
                                                                             return;
                                                                           }
 
                                                                           context.goNamedAuth(
-                                                                              'MainTV',
+                                                                              'Main',
                                                                               mounted);
                                                                         },
                                                                       ),
@@ -654,14 +652,14 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                           GoRouter.of(context)
                                                                               .prepareAuthEvent();
                                                                           final user =
-                                                                              await signInWithApple(context);
+                                                                              await authManager.signInWithApple(context);
                                                                           if (user ==
                                                                               null) {
                                                                             return;
                                                                           }
 
                                                                           context.goNamedAuth(
-                                                                              'MainTV',
+                                                                              'Main',
                                                                               mounted);
                                                                         },
                                                                       ),
