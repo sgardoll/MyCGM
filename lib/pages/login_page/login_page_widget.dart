@@ -45,8 +45,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           curve: Curves.easeInOut,
           delay: 400.ms,
           duration: 600.ms,
-          begin: 1.0,
-          end: 4.0,
+          begin: Offset(1.0, 1.0),
+          end: Offset(4.0, 4.0),
         ),
       ],
     ),
@@ -66,8 +66,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           curve: Curves.easeOut,
           delay: 0.ms,
           duration: 1230.ms,
-          begin: 1.0,
-          end: 5.0,
+          begin: Offset(1.0, 1.0),
+          end: Offset(5.0, 5.0),
         ),
       ],
     ),
@@ -87,8 +87,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           curve: Curves.easeOut,
           delay: 300.ms,
           duration: 2000.ms,
-          begin: 1.0,
-          end: 5.0,
+          begin: Offset(1.0, 1.0),
+          end: Offset(5.0, 5.0),
         ),
       ],
     ),
@@ -299,27 +299,31 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                             initialIndex: 0,
                             child: Column(
                               children: [
-                                TabBar(
-                                  isScrollable: true,
-                                  labelColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  unselectedLabelColor:
-                                      FlutterFlowTheme.of(context).gray600,
-                                  labelPadding: EdgeInsetsDirectional.fromSTEB(
-                                      24.0, 0.0, 24.0, 0.0),
-                                  labelStyle:
-                                      FlutterFlowTheme.of(context).titleMedium,
-                                  indicatorColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  indicatorWeight: 3.0,
-                                  tabs: [
-                                    Tab(
-                                      text: 'Sign In',
-                                    ),
-                                    Tab(
-                                      text: 'Sign Up',
-                                    ),
-                                  ],
+                                Align(
+                                  alignment: Alignment(0.0, 0),
+                                  child: TabBar(
+                                    isScrollable: true,
+                                    labelColor: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    unselectedLabelColor:
+                                        FlutterFlowTheme.of(context).gray600,
+                                    labelPadding:
+                                        EdgeInsetsDirectional.fromSTEB(
+                                            24.0, 0.0, 24.0, 0.0),
+                                    labelStyle: FlutterFlowTheme.of(context)
+                                        .titleMedium,
+                                    indicatorColor: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    indicatorWeight: 3.0,
+                                    tabs: [
+                                      Tab(
+                                        text: 'Sign In',
+                                      ),
+                                      Tab(
+                                        text: 'Sign Up',
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Expanded(
                                   child: TabBarView(
@@ -753,6 +757,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                             .fromSTEB(0.0, 0.0,
                                                                 12.0, 0.0),
                                                     child: InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
                                                       onTap: () async {
                                                         GoRouter.of(context)
                                                             .prepareAuthEvent();
@@ -871,6 +883,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                     ),
                                                   ),
                                                   InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
                                                     onTap: () async {
                                                       GoRouter.of(context)
                                                           .prepareAuthEvent();

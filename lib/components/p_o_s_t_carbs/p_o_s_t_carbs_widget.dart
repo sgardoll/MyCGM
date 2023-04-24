@@ -784,6 +784,10 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                             searchResultsListView[
                                                 searchResultsListViewIndex];
                                         return InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
                                           onTap: () async {
                                             setState(() {
                                               _model.addToCarbItemsSummary(

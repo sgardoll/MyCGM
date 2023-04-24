@@ -3,7 +3,6 @@ import '/backend/api_requests/api_calls.dart';
 import '/components/p_o_s_t_carbs/p_o_s_t_carbs_widget.dart';
 import '/components/p_o_s_t_insulin/p_o_s_t_insulin_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_charts.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -11,7 +10,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'dart:async';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
@@ -174,7 +172,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
         nightscout: valueOrDefault(currentUserDocument?.nightscout, ''),
         token: valueOrDefault(currentUserDocument?.token, ''),
-        count: '1',
+        count: '2',
       );
       if ((_model.pageLoadAPICall?.succeeded ?? true)) {
         setState(() {
@@ -189,7 +187,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
         if (_model.sgv != null) {
           setState(() {
             _model.mmol = valueOrDefault<double>(
-              _model.sgv! / 18,
+              GetBloodGlucoseCall.singleSgv(
+                    (_model.pageLoadAPICall?.jsonBody ?? ''),
+                  ) /
+                  18.0,
               1.0,
             );
             _model.mainColor = valueOrDefault<Color>(
@@ -216,6 +217,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
               }(),
               FlutterFlowTheme.of(context).primary,
             );
+            _model.date = DateTime.fromMillisecondsSinceEpoch(getJsonField(
+              (_model.pageLoadAPICall?.jsonBody ?? ''),
+              r'''$[0].date''',
+            ));
           });
         }
       }
@@ -303,7 +308,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                       PageView(
                                         controller:
                                             _model.pageViewController ??=
-                                                PageController(initialPage: 2),
+                                                PageController(initialPage: 1),
                                         onPageChanged: (_) => setState(() {}),
                                         scrollDirection: Axis.horizontal,
                                         children: [
@@ -462,71 +467,6 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                   ),
                                                 ),
                                               ),
-                                              Expanded(
-                                                flex: 5,
-                                                child: Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      1.0,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      1.0,
-                                                  child: FlutterFlowLineChart(
-                                                    data: [
-                                                      FFLineChartData(
-                                                        xData: getJsonField(
-                                                          mainGetBloodGlucoseResponse
-                                                              .jsonBody,
-                                                          r'''$.date''',
-                                                        ),
-                                                        yData: functions
-                                                            .sgvDivideBy18(
-                                                                getJsonField(
-                                                          mainGetBloodGlucoseResponse
-                                                              .jsonBody,
-                                                          r'''$.sgv''',
-                                                        )),
-                                                        settings:
-                                                            LineChartBarData(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .accent3,
-                                                          barWidth: 3.0,
-                                                          isCurved: true,
-                                                          belowBarData:
-                                                              BarAreaData(
-                                                            show: true,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryBackground,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                    chartStylingInfo:
-                                                        ChartStylingInfo(
-                                                      enableTooltip: true,
-                                                      tooltipBackgroundColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryText,
-                                                      backgroundColor:
-                                                          Color(0x00FFFFFF),
-                                                      showBorder: false,
-                                                    ),
-                                                    axisBounds: AxisBounds(
-                                                      minY: 0.0,
-                                                      maxY: 20.0,
-                                                    ),
-                                                    xAxisLabelInfo:
-                                                        AxisLabelInfo(),
-                                                    yAxisLabelInfo:
-                                                        AxisLabelInfo(),
-                                                  ),
-                                                ),
-                                              ),
                                             ],
                                           ),
                                           Column(
@@ -583,20 +523,12 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                         .primary,
                                                   ),
                                                   center: Text(
-                                                    valueOrDefault<String>(
-                                                      formatNumber(
-                                                        GetBloodGlucoseCall
-                                                                .singleSgv(
-                                                              mainGetBloodGlucoseResponse
-                                                                  .jsonBody,
-                                                            ) /
-                                                            18.0,
-                                                        formatType:
-                                                            FormatType.custom,
-                                                        format: '#0.0',
-                                                        locale: 'en_AU',
-                                                      ),
-                                                      '1',
+                                                    formatNumber(
+                                                      _model.mmol,
+                                                      formatType:
+                                                          FormatType.custom,
+                                                      format: '##.0',
+                                                      locale: '',
                                                     ),
                                                     textAlign: TextAlign.center,
                                                     style: FlutterFlowTheme.of(
@@ -629,6 +561,33 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .headlineMedium,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 8.0, 0.0, 0.0),
+                                                child: Text(
+                                                  'as of ${dateTimeFormat(
+                                                    'relative',
+                                                    _model.date,
+                                                    locale: FFLocalizations.of(
+                                                            context)
+                                                        .languageCode,
+                                                  )}',
+                                                  textAlign: TextAlign.center,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .headlineSmall
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      ),
                                                 ),
                                               ),
                                               Expanded(
@@ -970,12 +929,20 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                                       Builder(
                                                                     builder:
                                                                         (context) {
-                                                                      final entries =
-                                                                          getJsonField(
-                                                                        mainGetBloodGlucoseResponse
-                                                                            .jsonBody,
-                                                                        r'''$.sgv''',
-                                                                      ).toList();
+                                                                      final table =
+                                                                          GetBloodGlucoseCall.sgv(
+                                                                                mainGetBloodGlucoseResponse.jsonBody,
+                                                                              )?.map((e) => e).toList()?.toList() ??
+                                                                              [];
+                                                                      if (table
+                                                                          .isEmpty) {
+                                                                        return Center(
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'assets/images/Logo3.2-50Transparent.png',
+                                                                          ),
+                                                                        );
+                                                                      }
                                                                       return RefreshIndicator(
                                                                         onRefresh:
                                                                             () async {
@@ -1010,11 +977,11 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                                           scrollDirection:
                                                                               Axis.vertical,
                                                                           itemCount:
-                                                                              entries.length,
+                                                                              table.length,
                                                                           itemBuilder:
-                                                                              (context, entriesIndex) {
-                                                                            final entriesItem =
-                                                                                entries[entriesIndex];
+                                                                              (context, tableIndex) {
+                                                                            final tableItem =
+                                                                                table[tableIndex];
                                                                             return Column(
                                                                               mainAxisSize: MainAxisSize.min,
                                                                               children: [
@@ -1040,11 +1007,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                                                               children: [
                                                                                                 AutoSizeText(
                                                                                                   formatNumber(
-                                                                                                    getJsonField(
-                                                                                                          entriesItem,
-                                                                                                          r'''$.sgv''',
-                                                                                                        ) /
-                                                                                                        18,
+                                                                                                    tableItem.toDouble() / 18,
                                                                                                     formatType: FormatType.custom,
                                                                                                     format: '###.0',
                                                                                                     locale: 'en_AU',
@@ -1070,7 +1033,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                                                                 width: 24.0,
                                                                                                 height: 24.0,
                                                                                                 direction: getJsonField(
-                                                                                                  entriesItem,
+                                                                                                  mainGetBloodGlucoseResponse.jsonBody,
                                                                                                   r'''$.direction''',
                                                                                                 ),
                                                                                                 color: FlutterFlowTheme.of(context).accent4,
@@ -1086,7 +1049,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                                                               flex: 1,
                                                                                               child: Text(
                                                                                                 getJsonField(
-                                                                                                  entriesItem,
+                                                                                                  mainGetBloodGlucoseResponse.jsonBody,
                                                                                                   r'''$.direction''',
                                                                                                 ).toString(),
                                                                                                 textAlign: TextAlign.start,
@@ -1105,7 +1068,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                                                               flex: 3,
                                                                                               child: Text(
                                                                                                 getJsonField(
-                                                                                                  entriesItem,
+                                                                                                  mainGetBloodGlucoseResponse.jsonBody,
                                                                                                   r'''$.device''',
                                                                                                 ).toString(),
                                                                                                 textAlign: TextAlign.center,
@@ -1124,17 +1087,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                                                                                 Padding(
                                                                                                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 2.0, 0.0, 0.0),
                                                                                                   child: Text(
-                                                                                                    valueOrDefault<String>(
-                                                                                                      dateTimeFormat(
-                                                                                                        'relative',
-                                                                                                        functions.unixToDateTime(getJsonField(
-                                                                                                          entriesItem,
-                                                                                                          r'''$.date''',
-                                                                                                        )),
-                                                                                                        locale: FFLocalizations.of(context).languageCode,
-                                                                                                      ),
-                                                                                                      '1',
-                                                                                                    ),
+                                                                                                    'Status',
                                                                                                     style: FlutterFlowTheme.of(context).bodySmall.override(
                                                                                                           fontFamily: 'Poppins',
                                                                                                           color: FlutterFlowTheme.of(context).accent3,
@@ -1264,7 +1217,7 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                               .SmoothPageIndicator(
                                             controller: _model
                                                     .pageViewController ??=
-                                                PageController(initialPage: 2),
+                                                PageController(initialPage: 1),
                                             count: 3,
                                             axisDirection: Axis.horizontal,
                                             onDotClicked: (i) async {
@@ -1349,6 +1302,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                                     shape: BoxShape.circle,
                                   ),
                                   child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
                                     onTap: () async {
                                       if (FFAppState().FABOpen) {
                                         if (animationsMap[
@@ -1910,6 +1867,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                         Align(
                           alignment: AlignmentDirectional(-1.0, 1.0),
                           child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
                             onTap: () async {
                               if (FFAppState().FABOpen) {
                                 if (animationsMap[
@@ -1993,6 +1954,10 @@ class _MainWidgetState extends State<MainWidget> with TickerProviderStateMixin {
                         Align(
                           alignment: AlignmentDirectional(1.0, 1.0),
                           child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
                             onTap: () async {
                               if (FFAppState().FABOpen) {
                                 if (animationsMap[

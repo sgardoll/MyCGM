@@ -53,13 +53,6 @@ String? minutesAgo(dynamic timestamp) {
   }
 }
 
-DateTime? unixToDateTime(dynamic timestamp) {
-  if (timestamp == null) {
-    return null;
-  }
-  return DateTime.fromMillisecondsSinceEpoch(timestamp);
-}
-
 String? novoCalcBasedOnRatio(
   String? ratio,
   String? carbValuForCalc,
@@ -93,4 +86,10 @@ List<double> sgvDivideBy18(List<dynamic> sgv) {
   List<dynamic> values = sgv ?? [];
   List<double> doubles = values.map((i) => (i as num) / 18).toList();
   return doubles;
+}
+
+String? jsonDateToString(dynamic date) {
+  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(date * 1000);
+  String dateTimeString = dateTime.toString();
+  return dateTimeString;
 }

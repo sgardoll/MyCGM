@@ -3,7 +3,6 @@ import '/backend/api_requests/api_calls.dart';
 import '/components/p_o_s_t_carbs/p_o_s_t_carbs_widget.dart';
 import '/components/p_o_s_t_insulin/p_o_s_t_insulin_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_charts.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -11,7 +10,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
 import '/custom_code/widgets/index.dart' as custom_widgets;
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'dart:async';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
@@ -34,6 +32,8 @@ class MainModel extends FlutterFlowModel {
   Color? mainColor = const Color(0xFF0A9396);
 
   Color? bgColor = const Color(0x4D005F73);
+
+  DateTime? date;
 
   ///  State fields for stateful widgets in this page.
 
