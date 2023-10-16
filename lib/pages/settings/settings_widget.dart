@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/nav_bar1_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -21,12 +22,10 @@ class SettingsWidget extends StatefulWidget {
   const SettingsWidget({
     Key? key,
     double? latestMmol,
-    this.userRef,
   })  : this.latestMmol = latestMmol ?? 1.0,
         super(key: key);
 
   final double latestMmol;
-  final DocumentReference? userRef;
 
   @override
   _SettingsWidgetState createState() => _SettingsWidgetState();
@@ -36,7 +35,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   late SettingsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -62,7 +60,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -72,9 +69,11 @@ class _SettingsWidgetState extends State<SettingsWidget> {
 
     return Title(
         title: 'Settings',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             appBar: responsiveVisibility(
@@ -82,7 +81,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               desktop: false,
             )
                 ? AppBar(
-                    backgroundColor: FlutterFlowTheme.of(context).secondaryText,
+                    backgroundColor: FlutterFlowTheme.of(context).primary,
                     automaticallyImplyLeading: false,
                     leading: FlutterFlowIconButton(
                       borderColor: Colors.transparent,
@@ -95,43 +94,34 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         size: 30.0,
                       ),
                       onPressed: () async {
-                        context.pushNamed('Main');
+                        context.safePop();
                       },
                     ),
                     title: Text(
                       'Settings',
                       style:
                           FlutterFlowTheme.of(context).headlineMedium.override(
-                                fontFamily: 'Poppins',
+                                fontFamily: 'Lato',
                                 color: FlutterFlowTheme.of(context).primaryText,
                               ),
                     ),
                     actions: [],
                     centerTitle: true,
-                    elevation: 0.0,
+                    elevation: 6.0,
                   )
                 : null,
             body: SafeArea(
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 1.0,
-                  height: MediaQuery.of(context).size.height * 1.0,
-                  decoration: BoxDecoration(
-                    color: valueOrDefault<Color>(
-                      () {
-                        if (widget.latestMmol < 3.9) {
-                          return FlutterFlowTheme.of(context).tertiary;
-                        } else if (widget.latestMmol > 9.4) {
-                          return FlutterFlowTheme.of(context).secondary;
-                        } else {
-                          return FlutterFlowTheme.of(context).primary;
-                        }
-                      }(),
-                      FlutterFlowTheme.of(context).primary,
+              top: true,
+              child: Stack(
+                children: [
+                  wrapWithModel(
+                    model: _model.navBar1Model,
+                    updateCallback: () => setState(() {}),
+                    child: NavBar1Widget(
+                      activePage: 'Settings',
                     ),
                   ),
-                  child: Padding(
+                  Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
                     child: SingleChildScrollView(
                       child: Column(
@@ -147,7 +137,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Container(
-                                width: MediaQuery.of(context).size.width * 1.0,
+                                width: MediaQuery.sizeOf(context).width * 1.0,
                                 decoration: BoxDecoration(
                                   color: Color(0xFFF5F5F5),
                                   boxShadow: [
@@ -166,16 +156,21 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12.0, 0.0, 12.0, 0.0),
-                                        child: Icon(
-                                          Icons.security,
-                                          color: FlutterFlowTheme.of(context)
-                                              .alternate,
-                                          size: 32.0,
+                                      Align(
+                                        alignment:
+                                            AlignmentDirectional(0.00, -1.00),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  12.0, 4.0, 12.0, 0.0),
+                                          child: Icon(
+                                            Icons.security,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            size: 32.0,
+                                          ),
                                         ),
                                       ),
                                       Expanded(
@@ -199,10 +194,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                 ],
                                               ),
                                               collapsed: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    1.0,
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
                                                 height: 0.0,
                                                 decoration: BoxDecoration(),
                                               ),
@@ -308,16 +303,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       milliseconds:
                                                                           2000),
                                                                   () async {
-                                                                    final usersUpdateData =
-                                                                        createUsersRecordData(
+                                                                    await currentUserReference!
+                                                                        .update(
+                                                                            createUsersRecordData(
                                                                       nightscout: _model
                                                                           .nightscoutController
                                                                           .text,
-                                                                    );
-                                                                    await widget
-                                                                        .userRef!
-                                                                        .update(
-                                                                            usersUpdateData);
+                                                                    ));
                                                                   },
                                                                 ),
                                                                 obscureText:
@@ -332,7 +324,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Poppins',
+                                                                            'Lato',
                                                                         color: Color(
                                                                             0xFF57636C),
                                                                       ),
@@ -343,7 +335,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Poppins',
+                                                                            'Lato',
                                                                         color: Color(
                                                                             0xFF57636C),
                                                                       ),
@@ -413,7 +405,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                     .bodyMedium
                                                                     .override(
                                                                       fontFamily:
-                                                                          'Poppins',
+                                                                          'Lato',
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .primaryText,
@@ -459,16 +451,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       milliseconds:
                                                                           2000),
                                                                   () async {
-                                                                    final usersUpdateData =
-                                                                        createUsersRecordData(
+                                                                    await currentUserReference!
+                                                                        .update(
+                                                                            createUsersRecordData(
                                                                       apiKey: _model
                                                                           .apiController
                                                                           .text,
-                                                                    );
-                                                                    await widget
-                                                                        .userRef!
-                                                                        .update(
-                                                                            usersUpdateData);
+                                                                    ));
                                                                   },
                                                                 ),
                                                                 obscureText:
@@ -483,7 +472,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Poppins',
+                                                                            'Lato',
                                                                         color: Color(
                                                                             0xFF57636C),
                                                                       ),
@@ -494,7 +483,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Poppins',
+                                                                            'Lato',
                                                                         color: Color(
                                                                             0xFF57636C),
                                                                       ),
@@ -564,7 +553,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                     .bodyMedium
                                                                     .override(
                                                                       fontFamily:
-                                                                          'Poppins',
+                                                                          'Lato',
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .primaryText,
@@ -610,16 +599,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       milliseconds:
                                                                           2000),
                                                                   () async {
-                                                                    final usersUpdateData =
-                                                                        createUsersRecordData(
+                                                                    await currentUserReference!
+                                                                        .update(
+                                                                            createUsersRecordData(
                                                                       token: _model
                                                                           .tokenController
                                                                           .text,
-                                                                    );
-                                                                    await widget
-                                                                        .userRef!
-                                                                        .update(
-                                                                            usersUpdateData);
+                                                                    ));
                                                                   },
                                                                 ),
                                                                 obscureText:
@@ -634,7 +620,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Poppins',
+                                                                            'Lato',
                                                                         color: Color(
                                                                             0xFF57636C),
                                                                       ),
@@ -645,7 +631,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       .bodyMedium
                                                                       .override(
                                                                         fontFamily:
-                                                                            'Poppins',
+                                                                            'Lato',
                                                                         color: Color(
                                                                             0xFF57636C),
                                                                       ),
@@ -715,7 +701,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                     .bodyMedium
                                                                     .override(
                                                                       fontFamily:
-                                                                          'Poppins',
+                                                                          'Lato',
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .primaryText,
@@ -774,7 +760,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Container(
-                                width: MediaQuery.of(context).size.width * 1.0,
+                                width: MediaQuery.sizeOf(context).width * 1.0,
                                 decoration: BoxDecoration(
                                   color: Color(0xFFF5F5F5),
                                   boxShadow: [
@@ -793,15 +779,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                            12.0, 0.0, 12.0, 0.0),
+                                            12.0, 4.0, 12.0, 0.0),
                                         child: Icon(
                                           Icons.calculate,
                                           color: FlutterFlowTheme.of(context)
-                                              .alternate,
+                                              .primary,
                                           size: 32.0,
                                         ),
                                       ),
@@ -826,10 +812,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                 ],
                                               ),
                                               collapsed: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    1.0,
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
                                                 height: 0.0,
                                                 decoration: BoxDecoration(),
                                               ),
@@ -877,15 +863,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                   setState(() =>
                                                                       _model.dropDownValue =
                                                                           val);
-                                                                  final usersUpdateData =
-                                                                      createUsersRecordData(
+                                                                  await currentUserReference!
+                                                                      .update(
+                                                                          createUsersRecordData(
                                                                     units: _model
                                                                         .dropDownValue,
-                                                                  );
-                                                                  await widget
-                                                                      .userRef!
-                                                                      .update(
-                                                                          usersUpdateData);
+                                                                  ));
                                                                 },
                                                                 width: double
                                                                     .infinity,
@@ -895,7 +878,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                     .bodyMedium
                                                                     .override(
                                                                       fontFamily:
-                                                                          'Poppins',
+                                                                          'Lato',
                                                                       color: FlutterFlowTheme.of(
                                                                               context)
                                                                           .textColor,
@@ -923,6 +906,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 hidesUnderline:
                                                                     true,
                                                                 isSearchable:
+                                                                    false,
+                                                                isMultiSelect:
                                                                     false,
                                                               ),
                                                             ),
@@ -970,7 +955,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Container(
-                                width: MediaQuery.of(context).size.width * 1.0,
+                                width: MediaQuery.sizeOf(context).width * 1.0,
                                 decoration: BoxDecoration(
                                   color: Color(0xFFF5F5F5),
                                   boxShadow: [
@@ -989,15 +974,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                            12.0, 0.0, 12.0, 0.0),
+                                            12.0, 4.0, 12.0, 0.0),
                                         child: Icon(
                                           FFIcons.kalarm,
                                           color: FlutterFlowTheme.of(context)
-                                              .alternate,
+                                              .primary,
                                           size: 32.0,
                                         ),
                                       ),
@@ -1022,10 +1007,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                 ],
                                               ),
                                               collapsed: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    1.0,
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
                                                 height: 0.0,
                                                 decoration: BoxDecoration(),
                                               ),
@@ -1093,16 +1078,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       milliseconds:
                                                                           2000),
                                                                   () async {
-                                                                    final usersUpdateData =
-                                                                        createUsersRecordData(
+                                                                    await currentUserReference!
+                                                                        .update(
+                                                                            createUsersRecordData(
                                                                       highValue: double.tryParse(_model
                                                                           .highValueController
                                                                           .text),
-                                                                    );
-                                                                    await widget
-                                                                        .userRef!
-                                                                        .update(
-                                                                            usersUpdateData);
+                                                                    ));
                                                                   },
                                                                 ),
                                                                 obscureText:
@@ -1186,7 +1168,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                         .start,
                                                                 keyboardType:
                                                                     const TextInputType
-                                                                            .numberWithOptions(
+                                                                        .numberWithOptions(
                                                                         signed:
                                                                             true,
                                                                         decimal:
@@ -1258,16 +1240,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       milliseconds:
                                                                           2000),
                                                                   () async {
-                                                                    final usersUpdateData =
-                                                                        createUsersRecordData(
+                                                                    await currentUserReference!
+                                                                        .update(
+                                                                            createUsersRecordData(
                                                                       lowValue: double.tryParse(_model
                                                                           .lowValueController
                                                                           .text),
-                                                                    );
-                                                                    await widget
-                                                                        .userRef!
-                                                                        .update(
-                                                                            usersUpdateData);
+                                                                    ));
                                                                   },
                                                                 ),
                                                                 obscureText:
@@ -1351,7 +1330,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                         .start,
                                                                 keyboardType:
                                                                     const TextInputType
-                                                                            .numberWithOptions(
+                                                                        .numberWithOptions(
                                                                         signed:
                                                                             true,
                                                                         decimal:
@@ -1428,16 +1407,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                       milliseconds:
                                                                           2000),
                                                                   () async {
-                                                                    final usersUpdateData =
-                                                                        createUsersRecordData(
+                                                                    await currentUserReference!
+                                                                        .update(
+                                                                            createUsersRecordData(
                                                                       carbRatio: double.tryParse(_model
                                                                           .carbRatioController
                                                                           .text),
-                                                                    );
-                                                                    await widget
-                                                                        .userRef!
-                                                                        .update(
-                                                                            usersUpdateData);
+                                                                    ));
                                                                   },
                                                                 ),
                                                                 obscureText:
@@ -1519,7 +1495,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                         .start,
                                                                 keyboardType:
                                                                     const TextInputType
-                                                                            .numberWithOptions(
+                                                                        .numberWithOptions(
                                                                         signed:
                                                                             true,
                                                                         decimal:
@@ -1574,7 +1550,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Container(
-                                width: MediaQuery.of(context).size.width * 1.0,
+                                width: MediaQuery.sizeOf(context).width * 1.0,
                                 decoration: BoxDecoration(
                                   color: Color(0xFFF5F5F5),
                                   boxShadow: [
@@ -1593,15 +1569,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                            12.0, 0.0, 12.0, 0.0),
+                                            12.0, 4.0, 12.0, 0.0),
                                         child: Icon(
                                           FFIcons.kicon,
                                           color: FlutterFlowTheme.of(context)
-                                              .alternate,
+                                              .primary,
                                           size: 32.0,
                                         ),
                                       ),
@@ -1626,10 +1602,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                 ],
                                               ),
                                               collapsed: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    1.0,
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
                                                 height: 0.0,
                                                 decoration: BoxDecoration(),
                                               ),
@@ -1697,7 +1673,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                       }
 
                                                       context.goNamedAuth(
-                                                          'Main', mounted);
+                                                          'home',
+                                                          context.mounted);
                                                     },
                                                     text: 'Delete Account',
                                                     options: FFButtonOptions(
@@ -1727,7 +1704,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                               .titleSmall
                                                               .override(
                                                                 fontFamily:
-                                                                    'Poppins',
+                                                                    'Lato',
                                                                 color: Colors
                                                                     .white,
                                                               ),
@@ -1773,14 +1750,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
-                                8.0, 8.0, 8.0, 8.0),
+                                40.0, 40.0, 40.0, 40.0),
                             child: FFButtonWidget(
                               onPressed: () async {
                                 GoRouter.of(context).prepareAuthEvent();
                                 await authManager.signOut();
                                 GoRouter.of(context).clearRedirectLocation();
 
-                                context.goNamedAuth('loginPage', mounted);
+                                context.goNamedAuth(
+                                    'loginPage', context.mounted);
                               },
                               text: 'Logout',
                               icon: Icon(
@@ -1798,7 +1776,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .titleSmall
                                     .override(
-                                      fontFamily: 'Poppins',
+                                      fontFamily: 'Lato',
                                       color: Colors.white,
                                     ),
                                 elevation: 2.0,
@@ -1814,7 +1792,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ),

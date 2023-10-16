@@ -1,6 +1,6 @@
 {
-    "name": "MyCGM",
-    "short_name": "MyCGM",
+    "name": "CarbsCals",
+    "short_name": "CarbsCals",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
@@ -10,14 +10,14 @@
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "icons/app_launcher_icon.png",
+            "src": "icons/app_launcher_icon.jpg",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/jpg"
         },
         {
-            "src": "icons/app_launcher_icon.png",
+            "src": "icons/app_launcher_icon.jpg",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/jpg"
         }
     ]
 }

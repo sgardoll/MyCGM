@@ -39,7 +39,6 @@ abstract class FlutterFlowTheme {
   late Color mediumChampagne;
   late Color gamboge;
   late Color alloyOrange;
-  late Color rust;
   late Color rufous;
   late Color rubyRed;
   late Color primaryBtnText;
@@ -137,22 +136,22 @@ class LightModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF0A9396);
-  late Color secondary = const Color(0xFFCA6702);
-  late Color tertiary = const Color(0xFFAE2012);
-  late Color alternate = const Color(0xFFAE2012);
-  late Color primaryText = const Color(0xFF001219);
-  late Color secondaryText = const Color(0xFFFFFFFF);
-  late Color primaryBackground = const Color(0x4D005F73);
-  late Color secondaryBackground = const Color(0xFFEE9B00);
-  late Color accent1 = const Color(0xFF616161);
-  late Color accent2 = const Color(0xFF757575);
-  late Color accent3 = const Color(0xFFE0E0E0);
-  late Color accent4 = const Color(0xFFEEEEEE);
-  late Color success = const Color(0xFF04A24C);
-  late Color warning = const Color(0xFFFCDC0C);
-  late Color error = const Color(0xFFE21C3D);
-  late Color info = const Color(0xFF1C4494);
+  late Color primary = const Color(0xFFFFA500);
+  late Color secondary = const Color(0xFF69C6CE);
+  late Color tertiary = const Color(0xFF4B0082);
+  late Color alternate = const Color(0xFFFFFFFF);
+  late Color primaryText = const Color(0xFF000000);
+  late Color secondaryText = const Color(0xFF808080);
+  late Color primaryBackground = const Color(0xFFFFFFFF);
+  late Color secondaryBackground = const Color(0xFFF4F0E8);
+  late Color accent1 = const Color(0xFF00FF00);
+  late Color accent2 = const Color(0xFFFFC0CB);
+  late Color accent3 = const Color(0xFFFFFF00);
+  late Color accent4 = const Color(0xFF9370DB);
+  late Color success = const Color(0xFF00FF00);
+  late Color warning = const Color(0xFFFFA500);
+  late Color error = const Color(0xFFFF0000);
+  late Color info = const Color(0xFF008080);
 
   late Color richBlackFOGRA29 = Color(0xFF001219);
   late Color blueSapphire = Color(0xFF005F73);
@@ -161,7 +160,6 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color mediumChampagne = Color(0xFFE9D8A6);
   late Color gamboge = Color(0xFFEE9B00);
   late Color alloyOrange = Color(0xFFCA6702);
-  late Color rust = Color(0xFFBB3E03);
   late Color rufous = Color(0xFFAE2012);
   late Color rubyRed = Color(0xFF9B2226);
   late Color primaryBtnText = Color(0xFFFFFFFF);
@@ -227,86 +225,86 @@ class ThemeTypography extends Typography {
 
   final FlutterFlowTheme theme;
 
-  String get displayLargeFamily => 'Poppins';
+  String get displayLargeFamily => 'Lato';
   TextStyle get displayLarge => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 57.0,
       );
-  String get displayMediumFamily => 'Poppins';
+  String get displayMediumFamily => 'Lato';
   TextStyle get displayMedium => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 45.0,
       );
-  String get displaySmallFamily => 'Poppins';
+  String get displaySmallFamily => 'Lato';
   TextStyle get displaySmall => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 24.0,
       );
-  String get headlineLargeFamily => 'Poppins';
+  String get headlineLargeFamily => 'Lato';
   TextStyle get headlineLarge => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 32.0,
       );
-  String get headlineMediumFamily => 'Poppins';
+  String get headlineMediumFamily => 'Lato';
   TextStyle get headlineMedium => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.secondaryText,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         fontSize: 22.0,
       );
-  String get headlineSmallFamily => 'Poppins';
+  String get headlineSmallFamily => 'Lato';
   TextStyle get headlineSmall => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         fontSize: 20.0,
       );
-  String get titleLargeFamily => 'Poppins';
+  String get titleLargeFamily => 'Lato';
   TextStyle get titleLarge => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.w500,
         fontSize: 22.0,
       );
-  String get titleMediumFamily => 'Poppins';
+  String get titleMediumFamily => 'Lato';
   TextStyle get titleMedium => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         fontSize: 18.0,
       );
-  String get titleSmallFamily => 'Poppins';
+  String get titleSmallFamily => 'Lato';
   TextStyle get titleSmall => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.secondaryText,
         fontWeight: FontWeight.w600,
         fontSize: 16.0,
       );
-  String get labelLargeFamily => 'Poppins';
+  String get labelLargeFamily => 'Lato';
   TextStyle get labelLarge => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.w500,
         fontSize: 14.0,
       );
-  String get labelMediumFamily => 'Poppins';
+  String get labelMediumFamily => 'Lato';
   TextStyle get labelMedium => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.w500,
         fontSize: 12.0,
       );
-  String get labelSmallFamily => 'Poppins';
+  String get labelSmallFamily => 'Lato';
   TextStyle get labelSmall => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.w500,
         fontSize: 11.0,
@@ -315,16 +313,16 @@ class ThemeTypography extends Typography {
   TextStyle get bodyLarge => GoogleFonts.getFont(
         'Roboto',
       );
-  String get bodyMediumFamily => 'Poppins';
+  String get bodyMediumFamily => 'Lato';
   TextStyle get bodyMedium => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 14.0,
       );
-  String get bodySmallFamily => 'Poppins';
+  String get bodySmallFamily => 'Lato';
   TextStyle get bodySmall => GoogleFonts.getFont(
-        'Poppins',
+        'Lato',
         color: theme.secondaryText,
         fontWeight: FontWeight.w600,
         fontSize: 14.0,

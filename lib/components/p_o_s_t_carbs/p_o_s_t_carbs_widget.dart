@@ -33,12 +33,6 @@ class POSTCarbsWidget extends StatefulWidget {
 class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
   late POSTCarbsModel _model;
 
-  int get pageViewCurrentIndex => _model.pageViewController != null &&
-          _model.pageViewController!.hasClients &&
-          _model.pageViewController!.page != null
-      ? _model.pageViewController!.page!.round()
-      : 0;
-
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -80,8 +74,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
         ),
       ),
       child: Container(
-        width: MediaQuery.of(context).size.width * 1.0,
-        height: MediaQuery.of(context).size.height * 1.0,
+        width: MediaQuery.sizeOf(context).width * 1.0,
+        height: MediaQuery.sizeOf(context).height * 1.0,
         decoration: BoxDecoration(
           color: valueOrDefault<Color>(
             () {
@@ -119,7 +113,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
             ),
             Expanded(
               child: Container(
-                width: MediaQuery.of(context).size.width * 1.0,
+                width: MediaQuery.sizeOf(context).width * 1.0,
                 height: double.infinity,
                 child: Stack(
                   children: [
@@ -137,8 +131,13 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                               Text(
                                 'Select an option below',
                                 maxLines: 2,
-                                style:
-                                    FlutterFlowTheme.of(context).headlineMedium,
+                                style: FlutterFlowTheme.of(context)
+                                    .headlineMedium
+                                    .override(
+                                      fontFamily: 'Lato',
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                    ),
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
@@ -151,11 +150,11 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       style: FlutterFlowTheme.of(context)
                                           .headlineSmall
                                           .override(
-                                            fontFamily: 'Poppins',
+                                            fontFamily: 'Lato',
                                             color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
+                                                .alternate,
                                             fontSize: 16.0,
-                                            fontWeight: FontWeight.w600,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                     ),
                                   ],
@@ -225,7 +224,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                           style: FlutterFlowTheme.of(context)
                                               .headlineSmall
                                               .override(
-                                                fontFamily: 'Poppins',
+                                                fontFamily: 'Lato',
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryText,
@@ -245,8 +244,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       borderRadius: 200.0,
                                       borderWidth: 1.0,
                                       buttonSize: 60.0,
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .secondaryText,
+                                      fillColor: Color(0x7EFFFFFF),
                                       icon: Icon(
                                         Icons.search_rounded,
                                         color: valueOrDefault<Color>(
@@ -325,9 +323,9 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                       style: FlutterFlowTheme.of(context)
                                           .headlineSmall
                                           .override(
-                                            fontFamily: 'Poppins',
+                                            fontFamily: 'Lato',
                                             color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
+                                                .alternate,
                                             fontSize: 16.0,
                                           ),
                                     ),
@@ -424,7 +422,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                     FlutterFlowTheme.of(context)
                                                         .headlineSmall
                                                         .override(
-                                                          fontFamily: 'Poppins',
+                                                          fontFamily: 'Lato',
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .secondaryText,
@@ -436,7 +434,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                 maxLines: null,
                                                 keyboardType:
                                                     const TextInputType
-                                                            .numberWithOptions(
+                                                        .numberWithOptions(
                                                         signed: true,
                                                         decimal: true),
                                                 validator: _model
@@ -485,10 +483,10 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                             context)
                                                         .headlineSmall
                                                         .override(
-                                                          fontFamily: 'Poppins',
+                                                          fontFamily: 'Lato',
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .secondaryText,
+                                                              .alternate,
                                                           fontSize: 16.0,
                                                           fontWeight:
                                                               FontWeight.w500,
@@ -572,7 +570,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                           context)
                                                       .headlineSmall
                                                       .override(
-                                                        fontFamily: 'Poppins',
+                                                        fontFamily: 'Lato',
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -595,8 +593,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         borderRadius: 100.0,
                                         borderWidth: 1.0,
                                         buttonSize: 60.0,
-                                        fillColor: FlutterFlowTheme.of(context)
-                                            .secondaryText,
+                                        fillColor: Color(0x7EFFFFFF),
                                         disabledColor:
                                             FlutterFlowTheme.of(context)
                                                 .gray600,
@@ -685,26 +682,33 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   if (_model
                                                           .addCustomFoodToggleValue !=
                                                       null) {
-                                                    final foodDataCreateData =
-                                                        createFoodDataRecordData(
-                                                      source: currentUserUid,
-                                                      foodNameFull: '',
-                                                      totalsugarsg:
-                                                          double.tryParse(_model
-                                                              .gramsCarbsController2
-                                                              .text),
-                                                    );
                                                     var foodDataRecordReference =
                                                         FoodDataRecord
                                                             .collection
                                                             .doc();
                                                     await foodDataRecordReference
                                                         .set(
-                                                            foodDataCreateData);
+                                                            createFoodDataRecordData(
+                                                      source: currentUserUid,
+                                                      foodNameFull: '',
+                                                      totalsugarsg:
+                                                          double.tryParse(_model
+                                                              .gramsCarbsController2
+                                                              .text),
+                                                    ));
                                                     _model.addFoodToDatabase =
                                                         FoodDataRecord
                                                             .getDocumentFromData(
-                                                                foodDataCreateData,
+                                                                createFoodDataRecordData(
+                                                                  source:
+                                                                      currentUserUid,
+                                                                  foodNameFull:
+                                                                      '',
+                                                                  totalsugarsg:
+                                                                      double.tryParse(_model
+                                                                          .gramsCarbsController2
+                                                                          .text),
+                                                                ),
                                                                 foodDataRecordReference);
                                                     await _model
                                                         .pageViewController
@@ -798,12 +802,12 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                           child: ListTile(
                                             title: Text(
                                               searchResultsListViewItem
-                                                  .foodNameFull!,
+                                                  .foodNameFull,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .headlineSmall
                                                       .override(
-                                                        fontFamily: 'Poppins',
+                                                        fontFamily: 'Lato',
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -812,12 +816,12 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                       ),
                                             ),
                                             subtitle: Text(
-                                              '${searchResultsListViewItem.totalsugarsg?.toString()} grams',
+                                              '${searchResultsListViewItem.totalsugarsg.toString()} grams',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyMedium
                                                       .override(
-                                                        fontFamily: 'Poppins',
+                                                        fontFamily: 'Lato',
                                                         color:
                                                             Color(0xBEFFFFFF),
                                                         fontWeight:
@@ -854,7 +858,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                   style: FlutterFlowTheme.of(context)
                                       .headlineSmall
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
                                         fontSize: 16.0,
@@ -893,7 +897,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                           context)
                                                       .bodySmall
                                                       .override(
-                                                        fontFamily: 'Poppins',
+                                                        fontFamily: 'Lato',
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
@@ -1052,7 +1056,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                           style: FlutterFlowTheme.of(context)
                                               .headlineSmall
                                               .override(
-                                                fontFamily: 'Poppins',
+                                                fontFamily: 'Lato',
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .secondaryText,
@@ -1061,7 +1065,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                               ),
                                           textAlign: TextAlign.start,
                                           keyboardType: const TextInputType
-                                                  .numberWithOptions(
+                                              .numberWithOptions(
                                               signed: true, decimal: true),
                                           validator: _model
                                               .gramsCarbsController2Validator
@@ -1134,7 +1138,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         style: FlutterFlowTheme.of(context)
                                             .headlineSmall
                                             .override(
-                                              fontFamily: 'Poppins',
+                                              fontFamily: 'Lato',
                                               color:
                                                   FlutterFlowTheme.of(context)
                                                       .secondaryText,
@@ -1187,7 +1191,7 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                       ),
                     ),
                     Align(
-                      alignment: AlignmentDirectional(1.0, 0.0),
+                      alignment: AlignmentDirectional(1.00, 0.00),
                       child: Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 0.0),

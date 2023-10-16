@@ -28,7 +28,6 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
   late NightscoutCheckModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -116,7 +115,6 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -126,13 +124,16 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
 
     return Title(
         title: 'nightscoutCheck',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
             body: SafeArea(
+              top: true,
               child: Stack(
                 children: [
                   ClipRect(
@@ -144,7 +145,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                       child: Stack(
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(1.0, -1.0),
+                            alignment: AlignmentDirectional(1.00, -1.00),
                             child: Container(
                               width: 300.0,
                               height: 400.0,
@@ -160,8 +161,8 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                           Align(
                             alignment: AlignmentDirectional(-3.27, -1.29),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              height: MediaQuery.of(context).size.width * 0.75,
+                              width: MediaQuery.sizeOf(context).width * 0.75,
+                              height: MediaQuery.sizeOf(context).width * 0.75,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).primary,
                                 shape: BoxShape.circle,
@@ -172,10 +173,10 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                 hasBeenTriggered: hasContainerTriggered2),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0.0, 0.0),
+                            alignment: AlignmentDirectional(0.00, 0.00),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: MediaQuery.of(context).size.width * 0.7,
+                              width: MediaQuery.sizeOf(context).width * 0.7,
+                              height: MediaQuery.sizeOf(context).width * 0.7,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).secondary,
                                 shape: BoxShape.circle,
@@ -206,10 +207,9 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                 borderRadius: BorderRadius.circular(5.0),
                                 child: Image.asset(
                                   'assets/images/Logo3.2-50Transparent.png',
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
+                                  width: MediaQuery.sizeOf(context).width * 0.3,
                                   height:
-                                      MediaQuery.of(context).size.height * 0.3,
+                                      MediaQuery.sizeOf(context).height * 0.3,
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -235,7 +235,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                     style: FlutterFlowTheme.of(context)
                                         .displaySmall
                                         .override(
-                                          fontFamily: 'Poppins',
+                                          fontFamily: 'Lato',
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryText,
                                         ),
@@ -363,7 +363,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                   .bodyMedium
                                                                   .override(
                                                                     fontFamily:
-                                                                        'Poppins',
+                                                                        'Lato',
                                                                     color: Color(
                                                                         0xFF57636C),
                                                                   ),
@@ -375,7 +375,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                   .bodyMedium
                                                                   .override(
                                                                     fontFamily:
-                                                                        'Poppins',
+                                                                        'Lato',
                                                                     color: Color(
                                                                         0xFF57636C),
                                                                   ),
@@ -439,7 +439,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                 .bodyMedium
                                                                 .override(
                                                                   fontFamily:
-                                                                      'Poppins',
+                                                                      'Lato',
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .primaryText,
@@ -480,7 +480,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                   .bodyMedium
                                                                   .override(
                                                                     fontFamily:
-                                                                        'Poppins',
+                                                                        'Lato',
                                                                     color: Color(
                                                                         0xFF57636C),
                                                                   ),
@@ -491,7 +491,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                   .bodyMedium
                                                                   .override(
                                                                     fontFamily:
-                                                                        'Poppins',
+                                                                        'Lato',
                                                                     color: Color(
                                                                         0xFF57636C),
                                                                   ),
@@ -555,7 +555,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                 .bodyMedium
                                                                 .override(
                                                                   fontFamily:
-                                                                      'Poppins',
+                                                                      'Lato',
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .primaryText,
@@ -598,7 +598,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                   .bodyMedium
                                                                   .override(
                                                                     fontFamily:
-                                                                        'Poppins',
+                                                                        'Lato',
                                                                     color: Color(
                                                                         0xFF57636C),
                                                                   ),
@@ -609,7 +609,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                   .bodyMedium
                                                                   .override(
                                                                     fontFamily:
-                                                                        'Poppins',
+                                                                        'Lato',
                                                                     color: Color(
                                                                         0xFF57636C),
                                                                   ),
@@ -673,7 +673,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                                                 .bodyMedium
                                                                 .override(
                                                                   fontFamily:
-                                                                      'Poppins',
+                                                                      'Lato',
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .primaryText,
@@ -730,7 +730,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBtnText,
                                       ),
@@ -748,7 +748,8 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                   0.0, 24.0, 0.0, 0.0),
                               child: FFButtonWidget(
                                 onPressed: () async {
-                                  final usersUpdateData = createUsersRecordData(
+                                  await currentUserReference!
+                                      .update(createUsersRecordData(
                                     email: currentUserEmail,
                                     displayName: currentUserDisplayName,
                                     uid: currentUserUid,
@@ -757,9 +758,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                         _model.nightscoutController.text,
                                     apiKey: _model.apiController.text,
                                     token: _model.tokenController.text,
-                                  );
-                                  await currentUserReference!
-                                      .update(usersUpdateData);
+                                  ));
 
                                   context.pushNamed('unitsCheck');
                                 },
@@ -775,7 +774,7 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget>
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBtnText,
                                       ),

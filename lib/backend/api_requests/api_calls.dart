@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import '../../flutter_flow/flutter_flow_util.dart';
-
 import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
@@ -28,9 +27,7 @@ class GetTreatmentsCall {
       apiUrl:
           '${NightscoutGroup.baseUrl}treatments?count=${count}&token=${token}',
       callType: ApiCallType.GET,
-      headers: {
-        ...NightscoutGroup.headers,
-      },
+      headers: {},
       params: {},
       returnBody: true,
       encodeBodyUtf8: false,
@@ -80,7 +77,7 @@ class ChatCompletionsCall {
     dynamic? jsonJson,
   }) {
     final json = _serializeJson(jsonJson);
-    final body = '''
+    final ffApiRequestBody = '''
 {
   "model": "gpt-4",
   "messages": [
@@ -95,11 +92,11 @@ class ChatCompletionsCall {
       apiUrl: '${OpenAIGroup.baseUrl}/chat/completions',
       callType: ApiCallType.POST,
       headers: {
-        ...OpenAIGroup.headers,
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ${apiKey}',
       },
       params: {},
-      body: body,
+      body: ffApiRequestBody,
       bodyType: BodyType.JSON,
       returnBody: true,
       encodeBodyUtf8: false,
@@ -186,7 +183,7 @@ class PostInsulinCall {
     String? nightscout = '',
     String? token = '',
   }) {
-    final body = '''
+    final ffApiRequestBody = '''
 [
   {
     "enteredBy": "${enteredBy}",
@@ -202,7 +199,7 @@ class PostInsulinCall {
         'api-secret': '${apiKey}',
       },
       params: {},
-      body: body,
+      body: ffApiRequestBody,
       bodyType: BodyType.JSON,
       returnBody: true,
       encodeBodyUtf8: false,
@@ -222,7 +219,7 @@ class PostCarbsCall {
     String? apiKey = '',
     String? notes = '',
   }) {
-    final body = '''
+    final ffApiRequestBody = '''
 [
   {
     "enteredBy": "${enteredBy}",
@@ -239,7 +236,7 @@ class PostCarbsCall {
         'api-secret': '${apiKey}',
       },
       params: {},
-      body: body,
+      body: ffApiRequestBody,
       bodyType: BodyType.JSON,
       returnBody: true,
       encodeBodyUtf8: false,
@@ -274,11 +271,11 @@ String _serializeList(List? list) {
   }
 }
 
-String _serializeJson(dynamic jsonVar) {
-  jsonVar ??= {};
+String _serializeJson(dynamic jsonVar, [bool isList = false]) {
+  jsonVar ??= (isList ? [] : {});
   try {
     return json.encode(jsonVar);
   } catch (_) {
-    return '{}';
+    return isList ? '[]' : '{}';
   }
 }

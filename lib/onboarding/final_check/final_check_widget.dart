@@ -33,7 +33,6 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
   late FinalCheckModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -119,7 +118,6 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -129,13 +127,16 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
 
     return Title(
         title: 'finalCheck',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
             body: SafeArea(
+              top: true,
               child: Stack(
                 children: [
                   ClipRect(
@@ -147,7 +148,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                       child: Stack(
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(1.0, -1.0),
+                            alignment: AlignmentDirectional(1.00, -1.00),
                             child: Container(
                               width: 300.0,
                               height: 400.0,
@@ -163,8 +164,8 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                           Align(
                             alignment: AlignmentDirectional(-3.27, -1.29),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              height: MediaQuery.of(context).size.width * 0.75,
+                              width: MediaQuery.sizeOf(context).width * 0.75,
+                              height: MediaQuery.sizeOf(context).width * 0.75,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).primary,
                                 shape: BoxShape.circle,
@@ -175,10 +176,10 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                 hasBeenTriggered: hasContainerTriggered2),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0.0, 0.0),
+                            alignment: AlignmentDirectional(0.00, 0.00),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: MediaQuery.of(context).size.width * 0.7,
+                              width: MediaQuery.sizeOf(context).width * 0.7,
+                              height: MediaQuery.sizeOf(context).width * 0.7,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).secondary,
                                 shape: BoxShape.circle,
@@ -209,10 +210,9 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                 borderRadius: BorderRadius.circular(5.0),
                                 child: Image.asset(
                                   'assets/images/Logo3.2-50Transparent.png',
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
+                                  width: MediaQuery.sizeOf(context).width * 0.3,
                                   height:
-                                      MediaQuery.of(context).size.height * 0.3,
+                                      MediaQuery.sizeOf(context).height * 0.3,
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -234,7 +234,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                 style: FlutterFlowTheme.of(context)
                                     .displaySmall
                                     .override(
-                                      fontFamily: 'Poppins',
+                                      fontFamily: 'Lato',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                     ),
@@ -412,7 +412,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                                 .center,
                                                             keyboardType:
                                                                 const TextInputType
-                                                                        .numberWithOptions(
+                                                                    .numberWithOptions(
                                                                     signed:
                                                                         true,
                                                                     decimal:
@@ -611,7 +611,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                                                 .center,
                                                             keyboardType:
                                                                 const TextInputType
-                                                                        .numberWithOptions(
+                                                                    .numberWithOptions(
                                                                     signed:
                                                                         true,
                                                                     decimal:
@@ -704,7 +704,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBtnText,
                                       ),
@@ -722,16 +722,15 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                   0.0, 24.0, 0.0, 0.0),
                               child: FFButtonWidget(
                                 onPressed: () async {
-                                  final usersUpdateData = createUsersRecordData(
+                                  await currentUserReference!
+                                      .update(createUsersRecordData(
                                     highValue: double.tryParse(
                                         _model.highValueController.text),
                                     lowValue: double.tryParse(
                                         _model.lowValueController.text),
-                                  );
-                                  await currentUserReference!
-                                      .update(usersUpdateData);
+                                  ));
 
-                                  context.pushNamed('Main');
+                                  context.pushNamed('home');
                                 },
                                 text: 'Finish',
                                 options: FFButtonOptions(
@@ -745,7 +744,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget>
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBtnText,
                                       ),

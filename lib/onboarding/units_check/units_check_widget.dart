@@ -35,7 +35,6 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
   late UnitsCheckModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
   var hasContainerTriggered1 = false;
   var hasContainerTriggered2 = false;
   var hasContainerTriggered3 = false;
@@ -117,7 +116,6 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -127,13 +125,16 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
 
     return Title(
         title: 'unitsCheck',
-        color: FlutterFlowTheme.of(context).primary,
+        color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
             body: SafeArea(
+              top: true,
               child: Stack(
                 children: [
                   ClipRect(
@@ -145,7 +146,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                       child: Stack(
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(1.0, -1.0),
+                            alignment: AlignmentDirectional(1.00, -1.00),
                             child: Container(
                               width: 300.0,
                               height: 400.0,
@@ -161,8 +162,8 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                           Align(
                             alignment: AlignmentDirectional(-3.27, -1.29),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              height: MediaQuery.of(context).size.width * 0.75,
+                              width: MediaQuery.sizeOf(context).width * 0.75,
+                              height: MediaQuery.sizeOf(context).width * 0.75,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).primary,
                                 shape: BoxShape.circle,
@@ -173,10 +174,10 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                 hasBeenTriggered: hasContainerTriggered2),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(0.0, 0.0),
+                            alignment: AlignmentDirectional(0.00, 0.00),
                             child: Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: MediaQuery.of(context).size.width * 0.7,
+                              width: MediaQuery.sizeOf(context).width * 0.7,
+                              height: MediaQuery.sizeOf(context).width * 0.7,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context).secondary,
                                 shape: BoxShape.circle,
@@ -207,10 +208,9 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                 borderRadius: BorderRadius.circular(5.0),
                                 child: Image.asset(
                                   'assets/images/Logo3.2-50Transparent.png',
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
+                                  width: MediaQuery.sizeOf(context).width * 0.3,
                                   height:
-                                      MediaQuery.of(context).size.height * 0.3,
+                                      MediaQuery.sizeOf(context).height * 0.3,
                                   fit: BoxFit.contain,
                                 ),
                               ),
@@ -232,7 +232,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                 style: FlutterFlowTheme.of(context)
                                     .displaySmall
                                     .override(
-                                      fontFamily: 'Poppins',
+                                      fontFamily: 'Lato',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                     ),
@@ -346,7 +346,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                                           .of(context)
                                                       .bodyMedium
                                                       .override(
-                                                        fontFamily: 'Poppins',
+                                                        fontFamily: 'Lato',
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -366,6 +366,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                                           12.0, 4.0, 12.0, 4.0),
                                                   hidesUnderline: true,
                                                   isSearchable: false,
+                                                  isMultiSelect: false,
                                                 ),
                                               ),
                                             ],
@@ -396,7 +397,8 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                   await authManager.signOut();
                                   GoRouter.of(context).clearRedirectLocation();
 
-                                  context.goNamedAuth('loginPage', mounted);
+                                  context.goNamedAuth(
+                                      'loginPage', context.mounted);
                                 },
                                 text: '',
                                 icon: Icon(
@@ -413,7 +415,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBtnText,
                                       ),
@@ -431,11 +433,10 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                   0.0, 24.0, 0.0, 0.0),
                               child: FFButtonWidget(
                                 onPressed: () async {
-                                  final usersUpdateData = createUsersRecordData(
-                                    units: _model.dropDownValue,
-                                  );
                                   await currentUserReference!
-                                      .update(usersUpdateData);
+                                      .update(createUsersRecordData(
+                                    units: _model.dropDownValue,
+                                  ));
 
                                   context.pushNamed('carbRatioCheck');
                                 },
@@ -451,7 +452,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryBtnText,
                                       ),

@@ -113,8 +113,10 @@ class ApiManager {
   static Map<String, String> toStringMap(Map map) =>
       map.map((key, value) => MapEntry(key.toString(), value.toString()));
 
-  static String asQueryParams(Map<String, dynamic> map) =>
-      map.entries.map((e) => "${e.key}=${e.value}").join('&');
+  static String asQueryParams(Map<String, dynamic> map) => map.entries
+      .map((e) =>
+          "${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}")
+      .join('&');
 
   static Future<ApiCallResponse> urlRequest(
     ApiCallType callType,
@@ -125,10 +127,9 @@ class ApiManager {
     bool decodeUtf8,
   ) async {
     if (params.isNotEmpty) {
-      final lastUriPart = apiUrl.split('/').last;
-      final needsParamSpecifier = !lastUriPart.contains('?');
-      apiUrl =
-          '$apiUrl${needsParamSpecifier ? '?' : ''}${asQueryParams(params)}';
+      final specifier =
+          Uri.parse(apiUrl).queryParameters.isNotEmpty ? '&' : '?';
+      apiUrl = '$apiUrl$specifier${asQueryParams(params)}';
     }
     final makeRequest = callType == ApiCallType.GET ? http.get : http.delete;
     final response =
@@ -284,7 +285,7 @@ class ApiManager {
         ApiCallRecord(callName, apiUrl, headers, params, body, bodyType);
     // Modify for your specific needs if this differs from your API.
     if (_accessToken != null) {
-      headers[HttpHeaders.authorizationHeader] = 'Token $_accessToken';
+      headers[HttpHeaders.authorizationHeader] = 'Bearer $_accessToken';
     }
     if (!apiUrl.startsWith('http')) {
       apiUrl = 'https://$apiUrl';
@@ -297,38 +298,46 @@ class ApiManager {
     }
 
     ApiCallResponse result;
-    switch (callType) {
-      case ApiCallType.GET:
-      case ApiCallType.DELETE:
-        result = await urlRequest(
-          callType,
-          apiUrl,
-          headers,
-          params,
-          returnBody,
-          decodeUtf8,
-        );
-        break;
-      case ApiCallType.POST:
-      case ApiCallType.PUT:
-      case ApiCallType.PATCH:
-        result = await requestWithBody(
-          callType,
-          apiUrl,
-          headers,
-          params,
-          body,
-          bodyType,
-          returnBody,
-          encodeBodyUtf8,
-          decodeUtf8,
-        );
-        break;
-    }
+    try {
+      switch (callType) {
+        case ApiCallType.GET:
+        case ApiCallType.DELETE:
+          result = await urlRequest(
+            callType,
+            apiUrl,
+            headers,
+            params,
+            returnBody,
+            decodeUtf8,
+          );
+          break;
+        case ApiCallType.POST:
+        case ApiCallType.PUT:
+        case ApiCallType.PATCH:
+          result = await requestWithBody(
+            callType,
+            apiUrl,
+            headers,
+            params,
+            body,
+            bodyType,
+            returnBody,
+            encodeBodyUtf8,
+            decodeUtf8,
+          );
+          break;
+      }
 
-    // If caching is on, cache the result (if present).
-    if (cache) {
-      _apiCache[callRecord] = result;
+      // If caching is on, cache the result (if present).
+      if (cache) {
+        _apiCache[callRecord] = result;
+      }
+    } catch (e) {
+      result = ApiCallResponse(
+        null,
+        {},
+        -1,
+      );
     }
 
     return result;
