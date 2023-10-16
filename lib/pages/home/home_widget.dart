@@ -1,5 +1,6 @@
 import '/backend/backend.dart';
 import '/components/nav_bar1_widget.dart';
+import '/components/value_list_item/value_list_item_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -61,7 +62,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     backgroundColor: FlutterFlowTheme.of(context).primary,
                     automaticallyImplyLeading: false,
                     title: Text(
-                      'Carbs & Cals',
+                      'Eat Smart',
                       style:
                           FlutterFlowTheme.of(context).headlineMedium.override(
                                 fontFamily: 'Lato',
@@ -157,26 +158,19 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   final listViewFoodDataRecord = _model
                                       .listViewPagingController!
                                       .itemList![listViewIndex];
-                                  return ListTile(
-                                    title: Text(
-                                      listViewFoodDataRecord.foodName,
-                                      style: FlutterFlowTheme.of(context)
-                                          .titleLarge,
+                                  return Hero(
+                                    tag: listViewFoodDataRecord.reference.id,
+                                    transitionOnUserGestures: true,
+                                    child: ValueListItemWidget(
+                                      key: Key(
+                                          'Keyv0s_${listViewIndex}_of_${_model.listViewPagingController!.itemList!.length}'),
+                                      label: listViewFoodDataRecord.foodName,
+                                      value: listViewFoodDataRecord.totalsugarsg
+                                          .toString(),
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      image: listViewFoodDataRecord.icon,
                                     ),
-                                    subtitle: Text(
-                                      '${listViewFoodDataRecord.foodDetail1}${listViewFoodDataRecord.foodDetail2}${listViewFoodDataRecord.foodDetail3}',
-                                      style: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .override(
-                                            fontFamily: 'Lato',
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                    ),
-                                    tileColor: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    dense: true,
                                   );
                                 },
                               ),

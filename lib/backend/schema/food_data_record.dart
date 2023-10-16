@@ -86,6 +86,11 @@ class FoodDataRecord extends FirestoreRecord {
   double get freesugarsg => _freesugarsg ?? 0.0;
   bool hasFreesugarsg() => _freesugarsg != null;
 
+  // "icon" field.
+  String? _icon;
+  String get icon => _icon ?? '';
+  bool hasIcon() => _icon != null;
+
   void _initializeFields() {
     _source = snapshotData['Source'] as String?;
     _publicFoodKey = snapshotData['publicFoodKey'] as String?;
@@ -101,6 +106,7 @@ class FoodDataRecord extends FirestoreRecord {
     _totalsugarsg = castToType<double>(snapshotData['totalsugarsg']);
     _addedsugarsg = castToType<double>(snapshotData['addedsugarsg']);
     _freesugarsg = castToType<double>(snapshotData['freesugarsg']);
+    _icon = snapshotData['icon'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -152,6 +158,7 @@ Map<String, dynamic> createFoodDataRecordData({
   double? totalsugarsg,
   double? addedsugarsg,
   double? freesugarsg,
+  String? icon,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -169,6 +176,7 @@ Map<String, dynamic> createFoodDataRecordData({
       'totalsugarsg': totalsugarsg,
       'addedsugarsg': addedsugarsg,
       'freesugarsg': freesugarsg,
+      'icon': icon,
     }.withoutNulls,
   );
 
@@ -193,7 +201,8 @@ class FoodDataRecordDocumentEquality implements Equality<FoodDataRecord> {
         e1?.foodNameFull == e2?.foodNameFull &&
         e1?.totalsugarsg == e2?.totalsugarsg &&
         e1?.addedsugarsg == e2?.addedsugarsg &&
-        e1?.freesugarsg == e2?.freesugarsg;
+        e1?.freesugarsg == e2?.freesugarsg &&
+        e1?.icon == e2?.icon;
   }
 
   @override
@@ -211,7 +220,8 @@ class FoodDataRecordDocumentEquality implements Equality<FoodDataRecord> {
         e?.foodNameFull,
         e?.totalsugarsg,
         e?.addedsugarsg,
-        e?.freesugarsg
+        e?.freesugarsg,
+        e?.icon
       ]);
 
   @override

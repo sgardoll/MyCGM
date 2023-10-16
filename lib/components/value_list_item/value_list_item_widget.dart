@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,13 +11,13 @@ export 'value_list_item_model.dart';
 class ValueListItemWidget extends StatefulWidget {
   const ValueListItemWidget({
     Key? key,
-    this.icon,
+    this.image,
     this.label,
     this.value,
     this.color,
   }) : super(key: key);
 
-  final Widget? icon;
+  final String? image;
   final String? label;
   final String? value;
   final Color? color;
@@ -68,44 +69,71 @@ class _ValueListItemWidgetState extends State<ValueListItemWidget> {
         padding: EdgeInsetsDirectional.fromSTEB(20.0, 10.0, 20.0, 10.0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            widget.icon!,
-            Expanded(
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
-                child: Text(
-                  widget.label!,
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.normal,
-                      ),
+            Flexible(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: Image.network(
+                  widget.image!,
+                  width: 30.0,
+                  height: 30.0,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(10.0, 0.0, 0.0, 0.0),
-              child: Container(
-                height: 30.0,
-                decoration: BoxDecoration(
-                  color: widget.color,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Align(
-                  alignment: AlignmentDirectional(0.00, 0.00),
-                  child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(12.0, 4.0, 12.0, 4.0),
-                    child: Text(
-                      widget.value!,
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Lato',
-                            color: FlutterFlowTheme.of(context).white,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
+            Flexible(
+              child: Align(
+                alignment: AlignmentDirectional(-1.00, 0.00),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+                  child: Text(
+                    widget.label!,
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.normal,
+                        ),
                   ),
                 ),
               ),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Align(
+                  alignment: AlignmentDirectional(1.00, 0.00),
+                  child: Container(
+                    height: 30.0,
+                    decoration: BoxDecoration(
+                      color: widget.color,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Align(
+                      alignment: AlignmentDirectional(0.00, 0.00),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            12.0, 4.0, 12.0, 4.0),
+                        child: Text(
+                          widget.value!,
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Lato',
+                                    color: FlutterFlowTheme.of(context).white,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: AutoSizeText(
+                    'grams sugar',
+                    textAlign: TextAlign.center,
+                    style: FlutterFlowTheme.of(context).bodyMedium,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
