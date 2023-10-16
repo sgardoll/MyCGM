@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
@@ -21,8 +20,6 @@ import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
-export '/backend/firebase_dynamic_links/firebase_dynamic_links.dart'
-    show generateCurrentPageLink;
 
 const kTransitionInfoKey = '__transition_info__';
 
@@ -83,10 +80,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) => _RouteErrorBuilder(
-        state: state,
-        child: appStateNotifier.loggedIn ? HomeCarbsWidget() : HomeWidget(),
-      ),
+      errorBuilder: (context, state) =>
+          appStateNotifier.loggedIn ? HomeCarbsWidget() : HomeWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
@@ -166,7 +161,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'homeCGM',
               path: 'CGM',
-              requireAuth: true,
               builder: (context, params) => HomeCGMWidget(),
             ),
             FFRoute(
@@ -177,7 +171,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'homeCarbs',
               path: 'Carbs',
-              requireAuth: true,
               builder: (context, params) => HomeCarbsWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -402,39 +395,7 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(
-        hasTransition: true,
-        transitionType: PageTransitionType.fade,
-        duration: Duration(milliseconds: 300),
-      );
-}
-
-class _RouteErrorBuilder extends StatefulWidget {
-  const _RouteErrorBuilder({
-    Key? key,
-    required this.state,
-    required this.child,
-  }) : super(key: key);
-
-  final GoRouterState state;
-  final Widget child;
-
-  @override
-  State<_RouteErrorBuilder> createState() => _RouteErrorBuilderState();
-}
-
-class _RouteErrorBuilderState extends State<_RouteErrorBuilder> {
-  @override
-  void initState() {
-    super.initState();
-    // Handle erroneous links from Firebase Dynamic Links.
-    if (widget.state.location.startsWith('/link?request_ip_version')) {
-      SchedulerBinding.instance.addPostFrameCallback((_) => context.go('/'));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) => widget.child;
+  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {

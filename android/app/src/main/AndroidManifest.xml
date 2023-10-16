@@ -63,8 +63,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="mycgm.page.link" />
-                <data android:scheme="https" />
+                <data android:scheme="carb" android:host="cals.page.link" />
             </intent-filter>
 
         </activity>

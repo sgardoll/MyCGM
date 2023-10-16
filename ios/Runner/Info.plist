@@ -37,10 +37,10 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>carbs_cals</string>
+        <string>cals.page.link</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>com.connectio.mycgm</string>
+        <string>carb</string>
         </array>
         </dict>
     </array>
