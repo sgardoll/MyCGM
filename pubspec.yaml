@@ -31,7 +31,6 @@ dependencies:
   cloud_firestore_platform_interface: 5.15.0
   cloud_firestore_web: 3.6.0
   csv: 5.0.1
-  curved_navigation_bar: ^1.0.3
   dropdown_button2: 2.0.0
   easy_debounce: 2.0.1
   equatable: 2.0.5
