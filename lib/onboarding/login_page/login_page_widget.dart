@@ -94,22 +94,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
         ),
       ],
     ),
-    'tabBarOnActionTriggerAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 1.0,
-          end: 0.0,
-        ),
-      ],
-    ),
     'tabBarOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
-      applyInitialState: true,
       effects: [
         FadeEffect(
           curve: Curves.easeInOut,
@@ -300,8 +286,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                       ),
                                     ),
                                   AutoSizeText(
-                                    'Please login to continue',
-                                    maxLines: 1,
+                                    'Please login to use this feature...',
+                                    maxLines: 2,
                                     style: FlutterFlowTheme.of(context)
                                         .headlineSmall
                                         .override(
@@ -1374,14 +1360,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                             child: FFButtonWidget(
                                               onPressed: () async {
                                                 if (animationsMap[
-                                                        'tabBarOnActionTriggerAnimation'] !=
-                                                    null) {
-                                                  animationsMap[
-                                                          'tabBarOnActionTriggerAnimation']!
-                                                      .controller
-                                                      .forward(from: 0.0);
-                                                }
-                                                if (animationsMap[
                                                         'containerOnActionTriggerAnimation2'] !=
                                                     null) {
                                                   setState(() =>
@@ -1516,12 +1494,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                               ),
                             ),
                           ],
-                        )
-                            .animateOnPageLoad(
-                                animationsMap['tabBarOnPageLoadAnimation']!)
-                            .animateOnActionTrigger(
-                              animationsMap['tabBarOnActionTriggerAnimation']!,
-                            ),
+                        ).animateOnPageLoad(
+                            animationsMap['tabBarOnPageLoadAnimation']!),
                       ),
                     ],
                   ),

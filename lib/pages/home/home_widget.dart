@@ -5,7 +5,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -158,45 +157,26 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   final listViewFoodDataRecord = _model
                                       .listViewPagingController!
                                       .itemList![listViewIndex];
-                                  return Slidable(
-                                    endActionPane: ActionPane(
-                                      motion: const ScrollMotion(),
-                                      extentRatio: 0.25,
-                                      children: [
-                                        SlidableAction(
-                                          label: 'Share',
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context).info,
-                                          icon: Icons.share,
-                                          onPressed: (_) {
-                                            print(
-                                                'SlidableActionWidget pressed ...');
-                                          },
-                                        ),
-                                      ],
+                                  return ListTile(
+                                    title: Text(
+                                      listViewFoodDataRecord.foodName,
+                                      style: FlutterFlowTheme.of(context)
+                                          .titleLarge,
                                     ),
-                                    child: ListTile(
-                                      title: Text(
-                                        listViewFoodDataRecord.foodName,
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleLarge,
-                                      ),
-                                      subtitle: Text(
-                                        '${listViewFoodDataRecord.foodDetail1}${listViewFoodDataRecord.foodDetail2}${listViewFoodDataRecord.foodDetail3}',
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              fontFamily: 'Lato',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                      ),
-                                      tileColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      dense: true,
+                                    subtitle: Text(
+                                      '${listViewFoodDataRecord.foodDetail1}${listViewFoodDataRecord.foodDetail2}${listViewFoodDataRecord.foodDetail3}',
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Lato',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                     ),
+                                    tileColor: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    dense: true,
                                   );
                                 },
                               ),
