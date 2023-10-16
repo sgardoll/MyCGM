@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_button_tabbar.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -180,113 +181,114 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).secondary,
-            body: SafeArea(
-              top: true,
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                child: Stack(
-                  children: [
-                    ClipRect(
-                      child: ImageFiltered(
-                        imageFilter: ImageFilter.blur(
-                          sigmaX: 40.0,
-                          sigmaY: 40.0,
-                        ),
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: AlignmentDirectional(1.00, -1.00),
-                              child: Container(
-                                width: 300.0,
-                                height: 400.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context).tertiary,
-                                  shape: BoxShape.rectangle,
-                                ),
-                              ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation1']!,
-                                  hasBeenTriggered: hasContainerTriggered1),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(-3.27, -1.29),
-                              child: Container(
-                                width: MediaQuery.sizeOf(context).width * 0.75,
-                                height: MediaQuery.sizeOf(context).width * 0.75,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  shape: BoxShape.circle,
-                                ),
-                              ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation2']!,
-                                  hasBeenTriggered: hasContainerTriggered2),
-                            ),
-                            Align(
-                              alignment: AlignmentDirectional(0.00, 0.00),
-                              child: Container(
-                                width: MediaQuery.sizeOf(context).width * 0.7,
-                                height: MediaQuery.sizeOf(context).width * 0.7,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context).secondary,
-                                  shape: BoxShape.circle,
-                                ),
-                              ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'containerOnActionTriggerAnimation3']!,
-                                  hasBeenTriggered: hasContainerTriggered3),
-                            ),
-                          ],
-                        ),
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  ClipRect(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(
+                        sigmaX: 40.0,
+                        sigmaY: 40.0,
+                      ),
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional(1.00, -1.00),
+                            child: Container(
+                              width: 300.0,
+                              height: 400.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).tertiary,
+                                shape: BoxShape.rectangle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation1']!,
+                                hasBeenTriggered: hasContainerTriggered1),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(-3.27, -1.29),
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width * 0.75,
+                              height: MediaQuery.sizeOf(context).width * 0.75,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).primary,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation2']!,
+                                hasBeenTriggered: hasContainerTriggered2),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(0.00, 0.00),
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width * 0.7,
+                              height: MediaQuery.sizeOf(context).width * 0.7,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).secondary,
+                                shape: BoxShape.circle,
+                              ),
+                            ).animateOnActionTrigger(
+                                animationsMap[
+                                    'containerOnActionTriggerAnimation3']!,
+                                hasBeenTriggered: hasContainerTriggered3),
+                          ),
+                        ],
                       ),
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                width: 100.0,
-                                height: 148.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  border: Border.all(
-                                    color: Colors.transparent,
-                                  ),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: 100.0,
+                              height: 148.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                border: Border.all(
+                                  color: Colors.transparent,
                                 ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    if (() {
-                                      if ((MediaQuery.sizeOf(context).height >
-                                              800.0) &&
-                                          (isWeb
-                                              ? MediaQuery.viewInsetsOf(context)
-                                                      .bottom >
-                                                  0
-                                              : _isKeyboardVisible)) {
-                                        return true;
-                                      } else if (((isAndroid == true) ||
-                                              (isiOS == true)) &&
-                                          (isWeb
-                                              ? MediaQuery.viewInsetsOf(context)
-                                                      .bottom >
-                                                  0
-                                              : _isKeyboardVisible)) {
-                                        return false;
-                                      } else {
-                                        return true;
-                                      }
-                                    }())
-                                      Image.asset(
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  if (() {
+                                    if ((MediaQuery.sizeOf(context).height >
+                                            800.0) &&
+                                        (isWeb
+                                            ? MediaQuery.viewInsetsOf(context)
+                                                    .bottom >
+                                                0
+                                            : _isKeyboardVisible)) {
+                                      return true;
+                                    } else if (((isAndroid == true) ||
+                                            (isiOS == true)) &&
+                                        (isWeb
+                                            ? MediaQuery.viewInsetsOf(context)
+                                                    .bottom >
+                                                0
+                                            : _isKeyboardVisible)) {
+                                      return false;
+                                    } else {
+                                      return true;
+                                    }
+                                  }())
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 40.0, 0.0, 0.0),
+                                      child: Image.asset(
                                         'assets/images/5a6e9_5.jpg',
                                         width:
                                             MediaQuery.sizeOf(context).width *
@@ -296,81 +298,82 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                 0.118,
                                         fit: BoxFit.contain,
                                       ),
-                                    Flexible(
-                                      child: AutoSizeText(
-                                        'Please login to continue',
-                                        maxLines: 1,
-                                        style: FlutterFlowTheme.of(context)
-                                            .headlineSmall
-                                            .override(
-                                              fontFamily: 'Lato',
-                                              fontSize: 22.0,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                      ),
                                     ),
-                                  ].addToEnd(SizedBox(height: 16.0)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment(0.0, 0),
-                                child: FlutterFlowButtonTabBar(
-                                  useToggleButtonStyle: true,
-                                  labelStyle: FlutterFlowTheme.of(context)
-                                      .titleMedium
-                                      .override(
-                                        fontFamily: 'Lato',
-                                        fontSize: 22.0,
-                                      ),
-                                  unselectedLabelStyle:
-                                      FlutterFlowTheme.of(context)
-                                          .titleMedium
+                                  Flexible(
+                                    child: AutoSizeText(
+                                      'Please login to continue',
+                                      maxLines: 1,
+                                      style: FlutterFlowTheme.of(context)
+                                          .headlineSmall
                                           .override(
                                             fontFamily: 'Lato',
-                                            fontWeight: FontWeight.w300,
+                                            fontSize: 22.0,
+                                            fontWeight: FontWeight.w600,
                                           ),
-                                  labelColor:
-                                      FlutterFlowTheme.of(context).primary,
-                                  unselectedLabelColor:
-                                      FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                  backgroundColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  unselectedBackgroundColor:
-                                      FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                  borderColor:
-                                      FlutterFlowTheme.of(context).primary,
-                                  unselectedBorderColor:
-                                      FlutterFlowTheme.of(context).secondary,
-                                  borderWidth: 0.0,
-                                  borderRadius: 0.0,
-                                  elevation: 6.0,
-                                  labelPadding: EdgeInsetsDirectional.fromSTEB(
-                                      24.0, 0.0, 24.0, 0.0),
-                                  tabs: [
-                                    Tab(
-                                      text: 'Sign In',
                                     ),
-                                    Tab(
-                                      text: 'Sign Up',
-                                    ),
-                                  ],
-                                  controller: _model.tabBarController,
-                                ),
+                                  ),
+                                ].addToEnd(SizedBox(height: 16.0)),
                               ),
-                              Expanded(
-                                child: TabBarView(
-                                  controller: _model.tabBarController,
-                                  children: [
-                                    KeepAliveWidgetWrapper(
-                                      builder: (context) => Column(
+                            ),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment(0.0, 0),
+                              child: FlutterFlowButtonTabBar(
+                                useToggleButtonStyle: true,
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .titleMedium
+                                    .override(
+                                      fontFamily: 'Lato',
+                                      fontSize: 22.0,
+                                    ),
+                                unselectedLabelStyle:
+                                    FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .override(
+                                          fontFamily: 'Lato',
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                labelColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                unselectedLabelColor:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                backgroundColor: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                unselectedBackgroundColor:
+                                    FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                borderColor:
+                                    FlutterFlowTheme.of(context).primary,
+                                unselectedBorderColor:
+                                    FlutterFlowTheme.of(context).secondary,
+                                borderWidth: 0.0,
+                                borderRadius: 0.0,
+                                elevation: 6.0,
+                                labelPadding: EdgeInsetsDirectional.fromSTEB(
+                                    24.0, 0.0, 24.0, 0.0),
+                                tabs: [
+                                  Tab(
+                                    text: 'Sign In',
+                                  ),
+                                  Tab(
+                                    text: 'Sign Up',
+                                  ),
+                                ],
+                                controller: _model.tabBarController,
+                              ),
+                            ),
+                            Expanded(
+                              child: TabBarView(
+                                controller: _model.tabBarController,
+                                children: [
+                                  KeepAliveWidgetWrapper(
+                                    builder: (context) => SingleChildScrollView(
+                                      child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -378,7 +381,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                           Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    24.0, 12.0, 24.0, 0.0),
+                                                    24.0, 24.0, 24.0, 0.0),
                                             child: TextFormField(
                                               controller:
                                                   _model.emailAddressController,
@@ -769,225 +772,101 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                     ],
                                                   ),
                                                 ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 12.0, 0.0),
-                                                  child: InkWell(
-                                                    splashColor:
-                                                        Colors.transparent,
-                                                    focusColor:
-                                                        Colors.transparent,
-                                                    hoverColor:
-                                                        Colors.transparent,
-                                                    highlightColor:
-                                                        Colors.transparent,
-                                                    onTap: () async {
-                                                      GoRouter.of(context)
-                                                          .prepareAuthEvent();
-                                                      final user =
-                                                          await authManager
-                                                              .signInWithGoogle(
-                                                                  context);
-                                                      if (user == null) {
-                                                        return;
-                                                      }
-                                                      if (valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.nightscout,
-                                                                  '') ==
-                                                              null ||
-                                                          valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.nightscout,
-                                                                  '') ==
-                                                              '') {
-                                                        context.pushNamedAuth(
-                                                            'nightscoutCheck',
-                                                            context.mounted);
-                                                      }
-                                                      if (valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.units,
-                                                                  '') ==
-                                                              null ||
-                                                          valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.units,
-                                                                  '') ==
-                                                              '') {
-                                                        context.pushNamedAuth(
-                                                            'unitsCheck',
-                                                            context.mounted);
-                                                      }
-                                                      if (valueOrDefault(
-                                                              currentUserDocument
-                                                                  ?.carbRatio,
-                                                              0.0) ==
-                                                          null) {
-                                                        context.pushNamedAuth(
-                                                            'carbRatioCheck',
-                                                            context.mounted);
-                                                      }
-                                                      if ((valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.highValue,
-                                                                  0.0) ==
-                                                              null) ||
-                                                          (valueOrDefault(
-                                                                  currentUserDocument
-                                                                      ?.highValue,
-                                                                  0.0) <=
-                                                              0.0)) {
-                                                        context.pushNamedAuth(
-                                                            'finalCheck',
-                                                            context.mounted);
-                                                      } else {
-                                                        context.pushNamedAuth(
-                                                          'home',
-                                                          context.mounted,
-                                                          extra: <String,
-                                                              dynamic>{
-                                                            kTransitionInfoKey:
-                                                                TransitionInfo(
-                                                              hasTransition:
-                                                                  true,
-                                                              transitionType:
-                                                                  PageTransitionType
-                                                                      .fade,
-                                                            ),
-                                                          },
-                                                        );
-                                                      }
-                                                    },
+                                                Align(
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                          0.00, 0.00),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 0.0,
+                                                                12.0, 0.0),
                                                     child: Material(
                                                       color: Colors.transparent,
                                                       elevation: 3.0,
                                                       shape:
                                                           const CircleBorder(),
-                                                      child: Container(
-                                                        width: 50.0,
-                                                        height: 50.0,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              blurRadius: 5.0,
-                                                              color: Color(
-                                                                  0x3314181B),
-                                                              offset: Offset(
-                                                                  0.0, 2.0),
-                                                            )
-                                                          ],
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                0.00, 0.00),
-                                                        child: FaIcon(
-                                                          FontAwesomeIcons
-                                                              .google,
-                                                          color: Colors.white,
-                                                          size: 24.0,
+                                                      child: ClipOval(
+                                                        child: Container(
+                                                          width: 50.0,
+                                                          height: 50.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primary,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                blurRadius: 5.0,
+                                                                color: Color(
+                                                                    0x3314181B),
+                                                                offset: Offset(
+                                                                    0.0, 2.0),
+                                                              )
+                                                            ],
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          alignment:
+                                                              AlignmentDirectional(
+                                                                  0.00, 0.00),
+                                                          child: Align(
+                                                            alignment:
+                                                                AlignmentDirectional(
+                                                                    0.00, 0.00),
+                                                            child:
+                                                                FlutterFlowIconButton(
+                                                              borderColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                              borderRadius:
+                                                                  20.0,
+                                                              borderWidth: 1.0,
+                                                              buttonSize: 60.0,
+                                                              fillColor: Colors
+                                                                  .transparent,
+                                                              icon: FaIcon(
+                                                                FontAwesomeIcons
+                                                                    .google,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .btnText,
+                                                                size: 24.0,
+                                                              ),
+                                                              showLoadingIndicator:
+                                                                  true,
+                                                              onPressed:
+                                                                  () async {
+                                                                GoRouter.of(
+                                                                        context)
+                                                                    .prepareAuthEvent();
+                                                                final user =
+                                                                    await authManager
+                                                                        .signInWithGoogle(
+                                                                            context);
+                                                                if (user ==
+                                                                    null) {
+                                                                  return;
+                                                                }
+
+                                                                context.goNamedAuth(
+                                                                    'homeCarbs',
+                                                                    context
+                                                                        .mounted);
+                                                              },
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                                InkWell(
-                                                  splashColor:
-                                                      Colors.transparent,
-                                                  focusColor:
-                                                      Colors.transparent,
-                                                  hoverColor:
-                                                      Colors.transparent,
-                                                  highlightColor:
-                                                      Colors.transparent,
-                                                  onTap: () async {
-                                                    GoRouter.of(context)
-                                                        .prepareAuthEvent();
-                                                    final user =
-                                                        await authManager
-                                                            .signInWithApple(
-                                                                context);
-                                                    if (user == null) {
-                                                      return;
-                                                    }
-                                                    if (valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.nightscout,
-                                                                '') ==
-                                                            null ||
-                                                        valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.nightscout,
-                                                                '') ==
-                                                            '') {
-                                                      context.pushNamedAuth(
-                                                          'nightscoutCheck',
-                                                          context.mounted);
-                                                    }
-                                                    if (valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.units,
-                                                                '') ==
-                                                            null ||
-                                                        valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.units,
-                                                                '') ==
-                                                            '') {
-                                                      context.pushNamedAuth(
-                                                          'unitsCheck',
-                                                          context.mounted);
-                                                    }
-                                                    if (valueOrDefault(
-                                                            currentUserDocument
-                                                                ?.carbRatio,
-                                                            0.0) ==
-                                                        null) {
-                                                      context.pushNamedAuth(
-                                                          'carbRatioCheck',
-                                                          context.mounted);
-                                                    }
-                                                    if ((valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.highValue,
-                                                                0.0) ==
-                                                            null) ||
-                                                        (valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.highValue,
-                                                                0.0) <=
-                                                            0.0)) {
-                                                      context.pushNamedAuth(
-                                                          'finalCheck',
-                                                          context.mounted);
-                                                    } else {
-                                                      context.pushNamedAuth(
-                                                        'home',
-                                                        context.mounted,
-                                                        extra: <String,
-                                                            dynamic>{
-                                                          kTransitionInfoKey:
-                                                              TransitionInfo(
-                                                            hasTransition: true,
-                                                            transitionType:
-                                                                PageTransitionType
-                                                                    .fade,
-                                                          ),
-                                                        },
-                                                      );
-                                                    }
-                                                  },
-                                                  child: Material(
-                                                    color: Colors.transparent,
-                                                    elevation: 3.0,
-                                                    shape: const CircleBorder(),
+                                                Material(
+                                                  color: Colors.transparent,
+                                                  elevation: 3.0,
+                                                  shape: const CircleBorder(),
+                                                  child: ClipOval(
                                                     child: Container(
                                                       width: 50.0,
                                                       height: 50.0,
@@ -1010,10 +889,47 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                       alignment:
                                                           AlignmentDirectional(
                                                               0.00, 0.00),
-                                                      child: FaIcon(
-                                                        FontAwesomeIcons.apple,
-                                                        color: Colors.white,
-                                                        size: 24.0,
+                                                      child: Align(
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                0.00, 0.00),
+                                                        child:
+                                                            FlutterFlowIconButton(
+                                                          borderColor:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                          borderRadius: 20.0,
+                                                          borderWidth: 1.0,
+                                                          buttonSize: 60.0,
+                                                          fillColor: Colors
+                                                              .transparent,
+                                                          icon: Icon(
+                                                            Icons.apple,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .btnText,
+                                                            size: 24.0,
+                                                          ),
+                                                          showLoadingIndicator:
+                                                              true,
+                                                          onPressed: () async {
+                                                            GoRouter.of(context)
+                                                                .prepareAuthEvent();
+                                                            final user =
+                                                                await authManager
+                                                                    .signInWithApple(
+                                                                        context);
+                                                            if (user == null) {
+                                                              return;
+                                                            }
+
+                                                            context.goNamedAuth(
+                                                                'homeCarbs',
+                                                                context
+                                                                    .mounted);
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -1096,8 +1012,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                         ],
                                       ),
                                     ),
-                                    KeepAliveWidgetWrapper(
-                                      builder: (context) => Column(
+                                  ),
+                                  KeepAliveWidgetWrapper(
+                                    builder: (context) => SingleChildScrollView(
+                                      child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -1651,22 +1569,21 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          )
-                              .animateOnPageLoad(
-                                  animationsMap['tabBarOnPageLoadAnimation']!)
-                              .animateOnActionTrigger(
-                                animationsMap[
-                                    'tabBarOnActionTriggerAnimation']!,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                            ),
+                          ],
+                        )
+                            .animateOnPageLoad(
+                                animationsMap['tabBarOnPageLoadAnimation']!)
+                            .animateOnActionTrigger(
+                              animationsMap['tabBarOnActionTriggerAnimation']!,
+                            ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
