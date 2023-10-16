@@ -1,4 +1,6 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/nav_to_details_page_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -7,6 +9,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -40,6 +43,23 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ScanedItemModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      var lookupRecordReference = LookupRecord.collection.doc();
+      await lookupRecordReference.set(createLookupRecordData(
+        input: widget.input,
+        timestamp: getCurrentTimestamp,
+        userRef: currentUserReference,
+      ));
+      _model.barcodeInputDocCreate = LookupRecord.getDocumentFromData(
+          createLookupRecordData(
+            input: widget.input,
+            timestamp: getCurrentTimestamp,
+            userRef: currentUserReference,
+          ),
+          lookupRecordReference);
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -103,10 +123,17 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  SizedBox(
+                    width: 100.0,
+                    child: Divider(
+                      thickness: 3.0,
+                      color: FlutterFlowTheme.of(context).richBlackFOGRA29,
+                    ),
+                  ),
                   Flexible(
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 8.0),
+                          EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -151,78 +178,105 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
                     endIndent: 16.0,
                     color: FlutterFlowTheme.of(context).secondaryText,
                   ),
-                  Flexible(
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
-                      child: StreamBuilder<List<LookupRecord>>(
-                        stream: queryLookupRecord(
-                          queryBuilder: (lookupRecord) => lookupRecord.where(
-                            'input',
-                            isEqualTo: widget.input,
+                  if (valueOrDefault<bool>(
+                    _model.barcodeInputDocCreate?.reference != null
+                        ? true
+                        : false,
+                    false,
+                  ))
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 4.0, 16.0, 4.0),
+                        child: StreamBuilder<List<LookupRecord>>(
+                          stream: queryLookupRecord(
+                            queryBuilder: (lookupRecord) => lookupRecord.where(
+                              'input',
+                              isEqualTo: widget.input,
+                            ),
+                            singleRecord: true,
                           ),
-                          singleRecord: true,
-                        ),
-                        builder: (context, snapshot) {
-                          // Customize what your widget looks like when it's loading.
-                          if (!snapshot.hasData) {
-                            return Image.asset(
-                              'assets/images/3face8da2a6c3dcd27cb4a1aaa32c926_w200.gif',
-                              width: 40.0,
-                              height: 40.0,
-                            );
-                          }
-                          List<LookupRecord> columnLookupRecordList =
-                              snapshot.data!;
-                          // Return an empty Container when the item does not exist.
-                          if (snapshot.data!.isEmpty) {
-                            return Container();
-                          }
-                          final columnLookupRecord =
-                              columnLookupRecordList.isNotEmpty
-                                  ? columnLookupRecordList.first
-                                  : null;
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              if (valueOrDefault<bool>(
-                                columnLookupRecord?.chatGptResponse?.name ==
-                                            null ||
-                                        columnLookupRecord
-                                                ?.chatGptResponse?.name ==
-                                            ''
-                                    ? true
-                                    : false,
-                                true,
-                              ))
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.asset(
-                                    'assets/images/3face8da2a6c3dcd27cb4a1aaa32c926_w200.gif',
-                                    width: 40.0,
-                                    height: 40.0,
-                                    fit: BoxFit.cover,
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Image.asset(
+                                'assets/images/3face8da2a6c3dcd27cb4a1aaa32c926_w200.gif',
+                                width: 40.0,
+                                height: 40.0,
+                              );
+                            }
+                            List<LookupRecord> columnLookupRecordList =
+                                snapshot.data!;
+                            // Return an empty Container when the item does not exist.
+                            if (snapshot.data!.isEmpty) {
+                              return Container();
+                            }
+                            final columnLookupRecord =
+                                columnLookupRecordList.isNotEmpty
+                                    ? columnLookupRecordList.first
+                                    : null;
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                if (valueOrDefault<bool>(
+                                  columnLookupRecord?.chatGptResponse?.name ==
+                                              null ||
+                                          columnLookupRecord
+                                                  ?.chatGptResponse?.name ==
+                                              ''
+                                      ? true
+                                      : false,
+                                  true,
+                                ))
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.asset(
+                                      'assets/images/3face8da2a6c3dcd27cb4a1aaa32c926_w200.gif',
+                                      width: 40.0,
+                                      height: 40.0,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                              if (valueOrDefault<bool>(
-                                columnLookupRecord?.chatGptResponse?.name ==
-                                        'Unknown'
-                                    ? true
-                                    : false,
-                                true,
-                              ))
-                                Text(
-                                  'Unable to identify item',
-                                  style:
-                                      FlutterFlowTheme.of(context).titleSmall,
-                                ),
-                            ],
-                          );
-                        },
+                                if (valueOrDefault<bool>(
+                                  columnLookupRecord?.chatGptResponse?.name ==
+                                          'Unknown'
+                                      ? true
+                                      : false,
+                                  true,
+                                ))
+                                  Text(
+                                    'Unable to identify item',
+                                    style:
+                                        FlutterFlowTheme.of(context).titleSmall,
+                                  ),
+                                if (valueOrDefault<bool>(
+                                  (columnLookupRecord?.chatGptResponse?.name !=
+                                                  null &&
+                                              columnLookupRecord
+                                                      ?.chatGptResponse?.name !=
+                                                  '') &&
+                                          (columnLookupRecord
+                                                  ?.chatGptResponse?.name !=
+                                              'Unknown')
+                                      ? true
+                                      : false,
+                                  false,
+                                ))
+                                  wrapWithModel(
+                                    model: _model.navToDetailsPageModel,
+                                    updateCallback: () => setState(() {}),
+                                    updateOnChange: true,
+                                    child: NavToDetailsPageWidget(
+                                      docRef: columnLookupRecord!.reference,
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
                   Flexible(
                     child: Padding(
                       padding:
@@ -339,7 +393,7 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
                       ),
                     ),
                   ),
-                ],
+                ].addToStart(SizedBox(height: 4.0)),
               ),
             ),
           ),

@@ -248,11 +248,11 @@ class FFAppState extends ChangeNotifier {
     _sgvList.insert(_index, _value);
   }
 
-  final _foodDataManager = FutureRequestManager<List<FoodDataRecord>>();
-  Future<List<FoodDataRecord>> foodData({
+  final _foodDataManager = StreamRequestManager<List<FoodDataRecord>>();
+  Stream<List<FoodDataRecord>> foodData({
     String? uniqueQueryKey,
     bool? overrideCache,
-    required Future<List<FoodDataRecord>> Function() requestFn,
+    required Stream<List<FoodDataRecord>> Function() requestFn,
   }) =>
       _foodDataManager.performRequest(
         uniqueQueryKey: uniqueQueryKey,

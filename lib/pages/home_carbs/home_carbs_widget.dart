@@ -92,7 +92,7 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                     backgroundColor: FlutterFlowTheme.of(context).primary,
                     automaticallyImplyLeading: false,
                     title: Text(
-                      'Carbs & Cals',
+                      'Your Items',
                       style:
                           FlutterFlowTheme.of(context).headlineMedium.override(
                                 fontFamily: 'Lato',
@@ -145,6 +145,10 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                 LookupRecord>(
                               pagingController: _model.setListViewController(
                                 LookupRecord.collection
+                                    .where(
+                                      'userRef',
+                                      isEqualTo: currentUserReference,
+                                    )
                                     .orderBy('timestamp', descending: true),
                               ),
                               padding: EdgeInsets.zero,

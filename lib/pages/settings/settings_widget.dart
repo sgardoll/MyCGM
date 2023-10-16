@@ -1673,7 +1673,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                       }
 
                                                       context.goNamedAuth(
-                                                          'home',
+                                                          'homeCarbs',
                                                           context.mounted);
                                                     },
                                                     text: 'Delete Account',
@@ -1757,8 +1757,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 await authManager.signOut();
                                 GoRouter.of(context).clearRedirectLocation();
 
-                                context.goNamedAuth(
-                                    'loginPage', context.mounted);
+                                context.goNamedAuth('home', context.mounted);
                               },
                               text: 'Logout',
                               icon: Icon(

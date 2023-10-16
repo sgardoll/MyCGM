@@ -121,10 +121,17 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      SizedBox(
+                        width: 100.0,
+                        child: Divider(
+                          thickness: 3.0,
+                          color: FlutterFlowTheme.of(context).richBlackFOGRA29,
+                        ),
+                      ),
                       Flexible(
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
-                              16.0, 16.0, 16.0, 8.0),
+                              16.0, 8.0, 16.0, 8.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,9 +198,8 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               if (valueOrDefault<bool>(
-                                blurLookupRecord
-                                            .openFoodFactsAPI.carbohydrates !=
-                                        null
+                                blurLookupRecord.openFoodFactsAPI
+                                        .hasCarbohydrates()
                                     ? true
                                     : false,
                                 false,
@@ -423,7 +429,7 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                           ),
                         ),
                       ),
-                    ],
+                    ].addToStart(SizedBox(height: 8.0)),
                   ),
                 ),
               ),

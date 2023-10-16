@@ -397,8 +397,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                   await authManager.signOut();
                                   GoRouter.of(context).clearRedirectLocation();
 
-                                  context.goNamedAuth(
-                                      'loginPage', context.mounted);
+                                  context.goNamedAuth('home', context.mounted);
                                 },
                                 text: '',
                                 icon: Icon(

@@ -1,11 +1,13 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
+import '/flutter_flow/flutter_flow_button_tabbar.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
 import 'dart:ui';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -88,18 +90,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           duration: 2000.ms,
           begin: Offset(1.0, 1.0),
           end: Offset(5.0, 5.0),
-        ),
-      ],
-    ),
-    'imageOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 200.0),
-          end: Offset(0.0, 0.0),
         ),
       ],
     ),
@@ -189,7 +179,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
               : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
-            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+            backgroundColor: FlutterFlowTheme.of(context).secondary,
             body: SafeArea(
               top: true,
               child: Container(
@@ -259,40 +249,70 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (() {
-                              if ((MediaQuery.sizeOf(context).height > 800.0) &&
-                                  (isWeb
-                                      ? MediaQuery.viewInsetsOf(context)
-                                              .bottom >
-                                          0
-                                      : _isKeyboardVisible)) {
-                                return true;
-                              } else if (((isAndroid == true) ||
-                                      (isiOS == true)) &&
-                                  (isWeb
-                                      ? MediaQuery.viewInsetsOf(context)
-                                              .bottom >
-                                          0
-                                      : _isKeyboardVisible)) {
-                                return false;
-                              } else {
-                                return true;
-                              }
-                            }())
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  child: Image.asset(
-                                    'assets/images/Logo3.2-50Transparent.png',
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.3,
-                                    height:
-                                        MediaQuery.sizeOf(context).height * 0.3,
-                                    fit: BoxFit.contain,
+                            Expanded(
+                              child: Container(
+                                width: 100.0,
+                                height: 148.0,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  border: Border.all(
+                                    color: Colors.transparent,
                                   ),
-                                ).animateOnPageLoad(
-                                    animationsMap['imageOnPageLoadAnimation']!),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    if (() {
+                                      if ((MediaQuery.sizeOf(context).height >
+                                              800.0) &&
+                                          (isWeb
+                                              ? MediaQuery.viewInsetsOf(context)
+                                                      .bottom >
+                                                  0
+                                              : _isKeyboardVisible)) {
+                                        return true;
+                                      } else if (((isAndroid == true) ||
+                                              (isiOS == true)) &&
+                                          (isWeb
+                                              ? MediaQuery.viewInsetsOf(context)
+                                                      .bottom >
+                                                  0
+                                              : _isKeyboardVisible)) {
+                                        return false;
+                                      } else {
+                                        return true;
+                                      }
+                                    }())
+                                      Image.asset(
+                                        'assets/images/5a6e9_5.jpg',
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.3,
+                                        height:
+                                            MediaQuery.sizeOf(context).height *
+                                                0.118,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    Flexible(
+                                      child: AutoSizeText(
+                                        'Please login to continue',
+                                        maxLines: 1,
+                                        style: FlutterFlowTheme.of(context)
+                                            .headlineSmall
+                                            .override(
+                                              fontFamily: 'Lato',
+                                              fontSize: 22.0,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                      ),
+                                    ),
+                                  ].addToEnd(SizedBox(height: 16.0)),
+                                ),
                               ),
+                            ),
                           ],
                         ),
                         Expanded(
@@ -300,23 +320,40 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                             children: [
                               Align(
                                 alignment: Alignment(0.0, 0),
-                                child: TabBar(
-                                  isScrollable: true,
-                                  labelColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  unselectedLabelColor:
-                                      FlutterFlowTheme.of(context).gray600,
-                                  labelPadding: EdgeInsetsDirectional.fromSTEB(
-                                      24.0, 0.0, 24.0, 0.0),
+                                child: FlutterFlowButtonTabBar(
+                                  useToggleButtonStyle: true,
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .titleMedium
                                       .override(
-                                        fontFamily: 'Poppins',
+                                        fontFamily: 'Lato',
+                                        fontSize: 22.0,
                                       ),
-                                  unselectedLabelStyle: TextStyle(),
-                                  indicatorColor: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  indicatorWeight: 3.0,
+                                  unselectedLabelStyle:
+                                      FlutterFlowTheme.of(context)
+                                          .titleMedium
+                                          .override(
+                                            fontFamily: 'Lato',
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                  labelColor:
+                                      FlutterFlowTheme.of(context).primary,
+                                  unselectedLabelColor:
+                                      FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                  backgroundColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  unselectedBackgroundColor:
+                                      FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).primary,
+                                  unselectedBorderColor:
+                                      FlutterFlowTheme.of(context).secondary,
+                                  borderWidth: 0.0,
+                                  borderRadius: 0.0,
+                                  elevation: 6.0,
+                                  labelPadding: EdgeInsetsDirectional.fromSTEB(
+                                      24.0, 0.0, 24.0, 0.0),
                                   tabs: [
                                     Tab(
                                       text: 'Sign In',
@@ -675,7 +712,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                 0.0, 0.0),
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .secondary,
+                                                        .primary,
                                                     textStyle: FlutterFlowTheme
                                                             .of(context)
                                                         .titleSmall
@@ -726,7 +763,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                       'Lato',
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
-                                                                      .secondaryText,
+                                                                      .alternate,
                                                                 ),
                                                       ),
                                                     ],
@@ -835,7 +872,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                             BoxDecoration(
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .secondary,
+                                                              .primary,
                                                           boxShadow: [
                                                             BoxShadow(
                                                               blurRadius: 5.0,
@@ -958,7 +995,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .secondary,
+                                                                .primary,
                                                         boxShadow: [
                                                           BoxShadow(
                                                             blurRadius: 5.0,
@@ -1039,8 +1076,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                             0.0, 0.0, 0.0, 0.0),
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .secondary,
+                                                        .alternate,
                                                 textStyle: TextStyle(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
                                                   fontSize: 12.0,
                                                 ),
                                                 elevation: 3.0,
@@ -1071,7 +1111,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                   _model.displayNameController,
                                               obscureText: false,
                                               decoration: InputDecoration(
-                                                labelText: 'Your name',
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodySmall,
@@ -1162,7 +1201,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                   .emailAddressCreateController,
                                               obscureText: false,
                                               decoration: InputDecoration(
-                                                labelText: 'Email Address',
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodySmall,
@@ -1256,7 +1294,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                               obscureText: !_model
                                                   .passwordCreateVisibility,
                                               decoration: InputDecoration(
-                                                labelText: 'Password',
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodySmall,
@@ -1369,7 +1406,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                               obscureText: !_model
                                                   .passwordCreateConfirmVisibility,
                                               decoration: InputDecoration(
-                                                labelText: 'Confirm Password',
                                                 labelStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .bodySmall,
@@ -1592,7 +1628,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                             0.0, 0.0, 0.0, 0.0),
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .secondary,
+                                                        .primary,
                                                 textStyle:
                                                     FlutterFlowTheme.of(context)
                                                         .titleSmall

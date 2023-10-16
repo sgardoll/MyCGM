@@ -1,11 +1,10 @@
+import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
-import '/backend/backend.dart';
 import '/components/scaned_item/scaned_item_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -112,247 +111,253 @@ class _NavBar1WidgetState extends State<NavBar1Widget> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30.0,
-                        borderWidth: 1.0,
-                        buttonSize: 50.0,
-                        fillColor: valueOrDefault<Color>(
-                          widget.activePage == 'Home'
-                              ? Color(0xC1FFFFFF)
-                              : Colors.transparent,
-                          Colors.transparent,
+                      Flexible(
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 50.0,
+                          fillColor: valueOrDefault<Color>(
+                            widget.activePage == 'Home'
+                                ? Color(0xC1FFFFFF)
+                                : Colors.transparent,
+                            Colors.transparent,
+                          ),
+                          hoverColor: FlutterFlowTheme.of(context).primaryText,
+                          hoverIconColor: valueOrDefault<Color>(
+                            widget.activePage == 'Home'
+                                ? FlutterFlowTheme.of(context).alternate
+                                : FlutterFlowTheme.of(context).accent3,
+                            FlutterFlowTheme.of(context).accent3,
+                          ),
+                          icon: Icon(
+                            Icons.home_rounded,
+                            color: FlutterFlowTheme.of(context).primary,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            context.pushNamed('home');
+                          },
                         ),
-                        hoverColor: FlutterFlowTheme.of(context).primaryText,
-                        hoverIconColor: valueOrDefault<Color>(
-                          widget.activePage == 'Home'
-                              ? FlutterFlowTheme.of(context).alternate
-                              : FlutterFlowTheme.of(context).accent3,
-                          FlutterFlowTheme.of(context).accent3,
-                        ),
-                        icon: Icon(
-                          Icons.home_rounded,
-                          color: FlutterFlowTheme.of(context).primary,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          context.pushNamed('home');
-                        },
                       ),
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30.0,
-                        borderWidth: 1.0,
-                        buttonSize: 50.0,
-                        fillColor: valueOrDefault<Color>(
-                          widget.activePage == 'CGM'
-                              ? Color(0xC1FFFFFF)
-                              : Colors.transparent,
-                          Colors.transparent,
+                      if (valueOrDefault<bool>(
+                        valueOrDefault<bool>(
+                            currentUserDocument?.hasCgmFeatures, false),
+                        false,
+                      ))
+                        Flexible(
+                          child: AuthUserStreamWidget(
+                            builder: (context) => FlutterFlowIconButton(
+                              borderColor: Colors.transparent,
+                              borderRadius: 30.0,
+                              borderWidth: 1.0,
+                              buttonSize: 50.0,
+                              fillColor: valueOrDefault<Color>(
+                                widget.activePage == 'CGM'
+                                    ? Color(0xC1FFFFFF)
+                                    : Colors.transparent,
+                                Colors.transparent,
+                              ),
+                              hoverColor:
+                                  FlutterFlowTheme.of(context).primaryText,
+                              hoverIconColor: valueOrDefault<Color>(
+                                widget.activePage == 'Home'
+                                    ? FlutterFlowTheme.of(context).alternate
+                                    : FlutterFlowTheme.of(context).accent3,
+                                FlutterFlowTheme.of(context).accent3,
+                              ),
+                              icon: Icon(
+                                Icons.bloodtype,
+                                color: FlutterFlowTheme.of(context).primary,
+                                size: 24.0,
+                              ),
+                              onPressed: () async {
+                                context.pushNamed('homeCGM');
+                              },
+                            ),
+                          ),
                         ),
-                        hoverColor: FlutterFlowTheme.of(context).primaryText,
-                        hoverIconColor: valueOrDefault<Color>(
-                          widget.activePage == 'Home'
-                              ? FlutterFlowTheme.of(context).alternate
-                              : FlutterFlowTheme.of(context).accent3,
-                          FlutterFlowTheme.of(context).accent3,
+                      Flexible(
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 50.0,
+                          fillColor: valueOrDefault<Color>(
+                            widget.activePage == 'Carbs'
+                                ? Color(0xC1FFFFFF)
+                                : Colors.transparent,
+                            Colors.transparent,
+                          ),
+                          hoverColor: FlutterFlowTheme.of(context).primaryText,
+                          hoverIconColor: valueOrDefault<Color>(
+                            widget.activePage == 'Home'
+                                ? FlutterFlowTheme.of(context).alternate
+                                : FlutterFlowTheme.of(context).accent3,
+                            FlutterFlowTheme.of(context).accent3,
+                          ),
+                          icon: Icon(
+                            Icons.fastfood_rounded,
+                            color: FlutterFlowTheme.of(context).primary,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            context.pushNamed('homeCarbs');
+                          },
                         ),
-                        icon: FaIcon(
-                          FontAwesomeIcons.heartbeat,
-                          color: FlutterFlowTheme.of(context).primary,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          context.pushNamed('homeCGM');
-                        },
                       ),
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30.0,
-                        borderWidth: 1.0,
-                        buttonSize: 50.0,
-                        fillColor: valueOrDefault<Color>(
-                          widget.activePage == 'Carbs'
-                              ? Color(0xC1FFFFFF)
-                              : Colors.transparent,
-                          Colors.transparent,
+                      Flexible(
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 50.0,
+                          fillColor: valueOrDefault<Color>(
+                            widget.activePage == 'Settings'
+                                ? Color(0xC1FFFFFF)
+                                : Colors.transparent,
+                            Colors.transparent,
+                          ),
+                          hoverColor: FlutterFlowTheme.of(context).primaryText,
+                          hoverIconColor: valueOrDefault<Color>(
+                            widget.activePage == 'Home'
+                                ? FlutterFlowTheme.of(context).alternate
+                                : FlutterFlowTheme.of(context).accent3,
+                            FlutterFlowTheme.of(context).accent3,
+                          ),
+                          icon: Icon(
+                            Icons.settings_rounded,
+                            color: FlutterFlowTheme.of(context).primary,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            context.pushNamed('Settings');
+                          },
                         ),
-                        hoverColor: FlutterFlowTheme.of(context).primaryText,
-                        hoverIconColor: valueOrDefault<Color>(
-                          widget.activePage == 'Home'
-                              ? FlutterFlowTheme.of(context).alternate
-                              : FlutterFlowTheme.of(context).accent3,
-                          FlutterFlowTheme.of(context).accent3,
-                        ),
-                        icon: Icon(
-                          Icons.fastfood_rounded,
-                          color: FlutterFlowTheme.of(context).primary,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          context.pushNamed('homeCarbs');
-                        },
                       ),
-                      FlutterFlowIconButton(
-                        borderColor: Colors.transparent,
-                        borderRadius: 30.0,
-                        borderWidth: 1.0,
-                        buttonSize: 50.0,
-                        fillColor: valueOrDefault<Color>(
-                          widget.activePage == 'Settings'
-                              ? Color(0xC1FFFFFF)
-                              : Colors.transparent,
-                          Colors.transparent,
-                        ),
-                        hoverColor: FlutterFlowTheme.of(context).primaryText,
-                        hoverIconColor: valueOrDefault<Color>(
-                          widget.activePage == 'Home'
-                              ? FlutterFlowTheme.of(context).alternate
-                              : FlutterFlowTheme.of(context).accent3,
-                          FlutterFlowTheme.of(context).accent3,
-                        ),
-                        icon: Icon(
-                          Icons.settings_rounded,
-                          color: FlutterFlowTheme.of(context).primary,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          context.pushNamed('Settings');
-                        },
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0.00, 1.00),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 20.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Material(
-                                color: Colors.transparent,
-                                elevation: 6.0,
-                                shape: const CircleBorder(),
-                                child: Container(
-                                  width: 60.0,
-                                  height: 60.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      if (valueOrDefault<bool>(
-                                        widget.activePage != 'CGM'
-                                            ? true
-                                            : false,
-                                        true,
-                                      ))
-                                        FlutterFlowIconButton(
-                                          borderColor: Colors.transparent,
-                                          borderRadius: 100.0,
-                                          borderWidth: 1.0,
-                                          buttonSize: 60.0,
-                                          fillColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          icon: FaIcon(
-                                            FontAwesomeIcons.barcode,
-                                            color: Colors.white,
-                                            size: 30.0,
+                      Flexible(
+                        child: Align(
+                          alignment: AlignmentDirectional(0.00, 1.00),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 20.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Material(
+                                  color: Colors.transparent,
+                                  elevation: 6.0,
+                                  shape: const CircleBorder(),
+                                  child: Container(
+                                    width: 60.0,
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          FlutterFlowTheme.of(context).primary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        if (valueOrDefault<bool>(
+                                          widget.activePage == 'CGM'
+                                              ? true
+                                              : false,
+                                          false,
+                                        ))
+                                          FlutterFlowIconButton(
+                                            borderColor: Colors.transparent,
+                                            borderRadius: 100.0,
+                                            borderWidth: 1.0,
+                                            buttonSize: 60.0,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            icon: Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                              size: 30.0,
+                                            ),
+                                            showLoadingIndicator: true,
+                                            onPressed: () async {
+                                              if (FFAppState().FABOpen) {
+                                                FFAppState().update(() {
+                                                  FFAppState().FABOpen = false;
+                                                });
+                                              } else {
+                                                FFAppState().update(() {
+                                                  FFAppState().FABOpen = true;
+                                                });
+                                              }
+                                            },
                                           ),
-                                          showLoadingIndicator: true,
-                                          onPressed: () async {
-                                            _model.barcodeScan =
-                                                await FlutterBarcodeScanner
-                                                    .scanBarcode(
-                                              '#C62828', // scanning line color
-                                              'Cancel', // cancel button text
-                                              true, // whether to show the flash icon
-                                              ScanMode.BARCODE,
-                                            );
+                                        if (valueOrDefault<bool>(
+                                          widget.activePage != 'CGM'
+                                              ? true
+                                              : false,
+                                          true,
+                                        ))
+                                          FlutterFlowIconButton(
+                                            borderColor: Colors.transparent,
+                                            borderRadius: 100.0,
+                                            borderWidth: 1.0,
+                                            buttonSize: 60.0,
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            icon: FaIcon(
+                                              FontAwesomeIcons.barcode,
+                                              color: Colors.white,
+                                              size: 30.0,
+                                            ),
+                                            showLoadingIndicator: true,
+                                            onPressed: () async {
+                                              if (loggedIn) {
+                                                _model.barcodeScan =
+                                                    await FlutterBarcodeScanner
+                                                        .scanBarcode(
+                                                  '#C62828', // scanning line color
+                                                  'Cancel', // cancel button text
+                                                  true, // whether to show the flash icon
+                                                  ScanMode.BARCODE,
+                                                );
 
-                                            if (functions.barcodeScanInt(
-                                                    _model.barcodeScan!) >
-                                                1) {
-                                              var lookupRecordReference =
-                                                  LookupRecord.collection.doc();
-                                              await lookupRecordReference
-                                                  .set(createLookupRecordData(
-                                                input: _model.barcodeScan,
-                                                timestamp: getCurrentTimestamp,
-                                              ));
-                                              _model.barcodeInputDocCreate =
-                                                  LookupRecord
-                                                      .getDocumentFromData(
-                                                          createLookupRecordData(
-                                                            input: _model
-                                                                .barcodeScan,
-                                                            timestamp:
-                                                                getCurrentTimestamp,
-                                                          ),
-                                                          lookupRecordReference);
-                                              showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                useSafeArea: true,
-                                                context: context,
-                                                builder: (context) {
-                                                  return Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child: ScanedItemWidget(
-                                                      input:
-                                                          _model.barcodeScan!,
-                                                    ),
-                                                  );
-                                                },
-                                              ).then((value) =>
-                                                  safeSetState(() {}));
-                                            }
+                                                if (functions.barcodeScanInt(
+                                                        _model.barcodeScan!) >
+                                                    1) {
+                                                  showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    useSafeArea: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Padding(
+                                                        padding: MediaQuery
+                                                            .viewInsetsOf(
+                                                                context),
+                                                        child: ScanedItemWidget(
+                                                          input: _model
+                                                              .barcodeScan!,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ).then((value) =>
+                                                      safeSetState(() {}));
+                                                }
+                                              } else {
+                                                context.pushNamed('loginPage');
+                                              }
 
-                                            setState(() {});
-                                          },
-                                        ),
-                                      if (valueOrDefault<bool>(
-                                        widget.activePage == 'CGM'
-                                            ? true
-                                            : false,
-                                        false,
-                                      ))
-                                        FlutterFlowIconButton(
-                                          borderColor: Colors.transparent,
-                                          borderRadius: 100.0,
-                                          borderWidth: 1.0,
-                                          buttonSize: 60.0,
-                                          fillColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                            size: 30.0,
+                                              setState(() {});
+                                            },
                                           ),
-                                          showLoadingIndicator: true,
-                                          onPressed: () async {
-                                            if (FFAppState().FABOpen) {
-                                              FFAppState().update(() {
-                                                FFAppState().FABOpen = false;
-                                              });
-                                            } else {
-                                              FFAppState().update(() {
-                                                FFAppState().FABOpen = true;
-                                              });
-                                            }
-                                          },
-                                        ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

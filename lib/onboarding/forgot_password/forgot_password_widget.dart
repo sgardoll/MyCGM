@@ -641,7 +641,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                         }
 
                                                                         context.goNamedAuth(
-                                                                            'home',
+                                                                            'homeCarbs',
                                                                             context.mounted);
                                                                       },
                                                                     ),
@@ -685,7 +685,7 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
                                                                         }
 
                                                                         context.goNamedAuth(
-                                                                            'home',
+                                                                            'homeCarbs',
                                                                             context.mounted);
                                                                       },
                                                                     ),

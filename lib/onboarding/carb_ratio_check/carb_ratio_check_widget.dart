@@ -480,8 +480,7 @@ class _CarbRatioCheckWidgetState extends State<CarbRatioCheckWidget>
                                   await authManager.signOut();
                                   GoRouter.of(context).clearRedirectLocation();
 
-                                  context.goNamedAuth(
-                                      'loginPage', context.mounted);
+                                  context.goNamedAuth('home', context.mounted);
                                 },
                                 text: '',
                                 icon: Icon(

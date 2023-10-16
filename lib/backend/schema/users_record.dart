@@ -81,6 +81,11 @@ class UsersRecord extends FirestoreRecord {
   double get carbRatio => _carbRatio ?? 0.0;
   bool hasCarbRatio() => _carbRatio != null;
 
+  // "hasCgmFeatures" field.
+  bool? _hasCgmFeatures;
+  bool get hasCgmFeatures => _hasCgmFeatures ?? false;
+  bool hasHasCgmFeatures() => _hasCgmFeatures != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -95,6 +100,7 @@ class UsersRecord extends FirestoreRecord {
     _highValue = castToType<double>(snapshotData['high_value']);
     _lowValue = castToType<double>(snapshotData['low_value']);
     _carbRatio = castToType<double>(snapshotData['carbRatio']);
+    _hasCgmFeatures = snapshotData['hasCgmFeatures'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -144,6 +150,7 @@ Map<String, dynamic> createUsersRecordData({
   double? highValue,
   double? lowValue,
   double? carbRatio,
+  bool? hasCgmFeatures,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -160,6 +167,7 @@ Map<String, dynamic> createUsersRecordData({
       'high_value': highValue,
       'low_value': lowValue,
       'carbRatio': carbRatio,
+      'hasCgmFeatures': hasCgmFeatures,
     }.withoutNulls,
   );
 
@@ -183,7 +191,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e1?.token == e2?.token &&
         e1?.highValue == e2?.highValue &&
         e1?.lowValue == e2?.lowValue &&
-        e1?.carbRatio == e2?.carbRatio;
+        e1?.carbRatio == e2?.carbRatio &&
+        e1?.hasCgmFeatures == e2?.hasCgmFeatures;
   }
 
   @override
@@ -200,7 +209,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.token,
         e?.highValue,
         e?.lowValue,
-        e?.carbRatio
+        e?.carbRatio,
+        e?.hasCgmFeatures
       ]);
 
   @override
