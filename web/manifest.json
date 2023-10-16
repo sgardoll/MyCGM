@@ -1,6 +1,6 @@
 {
-    "name": "CarbsCals",
-    "short_name": "CarbsCals",
+    "name": "EatSmart",
+    "short_name": "EatSmart",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

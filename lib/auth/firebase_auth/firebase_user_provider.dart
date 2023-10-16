@@ -7,8 +7,8 @@ import '../base_auth_user_provider.dart';
 
 export '../base_auth_user_provider.dart';
 
-class CarbsCalsFirebaseUser extends BaseAuthUser {
-  CarbsCalsFirebaseUser(this.user);
+class EatSmartFirebaseUser extends BaseAuthUser {
+  EatSmartFirebaseUser(this.user);
   User? user;
   bool get loggedIn => user != null;
 
@@ -50,17 +50,17 @@ class CarbsCalsFirebaseUser extends BaseAuthUser {
   static BaseAuthUser fromUserCredential(UserCredential userCredential) =>
       fromFirebaseUser(userCredential.user);
   static BaseAuthUser fromFirebaseUser(User? user) =>
-      CarbsCalsFirebaseUser(user);
+      EatSmartFirebaseUser(user);
 }
 
-Stream<BaseAuthUser> carbsCalsFirebaseUserStream() => FirebaseAuth.instance
+Stream<BaseAuthUser> eatSmartFirebaseUserStream() => FirebaseAuth.instance
         .authStateChanges()
         .debounce((user) => user == null && !loggedIn
             ? TimerStream(true, const Duration(seconds: 1))
             : Stream.value(user))
         .map<BaseAuthUser>(
       (user) {
-        currentUser = CarbsCalsFirebaseUser(user);
+        currentUser = EatSmartFirebaseUser(user);
         if (!kIsWeb) {
           FirebaseCrashlytics.instance.setUserIdentifier(user?.uid ?? '');
         }

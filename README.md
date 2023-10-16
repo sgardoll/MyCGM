@@ -1,4 +1,4 @@
-# CarbsCals
+# EatSmart
 
 A new Flutter project.
 
