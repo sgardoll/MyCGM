@@ -251,7 +251,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                           Expanded(
                             child: Container(
                               width: 100.0,
-                              height: 148.0,
+                              height: 185.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
@@ -285,32 +285,30 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                       return true;
                                     }
                                   }())
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 40.0, 0.0, 0.0),
-                                      child: Image.asset(
-                                        'assets/images/5a6e9_5.jpg',
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                0.3,
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.118,
-                                        fit: BoxFit.contain,
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 40.0, 0.0, 0.0),
+                                        child: Image.asset(
+                                          'assets/images/5a6e9_5.jpg',
+                                          width:
+                                              MediaQuery.sizeOf(context).width *
+                                                  0.3,
+                                          height: 100.0,
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
-                                  Flexible(
-                                    child: AutoSizeText(
-                                      'Please login to continue',
-                                      maxLines: 1,
-                                      style: FlutterFlowTheme.of(context)
-                                          .headlineSmall
-                                          .override(
-                                            fontFamily: 'Lato',
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
+                                  AutoSizeText(
+                                    'Please login to continue',
+                                    maxLines: 1,
+                                    style: FlutterFlowTheme.of(context)
+                                        .headlineSmall
+                                        .override(
+                                          fontFamily: 'Lato',
+                                          fontSize: 22.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                   ),
                                 ].addToEnd(SizedBox(height: 16.0)),
                               ),
