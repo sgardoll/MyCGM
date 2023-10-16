@@ -632,72 +632,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                       return;
                                                     }
 
-                                                    if (valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.nightscout,
-                                                                '') ==
-                                                            null ||
-                                                        valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.nightscout,
-                                                                '') ==
-                                                            '') {
-                                                      context.pushNamedAuth(
-                                                          'nightscoutCheck',
-                                                          context.mounted);
-                                                    }
-                                                    if (valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.units,
-                                                                '') ==
-                                                            null ||
-                                                        valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.units,
-                                                                '') ==
-                                                            '') {
-                                                      context.pushNamedAuth(
-                                                          'unitsCheck',
-                                                          context.mounted);
-                                                    }
-                                                    if (valueOrDefault(
-                                                            currentUserDocument
-                                                                ?.carbRatio,
-                                                            0.0) ==
-                                                        null) {
-                                                      context.pushNamedAuth(
-                                                          'carbRatioCheck',
-                                                          context.mounted);
-                                                    }
-                                                    if ((valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.highValue,
-                                                                0.0) ==
-                                                            null) ||
-                                                        (valueOrDefault(
-                                                                currentUserDocument
-                                                                    ?.highValue,
-                                                                0.0) <=
-                                                            0.0)) {
-                                                      context.pushNamedAuth(
-                                                          'finalCheck',
-                                                          context.mounted);
-                                                    } else {
-                                                      context.pushNamedAuth(
-                                                        'home',
-                                                        context.mounted,
-                                                        extra: <String,
-                                                            dynamic>{
-                                                          kTransitionInfoKey:
-                                                              TransitionInfo(
-                                                            hasTransition: true,
-                                                            transitionType:
-                                                                PageTransitionType
-                                                                    .fade,
-                                                          ),
-                                                        },
-                                                      );
-                                                    }
+                                                    context.pushNamedAuth(
+                                                        'homeCarbs',
+                                                        context.mounted);
                                                   },
                                                   text: 'Sign In',
                                                   options: FFButtonOptions(
@@ -848,7 +785,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                                   return;
                                                                 }
 
-                                                                context.goNamedAuth(
+                                                                context.pushNamedAuth(
                                                                     'homeCarbs',
                                                                     context
                                                                         .mounted);
@@ -922,7 +859,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                               return;
                                                             }
 
-                                                            context.goNamedAuth(
+                                                            context.pushNamedAuth(
                                                                 'homeCarbs',
                                                                 context
                                                                     .mounted);
