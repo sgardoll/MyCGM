@@ -27,41 +27,46 @@ class QrScanBox extends StatefulWidget {
 }
 
 class _QrScanBoxState extends State<QrScanBox> {
-  String qrCodeResult = 'Not Scanned Yet';
+  String barcodeResult = 'Not Scanned Yet';
 
-  Future<void> _scanQRCode() async {
+  Future<void> _scanBarcode() async {
     try {
-      final qrCode = await FlutterBarcodeScanner.scanBarcode(
+      final barcode = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666',
-        'Cancel',
-        true,
-        ScanMode.QR,
+        '',
+        false,
+        ScanMode.BARCODE,
       );
       if (!mounted) return;
 
       setState(() {
-        qrCodeResult = qrCode;
+        barcodeResult = barcode;
       });
     } catch (ex) {
-      print('Failed to scan QR code: $ex');
+      print('Failed to scan barcode: $ex');
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _scanBarcode();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _scanQRCode,
-      child: Container(
-        width: widget.width,
-        height: widget.height,
-        color: Colors.grey,
-        child: Center(
-          child: Text(
-            'Tap to Scan',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-            ),
+    return Container(
+      width: widget.width,
+      height: widget.height,
+      color: Colors.grey,
+      child: Center(
+        child: Text(
+          barcodeResult,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
           ),
         ),
       ),
