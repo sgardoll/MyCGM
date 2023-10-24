@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+import '/components/scaned_item/scaned_item_widget.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScanBox extends StatefulWidget {
