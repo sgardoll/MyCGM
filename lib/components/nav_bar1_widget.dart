@@ -44,7 +44,26 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
-        VisibilityEffect(duration: 1.ms),
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(0.0, 0.0),
+          end: Offset(0.0, 100.0),
+        ),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 1.0,
+          end: 0.0,
+        ),
+      ],
+    ),
+    'containerOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      applyInitialState: true,
+      effects: [
         MoveEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
@@ -77,20 +96,12 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (FFAppState().firstOpen == true) {
-        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-          animationsMap['containerOnActionTriggerAnimation']!
-              .controller
-              .forward(from: 0.0);
-        }
         _model.timerController.onStartTimer();
         await Future.delayed(const Duration(milliseconds: 15000));
         if (animationsMap['containerOnActionTriggerAnimation'] != null) {
           await animationsMap['containerOnActionTriggerAnimation']!
               .controller
-              .forward(from: 0.0)
-              .whenComplete(animationsMap['containerOnActionTriggerAnimation']!
-                  .controller
-                  .reverse);
+              .forward(from: 0.0);
         }
         setState(() {
           FFAppState().firstOpen = false;
@@ -188,9 +199,12 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                         ),
                       ),
                     ),
-                  ).animateOnActionTrigger(
-                    animationsMap['containerOnActionTriggerAnimation']!,
-                  ),
+                  )
+                      .animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation']!)
+                      .animateOnActionTrigger(
+                        animationsMap['containerOnActionTriggerAnimation']!,
+                      ),
                 ),
               ),
           ],

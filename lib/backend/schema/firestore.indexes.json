@@ -1,18 +1,3 @@
 {
-  "indexes": [
-    {
-      "collectionGroup": "lookup",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "userRef",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "timestamp",
-          "order": "DESCENDING"
-        }
-      ]
-    }
-  ]
+  "indexes": []
 }

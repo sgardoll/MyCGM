@@ -9,7 +9,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'home_carbs_widget.dart' show HomeCarbsWidget;
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -27,15 +26,9 @@ class HomeCarbsModel extends FlutterFlowModel<HomeCarbsWidget> {
   ApiCallResponse? pageLoadAPICall;
   // State field(s) for ListView widget.
 
-  PagingController<DocumentSnapshot?, LookupRecord>? listViewPagingController1;
-  Query? listViewPagingQuery1;
-  List<StreamSubscription?> listViewStreamSubscriptions1 = [];
-
-  // State field(s) for ListView widget.
-
-  PagingController<DocumentSnapshot?, LookupRecord>? listViewPagingController2;
-  Query? listViewPagingQuery2;
-  List<StreamSubscription?> listViewStreamSubscriptions2 = [];
+  PagingController<DocumentSnapshot?, LookupRecord>? listViewPagingController;
+  Query? listViewPagingQuery;
+  List<StreamSubscription?> listViewStreamSubscriptions = [];
 
   // Model for NavBar1 component.
   late NavBar1Model navBar1Model;
@@ -48,11 +41,8 @@ class HomeCarbsModel extends FlutterFlowModel<HomeCarbsWidget> {
 
   void dispose() {
     unfocusNode.dispose();
-    listViewStreamSubscriptions1.forEach((s) => s?.cancel());
-    listViewPagingController1?.dispose();
-
-    listViewStreamSubscriptions2.forEach((s) => s?.cancel());
-    listViewPagingController2?.dispose();
+    listViewStreamSubscriptions.forEach((s) => s?.cancel());
+    listViewPagingController?.dispose();
 
     navBar1Model.dispose();
   }
@@ -61,19 +51,19 @@ class HomeCarbsModel extends FlutterFlowModel<HomeCarbsWidget> {
 
   /// Additional helper methods are added here.
 
-  PagingController<DocumentSnapshot?, LookupRecord> setListViewController1(
+  PagingController<DocumentSnapshot?, LookupRecord> setListViewController(
     Query query, {
     DocumentReference<Object?>? parent,
   }) {
-    listViewPagingController1 ??= _createListViewController1(query, parent);
-    if (listViewPagingQuery1 != query) {
-      listViewPagingQuery1 = query;
-      listViewPagingController1?.refresh();
+    listViewPagingController ??= _createListViewController(query, parent);
+    if (listViewPagingQuery != query) {
+      listViewPagingQuery = query;
+      listViewPagingController?.refresh();
     }
-    return listViewPagingController1!;
+    return listViewPagingController!;
   }
 
-  PagingController<DocumentSnapshot?, LookupRecord> _createListViewController1(
+  PagingController<DocumentSnapshot?, LookupRecord> _createListViewController(
     Query query,
     DocumentReference<Object?>? parent,
   ) {
@@ -82,40 +72,9 @@ class HomeCarbsModel extends FlutterFlowModel<HomeCarbsWidget> {
     return controller
       ..addPageRequestListener(
         (nextPageMarker) => queryLookupRecordPage(
-          queryBuilder: (_) => listViewPagingQuery1 ??= query,
+          queryBuilder: (_) => listViewPagingQuery ??= query,
           nextPageMarker: nextPageMarker,
-          streamSubscriptions: listViewStreamSubscriptions1,
-          controller: controller,
-          pageSize: 25,
-          isStream: true,
-        ),
-      );
-  }
-
-  PagingController<DocumentSnapshot?, LookupRecord> setListViewController2(
-    Query query, {
-    DocumentReference<Object?>? parent,
-  }) {
-    listViewPagingController2 ??= _createListViewController2(query, parent);
-    if (listViewPagingQuery2 != query) {
-      listViewPagingQuery2 = query;
-      listViewPagingController2?.refresh();
-    }
-    return listViewPagingController2!;
-  }
-
-  PagingController<DocumentSnapshot?, LookupRecord> _createListViewController2(
-    Query query,
-    DocumentReference<Object?>? parent,
-  ) {
-    final controller =
-        PagingController<DocumentSnapshot?, LookupRecord>(firstPageKey: null);
-    return controller
-      ..addPageRequestListener(
-        (nextPageMarker) => queryLookupRecordPage(
-          queryBuilder: (_) => listViewPagingQuery2 ??= query,
-          nextPageMarker: nextPageMarker,
-          streamSubscriptions: listViewStreamSubscriptions2,
+          streamSubscriptions: listViewStreamSubscriptions,
           controller: controller,
           pageSize: 25,
           isStream: true,

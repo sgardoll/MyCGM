@@ -371,16 +371,25 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Flexible(
-                                child: AutoSizeText(
-                                  (_model.buildshipAPIGoogleVision?.bodyText ??
-                                      ''),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 5,
-                                  style:
-                                      FlutterFlowTheme.of(context).bodyMedium,
+                              if (valueOrDefault<bool>(
+                                (_model.buildshipAPIGoogleVision?.jsonBody ??
+                                            '') !=
+                                        null
+                                    ? true
+                                    : false,
+                                false,
+                              ))
+                                Flexible(
+                                  child: AutoSizeText(
+                                    (_model.buildshipAPIGoogleVision
+                                            ?.bodyText ??
+                                        ''),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 5,
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyMedium,
+                                  ),
                                 ),
-                              ),
                             ],
                           ),
                         ),

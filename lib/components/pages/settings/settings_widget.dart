@@ -1612,7 +1612,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12.0, 4.0, 12.0, 0.0),
                                       child: Icon(
-                                        FFIcons.kicon,
+                                        Icons.ad_units_rounded,
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
                                         size: 32.0,
