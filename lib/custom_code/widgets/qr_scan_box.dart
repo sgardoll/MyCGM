@@ -34,8 +34,7 @@ class _QrScanBoxState extends State<QrScanBox> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       controller.pauseCamera();
-
-      if (yourConditionHere(scanData.code)) {
+      if (scanData.code != null && yourConditionHere(scanData.code!)) {
         showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
@@ -45,7 +44,7 @@ class _QrScanBoxState extends State<QrScanBox> {
             return Padding(
               padding: MediaQuery.viewInsetsOf(context),
               child: ScanedItemWidget(
-                input: scanData.code,
+                input: scanData.code!,
               ),
             );
           },
