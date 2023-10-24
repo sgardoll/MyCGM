@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class QrScanBox extends StatefulWidget {
   const QrScanBox({
@@ -27,38 +27,42 @@ class QrScanBox extends StatefulWidget {
 }
 
 class _QrScanBoxState extends State<QrScanBox> {
-  final GlobalKey qrKey = GlobalKey();
-  QRViewController? controller;
+  String qrCodeResult = 'Not Scanned Yet';
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      controller.pauseCamera();
-      // Handle the scanned data
-      print('Scanned QR Code: ${scanData.code}');
-    });
-  }
+  Future<void> _scanQRCode() async {
+    try {
+      final qrCode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.QR,
+      );
+      if (!mounted) return;
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
+      setState(() {
+        qrCodeResult = qrCode;
+      });
+    } catch (ex) {
+      print('Failed to scan QR code: $ex');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.width,
-      height: widget.height,
-      child: QRView(
-        key: qrKey,
-        onQRViewCreated: _onQRViewCreated,
-        overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: widget.width ?? 200,
+    return GestureDetector(
+      onTap: _scanQRCode,
+      child: Container(
+        width: widget.width,
+        height: widget.height,
+        color: Colors.grey,
+        child: Center(
+          child: Text(
+            'Tap to Scan',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
         ),
       ),
     );
