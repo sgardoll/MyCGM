@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:flutter_qr_bar_scanner/flutter_qr_bar_scanner.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScanBox extends StatefulWidget {
   const QrScanBox({
@@ -28,10 +28,21 @@ class QrScanBox extends StatefulWidget {
 
 class _QrScanBoxState extends State<QrScanBox> {
   final GlobalKey qrKey = GlobalKey();
+  QRViewController? controller;
 
-  void _qrCodeCallback(String qrCode) {
-    // Handle the scanned QR Code
-    print('Scanned QR Code: $qrCode');
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      controller.pauseCamera();
+      // Handle the scanned data
+      print('Scanned QR Code: ${scanData.code}');
+    });
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,10 +50,16 @@ class _QrScanBoxState extends State<QrScanBox> {
     return Container(
       width: widget.width,
       height: widget.height,
-      child: QRBarScannerCamera(
+      child: QRView(
         key: qrKey,
-        qrCodeCallback: _qrCodeCallback,
-        fit: BoxFit.cover,
+        onQRViewCreated: _onQRViewCreated,
+        overlay: QrScannerOverlayShape(
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: widget.width ?? 200,
+        ),
       ),
     );
   }
