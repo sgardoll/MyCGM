@@ -7,6 +7,8 @@ import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -121,20 +123,28 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      FlutterFlowAdBanner(
-                        width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: 50.0,
-                        showsTestAd: false,
-                        iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
-                        androidAdUnitID:
-                            'ca-app-pub-3945304154369399/4626582701',
-                      ),
+                      if (valueOrDefault<bool>(
+                        isWeb ||
+                                revenue_cat.activeEntitlementIds
+                                    .contains('premium')
+                            ? false
+                            : true,
+                        true,
+                      ))
+                        FlutterFlowAdBanner(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 50.0,
+                          showsTestAd: false,
+                          iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
+                          androidAdUnitID:
+                              'ca-app-pub-3945304154369399/4626582701',
+                        ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             15.0, 16.0, 30.0, 0.0),
                         child: PagedListView<DocumentSnapshot<Object?>?,
                             LookupRecord>(
-                          pagingController: _model.setListViewController(
+                          pagingController: _model.setListViewController1(
                             LookupRecord.collection
                                 .where(
                                   'userRef',
@@ -174,7 +184,152 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
 
                             itemBuilder: (context, _, listViewIndex) {
                               final listViewLookupRecord = _model
-                                  .listViewPagingController!
+                                  .listViewPagingController1!
+                                  .itemList![listViewIndex];
+                              return InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    useSafeArea: true,
+                                    context: context,
+                                    builder: (context) {
+                                      return GestureDetector(
+                                        onTap: () => _model
+                                                .unfocusNode.canRequestFocus
+                                            ? FocusScope.of(context)
+                                                .requestFocus(
+                                                    _model.unfocusNode)
+                                            : FocusScope.of(context).unfocus(),
+                                        child: Padding(
+                                          padding:
+                                              MediaQuery.viewInsetsOf(context),
+                                          child: ScanedItemDetailsWidget(
+                                            docRef:
+                                                listViewLookupRecord.reference,
+                                            input: listViewLookupRecord.input,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ).then((value) => safeSetState(() {}));
+                                },
+                                child: Slidable(
+                                  endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    extentRatio: 0.25,
+                                    children: [
+                                      SlidableAction(
+                                        label: 'Delete',
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .secondary,
+                                        icon: Icons.delete_rounded,
+                                        onPressed: (_) async {
+                                          await listViewLookupRecord.reference
+                                              .delete();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListTile(
+                                    title: Text(
+                                      listViewLookupRecord.details.name,
+                                      style: FlutterFlowTheme.of(context)
+                                          .titleMedium,
+                                    ),
+                                    subtitle: Text(
+                                      listViewLookupRecord.details.brand,
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Lato',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                          ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 20.0,
+                                    ),
+                                    tileColor: Colors.transparent,
+                                    dense: false,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: AlignmentDirectional(-1.00, 0.00),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                15.0, 24.0, 0.0, 0.0),
+                            child: AutoSizeText(
+                              'Scanned By NutriScan Users',
+                              textAlign: TextAlign.start,
+                              maxLines: 2,
+                              style: FlutterFlowTheme.of(context)
+                                  .headlineMedium
+                                  .override(
+                                    fontFamily: 'Lato',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            15.0, 16.0, 30.0, 0.0),
+                        child: PagedListView<DocumentSnapshot<Object?>?,
+                            LookupRecord>(
+                          pagingController: _model.setListViewController2(
+                            LookupRecord.collection
+                                .orderBy('details.name', descending: true),
+                          ),
+                          padding: EdgeInsets.zero,
+                          primary: false,
+                          shrinkWrap: true,
+                          reverse: false,
+                          scrollDirection: Axis.vertical,
+                          builderDelegate:
+                              PagedChildBuilderDelegate<LookupRecord>(
+                            // Customize what your widget looks like when it's loading the first page.
+                            firstPageProgressIndicatorBuilder: (_) => Center(
+                              child: SizedBox(
+                                width: 25.0,
+                                height: 25.0,
+                                child: SpinKitRipple(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  size: 25.0,
+                                ),
+                              ),
+                            ),
+                            // Customize what your widget looks like when it's loading another page.
+                            newPageProgressIndicatorBuilder: (_) => Center(
+                              child: SizedBox(
+                                width: 25.0,
+                                height: 25.0,
+                                child: SpinKitRipple(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  size: 25.0,
+                                ),
+                              ),
+                            ),
+
+                            itemBuilder: (context, _, listViewIndex) {
+                              final listViewLookupRecord = _model
+                                  .listViewPagingController2!
                                   .itemList![listViewIndex];
                               return InkWell(
                                 splashColor: Colors.transparent,

@@ -34,23 +34,8 @@ class _QrScanBoxState extends State<QrScanBox> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       controller.pauseCamera();
-
-      if (yourConditionHere(scanData.code)) {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          useSafeArea: true,
-          context: context,
-          builder: (context) {
-            return Padding(
-              padding: MediaQuery.viewInsetsOf(context),
-              child: ScanedItemWidget(
-                input: scanData.code,
-              ),
-            );
-          },
-        ).then((value) => safeSetState(() {}));
-      }
+      // Handle the scanned data
+      print('Scanned Barcode: ${scanData.code}');
     });
   }
 
@@ -78,13 +63,4 @@ class _QrScanBoxState extends State<QrScanBox> {
       ),
     );
   }
-}
-
-bool yourConditionHere(String scannedCode) {
-  // Replace this with your actual condition
-  return true;
-}
-
-void safeSetState(VoidCallback fn) {
-  // Implement your safeSetState logic here
 }

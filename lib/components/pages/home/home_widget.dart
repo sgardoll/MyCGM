@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -92,16 +93,22 @@ class _HomeWidgetState extends State<HomeWidget> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Align(
-                alignment: AlignmentDirectional(0.00, -1.00),
-                child: FlutterFlowAdBanner(
-                  width: MediaQuery.sizeOf(context).width * 1.0,
-                  height: 50.0,
-                  showsTestAd: false,
-                  iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
-                  androidAdUnitID: 'ca-app-pub-3945304154369399/4626582701',
+              if (valueOrDefault<bool>(
+                isWeb || revenue_cat.activeEntitlementIds.contains('premium')
+                    ? false
+                    : true,
+                true,
+              ))
+                Align(
+                  alignment: AlignmentDirectional(0.00, -1.00),
+                  child: FlutterFlowAdBanner(
+                    width: MediaQuery.sizeOf(context).width * 1.0,
+                    height: 50.0,
+                    showsTestAd: false,
+                    iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
+                    androidAdUnitID: 'ca-app-pub-3945304154369399/4626582701',
+                  ),
                 ),
-              ),
               Flexible(
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 1.0,

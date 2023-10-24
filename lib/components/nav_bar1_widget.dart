@@ -4,9 +4,11 @@ import '/components/scaned_item/scaned_item_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'nav_bar1_model.dart';
 export 'nav_bar1_model.dart';
@@ -41,12 +44,20 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
       effects: [
+        VisibilityEffect(duration: 1.ms),
         MoveEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 600.ms,
           begin: Offset(0.0, 100.0),
           end: Offset(0.0, 0.0),
+        ),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0.0,
+          end: 1.0,
         ),
       ],
     ),
@@ -71,10 +82,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
               .controller
               .forward(from: 0.0);
         }
-        setState(() {
-          FFAppState().firstOpen = false;
-        });
-        await Future.delayed(const Duration(milliseconds: 5000));
+        _model.timerController.onStartTimer();
+        await Future.delayed(const Duration(milliseconds: 15000));
         if (animationsMap['containerOnActionTriggerAnimation'] != null) {
           await animationsMap['containerOnActionTriggerAnimation']!
               .controller
@@ -83,6 +92,9 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                   .controller
                   .reverse);
         }
+        setState(() {
+          FFAppState().firstOpen = false;
+        });
       }
     });
 
@@ -92,6 +104,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
           !anim.applyInitialState),
       this,
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -113,64 +127,72 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Align(
-              alignment: AlignmentDirectional(1.00, 1.00),
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
-                child: Material(
-                  color: Colors.transparent,
-                  elevation: 12.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(0.0),
-                      bottomRight: Radius.circular(0.0),
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(0.0),
-                      bottomRight: Radius.circular(0.0),
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 1200),
-                      curve: Curves.easeInOut,
-                      width: MediaQuery.sizeOf(context).width * 0.6,
-                      height: 160.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).primaryBackground,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(0.0, -2.0),
-                          )
-                        ],
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(0.0),
-                          bottomRight: Radius.circular(0.0),
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
-                        ),
+            if (valueOrDefault<bool>(
+              FFAppState().firstOpen ? true : false,
+              false,
+            ))
+              Align(
+                alignment: AlignmentDirectional(1.00, 1.00),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
+                  child: Material(
+                    color: Colors.transparent,
+                    elevation: 12.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(0.0),
+                        bottomRight: Radius.circular(0.0),
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
                       ),
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: MediaQuery.sizeOf(context).height * 1.0,
-                        child: custom_widgets.QrScanBox(
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(0.0),
+                        bottomRight: Radius.circular(0.0),
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 1200),
+                        curve: Curves.easeInOut,
+                        width: MediaQuery.sizeOf(context).width * 0.75,
+                        height: 160.0,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 4.0,
+                              color: Color(0x33000000),
+                              offset: Offset(0.0, -2.0),
+                            )
+                          ],
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(0.0),
+                            bottomRight: Radius.circular(0.0),
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
+                          border: Border.all(
+                            color: FlutterFlowTheme.of(context).secondary,
+                            width: 6.0,
+                          ),
+                        ),
+                        child: Container(
                           width: MediaQuery.sizeOf(context).width * 1.0,
                           height: MediaQuery.sizeOf(context).height * 1.0,
+                          child: custom_widgets.QrScanBox(
+                            width: MediaQuery.sizeOf(context).width * 1.0,
+                            height: MediaQuery.sizeOf(context).height * 1.0,
+                          ),
                         ),
                       ),
                     ),
+                  ).animateOnActionTrigger(
+                    animationsMap['containerOnActionTriggerAnimation']!,
                   ),
-                ).animateOnActionTrigger(
-                  animationsMap['containerOnActionTriggerAnimation']!,
                 ),
               ),
-            ),
           ],
         ),
         Column(
@@ -241,8 +263,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                         hoverIconColor: valueOrDefault<Color>(
                           widget.activePage == 'Home'
                               ? FlutterFlowTheme.of(context).alternate
-                              : FlutterFlowTheme.of(context).secondary,
-                          FlutterFlowTheme.of(context).secondary,
+                              : FlutterFlowTheme.of(context).primary,
+                          FlutterFlowTheme.of(context).primary,
                         ),
                         icon: Icon(
                           Icons.home_rounded,
@@ -276,8 +298,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                         hoverIconColor: valueOrDefault<Color>(
                           widget.activePage == 'Carbs'
                               ? FlutterFlowTheme.of(context).alternate
-                              : FlutterFlowTheme.of(context).secondary,
-                          FlutterFlowTheme.of(context).secondary,
+                              : FlutterFlowTheme.of(context).primary,
+                          FlutterFlowTheme.of(context).primary,
                         ),
                         icon: Icon(
                           Icons.fastfood_rounded,
@@ -324,8 +346,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                             hoverIconColor: valueOrDefault<Color>(
                               widget.activePage == 'CGM'
                                   ? FlutterFlowTheme.of(context).alternate
-                                  : FlutterFlowTheme.of(context).secondary,
-                              FlutterFlowTheme.of(context).secondary,
+                                  : FlutterFlowTheme.of(context).primary,
+                              FlutterFlowTheme.of(context).primary,
                             ),
                             icon: Icon(
                               Icons.bloodtype,
@@ -360,8 +382,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                         hoverIconColor: valueOrDefault<Color>(
                           widget.activePage == 'Settings'
                               ? FlutterFlowTheme.of(context).alternate
-                              : FlutterFlowTheme.of(context).secondary,
-                          FlutterFlowTheme.of(context).secondary,
+                              : FlutterFlowTheme.of(context).primary,
+                          FlutterFlowTheme.of(context).primary,
                         ),
                         icon: Icon(
                           Icons.settings_rounded,
@@ -468,6 +490,32 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                           setState(() {});
                                         },
                                       ),
+                                      if (valueOrDefault<bool>(
+                                        FFAppState().firstOpen ? true : false,
+                                        false,
+                                      ))
+                                        CircularPercentIndicator(
+                                          percent: valueOrDefault<double>(
+                                            (int? elapsed) {
+                                              return elapsed != null
+                                                  ? 1 -
+                                                      (elapsed / 15000)
+                                                          .toDouble()
+                                                  : null;
+                                            }(_model.timerMilliseconds),
+                                            0.0,
+                                          ),
+                                          radius: 30.0,
+                                          lineWidth: 6.0,
+                                          animation: true,
+                                          animateFromLastPercent: true,
+                                          progressColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
                                     ],
                                   ),
                                 ),
@@ -483,6 +531,29 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
             ),
           ],
         ),
+        if (valueOrDefault<bool>(
+          FFAppState().firstOpen ? true : false,
+          false,
+        ))
+          FlutterFlowTimer(
+            initialTime: _model.timerMilliseconds,
+            getDisplayTime: (value) => StopWatchTimer.getDisplayTime(
+              value,
+              hours: false,
+              milliSecond: false,
+            ),
+            controller: _model.timerController,
+            onChanged: (value, displayTime, shouldUpdate) {
+              _model.timerMilliseconds = value;
+              _model.timerValue = displayTime;
+              if (shouldUpdate) setState(() {});
+            },
+            textAlign: TextAlign.start,
+            style: FlutterFlowTheme.of(context).headlineSmall.override(
+                  fontFamily: 'Lato',
+                  color: Colors.transparent,
+                ),
+          ),
       ],
     );
   }
