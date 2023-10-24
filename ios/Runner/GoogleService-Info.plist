@@ -32,5 +32,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:889541076330:ios:3ea7fc867560b13831f113</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-3945304154369399~8513856828</string>
 </dict>
 </plist>

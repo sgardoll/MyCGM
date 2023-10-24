@@ -10,6 +10,7 @@ import 'forgot_password_widget.dart' show ForgotPasswordWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -27,6 +28,7 @@ class ForgotPasswordModel extends FlutterFlowModel<ForgotPasswordWidget> {
       tabBarController != null ? tabBarController!.index : 0;
 
   // State field(s) for emailAddress widget.
+  FocusNode? emailAddressFocusNode;
   TextEditingController? emailAddressController;
   String? Function(BuildContext, String?)? emailAddressControllerValidator;
 
@@ -37,6 +39,7 @@ class ForgotPasswordModel extends FlutterFlowModel<ForgotPasswordWidget> {
   void dispose() {
     unfocusNode.dispose();
     tabBarController?.dispose();
+    emailAddressFocusNode?.dispose();
     emailAddressController?.dispose();
   }
 

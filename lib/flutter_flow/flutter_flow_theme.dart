@@ -137,13 +137,13 @@ class LightModeTheme extends FlutterFlowTheme {
   Color get tertiaryColor => tertiary;
 
   late Color primary = const Color(0xFFFFA500);
-  late Color secondary = const Color(0xFF69C6CE);
-  late Color tertiary = const Color(0xFF4B0082);
+  late Color secondary = const Color(0xFF0C2533);
+  late Color tertiary = const Color(0xFF95A1AC);
   late Color alternate = const Color(0xFFFFFFFF);
   late Color primaryText = const Color(0xFF000000);
   late Color secondaryText = const Color(0xFF808080);
   late Color primaryBackground = const Color(0xFFFFFFFF);
-  late Color secondaryBackground = const Color(0xFFF4F0E8);
+  late Color secondaryBackground = const Color(0xFFF5EFE6);
   late Color accent1 = const Color(0xFF00FF00);
   late Color accent2 = const Color(0xFFFFC0CB);
   late Color accent3 = const Color(0xFFFFFF00);
@@ -309,9 +309,10 @@ class ThemeTypography extends Typography {
         fontWeight: FontWeight.w500,
         fontSize: 11.0,
       );
-  String get bodyLargeFamily => '';
+  String get bodyLargeFamily => 'Lato';
   TextStyle get bodyLarge => GoogleFonts.getFont(
-        'Roboto',
+        'Lato',
+        color: theme.primaryText,
       );
   String get bodyMediumFamily => 'Lato';
   TextStyle get bodyMedium => GoogleFonts.getFont(

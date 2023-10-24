@@ -10,6 +10,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,9 +21,11 @@ class FinalCheckModel extends FlutterFlowModel<FinalCheckWidget> {
 
   final unfocusNode = FocusNode();
   // State field(s) for highValue widget.
+  FocusNode? highValueFocusNode;
   TextEditingController? highValueController;
   String? Function(BuildContext, String?)? highValueControllerValidator;
   // State field(s) for lowValue widget.
+  FocusNode? lowValueFocusNode;
   TextEditingController? lowValueController;
   String? Function(BuildContext, String?)? lowValueControllerValidator;
 
@@ -32,7 +35,10 @@ class FinalCheckModel extends FlutterFlowModel<FinalCheckWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    highValueFocusNode?.dispose();
     highValueController?.dispose();
+
+    lowValueFocusNode?.dispose();
     lowValueController?.dispose();
   }
 

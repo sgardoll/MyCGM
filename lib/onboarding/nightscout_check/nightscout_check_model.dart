@@ -10,6 +10,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +22,7 @@ class NightscoutCheckModel extends FlutterFlowModel<NightscoutCheckWidget> {
   final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
   // State field(s) for Nightscout widget.
+  FocusNode? nightscoutFocusNode;
   TextEditingController? nightscoutController;
   String? Function(BuildContext, String?)? nightscoutControllerValidator;
   String? _nightscoutControllerValidator(BuildContext context, String? val) {
@@ -35,6 +37,7 @@ class NightscoutCheckModel extends FlutterFlowModel<NightscoutCheckWidget> {
   }
 
   // State field(s) for API widget.
+  FocusNode? apiFocusNode;
   TextEditingController? apiController;
   String? Function(BuildContext, String?)? apiControllerValidator;
   String? _apiControllerValidator(BuildContext context, String? val) {
@@ -46,6 +49,7 @@ class NightscoutCheckModel extends FlutterFlowModel<NightscoutCheckWidget> {
   }
 
   // State field(s) for Token widget.
+  FocusNode? tokenFocusNode;
   TextEditingController? tokenController;
   String? Function(BuildContext, String?)? tokenControllerValidator;
   String? _tokenControllerValidator(BuildContext context, String? val) {
@@ -66,8 +70,13 @@ class NightscoutCheckModel extends FlutterFlowModel<NightscoutCheckWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    nightscoutFocusNode?.dispose();
     nightscoutController?.dispose();
+
+    apiFocusNode?.dispose();
     apiController?.dispose();
+
+    tokenFocusNode?.dispose();
     tokenController?.dispose();
   }
 

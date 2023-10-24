@@ -31,38 +31,49 @@ class LookupRecord extends FirestoreRecord {
   DocumentReference? get userRef => _userRef;
   bool hasUserRef() => _userRef != null;
 
-  // "chatGptResponse" field.
-  ChatGptResponseStruct? _chatGptResponse;
-  ChatGptResponseStruct get chatGptResponse =>
-      _chatGptResponse ?? ChatGptResponseStruct();
-  bool hasChatGptResponse() => _chatGptResponse != null;
-
   // "openFoodFactsAPI" field.
   OpenFoodFactsApiStruct? _openFoodFactsAPI;
   OpenFoodFactsApiStruct get openFoodFactsAPI =>
       _openFoodFactsAPI ?? OpenFoodFactsApiStruct();
   bool hasOpenFoodFactsAPI() => _openFoodFactsAPI != null;
 
-  // "nutInfoImage" field.
-  List<String>? _nutInfoImage;
-  List<String> get nutInfoImage => _nutInfoImage ?? const [];
-  bool hasNutInfoImage() => _nutInfoImage != null;
-
   // "logo" field.
   String? _logo;
   String get logo => _logo ?? '';
   bool hasLogo() => _logo != null;
 
+  // "nutritionPanel" field.
+  String? _nutritionPanel;
+  String get nutritionPanel => _nutritionPanel ?? '';
+  bool hasNutritionPanel() => _nutritionPanel != null;
+
+  // "searchList" field.
+  String? _searchList;
+  String get searchList => _searchList ?? '';
+  bool hasSearchList() => _searchList != null;
+
+  // "googleVisionAPIResponse" field.
+  String? _googleVisionAPIResponse;
+  String get googleVisionAPIResponse => _googleVisionAPIResponse ?? '';
+  bool hasGoogleVisionAPIResponse() => _googleVisionAPIResponse != null;
+
+  // "details" field.
+  DetailsStruct? _details;
+  DetailsStruct get details => _details ?? DetailsStruct();
+  bool hasDetails() => _details != null;
+
   void _initializeFields() {
     _input = snapshotData['input'] as String?;
     _timestamp = snapshotData['timestamp'] as DateTime?;
     _userRef = snapshotData['userRef'] as DocumentReference?;
-    _chatGptResponse =
-        ChatGptResponseStruct.maybeFromMap(snapshotData['chatGptResponse']);
     _openFoodFactsAPI =
         OpenFoodFactsApiStruct.maybeFromMap(snapshotData['openFoodFactsAPI']);
-    _nutInfoImage = getDataList(snapshotData['nutInfoImage']);
     _logo = snapshotData['logo'] as String?;
+    _nutritionPanel = snapshotData['nutritionPanel'] as String?;
+    _searchList = snapshotData['searchList'] as String?;
+    _googleVisionAPIResponse =
+        snapshotData['googleVisionAPIResponse'] as String?;
+    _details = DetailsStruct.maybeFromMap(snapshotData['details']);
   }
 
   static CollectionReference get collection =>
@@ -102,28 +113,33 @@ Map<String, dynamic> createLookupRecordData({
   String? input,
   DateTime? timestamp,
   DocumentReference? userRef,
-  ChatGptResponseStruct? chatGptResponse,
   OpenFoodFactsApiStruct? openFoodFactsAPI,
   String? logo,
+  String? nutritionPanel,
+  String? searchList,
+  String? googleVisionAPIResponse,
+  DetailsStruct? details,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'input': input,
       'timestamp': timestamp,
       'userRef': userRef,
-      'chatGptResponse': ChatGptResponseStruct().toMap(),
       'openFoodFactsAPI': OpenFoodFactsApiStruct().toMap(),
       'logo': logo,
+      'nutritionPanel': nutritionPanel,
+      'searchList': searchList,
+      'googleVisionAPIResponse': googleVisionAPIResponse,
+      'details': DetailsStruct().toMap(),
     }.withoutNulls,
   );
-
-  // Handle nested data for "chatGptResponse" field.
-  addChatGptResponseStructData(
-      firestoreData, chatGptResponse, 'chatGptResponse');
 
   // Handle nested data for "openFoodFactsAPI" field.
   addOpenFoodFactsApiStructData(
       firestoreData, openFoodFactsAPI, 'openFoodFactsAPI');
+
+  // Handle nested data for "details" field.
+  addDetailsStructData(firestoreData, details, 'details');
 
   return firestoreData;
 }
@@ -133,14 +149,15 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
 
   @override
   bool equals(LookupRecord? e1, LookupRecord? e2) {
-    const listEquality = ListEquality();
     return e1?.input == e2?.input &&
         e1?.timestamp == e2?.timestamp &&
         e1?.userRef == e2?.userRef &&
-        e1?.chatGptResponse == e2?.chatGptResponse &&
         e1?.openFoodFactsAPI == e2?.openFoodFactsAPI &&
-        listEquality.equals(e1?.nutInfoImage, e2?.nutInfoImage) &&
-        e1?.logo == e2?.logo;
+        e1?.logo == e2?.logo &&
+        e1?.nutritionPanel == e2?.nutritionPanel &&
+        e1?.searchList == e2?.searchList &&
+        e1?.googleVisionAPIResponse == e2?.googleVisionAPIResponse &&
+        e1?.details == e2?.details;
   }
 
   @override
@@ -148,10 +165,12 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e?.input,
         e?.timestamp,
         e?.userRef,
-        e?.chatGptResponse,
         e?.openFoodFactsAPI,
-        e?.nutInfoImage,
-        e?.logo
+        e?.logo,
+        e?.nutritionPanel,
+        e?.searchList,
+        e?.googleVisionAPIResponse,
+        e?.details
       ]);
 
   @override

@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 
-import '../../auth/base_auth_user_provider.dart';
+import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
 import '/main.dart';
@@ -81,13 +81,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? HomeCarbsWidget() : HomeWidget(),
+          appStateNotifier.loggedIn ? HomeWidget() : LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? HomeCarbsWidget() : HomeWidget(),
+              appStateNotifier.loggedIn ? HomeWidget() : LoginPageWidget(),
           routes: [
             FFRoute(
               name: 'loginPage',
@@ -97,7 +97,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'onboardStart',
               path: 'onboardStart',
-              requireAuth: true,
               builder: (context, params) => OnboardStartWidget(
                 userRef: params.getParam(
                     'userRef', ParamType.DocumentReference, false, ['users']),
@@ -130,7 +129,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'Settings',
               path: 'Settings',
-              requireAuth: true,
               builder: (context, params) => SettingsWidget(
                 latestMmol: params.getParam('latestMmol', ParamType.double),
               ),
@@ -161,17 +159,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'homeCGM',
               path: 'CGM',
+              requireAuth: true,
               builder: (context, params) => HomeCGMWidget(),
             ),
             FFRoute(
               name: 'home',
               path: 'home',
+              requireAuth: true,
               builder: (context, params) => HomeWidget(),
             ),
             FFRoute(
               name: 'homeCarbs',
               path: 'Carbs',
+              requireAuth: true,
               builder: (context, params) => HomeCarbsWidget(),
+            ),
+            FFRoute(
+              name: 'removeAds',
+              path: 'removeAds',
+              builder: (context, params) => RemoveAdsWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
@@ -340,7 +346,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/home';
+            return '/loginPage';
           }
           return null;
         },
@@ -354,10 +360,10 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: Color(0xFF69C6CE),
+                  color: Color(0xFFF5EFE6),
                   child: Image.asset(
-                    'assets/images/sgardoll_iOS_logo_of_A_fork_and_spoon_with_a_graph_or_chart_ove_6b4a1cf2-8832-4062-8a8d-cb5b139ef17c.png',
-                    fit: BoxFit.fitWidth,
+                    'assets/images/6-splash.png',
+                    fit: BoxFit.contain,
                   ),
                 )
               : page;
@@ -395,7 +401,11 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => TransitionInfo(
+        hasTransition: true,
+        transitionType: PageTransitionType.fade,
+        duration: Duration(milliseconds: 300),
+      );
 }
 
 class RootPageContext {

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import '../../flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
@@ -21,7 +21,7 @@ class GetTreatmentsCall {
     String? count = '',
     String? token = '',
     String? nightscout = '',
-  }) {
+  }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'GetTreatments',
       apiUrl:
@@ -75,7 +75,7 @@ class ChatCompletionsCall {
     String? apiKey = '',
     String? content = '',
     dynamic? jsonJson,
-  }) {
+  }) async {
     final json = _serializeJson(jsonJson);
     final ffApiRequestBody = '''
 {
@@ -108,13 +108,89 @@ class ChatCompletionsCall {
 
 /// End OpenAI Group Code
 
+/// Start Buildship Group Code
+
+class BuildshipGroup {
+  static String baseUrl = 'https://4tgke4.buildship.run';
+  static Map<String, String> headers = {};
+  static DetectTextGETCall detectTextGETCall = DetectTextGETCall();
+  static BarcodeScanCall barcodeScanCall = BarcodeScanCall();
+}
+
+class DetectTextGETCall {
+  Future<ApiCallResponse> call({
+    String? url = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: '/detect_text GET',
+      apiUrl: '${BuildshipGroup.baseUrl}/detect_text',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {
+        'url': url,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+}
+
+class BarcodeScanCall {
+  Future<ApiCallResponse> call({
+    String? input = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Barcode Scan',
+      apiUrl: '${BuildshipGroup.baseUrl}/barcode_scan',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {
+        'input': input,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+
+  dynamic name(dynamic response) => getJsonField(
+        response,
+        r'''$.name''',
+      );
+  dynamic brand(dynamic response) => getJsonField(
+        response,
+        r'''$.brand''',
+      );
+  dynamic size(dynamic response) => getJsonField(
+        response,
+        r'''$.size''',
+      );
+  dynamic weight(dynamic response) => getJsonField(
+        response,
+        r'''$.weight''',
+      );
+  dynamic nutrition(dynamic response) => getJsonField(
+        response,
+        r'''$.nutritionBreakdown''',
+      );
+  dynamic trivia(dynamic response) => getJsonField(
+        response,
+        r'''$.trivia''',
+      );
+}
+
+/// End Buildship Group Code
+
 class GetBloodGlucoseCall {
   static Future<ApiCallResponse> call({
     String? apiKey = '',
     String? nightscout = '',
     String? token = '',
     String? count = '30',
-  }) {
+  }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'GetBloodGlucose',
       apiUrl: 'https://${nightscout}/api/v1/entries/sgv?count=${count}&',
@@ -182,7 +258,7 @@ class PostInsulinCall {
     String? apiKey = '',
     String? nightscout = '',
     String? token = '',
-  }) {
+  }) async {
     final ffApiRequestBody = '''
 [
   {
@@ -218,7 +294,7 @@ class PostCarbsCall {
     String? token = '',
     String? apiKey = '',
     String? notes = '',
-  }) {
+  }) async {
     final ffApiRequestBody = '''
 [
   {
@@ -238,6 +314,292 @@ class PostCarbsCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+}
+
+class OpenFoodFactsCall {
+  static Future<ApiCallResponse> call({
+    String? barcode = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'OpenFoodFacts',
+      apiUrl: 'https://world.openfoodfacts.org/api/v0/product/${barcode}.json',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+    );
+  }
+
+  static dynamic productkeywords(dynamic response) => getJsonField(
+        response,
+        r'''$.product._keywords''',
+        true,
+      );
+  static dynamic productabbreviatedproductname(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.abbreviated_product_name''',
+      );
+  static dynamic productbrands(dynamic response) => getJsonField(
+        response,
+        r'''$.product.brands''',
+      );
+  static dynamic productimagefrontsmallurl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_front_small_url''',
+      );
+  static dynamic productimagefrontthumburl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_front_thumb_url''',
+      );
+  static dynamic productimagefronturl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_front_url''',
+      );
+  static dynamic productimageingredientssmallurl(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.image_ingredients_small_url''',
+      );
+  static dynamic productimageingredientsthumburl(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.image_ingredients_thumb_url''',
+      );
+  static dynamic productimageingredientsurl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_ingredients_url''',
+      );
+  static dynamic productimagenutritionsmallurl(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.image_nutrition_small_url''',
+      );
+  static dynamic productimagenutritionthumburl(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.image_nutrition_thumb_url''',
+      );
+  static dynamic productimagenutritionurl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_nutrition_url''',
+      );
+  static dynamic productimagepackagingsmallurl(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.image_packaging_small_url''',
+      );
+  static dynamic productimagepackagingthumburl(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.image_packaging_thumb_url''',
+      );
+  static dynamic productimagepackagingurl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_packaging_url''',
+      );
+  static dynamic productimagesmallurl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_small_url''',
+      );
+  static dynamic productimagethumburl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_thumb_url''',
+      );
+  static dynamic productimageurl(dynamic response) => getJsonField(
+        response,
+        r'''$.product.image_url''',
+      );
+  static dynamic productimages(dynamic response) => getJsonField(
+        response,
+        r'''$.product.images''',
+      );
+  static dynamic productnonutritiondataimported(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.no_nutrition_data_imported''',
+      );
+  static dynamic productnutriments(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments''',
+      );
+  static dynamic productnutrimentscarbohydrates(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.carbohydrates''',
+      );
+  static dynamic productnutrimentscarbohydrates100g(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.carbohydrates_100g''',
+      );
+  static dynamic productnutrimentscarbohydratesserving(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.carbohydrates_serving''',
+      );
+  static dynamic productnutrimentscarbohydratesunit(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.carbohydrates_unit''',
+      );
+  static dynamic productnutrimentscarbohydratesvalue(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.carbohydrates_value''',
+      );
+  static dynamic productnutrimentsenergy(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.energy''',
+      );
+  static dynamic productnutrimentsenergy100g(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.energy_100g''',
+      );
+  static dynamic productnutrimentsenergyserving(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.energy_serving''',
+      );
+  static dynamic productnutrimentsenergyunit(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.energy_unit''',
+      );
+  static dynamic productnutrimentsenergyvalue(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.energy_value''',
+      );
+  static dynamic productnutrimentsfat(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fat''',
+      );
+  static dynamic productnutrimentsfat100g(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fat_100g''',
+      );
+  static dynamic productnutrimentsfatserving(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fat_serving''',
+      );
+  static dynamic productnutrimentsfatunit(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fat_unit''',
+      );
+  static dynamic productnutrimentsfatvalue(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fat_value''',
+      );
+  static dynamic productnutrimentsfiber(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fiber''',
+      );
+  static dynamic productnutrimentsfiber100g(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fiber_100g''',
+      );
+  static dynamic productnutrimentsfiberserving(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.fiber_serving''',
+      );
+  static dynamic productnutrimentsfiberunit(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fiber_unit''',
+      );
+  static dynamic productnutrimentsfibervalue(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.fiber_value''',
+      );
+  static dynamic productnutrimentsproteins(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.proteins''',
+      );
+  static dynamic productnutrimentsproteins100g(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.proteins_100g''',
+      );
+  static dynamic productnutrimentsproteinsserving(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.proteins_serving''',
+      );
+  static dynamic productnutrimentsproteinsunit(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.proteins_unit''',
+      );
+  static dynamic productnutrimentsproteinsvalue(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.proteins_value''',
+      );
+  static dynamic productnutrimentssugars(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.sugars''',
+      );
+  static dynamic productnutrimentssugars100g(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.sugars_100g''',
+      );
+  static dynamic productnutrimentssugarsserving(dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments.sugars_serving''',
+      );
+  static dynamic productnutrimentssugarsunit(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.sugars_unit''',
+      );
+  static dynamic productnutrimentssugarsvalue(dynamic response) => getJsonField(
+        response,
+        r'''$.product.nutriments.sugars_value''',
+      );
+  static dynamic productnutrimentsestimatedcarbohydrates100g(
+          dynamic response) =>
+      getJsonField(
+        response,
+        r'''$.product.nutriments_estimated.carbohydrates_100g''',
+      );
+  static dynamic productproductnameen(dynamic response) => getJsonField(
+        response,
+        r'''$.product.product_name_en''',
+      );
+  static dynamic productquantity(dynamic response) => getJsonField(
+        response,
+        r'''$.product.quantity''',
+      );
+  static dynamic status(dynamic response) => getJsonField(
+        response,
+        r'''$.status''',
+      );
+  static dynamic servingsize(dynamic response) => getJsonField(
+        response,
+        r'''$.product.serving_size''',
+      );
+}
+
+class BuildshipGoogleVisionCall {
+  static Future<ApiCallResponse> call({
+    String? url = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'BuildshipGoogleVision',
+      apiUrl: 'https://4tgke4.buildship.run/detect_text',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {
+        'url': url,
+      },
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,

@@ -45,10 +45,12 @@ class POSTCarbsModel extends FlutterFlowModel<POSTCarbsWidget> {
       ? pageViewController!.page!.round()
       : 0;
   // State field(s) for searchField widget.
+  FocusNode? searchFieldFocusNode;
   TextEditingController? searchFieldController;
   String? Function(BuildContext, String?)? searchFieldControllerValidator;
   List<FoodDataRecord> simpleSearchResults = [];
   // State field(s) for gramsCarbs widget.
+  FocusNode? gramsCarbsFocusNode1;
   TextEditingController? gramsCarbsController1;
   String? Function(BuildContext, String?)? gramsCarbsController1Validator;
   String? _gramsCarbsController1Validator(BuildContext context, String? val) {
@@ -65,6 +67,7 @@ class POSTCarbsModel extends FlutterFlowModel<POSTCarbsWidget> {
   // State field(s) for AddCustomFoodToggle widget.
   bool? addCustomFoodToggleValue;
   // State field(s) for foodName widget.
+  FocusNode? foodNameFocusNode;
   TextEditingController? foodNameController;
   String? Function(BuildContext, String?)? foodNameControllerValidator;
   // Stores action output result for [Backend Call - API (PostCarbs)] action in IconButton widget.
@@ -72,6 +75,7 @@ class POSTCarbsModel extends FlutterFlowModel<POSTCarbsWidget> {
   // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
   FoodDataRecord? addFoodToDatabase;
   // State field(s) for gramsCarbs widget.
+  FocusNode? gramsCarbsFocusNode2;
   TextEditingController? gramsCarbsController2;
   String? Function(BuildContext, String?)? gramsCarbsController2Validator;
 
@@ -82,9 +86,16 @@ class POSTCarbsModel extends FlutterFlowModel<POSTCarbsWidget> {
   }
 
   void dispose() {
+    searchFieldFocusNode?.dispose();
     searchFieldController?.dispose();
+
+    gramsCarbsFocusNode1?.dispose();
     gramsCarbsController1?.dispose();
+
+    foodNameFocusNode?.dispose();
     foodNameController?.dispose();
+
+    gramsCarbsFocusNode2?.dispose();
     gramsCarbsController2?.dispose();
   }
 

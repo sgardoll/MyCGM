@@ -1,6 +1,6 @@
 {
-    "name": "EatSmart",
-    "short_name": "EatSmart",
+    "name": "NutriScan",
+    "short_name": "NutriScan",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

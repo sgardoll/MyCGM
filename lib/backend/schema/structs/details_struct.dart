@@ -8,17 +8,21 @@ import '/backend/schema/util/schema_util.dart';
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
-class ChatGptResponseStruct extends FFFirebaseStruct {
-  ChatGptResponseStruct({
+class DetailsStruct extends FFFirebaseStruct {
+  DetailsStruct({
     String? brand,
     String? size,
     String? trivia,
     String? name,
+    String? weight,
+    String? nutritionBreakdown,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _brand = brand,
         _size = size,
         _trivia = trivia,
         _name = name,
+        _weight = weight,
+        _nutritionBreakdown = nutritionBreakdown,
         super(firestoreUtilData);
 
   // "brand" field.
@@ -45,22 +49,37 @@ class ChatGptResponseStruct extends FFFirebaseStruct {
   set name(String? val) => _name = val;
   bool hasName() => _name != null;
 
-  static ChatGptResponseStruct fromMap(Map<String, dynamic> data) =>
-      ChatGptResponseStruct(
+  // "weight" field.
+  String? _weight;
+  String get weight => _weight ?? '';
+  set weight(String? val) => _weight = val;
+  bool hasWeight() => _weight != null;
+
+  // "nutritionBreakdown" field.
+  String? _nutritionBreakdown;
+  String get nutritionBreakdown => _nutritionBreakdown ?? '';
+  set nutritionBreakdown(String? val) => _nutritionBreakdown = val;
+  bool hasNutritionBreakdown() => _nutritionBreakdown != null;
+
+  static DetailsStruct fromMap(Map<String, dynamic> data) => DetailsStruct(
         brand: data['brand'] as String?,
         size: data['size'] as String?,
         trivia: data['trivia'] as String?,
         name: data['name'] as String?,
+        weight: data['weight'] as String?,
+        nutritionBreakdown: data['nutritionBreakdown'] as String?,
       );
 
-  static ChatGptResponseStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? ChatGptResponseStruct.fromMap(data) : null;
+  static DetailsStruct? maybeFromMap(dynamic data) =>
+      data is Map<String, dynamic> ? DetailsStruct.fromMap(data) : null;
 
   Map<String, dynamic> toMap() => {
         'brand': _brand,
         'size': _size,
         'trivia': _trivia,
         'name': _name,
+        'weight': _weight,
+        'nutritionBreakdown': _nutritionBreakdown,
       }.withoutNulls;
 
   @override
@@ -81,10 +100,18 @@ class ChatGptResponseStruct extends FFFirebaseStruct {
           _name,
           ParamType.String,
         ),
+        'weight': serializeParam(
+          _weight,
+          ParamType.String,
+        ),
+        'nutritionBreakdown': serializeParam(
+          _nutritionBreakdown,
+          ParamType.String,
+        ),
       }.withoutNulls;
 
-  static ChatGptResponseStruct fromSerializableMap(Map<String, dynamic> data) =>
-      ChatGptResponseStruct(
+  static DetailsStruct fromSerializableMap(Map<String, dynamic> data) =>
+      DetailsStruct(
         brand: deserializeParam(
           data['brand'],
           ParamType.String,
@@ -105,39 +132,56 @@ class ChatGptResponseStruct extends FFFirebaseStruct {
           ParamType.String,
           false,
         ),
+        weight: deserializeParam(
+          data['weight'],
+          ParamType.String,
+          false,
+        ),
+        nutritionBreakdown: deserializeParam(
+          data['nutritionBreakdown'],
+          ParamType.String,
+          false,
+        ),
       );
 
   @override
-  String toString() => 'ChatGptResponseStruct(${toMap()})';
+  String toString() => 'DetailsStruct(${toMap()})';
 
   @override
   bool operator ==(Object other) {
-    return other is ChatGptResponseStruct &&
+    return other is DetailsStruct &&
         brand == other.brand &&
         size == other.size &&
         trivia == other.trivia &&
-        name == other.name;
+        name == other.name &&
+        weight == other.weight &&
+        nutritionBreakdown == other.nutritionBreakdown;
   }
 
   @override
-  int get hashCode => const ListEquality().hash([brand, size, trivia, name]);
+  int get hashCode => const ListEquality()
+      .hash([brand, size, trivia, name, weight, nutritionBreakdown]);
 }
 
-ChatGptResponseStruct createChatGptResponseStruct({
+DetailsStruct createDetailsStruct({
   String? brand,
   String? size,
   String? trivia,
   String? name,
+  String? weight,
+  String? nutritionBreakdown,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
   bool delete = false,
 }) =>
-    ChatGptResponseStruct(
+    DetailsStruct(
       brand: brand,
       size: size,
       trivia: trivia,
       name: name,
+      weight: weight,
+      nutritionBreakdown: nutritionBreakdown,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,
@@ -146,66 +190,60 @@ ChatGptResponseStruct createChatGptResponseStruct({
       ),
     );
 
-ChatGptResponseStruct? updateChatGptResponseStruct(
-  ChatGptResponseStruct? chatGptResponse, {
+DetailsStruct? updateDetailsStruct(
+  DetailsStruct? details, {
   bool clearUnsetFields = true,
   bool create = false,
 }) =>
-    chatGptResponse
+    details
       ?..firestoreUtilData = FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,
       );
 
-void addChatGptResponseStructData(
+void addDetailsStructData(
   Map<String, dynamic> firestoreData,
-  ChatGptResponseStruct? chatGptResponse,
+  DetailsStruct? details,
   String fieldName, [
   bool forFieldValue = false,
 ]) {
   firestoreData.remove(fieldName);
-  if (chatGptResponse == null) {
+  if (details == null) {
     return;
   }
-  if (chatGptResponse.firestoreUtilData.delete) {
+  if (details.firestoreUtilData.delete) {
     firestoreData[fieldName] = FieldValue.delete();
     return;
   }
   final clearFields =
-      !forFieldValue && chatGptResponse.firestoreUtilData.clearUnsetFields;
+      !forFieldValue && details.firestoreUtilData.clearUnsetFields;
   if (clearFields) {
     firestoreData[fieldName] = <String, dynamic>{};
   }
-  final chatGptResponseData =
-      getChatGptResponseFirestoreData(chatGptResponse, forFieldValue);
-  final nestedData =
-      chatGptResponseData.map((k, v) => MapEntry('$fieldName.$k', v));
+  final detailsData = getDetailsFirestoreData(details, forFieldValue);
+  final nestedData = detailsData.map((k, v) => MapEntry('$fieldName.$k', v));
 
-  final mergeFields = chatGptResponse.firestoreUtilData.create || clearFields;
+  final mergeFields = details.firestoreUtilData.create || clearFields;
   firestoreData
       .addAll(mergeFields ? mergeNestedFields(nestedData) : nestedData);
 }
 
-Map<String, dynamic> getChatGptResponseFirestoreData(
-  ChatGptResponseStruct? chatGptResponse, [
+Map<String, dynamic> getDetailsFirestoreData(
+  DetailsStruct? details, [
   bool forFieldValue = false,
 ]) {
-  if (chatGptResponse == null) {
+  if (details == null) {
     return {};
   }
-  final firestoreData = mapToFirestore(chatGptResponse.toMap());
+  final firestoreData = mapToFirestore(details.toMap());
 
   // Add any Firestore field values
-  chatGptResponse.firestoreUtilData.fieldValues
-      .forEach((k, v) => firestoreData[k] = v);
+  details.firestoreUtilData.fieldValues.forEach((k, v) => firestoreData[k] = v);
 
   return forFieldValue ? mergeNestedFields(firestoreData) : firestoreData;
 }
 
-List<Map<String, dynamic>> getChatGptResponseListFirestoreData(
-  List<ChatGptResponseStruct>? chatGptResponses,
+List<Map<String, dynamic>> getDetailsListFirestoreData(
+  List<DetailsStruct>? detailss,
 ) =>
-    chatGptResponses
-        ?.map((e) => getChatGptResponseFirestoreData(e, true))
-        .toList() ??
-    [];
+    detailss?.map((e) => getDetailsFirestoreData(e, true)).toList() ?? [];

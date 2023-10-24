@@ -15,9 +15,9 @@ import 'flutter_flow/internationalization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'flutter_flow/firebase_app_check_util.dart';
 import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
+import 'flutter_flow/revenue_cat_util.dart' as revenue_cat;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,11 +27,15 @@ void main() async {
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
 
+  await revenue_cat.initialize(
+    "appl_BleFDOkeEghzyUOtgXuBuMbFoZj",
+    "goog_BXTXrkOJWQxtHLsiQaVSAaHmjOH",
+    loadDataAfterLaunch: true,
+  );
+
   if (!kIsWeb) {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
-
-  await initializeFirebaseAppCheck();
 
   runApp(ChangeNotifierProvider(
     create: (context) => appState,
@@ -57,7 +61,9 @@ class _MyAppState extends State<MyApp> {
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
 
-  final authUserSub = authenticatedUserStream.listen((_) {});
+  final authUserSub = authenticatedUserStream.listen((user) {
+    revenue_cat.login(user?.uid);
+  });
 
   @override
   void initState() {
@@ -65,7 +71,7 @@ class _MyAppState extends State<MyApp> {
 
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
-    userStream = eatSmartFirebaseUserStream()
+    userStream = nutriScanFirebaseUserStream()
       ..listen((user) => _appStateNotifier.update(user));
     jwtTokenStream.listen((_) {});
     Future.delayed(
@@ -92,7 +98,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'EatSmart',
+      title: 'NutriScan',
       localizationsDelegates: [
         FFLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,

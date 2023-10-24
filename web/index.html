@@ -19,7 +19,7 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Eat Smart">
+  <meta name="apple-mobile-web-app-title" content="NutriScan">
 
   
 
@@ -31,10 +31,10 @@
   <!-- Open Graph & SEO tags -->
   <meta property="og:title" content="MyCGM" />
   <meta property="og:description" content="Built with FlutterFlow." />
-  <meta property="og:image" content="/assets/assets/images/banner.png" /> 
+  <meta property="og:image" content="https://storage.googleapis.com/flutterflow-prod-hosting/og_splash_gradient.png" /> 
   <meta name="twitter:title" content="MyCGM" />
   <meta name="twitter:description" content="Built with FlutterFlow." />
-  <meta name="twitter:image" content="/assets/assets/images/banner.png" />
+  <meta name="twitter:image" content="https://storage.googleapis.com/flutterflow-prod-hosting/og_splash_gradient.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <title> MyCGM </title>
@@ -66,9 +66,7 @@
         },
         onEntrypointLoaded: async function(engineInitializer) {
           // Initialize the Flutter engine
-          let appRunner = await engineInitializer.initializeEngine({
-            useColorEmoji: true,
-          });
+          let appRunner = await engineInitializer.initializeEngine();
           // Run the app
           await appRunner.runApp();
         }

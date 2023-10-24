@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
     _model = createModel(context, () => POSTInsulinModel());
 
     _model.unitsController ??= TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    _model.unitsFocusNode ??= FocusNode();
   }
 
   @override
@@ -135,6 +136,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
                       child: TextFormField(
                         controller: _model.unitsController,
+                        focusNode: _model.unitsFocusNode,
                         autofocus: true,
                         obscureText: false,
                         decoration: InputDecoration(

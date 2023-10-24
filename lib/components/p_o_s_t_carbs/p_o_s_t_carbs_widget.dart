@@ -45,10 +45,13 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
     _model = createModel(context, () => POSTCarbsModel());
 
     _model.searchFieldController ??= TextEditingController();
+    _model.searchFieldFocusNode ??= FocusNode();
     _model.gramsCarbsController1 ??= TextEditingController();
+    _model.gramsCarbsFocusNode1 ??= FocusNode();
     _model.foodNameController ??= TextEditingController();
+    _model.foodNameFocusNode ??= FocusNode();
     _model.gramsCarbsController2 ??= TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    _model.gramsCarbsFocusNode2 ??= FocusNode();
   }
 
   @override
@@ -175,6 +178,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         child: TextFormField(
                                           controller:
                                               _model.searchFieldController,
+                                          focusNode:
+                                              _model.searchFieldFocusNode,
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
@@ -353,6 +358,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                               child: TextFormField(
                                                 controller: _model
                                                     .gramsCarbsController1,
+                                                focusNode:
+                                                    _model.gramsCarbsFocusNode1,
                                                 onChanged: (_) =>
                                                     EasyDebounce.debounce(
                                                   '_model.gramsCarbsController1',
@@ -505,6 +512,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                 child: TextFormField(
                                                   controller:
                                                       _model.foodNameController,
+                                                  focusNode:
+                                                      _model.foodNameFocusNode,
                                                   obscureText: false,
                                                   decoration: InputDecoration(
                                                     hintText: 'food name',
@@ -1007,6 +1016,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         child: TextFormField(
                                           controller:
                                               _model.gramsCarbsController2,
+                                          focusNode:
+                                              _model.gramsCarbsFocusNode2,
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
