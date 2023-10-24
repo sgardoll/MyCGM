@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 class QrScanBox extends StatefulWidget {
   const QrScanBox({
@@ -29,30 +29,23 @@ class QrScanBox extends StatefulWidget {
 class _QrScanBoxState extends State<QrScanBox> {
   String barcodeResult = 'Not Scanned Yet';
 
+  @override
+  void initState() {
+    super.initState();
+    _scanBarcode();
+  }
+
   Future<void> _scanBarcode() async {
     try {
-      final barcode = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666',
-        '',
-        false,
-        ScanMode.BARCODE,
-      );
+      var result = await BarcodeScanner.scan();
       if (!mounted) return;
 
       setState(() {
-        barcodeResult = barcode;
+        barcodeResult = result.rawContent;
       });
     } catch (ex) {
       print('Failed to scan barcode: $ex');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _scanBarcode();
-    });
   }
 
   @override

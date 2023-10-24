@@ -26,6 +26,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   auto_size_text: 3.0.0
+  barcode_scan2: ^4.2.4
   cached_network_image: 3.2.1
   cloud_firestore: 4.8.0
   cloud_firestore_platform_interface: 5.15.0
