@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScanBox extends StatefulWidget {
   const QrScanBox({
@@ -27,25 +27,22 @@ class QrScanBox extends StatefulWidget {
 }
 
 class _QrScanBoxState extends State<QrScanBox> {
-  String barcodeResult = 'Not Scanned Yet';
+  final GlobalKey qrKey = GlobalKey();
+  QRViewController? controller;
 
-  @override
-  void initState() {
-    super.initState();
-    _scanBarcode();
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      controller.pauseCamera();
+      // Handle the scanned data
+      print('Scanned Barcode: ${scanData.code}');
+    });
   }
 
-  Future<void> _scanBarcode() async {
-    try {
-      var result = await BarcodeScanner.scan();
-      if (!mounted) return;
-
-      setState(() {
-        barcodeResult = result.rawContent;
-      });
-    } catch (ex) {
-      print('Failed to scan barcode: $ex');
-    }
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,14 +50,15 @@ class _QrScanBoxState extends State<QrScanBox> {
     return Container(
       width: widget.width,
       height: widget.height,
-      color: Colors.grey,
-      child: Center(
-        child: Text(
-          barcodeResult,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-          ),
+      child: QRView(
+        key: qrKey,
+        onQRViewCreated: _onQRViewCreated,
+        overlay: QrScannerOverlayShape(
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: widget.width ?? 200,
         ),
       ),
     );
