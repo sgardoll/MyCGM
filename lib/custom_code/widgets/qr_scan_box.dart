@@ -27,7 +27,7 @@ class QrScanBox extends StatefulWidget {
 }
 
 class _QrScanBoxState extends State<QrScanBox> {
-  final GlobalKey qrKey = GlobalKey();
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
 
   void _onQRViewCreated(QRViewController controller) {
