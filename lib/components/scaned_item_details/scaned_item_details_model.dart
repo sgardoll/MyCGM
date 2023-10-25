@@ -1,14 +1,15 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
+import '/backend/firebase_storage/storage.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
 import '/components/scaned_item/scaned_item_widget.dart';
+import '/components/scaned_item_crop/scaned_item_crop_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import 'dart:ui';
-import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'scaned_item_details_widget.dart' show ScanedItemDetailsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -29,9 +30,8 @@ class ScanedItemDetailsModel extends FlutterFlowModel<ScanedItemDetailsWidget> {
   bool isDataUploading = false;
   FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));
+  String uploadedFileUrl = '';
 
-  // Stores action output result for [Custom Action - cropImage] action in Button widget.
-  FFUploadedFile? cropImage;
   // Stores action output result for [Backend Call - API (BuildshipGoogleVision)] action in Button widget.
   ApiCallResponse? buildshipAPIGoogleVision;
   var barcodeScanAgain = '';
