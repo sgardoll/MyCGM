@@ -111,6 +111,9 @@ class _NutritionPanelGoogleVisionWidgetState
             collapsed: Container(),
             expanded: Container(
               width: MediaQuery.sizeOf(context).width * 1.0,
+              constraints: BoxConstraints(
+                maxHeight: 500.0,
+              ),
               decoration: BoxDecoration(
                 color: Colors.transparent,
               ),

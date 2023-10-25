@@ -86,28 +86,28 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
             children: [
               Align(
                 alignment: AlignmentDirectional(0.00, -1.00),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      if (valueOrDefault<bool>(
-                        isWeb ||
-                                revenue_cat.activeEntitlementIds
-                                    .contains('premium')
-                            ? false
-                            : true,
-                        true,
-                      ))
-                        FlutterFlowAdBanner(
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: 50.0,
-                          showsTestAd: false,
-                          iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
-                          androidAdUnitID:
-                              'ca-app-pub-3945304154369399/4626582701',
-                        ),
-                      Padding(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    if (valueOrDefault<bool>(
+                      isWeb ||
+                              revenue_cat.activeEntitlementIds
+                                  .contains('premium')
+                          ? false
+                          : true,
+                      true,
+                    ))
+                      FlutterFlowAdBanner(
+                        width: MediaQuery.sizeOf(context).width * 1.0,
+                        height: 50.0,
+                        showsTestAd: false,
+                        iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
+                        androidAdUnitID:
+                            'ca-app-pub-3945304154369399/4626582701',
+                      ),
+                    Flexible(
+                      child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             15.0, 16.0, 30.0, 0.0),
                         child: StreamBuilder<List<LookupRecord>>(
@@ -133,7 +133,6 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                 snapshot.data!;
                             return ListView.builder(
                               padding: EdgeInsets.zero,
-                              primary: false,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemCount: listViewLookupRecordList.length,
@@ -224,8 +223,8 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                           },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Align(
