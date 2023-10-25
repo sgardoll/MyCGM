@@ -1,9 +1,7 @@
-import '/backend/backend.dart';
 import '/components/scaned_item_details/scaned_item_details_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/upload_data.dart';
-import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -120,69 +118,9 @@ class _ScanedItemCropWidgetState extends State<ScanedItemCropWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Align(
-      alignment: AlignmentDirectional(0.00, 1.00),
-      child: StreamBuilder<LookupRecord>(
-        stream: LookupRecord.getDocument(widget.docRef!),
-        builder: (context, snapshot) {
-          // Customize what your widget looks like when it's loading.
-          if (!snapshot.hasData) {
-            return Center(
-              child: SizedBox(
-                width: 25.0,
-                height: 25.0,
-                child: SpinKitRipple(
-                  color: FlutterFlowTheme.of(context).primary,
-                  size: 25.0,
-                ),
-              ),
-            );
-          }
-          final blurLookupRecord = snapshot.data!;
-          return BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 2.0,
-              sigmaY: 2.0,
-            ),
-            child: Material(
-              color: Colors.transparent,
-              elevation: 6.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(0.0),
-                  bottomRight: Radius.circular(0.0),
-                  topLeft: Radius.circular(50.0),
-                  topRight: Radius.circular(50.0),
-                ),
-              ),
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 200),
-                curve: Curves.elasticOut,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).alternate,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 4.0,
-                      color: Color(0x33000000),
-                      offset: Offset(-4.0, -2.0),
-                    )
-                  ],
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(0.0),
-                    bottomRight: Radius.circular(0.0),
-                    topLeft: Radius.circular(50.0),
-                    topRight: Radius.circular(50.0),
-                  ),
-                  border: Border.all(
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [],
     );
   }
 }

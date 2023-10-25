@@ -566,6 +566,7 @@ class OpenFoodFactsCall {
 class BuildshipGoogleVisionCall {
   static Future<ApiCallResponse> call({
     String? url = '',
+    String? input = '',
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'BuildshipGoogleVision',
@@ -574,6 +575,7 @@ class BuildshipGoogleVisionCall {
       headers: {},
       params: {
         'url': url,
+        'input': input,
       },
       returnBody: true,
       encodeBodyUtf8: false,
@@ -581,6 +583,11 @@ class BuildshipGoogleVisionCall {
       cache: false,
     );
   }
+
+  static dynamic nutritionInfo(dynamic response) => getJsonField(
+        response,
+        r'''$.nutrition_information''',
+      );
 }
 
 class ApiPagingParams {

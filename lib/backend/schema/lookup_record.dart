@@ -31,11 +31,6 @@ class LookupRecord extends FirestoreRecord {
   String get nutritionPanel => _nutritionPanel ?? '';
   bool hasNutritionPanel() => _nutritionPanel != null;
 
-  // "googleVisionAPIResponse" field.
-  String? _googleVisionAPIResponse;
-  String get googleVisionAPIResponse => _googleVisionAPIResponse ?? '';
-  bool hasGoogleVisionAPIResponse() => _googleVisionAPIResponse != null;
-
   // "openFoodFacts" field.
   OpenFoodFactsApiStruct? _openFoodFacts;
   OpenFoodFactsApiStruct get openFoodFacts =>
@@ -76,8 +71,6 @@ class LookupRecord extends FirestoreRecord {
     _userRef = snapshotData['userRef'] as DocumentReference?;
     _logo = snapshotData['logo'] as String?;
     _nutritionPanel = snapshotData['nutritionPanel'] as String?;
-    _googleVisionAPIResponse =
-        snapshotData['googleVisionAPIResponse'] as String?;
     _openFoodFacts =
         OpenFoodFactsApiStruct.maybeFromMap(snapshotData['openFoodFacts']);
     _code = snapshotData['code'] as String?;
@@ -125,7 +118,6 @@ Map<String, dynamic> createLookupRecordData({
   DocumentReference? userRef,
   String? logo,
   String? nutritionPanel,
-  String? googleVisionAPIResponse,
   OpenFoodFactsApiStruct? openFoodFacts,
   String? code,
   String? name,
@@ -139,7 +131,6 @@ Map<String, dynamic> createLookupRecordData({
       'userRef': userRef,
       'logo': logo,
       'nutritionPanel': nutritionPanel,
-      'googleVisionAPIResponse': googleVisionAPIResponse,
       'openFoodFacts': OpenFoodFactsApiStruct().toMap(),
       'code': code,
       'name': name,
@@ -164,7 +155,6 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
     return e1?.userRef == e2?.userRef &&
         e1?.logo == e2?.logo &&
         e1?.nutritionPanel == e2?.nutritionPanel &&
-        e1?.googleVisionAPIResponse == e2?.googleVisionAPIResponse &&
         e1?.openFoodFacts == e2?.openFoodFacts &&
         e1?.code == e2?.code &&
         e1?.name == e2?.name &&
@@ -179,7 +169,6 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e?.userRef,
         e?.logo,
         e?.nutritionPanel,
-        e?.googleVisionAPIResponse,
         e?.openFoodFacts,
         e?.code,
         e?.name,

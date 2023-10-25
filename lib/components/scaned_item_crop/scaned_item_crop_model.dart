@@ -1,9 +1,7 @@
-import '/backend/backend.dart';
 import '/components/scaned_item_details/scaned_item_details_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/upload_data.dart';
-import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import 'scaned_item_crop_widget.dart' show ScanedItemCropWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';

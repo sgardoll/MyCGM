@@ -1,6 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,13 +14,12 @@ class NutritionPanelGoogleVisionWidget extends StatefulWidget {
   const NutritionPanelGoogleVisionWidget({
     Key? key,
     String? source,
-    String? bodyText,
+    required this.bodyText,
   })  : this.source = source ?? '-',
-        this.bodyText = bodyText ?? '-',
         super(key: key);
 
   final String source;
-  final String bodyText;
+  final dynamic bodyText;
 
   @override
   _NutritionPanelGoogleVisionWidgetState createState() =>
@@ -117,12 +116,22 @@ class _NutritionPanelGoogleVisionWidgetState
               decoration: BoxDecoration(
                 color: Colors.transparent,
               ),
-              child: Align(
-                alignment: AlignmentDirectional(0.00, -1.00),
-                child: AutoSizeText(
-                  widget.bodyText,
-                  textAlign: TextAlign.center,
-                  style: FlutterFlowTheme.of(context).bodyMedium,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width * 1.0,
+                        height: 500.0,
+                        child: custom_widgets.JsonTable(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 500.0,
+                          json: widget.bodyText!,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

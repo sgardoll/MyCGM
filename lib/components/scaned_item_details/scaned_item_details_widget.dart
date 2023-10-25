@@ -283,8 +283,8 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                         ),
                       ),
                       if (valueOrDefault<bool>(
-                        blurLookupRecord.googleVisionAPIResponse != null &&
-                                blurLookupRecord.googleVisionAPIResponse != ''
+                        blurLookupRecord.nutritionPanel != null &&
+                                blurLookupRecord.nutritionPanel != ''
                             ? true
                             : false,
                         false,
@@ -303,8 +303,9 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                     updateCallback: () => setState(() {}),
                                     child: NutritionPanelGoogleVisionWidget(
                                       source: 'Nutritional Panel On-Pack',
-                                      bodyText: blurLookupRecord
-                                          .googleVisionAPIResponse,
+                                      bodyText: (_model.buildshipAPIGoogleVision
+                                              ?.jsonBody ??
+                                          ''),
                                     ),
                                   ),
                                 ),
@@ -349,6 +350,11 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                       var selectedMedia = <SelectedFile>[];
                                       var downloadUrls = <String>[];
                                       try {
+                                        showUploadMessage(
+                                          context,
+                                          'Uploading file...',
+                                          showLoading: true,
+                                        );
                                         selectedUploadedFiles = widget
                                                 .croppedImage!.bytes!.isNotEmpty
                                             ? [widget.croppedImage!]
@@ -367,6 +373,8 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                             .map((u) => u!)
                                             .toList();
                                       } finally {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
                                         _model.isDataUploading = false;
                                       }
                                       if (selectedUploadedFiles.length ==
@@ -379,8 +387,11 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                           _model.uploadedFileUrl =
                                               downloadUrls.first;
                                         });
+                                        showUploadMessage(context, 'Success!');
                                       } else {
                                         setState(() {});
+                                        showUploadMessage(
+                                            context, 'Failed to upload data');
                                         return;
                                       }
                                     }
@@ -388,16 +399,13 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                     _model.buildshipAPIGoogleVision =
                                         await BuildshipGoogleVisionCall.call(
                                       url: _model.uploadedFileUrl,
+                                      input: widget.input,
                                     );
                                     if ((_model.buildshipAPIGoogleVision
                                             ?.succeeded ??
                                         true)) {
                                       await widget.docRef!
                                           .update(createLookupRecordData(
-                                        googleVisionAPIResponse: (_model
-                                                .buildshipAPIGoogleVision
-                                                ?.bodyText ??
-                                            ''),
                                         nutritionPanel: _model.uploadedFileUrl,
                                       ));
                                     } else {
