@@ -4,16 +4,17 @@ import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
 import '/components/scaned_item/scaned_item_widget.dart';
-import '/components/scaned_item_crop/scaned_item_crop_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -28,10 +29,12 @@ class ScanedItemDetailsWidget extends StatefulWidget {
     Key? key,
     this.docRef,
     required this.input,
+    this.croppedImage,
   }) : super(key: key);
 
   final DocumentReference? docRef;
   final String? input;
+  final FFUploadedFile? croppedImage;
 
   @override
   _ScanedItemDetailsWidgetState createState() =>
@@ -51,6 +54,80 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ScanedItemDetailsModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.croppedImage != null &&
+          (widget.croppedImage.bytes?.isNotEmpty ?? false)) {
+        {
+          setState(() => _model.isDataUploading1 = true);
+          var selectedUploadedFiles = <FFUploadedFile>[];
+          var selectedMedia = <SelectedFile>[];
+          var downloadUrls = <String>[];
+          try {
+            showUploadMessage(
+              context,
+              'Uploading file...',
+              showLoading: true,
+            );
+            selectedUploadedFiles = widget.croppedImage!.bytes!.isNotEmpty
+                ? [widget.croppedImage!]
+                : <FFUploadedFile>[];
+            selectedMedia = selectedFilesFromUploadedFiles(
+              selectedUploadedFiles,
+            );
+            downloadUrls = (await Future.wait(
+              selectedMedia.map(
+                (m) async => await uploadData(m.storagePath, m.bytes),
+              ),
+            ))
+                .where((u) => u != null)
+                .map((u) => u!)
+                .toList();
+          } finally {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            _model.isDataUploading1 = false;
+          }
+          if (selectedUploadedFiles.length == selectedMedia.length &&
+              downloadUrls.length == selectedMedia.length) {
+            setState(() {
+              _model.uploadedLocalFile1 = selectedUploadedFiles.first;
+              _model.uploadedFileUrl1 = downloadUrls.first;
+            });
+            showUploadMessage(context, 'Success!');
+          } else {
+            setState(() {});
+            showUploadMessage(context, 'Failed to upload data');
+            return;
+          }
+        }
+
+        _model.buildshipAPIGoogleVision = await BuildshipGoogleVisionCall.call(
+          url: _model.uploadedFileUrl1,
+          input: widget.input,
+        );
+        if ((_model.buildshipAPIGoogleVision?.succeeded ?? true)) {
+          await widget.docRef!.update(createLookupRecordData(
+            googleVisionResponse:
+                (_model.buildshipAPIGoogleVision?.bodyText ?? ''),
+            nutritionPanel: _model.uploadedFileUrl1,
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Nutritional Panel Text Detection Unsuccessful',
+                style: TextStyle(
+                  color: FlutterFlowTheme.of(context).primaryText,
+                ),
+              ),
+              duration: Duration(milliseconds: 4000),
+              backgroundColor: FlutterFlowTheme.of(context).secondary,
+            ),
+          );
+        }
+      }
+    });
   }
 
   @override
@@ -322,69 +399,45 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                 flex: 2,
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      enableDrag: false,
-                                      useSafeArea: true,
-                                      context: context,
-                                      builder: (context) {
-                                        return Padding(
-                                          padding:
-                                              MediaQuery.viewInsetsOf(context),
-                                          child: ScanedItemCropWidget(
-                                            docRef: widget.docRef,
-                                            input: widget.input!,
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => safeSetState(
-                                        () => _model.croppedImage = value));
-
-                                    {
+                                    final selectedMedia = await selectMedia(
+                                      multiImage: false,
+                                    );
+                                    if (selectedMedia != null &&
+                                        selectedMedia.every((m) =>
+                                            validateFileFormat(
+                                                m.storagePath, context))) {
                                       setState(
-                                          () => _model.isDataUploading = true);
+                                          () => _model.isDataUploading2 = true);
                                       var selectedUploadedFiles =
                                           <FFUploadedFile>[];
-                                      var selectedMedia = <SelectedFile>[];
-                                      var downloadUrls = <String>[];
+
                                       try {
                                         showUploadMessage(
                                           context,
                                           'Uploading file...',
                                           showLoading: true,
                                         );
-                                        selectedUploadedFiles = _model
-                                                .croppedImage!.bytes!.isNotEmpty
-                                            ? [_model.croppedImage!]
-                                            : <FFUploadedFile>[];
-                                        selectedMedia =
-                                            selectedFilesFromUploadedFiles(
-                                          selectedUploadedFiles,
-                                        );
-                                        downloadUrls = (await Future.wait(
-                                          selectedMedia.map(
-                                            (m) async => await uploadData(
-                                                m.storagePath, m.bytes),
-                                          ),
-                                        ))
-                                            .where((u) => u != null)
-                                            .map((u) => u!)
+                                        selectedUploadedFiles = selectedMedia
+                                            .map((m) => FFUploadedFile(
+                                                  name: m.storagePath
+                                                      .split('/')
+                                                      .last,
+                                                  bytes: m.bytes,
+                                                  height: m.dimensions?.height,
+                                                  width: m.dimensions?.width,
+                                                  blurHash: m.blurHash,
+                                                ))
                                             .toList();
                                       } finally {
                                         ScaffoldMessenger.of(context)
                                             .hideCurrentSnackBar();
-                                        _model.isDataUploading = false;
+                                        _model.isDataUploading2 = false;
                                       }
                                       if (selectedUploadedFiles.length ==
-                                              selectedMedia.length &&
-                                          downloadUrls.length ==
-                                              selectedMedia.length) {
+                                          selectedMedia.length) {
                                         setState(() {
-                                          _model.uploadedLocalFile =
+                                          _model.uploadedLocalFile2 =
                                               selectedUploadedFiles.first;
-                                          _model.uploadedFileUrl =
-                                              downloadUrls.first;
                                         });
                                         showUploadMessage(context, 'Success!');
                                       } else {
@@ -395,38 +448,29 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                       }
                                     }
 
-                                    _model.buildshipAPIGoogleVision =
-                                        await BuildshipGoogleVisionCall.call(
-                                      url: _model.uploadedFileUrl,
-                                      input: widget.input,
+                                    _model.croppedImage =
+                                        await actions.cropImage(
+                                      context,
+                                      _model.uploadedLocalFile2,
                                     );
-                                    if ((_model.buildshipAPIGoogleVision
-                                            ?.succeeded ??
-                                        true)) {
-                                      await widget.docRef!
-                                          .update(createLookupRecordData(
-                                        nutritionPanel: _model.uploadedFileUrl,
-                                      ));
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Nutritional Panel Text Detection Unsuccessful',
-                                            style: TextStyle(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                            ),
+                                    Navigator.pop(context, _model.croppedImage);
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return Padding(
+                                          padding:
+                                              MediaQuery.viewInsetsOf(context),
+                                          child: ScanedItemDetailsWidget(
+                                            docRef: widget.docRef,
+                                            input: widget.input!,
+                                            croppedImage: _model.croppedImage,
                                           ),
-                                          duration:
-                                              Duration(milliseconds: 4000),
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      );
-                                    }
+                                        );
+                                      },
+                                    ).then((value) => safeSetState(() {}));
 
                                     setState(() {});
                                   },

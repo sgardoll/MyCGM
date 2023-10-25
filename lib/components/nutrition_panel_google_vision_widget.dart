@@ -1,6 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart' as custom_widgets;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -87,6 +87,9 @@ class _NutritionPanelGoogleVisionWidgetState
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).secondaryBackground,
                       borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                        color: Colors.transparent,
+                      ),
                     ),
                     alignment: AlignmentDirectional(-1.00, 0.00),
                     child: Padding(
@@ -115,15 +118,14 @@ class _NutritionPanelGoogleVisionWidgetState
               ),
               decoration: BoxDecoration(
                 color: Colors.transparent,
-              ),
-              child: Container(
-                width: MediaQuery.sizeOf(context).width * 1.0,
-                height: MediaQuery.sizeOf(context).height * 1.0,
-                child: custom_widgets.MarkdownRender(
-                  width: MediaQuery.sizeOf(context).width * 1.0,
-                  height: MediaQuery.sizeOf(context).height * 1.0,
-                  markdown: widget.markdown,
+                border: Border.all(
+                  color: Colors.transparent,
                 ),
+              ),
+              child: AutoSizeText(
+                widget.markdown!,
+                textAlign: TextAlign.center,
+                style: FlutterFlowTheme.of(context).bodyMedium,
               ),
             ),
             theme: ExpandableThemeData(

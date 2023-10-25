@@ -106,28 +106,7 @@ class _ScanedItemCropWidgetState extends State<ScanedItemCropWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Align(
-            alignment: AlignmentDirectional(0.00, 0.00),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.memory(
-                _model.cropImage?.bytes ?? Uint8List.fromList([]),
-                width: MediaQuery.sizeOf(context).width * 0.8,
-                height: MediaQuery.sizeOf(context).height * 0.5,
-                fit: BoxFit.cover,
-                alignment: Alignment(0.00, 0.00),
-                errorBuilder: (context, error, stackTrace) => Image.asset(
-                  'assets/images/error_image.png',
-                  width: MediaQuery.sizeOf(context).width * 0.8,
-                  height: MediaQuery.sizeOf(context).height * 0.5,
-                  fit: BoxFit.cover,
-                  alignment: Alignment(0.00, 0.00),
-                ),
-              ),
-            ),
-          ),
-        ],
+        children: [],
       ),
     );
   }
