@@ -14,12 +14,12 @@ class NutritionPanelGoogleVisionWidget extends StatefulWidget {
   const NutritionPanelGoogleVisionWidget({
     Key? key,
     String? source,
-    required this.bodyText,
+    required this.markdown,
   })  : this.source = source ?? '-',
         super(key: key);
 
   final String source;
-  final dynamic bodyText;
+  final String? markdown;
 
   @override
   _NutritionPanelGoogleVisionWidgetState createState() =>
@@ -116,25 +116,13 @@ class _NutritionPanelGoogleVisionWidgetState
               decoration: BoxDecoration(
                 color: Colors.transparent,
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: 500.0,
-                        child: custom_widgets.JsonTable(
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: 500.0,
-                          json: getJsonField(
-                            widget.bodyText,
-                            r'''$''',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              child: Container(
+                width: MediaQuery.sizeOf(context).width * 1.0,
+                height: MediaQuery.sizeOf(context).height * 1.0,
+                child: custom_widgets.MarkdownRender(
+                  width: MediaQuery.sizeOf(context).width * 1.0,
+                  height: MediaQuery.sizeOf(context).height * 1.0,
+                  markdown: widget.markdown,
                 ),
               ),
             ),

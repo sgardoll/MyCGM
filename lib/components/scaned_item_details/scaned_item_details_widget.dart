@@ -301,9 +301,8 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                     updateCallback: () => setState(() {}),
                                     child: NutritionPanelGoogleVisionWidget(
                                       source: 'Nutritional Panel On-Pack',
-                                      bodyText: (_model.buildshipAPIGoogleVision
-                                              ?.jsonBody ??
-                                          ''),
+                                      markdown:
+                                          blurLookupRecord.googleVisionResponse,
                                     ),
                                   ),
                                 ),

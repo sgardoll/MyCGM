@@ -67,6 +67,11 @@ class LookupRecord extends FirestoreRecord {
   int get timestamp => _timestamp ?? 0;
   bool hasTimestamp() => _timestamp != null;
 
+  // "googleVisionResponse" field.
+  String? _googleVisionResponse;
+  String get googleVisionResponse => _googleVisionResponse ?? '';
+  bool hasGoogleVisionResponse() => _googleVisionResponse != null;
+
   void _initializeFields() {
     _userRef = snapshotData['userRef'] as DocumentReference?;
     _logo = snapshotData['logo'] as String?;
@@ -79,6 +84,7 @@ class LookupRecord extends FirestoreRecord {
     _trivia = snapshotData['trivia'] as String?;
     _size = snapshotData['size'] as String?;
     _timestamp = castToType<int>(snapshotData['timestamp']);
+    _googleVisionResponse = snapshotData['googleVisionResponse'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -125,6 +131,7 @@ Map<String, dynamic> createLookupRecordData({
   String? trivia,
   String? size,
   int? timestamp,
+  String? googleVisionResponse,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -138,6 +145,7 @@ Map<String, dynamic> createLookupRecordData({
       'trivia': trivia,
       'size': size,
       'timestamp': timestamp,
+      'googleVisionResponse': googleVisionResponse,
     }.withoutNulls,
   );
 
@@ -161,7 +169,8 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e1?.brand == e2?.brand &&
         e1?.trivia == e2?.trivia &&
         e1?.size == e2?.size &&
-        e1?.timestamp == e2?.timestamp;
+        e1?.timestamp == e2?.timestamp &&
+        e1?.googleVisionResponse == e2?.googleVisionResponse;
   }
 
   @override
@@ -175,7 +184,8 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e?.brand,
         e?.trivia,
         e?.size,
-        e?.timestamp
+        e?.timestamp,
+        e?.googleVisionResponse
       ]);
 
   @override
