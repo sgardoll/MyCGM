@@ -27,6 +27,8 @@ class ScanedItemDetailsModel extends FlutterFlowModel<ScanedItemDetailsWidget> {
 
   // Model for NutritionPanelGoogleVision component.
   late NutritionPanelGoogleVisionModel nutritionPanelGoogleVisionModel;
+  // Stores action output result for [Bottom Sheet - ScanedItemCrop] action in Button widget.
+  FFUploadedFile? croppedImage;
   bool isDataUploading = false;
   FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));

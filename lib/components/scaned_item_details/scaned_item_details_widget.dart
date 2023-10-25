@@ -329,6 +329,7 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
                                       enableDrag: false,
+                                      useSafeArea: true,
                                       context: context,
                                       builder: (context) {
                                         return Padding(
@@ -340,7 +341,8 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                           ),
                                         );
                                       },
-                                    ).then((value) => safeSetState(() {}));
+                                    ).then((value) => safeSetState(
+                                        () => _model.croppedImage = value));
 
                                     {
                                       setState(
@@ -355,9 +357,9 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                           'Uploading file...',
                                           showLoading: true,
                                         );
-                                        selectedUploadedFiles = widget
+                                        selectedUploadedFiles = _model
                                                 .croppedImage!.bytes!.isNotEmpty
-                                            ? [widget.croppedImage!]
+                                            ? [_model.croppedImage!]
                                             : <FFUploadedFile>[];
                                         selectedMedia =
                                             selectedFilesFromUploadedFiles(

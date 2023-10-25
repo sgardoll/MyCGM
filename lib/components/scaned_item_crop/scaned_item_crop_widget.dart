@@ -1,4 +1,3 @@
-import '/components/scaned_item_details/scaned_item_details_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/upload_data.dart';
@@ -87,23 +86,7 @@ class _ScanedItemCropWidgetState extends State<ScanedItemCropWidget> {
         context,
         _model.uploadedLocalFile,
       );
-      showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        enableDrag: false,
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return Padding(
-            padding: MediaQuery.viewInsetsOf(context),
-            child: ScanedItemDetailsWidget(
-              croppedImage: _model.cropImage,
-              docRef: widget.docRef,
-              input: widget.input!,
-            ),
-          );
-        },
-      ).then((value) => safeSetState(() {}));
+      Navigator.pop(context, _model.cropImage);
     });
   }
 
@@ -118,9 +101,34 @@ class _ScanedItemCropWidgetState extends State<ScanedItemCropWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [],
+    return Align(
+      alignment: AlignmentDirectional(0.00, 1.00),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Align(
+            alignment: AlignmentDirectional(0.00, 0.00),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.memory(
+                _model.cropImage?.bytes ?? Uint8List.fromList([]),
+                width: MediaQuery.sizeOf(context).width * 0.8,
+                height: MediaQuery.sizeOf(context).height * 0.5,
+                fit: BoxFit.cover,
+                alignment: Alignment(0.00, 0.00),
+                errorBuilder: (context, error, stackTrace) => Image.asset(
+                  'assets/images/error_image.png',
+                  width: MediaQuery.sizeOf(context).width * 0.8,
+                  height: MediaQuery.sizeOf(context).height * 0.5,
+                  fit: BoxFit.cover,
+                  alignment: Alignment(0.00, 0.00),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
