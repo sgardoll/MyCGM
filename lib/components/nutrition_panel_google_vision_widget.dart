@@ -127,7 +127,10 @@ class _NutritionPanelGoogleVisionWidgetState
                         child: custom_widgets.JsonTable(
                           width: MediaQuery.sizeOf(context).width * 1.0,
                           height: 500.0,
-                          json: widget.bodyText!,
+                          json: getJsonField(
+                            widget.bodyText,
+                            r'''$''',
+                          ),
                         ),
                       ),
                     ),
