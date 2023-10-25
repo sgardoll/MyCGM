@@ -281,8 +281,8 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                         ),
                       ),
                       if (valueOrDefault<bool>(
-                        blurLookupRecord.nutritionPanel != null &&
-                                blurLookupRecord.nutritionPanel != ''
+                        blurLookupRecord.googleVisionResponse != null &&
+                                blurLookupRecord.googleVisionResponse != ''
                             ? true
                             : false,
                         false,
