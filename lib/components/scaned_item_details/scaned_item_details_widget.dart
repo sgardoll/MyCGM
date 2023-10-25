@@ -28,12 +28,10 @@ class ScanedItemDetailsWidget extends StatefulWidget {
     Key? key,
     this.docRef,
     required this.input,
-    this.croppedImage,
   }) : super(key: key);
 
   final DocumentReference? docRef;
   final String? input;
-  final FFUploadedFile? croppedImage;
 
   @override
   _ScanedItemDetailsWidgetState createState() =>
@@ -303,9 +301,12 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                                     updateCallback: () => setState(() {}),
                                     child: NutritionPanelGoogleVisionWidget(
                                       source: 'Nutritional Panel On-Pack',
-                                      bodyText: (_model.buildshipAPIGoogleVision
-                                              ?.jsonBody ??
-                                          ''),
+                                      bodyText: BuildshipGoogleVisionCall
+                                          .nutritionInfo(
+                                        (_model.buildshipAPIGoogleVision
+                                                ?.jsonBody ??
+                                            ''),
+                                      ),
                                     ),
                                   ),
                                 ),
