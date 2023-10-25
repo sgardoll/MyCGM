@@ -100,3 +100,8 @@ int barcodeScanInt(String barcodeScan) {
   int barcodeInt = math.max(1, int.parse(barcodeScan));
   return barcodeInt;
 }
+
+DocumentReference getDocRef(String input) {
+  // take a string and add 'lookup/' in front of it to return a document reference
+  return FirebaseFirestore.instance.doc('lookup/$input');
+}

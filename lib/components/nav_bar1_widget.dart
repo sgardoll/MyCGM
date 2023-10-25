@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -60,7 +61,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
         ),
       ],
     ),
-    'containerOnPageLoadAnimation': AnimationInfo(
+    'containerOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       applyInitialState: true,
       effects: [
@@ -77,6 +78,25 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
           duration: 600.ms,
           begin: 0.0,
           end: 1.0,
+        ),
+      ],
+    ),
+    'containerOnPageLoadAnimation2': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        ScaleEffect(
+          curve: Curves.bounceOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(1.0, 1.0),
+          end: Offset(1.5, 1.5),
+        ),
+        FadeEffect(
+          curve: Curves.bounceOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 1.0,
+          end: 0.0,
         ),
       ],
     ),
@@ -97,13 +117,23 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (FFAppState().firstOpen == true) {
         _model.timerController.onStartTimer();
-        await Future.delayed(const Duration(milliseconds: 15000));
+        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
+          animationsMap['containerOnActionTriggerAnimation']!
+              .controller
+              .forward(from: 0.0);
+        }
+        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
+          animationsMap['containerOnActionTriggerAnimation']!
+              .controller
+              .reset();
+        }
+        await Future.delayed(const Duration(milliseconds: 5000));
         if (animationsMap['containerOnActionTriggerAnimation'] != null) {
           await animationsMap['containerOnActionTriggerAnimation']!
               .controller
               .forward(from: 0.0);
         }
-        setState(() {
+        _model.updatePage(() {
           FFAppState().firstOpen = false;
         });
       }
@@ -168,7 +198,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                         duration: Duration(milliseconds: 1200),
                         curve: Curves.easeInOut,
                         width: MediaQuery.sizeOf(context).width * 0.75,
-                        height: 160.0,
+                        height: 165.0,
                         decoration: BoxDecoration(
                           color: FlutterFlowTheme.of(context).primaryBackground,
                           boxShadow: [
@@ -189,19 +219,106 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                             width: 6.0,
                           ),
                         ),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: MediaQuery.sizeOf(context).height * 1.0,
-                          child: custom_widgets.QrScanBox(
-                            width: MediaQuery.sizeOf(context).width * 1.0,
-                            height: MediaQuery.sizeOf(context).height * 1.0,
-                          ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Material(
+                                color: Colors.transparent,
+                                elevation: 2.0,
+                                child: ClipRRect(
+                                  child: Container(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 1.0,
+                                    height: 30.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    8.0, 0.0, 0.0, 0.0),
+                                            child: AutoSizeText(
+                                              'Quick Barcode Scan',
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        fontFamily: 'Lato',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .white,
+                                                      ),
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 8.0, 0.0),
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onTap: () async {
+                                                if (animationsMap[
+                                                        'containerOnActionTriggerAnimation'] !=
+                                                    null) {
+                                                  await animationsMap[
+                                                          'containerOnActionTriggerAnimation']!
+                                                      .controller
+                                                      .forward(from: 0.0);
+                                                }
+                                                setState(() {
+                                                  FFAppState().firstOpen =
+                                                      false;
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_outlined,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .white,
+                                                size: 24.0,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.sizeOf(context).width * 1.0,
+                              height: 130.0,
+                              child: custom_widgets.QrScanBox(
+                                width: MediaQuery.sizeOf(context).width * 1.0,
+                                height: 130.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   )
                       .animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation']!)
+                          animationsMap['containerOnPageLoadAnimation1']!)
                       .animateOnActionTrigger(
                         animationsMap['containerOnActionTriggerAnimation']!,
                       ),
@@ -336,7 +453,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                     ),
                     if (valueOrDefault<bool>(
                       valueOrDefault<bool>(
-                              currentUserDocument?.hasCgmFeatures, false)
+                                  currentUserDocument?.hasCgmFeatures, false) ==
+                              true
                           ? true
                           : false,
                       false,
@@ -513,7 +631,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             (int? elapsed) {
                                               return elapsed != null
                                                   ? 1 -
-                                                      (elapsed / 15000)
+                                                      (elapsed / 5000)
                                                           .toDouble()
                                                   : null;
                                             }(_model.timerMilliseconds),
@@ -530,6 +648,20 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
                                         ),
+                                      if (valueOrDefault<bool>(
+                                        FFAppState().firstOpen ? true : false,
+                                        false,
+                                      ))
+                                        Container(
+                                          width: 100.0,
+                                          height: 100.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ).animateOnPageLoad(animationsMap[
+                                            'containerOnPageLoadAnimation2']!),
                                     ],
                                   ),
                                 ),

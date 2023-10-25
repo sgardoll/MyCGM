@@ -1,14 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
-import '/backend/firebase_storage/storage.dart';
-import '/components/nutrition_box_widget.dart';
+import '/components/nutrition_panel_google_vision_widget.dart';
 import '/components/scaned_item/scaned_item_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -121,496 +121,398 @@ class _ScanedItemDetailsWidgetState extends State<ScanedItemDetailsWidget> {
                     color: Colors.transparent,
                   ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: 100.0,
-                      child: Divider(
-                        thickness: 3.0,
-                        color: FlutterFlowTheme.of(context).secondaryText,
-                      ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 8.0, 16.0, 8.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 0.0, 4.0, 0.0),
-                                      child: AutoSizeText(
-                                        valueOrDefault<String>(
-                                          blurLookupRecord.details.name,
-                                          'Loading...',
-                                        ),
-                                        maxLines: 2,
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleLarge,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (valueOrDefault<bool>(
-                              blurLookupRecord.details.hasSize() ? true : false,
-                              false,
-                            ))
-                              Material(
-                                color: Colors.transparent,
-                                elevation: 2.0,
-                                shape: const CircleBorder(),
-                                child: AnimatedContainer(
-                                  duration: Duration(milliseconds: 100),
-                                  curve: Curves.bounceOut,
-                                  width: 50.0,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  alignment: AlignmentDirectional(0.00, 0.00),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        4.0, 0.0, 4.0, 0.0),
-                                    child: AutoSizeText(
-                                      blurLookupRecord.details.size,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Lato',
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ].divide(SizedBox(width: 4.0)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: 100.0,
+                        child: Divider(
+                          thickness: 3.0,
+                          color: FlutterFlowTheme.of(context).secondaryText,
                         ),
                       ),
-                    ),
-                    if (valueOrDefault<bool>(
-                      blurLookupRecord.details.hasTrivia() ? true : false,
-                      false,
-                    ))
                       Flexible(
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
-                              16.0, 0.0, 16.0, 0.0),
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            width: MediaQuery.sizeOf(context).width * 1.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context).secondary,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 8.0, 8.0, 8.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 0.0, 0.0, 0.0),
-                                    child: Icon(
-                                      Icons.info_outlined,
+                              16.0, 8.0, 16.0, 8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 4.0, 0.0),
+                                        child: AutoSizeText(
+                                          valueOrDefault<String>(
+                                            blurLookupRecord.name,
+                                            'Loading...',
+                                          ),
+                                          maxLines: 2,
+                                          style: FlutterFlowTheme.of(context)
+                                              .titleLarge,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (valueOrDefault<bool>(
+                                blurLookupRecord.hasSize() ? true : false,
+                                false,
+                              ))
+                                Material(
+                                  color: Colors.transparent,
+                                  elevation: 2.0,
+                                  shape: const CircleBorder(),
+                                  child: AnimatedContainer(
+                                    duration: Duration(milliseconds: 100),
+                                    curve: Curves.bounceOut,
+                                    width: 50.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryBackground,
-                                      size: 24.0,
+                                      shape: BoxShape.circle,
                                     ),
-                                  ),
-                                  Flexible(
+                                    alignment: AlignmentDirectional(0.00, 0.00),
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          8.0, 0.0, 0.0, 0.0),
+                                          4.0, 0.0, 4.0, 0.0),
                                       child: AutoSizeText(
-                                        blurLookupRecord.details.trivia,
-                                        maxLines: 3,
+                                        valueOrDefault<String>(
+                                          blurLookupRecord.size,
+                                          '-',
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
                                         style: FlutterFlowTheme.of(context)
-                                            .bodySmall
+                                            .bodyMedium
                                             .override(
                                               fontFamily: 'Lato',
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .btnText,
-                                              fontWeight: FontWeight.normal,
+                                                      .primaryText,
                                             ),
                                       ),
                                     ),
                                   ),
-                                ],
+                                ),
+                            ].divide(SizedBox(width: 4.0)),
+                          ),
+                        ),
+                      ),
+                      if (valueOrDefault<bool>(
+                        blurLookupRecord.hasTrivia() ? true : false,
+                        false,
+                      ))
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 0.0, 16.0, 0.0),
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              width: MediaQuery.sizeOf(context).width * 1.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).secondary,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 8.0, 8.0, 8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 0.0, 0.0),
+                                      child: Icon(
+                                        Icons.info_outlined,
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                        size: 24.0,
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 0.0, 0.0),
+                                        child: AutoSizeText(
+                                          valueOrDefault<String>(
+                                            blurLookupRecord.trivia,
+                                            '-',
+                                          ),
+                                          maxLines: 3,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodySmall
+                                              .override(
+                                                fontFamily: 'Lato',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .btnText,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 0.0),
-                      child: FutureBuilder<ApiCallResponse>(
-                        future: OpenFoodFactsCall.call(
-                          barcode: blurLookupRecord.input,
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            16.0, 4.0, 16.0, 0.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [],
                         ),
-                        builder: (context, snapshot) {
-                          // Customize what your widget looks like when it's loading.
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: SizedBox(
-                                width: 25.0,
-                                height: 25.0,
-                                child: SpinKitRipple(
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  size: 25.0,
-                                ),
-                              ),
-                            );
-                          }
-                          final rowOpenFoodFactsResponse = snapshot.data!;
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (valueOrDefault<bool>(
-                                OpenFoodFactsCall.productnutriments(
-                                          rowOpenFoodFactsResponse.jsonBody,
-                                        ) !=
-                                        null
-                                    ? true
-                                    : false,
-                                false,
-                              ))
+                      ),
+                      if (valueOrDefault<bool>(
+                        blurLookupRecord.googleVisionAPIResponse != null &&
+                                blurLookupRecord.googleVisionAPIResponse != ''
+                            ? true
+                            : false,
+                        false,
+                      ))
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                16.0, 4.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
                                 Flexible(
                                   child: wrapWithModel(
-                                    model: _model.nutritionBoxModel,
+                                    model:
+                                        _model.nutritionPanelGoogleVisionModel,
                                     updateCallback: () => setState(() {}),
-                                    updateOnChange: true,
-                                    child: NutritionBoxWidget(
-                                      source: 'Open Food Facts',
-                                      energy: OpenFoodFactsCall
-                                          .productnutrimentsenergy(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ).toDouble(),
-                                      energyUnits: OpenFoodFactsCall
-                                          .productnutrimentsenergyunit(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ).toString(),
-                                      energyPerServing: OpenFoodFactsCall
-                                          .productnutrimentsenergyserving(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ).toDouble(),
-                                      protein: OpenFoodFactsCall
-                                          .productnutrimentsproteins(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ),
-                                      proteinUnits: OpenFoodFactsCall
-                                          .productnutrimentsproteinsunit(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ).toString(),
-                                      proteinPerServing: OpenFoodFactsCall
-                                          .productnutrimentsproteinsserving(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ),
-                                      carbs: OpenFoodFactsCall
-                                          .productnutrimentscarbohydrates(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ),
-                                      carbUnits: OpenFoodFactsCall
-                                          .productnutrimentscarbohydratesunit(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ).toString(),
-                                      carbsPerServing: OpenFoodFactsCall
-                                          .productnutrimentscarbohydratesserving(
-                                        rowOpenFoodFactsResponse.jsonBody,
-                                      ),
-                                      servingSize: valueOrDefault<String>(
-                                        OpenFoodFactsCall.servingsize(
-                                          rowOpenFoodFactsResponse.jsonBody,
-                                        ).toString(),
-                                        '-',
-                                      ),
+                                    child: NutritionPanelGoogleVisionWidget(
+                                      source: 'Nutritional Panel On-Pack',
+                                      bodyText: blurLookupRecord
+                                          .googleVisionAPIResponse,
                                     ),
                                   ),
                                 ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                    if (valueOrDefault<bool>(
-                      (_model.buildshipAPIGoogleVision?.bodyText ?? '') !=
-                                  null &&
-                              (_model.buildshipAPIGoogleVision?.bodyText ??
-                                      '') !=
-                                  ''
-                          ? true
-                          : false,
-                      false,
-                    ))
+                              ],
+                            ),
+                          ),
+                        ),
                       Flexible(
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
-                              16.0, 4.0, 16.0, 0.0),
+                              16.0, 8.0, 16.0, 16.0),
                           child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              if (valueOrDefault<bool>(
-                                (_model.buildshipAPIGoogleVision?.jsonBody ??
-                                            '') !=
-                                        null
-                                    ? true
-                                    : false,
-                                false,
-                              ))
-                                Flexible(
-                                  child: AutoSizeText(
-                                    (_model.buildshipAPIGoogleVision
-                                            ?.bodyText ??
-                                        ''),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 5,
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyMedium,
+                              Expanded(
+                                flex: 2,
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    final selectedMedia = await selectMedia(
+                                      multiImage: false,
+                                    );
+                                    if (selectedMedia != null &&
+                                        selectedMedia.every((m) =>
+                                            validateFileFormat(
+                                                m.storagePath, context))) {
+                                      setState(
+                                          () => _model.isDataUploading = true);
+                                      var selectedUploadedFiles =
+                                          <FFUploadedFile>[];
+
+                                      try {
+                                        showUploadMessage(
+                                          context,
+                                          'Uploading file...',
+                                          showLoading: true,
+                                        );
+                                        selectedUploadedFiles = selectedMedia
+                                            .map((m) => FFUploadedFile(
+                                                  name: m.storagePath
+                                                      .split('/')
+                                                      .last,
+                                                  bytes: m.bytes,
+                                                  height: m.dimensions?.height,
+                                                  width: m.dimensions?.width,
+                                                  blurHash: m.blurHash,
+                                                ))
+                                            .toList();
+                                      } finally {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        _model.isDataUploading = false;
+                                      }
+                                      if (selectedUploadedFiles.length ==
+                                          selectedMedia.length) {
+                                        setState(() {
+                                          _model.uploadedLocalFile =
+                                              selectedUploadedFiles.first;
+                                        });
+                                        showUploadMessage(context, 'Success!');
+                                      } else {
+                                        setState(() {});
+                                        showUploadMessage(
+                                            context, 'Failed to upload data');
+                                        return;
+                                      }
+                                    }
+
+                                    _model.cropImage = await actions.cropImage(
+                                      context,
+                                      _model.uploadedLocalFile,
+                                    );
+                                    _model.buildshipAPIGoogleVision =
+                                        await BuildshipGoogleVisionCall.call(
+                                      url: blurLookupRecord.nutritionPanel,
+                                    );
+                                    if ((_model.buildshipAPIGoogleVision
+                                            ?.succeeded ??
+                                        true)) {
+                                      await widget.docRef!
+                                          .update(createLookupRecordData(
+                                        googleVisionAPIResponse: (_model
+                                                .buildshipAPIGoogleVision
+                                                ?.bodyText ??
+                                            ''),
+                                      ));
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Nutritional Panel Text Detection Unsuccessful',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
+                                    }
+
+                                    setState(() {});
+                                  },
+                                  text: 'Nutritional Panel',
+                                  icon: Icon(
+                                    Icons.add_a_photo_sharp,
+                                    size: 20.0,
+                                  ),
+                                  options: FFButtonOptions(
+                                    height: 40.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 8.0, 0.0),
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Lato',
+                                          color: Colors.white,
+                                        ),
+                                    elevation: 2.0,
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
-                            ],
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    Navigator.pop(context);
+                                    _model.barcodeScanAgain =
+                                        await FlutterBarcodeScanner.scanBarcode(
+                                      '#C62828', // scanning line color
+                                      'Cancel', // cancel button text
+                                      true, // whether to show the flash icon
+                                      ScanMode.BARCODE,
+                                    );
+
+                                    if (functions
+                                                .barcodeScanInt(
+                                                    _model.barcodeScanAgain!)
+                                                .toString() !=
+                                            null &&
+                                        functions
+                                                .barcodeScanInt(
+                                                    _model.barcodeScanAgain!)
+                                                .toString() !=
+                                            '') {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        useSafeArea: true,
+                                        context: context,
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: MediaQuery.viewInsetsOf(
+                                                context),
+                                            child: ScanedItemWidget(
+                                              input: _model.barcodeScanAgain!,
+                                            ),
+                                          );
+                                        },
+                                      ).then((value) => safeSetState(() {}));
+                                    }
+
+                                    setState(() {});
+                                  },
+                                  text: 'Scan More',
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.barcode,
+                                    size: 20.0,
+                                  ),
+                                  options: FFButtonOptions(
+                                    height: 40.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 8.0, 0.0),
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Lato',
+                                          color: Colors.white,
+                                        ),
+                                    elevation: 2.0,
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ),
+                            ].divide(SizedBox(width: 8.0)),
                           ),
                         ),
                       ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 8.0, 16.0, 16.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: FFButtonWidget(
-                                onPressed: () async {
-                                  final selectedMedia =
-                                      await selectMediaWithSourceBottomSheet(
-                                    context: context,
-                                    allowPhoto: true,
-                                  );
-                                  if (selectedMedia != null &&
-                                      selectedMedia.every((m) =>
-                                          validateFileFormat(
-                                              m.storagePath, context))) {
-                                    setState(
-                                        () => _model.isDataUploading = true);
-                                    var selectedUploadedFiles =
-                                        <FFUploadedFile>[];
-
-                                    var downloadUrls = <String>[];
-                                    try {
-                                      showUploadMessage(
-                                        context,
-                                        'Uploading file...',
-                                        showLoading: true,
-                                      );
-                                      selectedUploadedFiles = selectedMedia
-                                          .map((m) => FFUploadedFile(
-                                                name: m.storagePath
-                                                    .split('/')
-                                                    .last,
-                                                bytes: m.bytes,
-                                                height: m.dimensions?.height,
-                                                width: m.dimensions?.width,
-                                                blurHash: m.blurHash,
-                                              ))
-                                          .toList();
-
-                                      downloadUrls = (await Future.wait(
-                                        selectedMedia.map(
-                                          (m) async => await uploadData(
-                                              m.storagePath, m.bytes),
-                                        ),
-                                      ))
-                                          .where((u) => u != null)
-                                          .map((u) => u!)
-                                          .toList();
-                                    } finally {
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                      _model.isDataUploading = false;
-                                    }
-                                    if (selectedUploadedFiles.length ==
-                                            selectedMedia.length &&
-                                        downloadUrls.length ==
-                                            selectedMedia.length) {
-                                      setState(() {
-                                        _model.uploadedLocalFile =
-                                            selectedUploadedFiles.first;
-                                        _model.uploadedFileUrl =
-                                            downloadUrls.first;
-                                      });
-                                      showUploadMessage(context, 'Success!');
-                                    } else {
-                                      setState(() {});
-                                      showUploadMessage(
-                                          context, 'Failed to upload data');
-                                      return;
-                                    }
-                                  }
-
-                                  await widget.docRef!
-                                      .update(createLookupRecordData(
-                                    nutritionPanel: _model.uploadedFileUrl,
-                                  ));
-                                  _model.buildshipAPIGoogleVision =
-                                      await BuildshipGoogleVisionCall.call(
-                                    url: _model.uploadedFileUrl,
-                                  );
-                                  if ((_model.buildshipAPIGoogleVision
-                                          ?.succeeded ??
-                                      true)) {
-                                    await widget.docRef!
-                                        .update(createLookupRecordData(
-                                      googleVisionAPIResponse: (_model
-                                              .buildshipAPIGoogleVision
-                                              ?.bodyText ??
-                                          ''),
-                                    ));
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Nutritional Panel Text Detection Unsuccessful',
-                                          style: TextStyle(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                          ),
-                                        ),
-                                        duration: Duration(milliseconds: 4000),
-                                        backgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondary,
-                                      ),
-                                    );
-                                  }
-
-                                  setState(() {});
-                                },
-                                text: 'Nutritional Panel',
-                                icon: Icon(
-                                  Icons.add_a_photo_sharp,
-                                  size: 20.0,
-                                ),
-                                options: FFButtonOptions(
-                                  height: 40.0,
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
-                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 8.0, 0.0),
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .override(
-                                        fontFamily: 'Lato',
-                                        color: Colors.white,
-                                      ),
-                                  elevation: 2.0,
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: FFButtonWidget(
-                                onPressed: () async {
-                                  Navigator.pop(context);
-                                  _model.barcodeScanAgain =
-                                      await FlutterBarcodeScanner.scanBarcode(
-                                    '#C62828', // scanning line color
-                                    'Cancel', // cancel button text
-                                    true, // whether to show the flash icon
-                                    ScanMode.BARCODE,
-                                  );
-
-                                  if (functions
-                                              .barcodeScanInt(
-                                                  _model.barcodeScanAgain!)
-                                              .toString() !=
-                                          null &&
-                                      functions
-                                              .barcodeScanInt(
-                                                  _model.barcodeScanAgain!)
-                                              .toString() !=
-                                          '') {
-                                    await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      enableDrag: false,
-                                      context: context,
-                                      builder: (context) {
-                                        return Padding(
-                                          padding:
-                                              MediaQuery.viewInsetsOf(context),
-                                          child: ScanedItemWidget(
-                                            input: _model.barcodeScanAgain!,
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => safeSetState(() {}));
-                                  }
-
-                                  setState(() {});
-                                },
-                                text: 'Scan More',
-                                icon: FaIcon(
-                                  FontAwesomeIcons.barcode,
-                                  size: 20.0,
-                                ),
-                                options: FFButtonOptions(
-                                  height: 40.0,
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
-                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 8.0, 0.0),
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .override(
-                                        fontFamily: 'Lato',
-                                        color: Colors.white,
-                                      ),
-                                  elevation: 2.0,
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                            ),
-                          ].divide(SizedBox(width: 8.0)),
-                        ),
-                      ),
-                    ),
-                  ].addToStart(SizedBox(height: 8.0)),
+                    ].addToStart(SizedBox(height: 8.0)),
+                  ),
                 ),
               ),
             ),

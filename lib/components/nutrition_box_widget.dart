@@ -14,30 +14,41 @@ export 'nutrition_box_model.dart';
 class NutritionBoxWidget extends StatefulWidget {
   const NutritionBoxWidget({
     Key? key,
-    this.source,
-    this.energy,
-    this.energyUnits,
-    this.energyPerServing,
-    this.protein,
-    this.proteinUnits,
-    this.proteinPerServing,
-    this.carbs,
-    this.carbUnits,
-    this.carbsPerServing,
-    this.servingSize,
-  }) : super(key: key);
+    String? source,
+    double? energy,
+    String? energyUnits,
+    double? energyPerServing,
+    double? protein,
+    String? proteinUnits,
+    double? proteinPerServing,
+    double? carbs,
+    String? carbUnits,
+    double? carbsPerServing,
+    String? servingSize,
+  })  : this.source = source ?? '-',
+        this.energy = energy ?? 0.0,
+        this.energyUnits = energyUnits ?? '0',
+        this.energyPerServing = energyPerServing ?? 0.0,
+        this.protein = protein ?? 0.0,
+        this.proteinUnits = proteinUnits ?? '0',
+        this.proteinPerServing = proteinPerServing ?? 0.0,
+        this.carbs = carbs ?? 0.0,
+        this.carbUnits = carbUnits ?? '0',
+        this.carbsPerServing = carbsPerServing ?? 0.0,
+        this.servingSize = servingSize ?? '0',
+        super(key: key);
 
-  final String? source;
-  final double? energy;
-  final String? energyUnits;
-  final double? energyPerServing;
-  final double? protein;
-  final String? proteinUnits;
-  final double? proteinPerServing;
-  final double? carbs;
-  final String? carbUnits;
-  final double? carbsPerServing;
-  final String? servingSize;
+  final String source;
+  final double energy;
+  final String energyUnits;
+  final double energyPerServing;
+  final double protein;
+  final String proteinUnits;
+  final double proteinPerServing;
+  final double carbs;
+  final String carbUnits;
+  final double carbsPerServing;
+  final String servingSize;
 
   @override
   _NutritionBoxWidgetState createState() => _NutritionBoxWidgetState();
@@ -109,7 +120,10 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
                       padding:
                           EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
                       child: Text(
-                        widget.source!,
+                        valueOrDefault<String>(
+                          widget.source,
+                          '-',
+                        ),
                         style: FlutterFlowTheme.of(context).bodySmall.override(
                               fontFamily: 'Lato',
                               color: FlutterFlowTheme.of(context).secondary,
@@ -130,12 +144,30 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
                     updateCallback: () => setState(() {}),
                     updateOnChange: true,
                     child: NutriCirclesWidget(
-                      energy: widget.energy!,
-                      energyUnits: widget.energyUnits!,
-                      protein: widget.protein!,
-                      proteinUnits: widget.proteinUnits!,
-                      carbs: widget.carbs!,
-                      carbsUnits: widget.carbUnits!,
+                      energy: valueOrDefault<double>(
+                        widget.energy,
+                        0.0,
+                      ),
+                      energyUnits: valueOrDefault<String>(
+                        widget.energyUnits,
+                        '0',
+                      ),
+                      protein: valueOrDefault<double>(
+                        widget.protein,
+                        0.0,
+                      ),
+                      proteinUnits: valueOrDefault<String>(
+                        widget.proteinUnits,
+                        '0',
+                      ),
+                      carbs: valueOrDefault<double>(
+                        widget.carbs,
+                        0.0,
+                      ),
+                      carbsUnits: valueOrDefault<String>(
+                        widget.carbUnits,
+                        '0',
+                      ),
                     ),
                   ),
                   Padding(
@@ -196,12 +228,30 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
                                 model: _model.nutriCirclesModel2,
                                 updateCallback: () => setState(() {}),
                                 child: NutriCirclesWidget(
-                                  energy: widget.energy!,
-                                  energyUnits: widget.energyUnits!,
-                                  protein: widget.protein!,
-                                  proteinUnits: widget.proteinUnits!,
-                                  carbs: widget.carbs!,
-                                  carbsUnits: widget.carbUnits!,
+                                  energy: valueOrDefault<double>(
+                                    widget.energy,
+                                    0.0,
+                                  ),
+                                  energyUnits: valueOrDefault<String>(
+                                    widget.energyUnits,
+                                    '0',
+                                  ),
+                                  protein: valueOrDefault<double>(
+                                    widget.protein,
+                                    0.0,
+                                  ),
+                                  proteinUnits: valueOrDefault<String>(
+                                    widget.proteinUnits,
+                                    '0',
+                                  ),
+                                  carbs: valueOrDefault<double>(
+                                    widget.carbs,
+                                    0.0,
+                                  ),
+                                  carbsUnits: valueOrDefault<String>(
+                                    widget.carbUnits,
+                                    '0',
+                                  ),
                                 ),
                               ),
                             ],

@@ -10,6 +10,7 @@ import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'nav_bar1_widget.dart' show NavBar1Widget;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -26,9 +27,9 @@ class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
 
   var barcodeScan = '';
   // State field(s) for Timer widget.
-  int timerMilliseconds = 15000;
+  int timerMilliseconds = 5000;
   String timerValue = StopWatchTimer.getDisplayTime(
-    15000,
+    5000,
     hours: false,
     milliSecond: false,
   );

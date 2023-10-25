@@ -3,20 +3,20 @@ import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/components/scaned_item_details/scaned_item_details_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'scaned_item_model.dart';
 export 'scaned_item_model.dart';
@@ -49,13 +49,15 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.timerController.onStartTimer();
       _model.doesBarcodeExist = await queryLookupRecordOnce(
         queryBuilder: (lookupRecord) => lookupRecord.where(
-          'input',
+          'code',
           isEqualTo: widget.input,
         ),
       );
       if (_model.doesBarcodeExist!.length >= 1 ? true : false) {
+        _model.timerController.onStopTimer();
         Navigator.pop(context);
         showModalBottomSheet(
           isScrollControlled: true,
@@ -76,101 +78,8 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
         _model.buildshipAPi = await BuildshipGroup.barcodeScanCall.call(
           input: widget.input,
         );
+        _model.timerController.onStopTimer();
         Navigator.pop(context);
-
-        var lookupRecordReference = LookupRecord.collection.doc();
-        await lookupRecordReference.set(createLookupRecordData(
-          input: widget.input,
-          timestamp: getCurrentTimestamp,
-          userRef: currentUserReference,
-          details: createDetailsStruct(
-            brand: BuildshipGroup.barcodeScanCall
-                .brand(
-                  (_model.buildshipAPi?.jsonBody ?? ''),
-                )
-                .toString()
-                .toString(),
-            size: BuildshipGroup.barcodeScanCall
-                .size(
-                  (_model.buildshipAPi?.jsonBody ?? ''),
-                )
-                .toString()
-                .toString(),
-            trivia: BuildshipGroup.barcodeScanCall
-                .trivia(
-                  (_model.buildshipAPi?.jsonBody ?? ''),
-                )
-                .toString()
-                .toString(),
-            name: BuildshipGroup.barcodeScanCall
-                .name(
-                  (_model.buildshipAPi?.jsonBody ?? ''),
-                )
-                .toString()
-                .toString(),
-            weight: BuildshipGroup.barcodeScanCall
-                .weight(
-                  (_model.buildshipAPi?.jsonBody ?? ''),
-                )
-                .toString()
-                .toString(),
-            nutritionBreakdown: BuildshipGroup.barcodeScanCall
-                .nutrition(
-                  (_model.buildshipAPi?.jsonBody ?? ''),
-                )
-                .toString()
-                .toString(),
-            clearUnsetFields: false,
-            create: true,
-          ),
-        ));
-        _model.newItem = LookupRecord.getDocumentFromData(
-            createLookupRecordData(
-              input: widget.input,
-              timestamp: getCurrentTimestamp,
-              userRef: currentUserReference,
-              details: createDetailsStruct(
-                brand: BuildshipGroup.barcodeScanCall
-                    .brand(
-                      (_model.buildshipAPi?.jsonBody ?? ''),
-                    )
-                    .toString()
-                    .toString(),
-                size: BuildshipGroup.barcodeScanCall
-                    .size(
-                      (_model.buildshipAPi?.jsonBody ?? ''),
-                    )
-                    .toString()
-                    .toString(),
-                trivia: BuildshipGroup.barcodeScanCall
-                    .trivia(
-                      (_model.buildshipAPi?.jsonBody ?? ''),
-                    )
-                    .toString()
-                    .toString(),
-                name: BuildshipGroup.barcodeScanCall
-                    .name(
-                      (_model.buildshipAPi?.jsonBody ?? ''),
-                    )
-                    .toString()
-                    .toString(),
-                weight: BuildshipGroup.barcodeScanCall
-                    .weight(
-                      (_model.buildshipAPi?.jsonBody ?? ''),
-                    )
-                    .toString()
-                    .toString(),
-                nutritionBreakdown: BuildshipGroup.barcodeScanCall
-                    .nutrition(
-                      (_model.buildshipAPi?.jsonBody ?? ''),
-                    )
-                    .toString()
-                    .toString(),
-                clearUnsetFields: false,
-                create: true,
-              ),
-            ),
-            lookupRecordReference);
         showModalBottomSheet(
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
@@ -180,14 +89,16 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
             return Padding(
               padding: MediaQuery.viewInsetsOf(context),
               child: ScanedItemDetailsWidget(
-                docRef: _model.newItem?.reference,
                 input: widget.input!,
+                docRef: functions.getDocRef(widget.input!),
               ),
             );
           },
         ).then((value) => safeSetState(() {}));
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -299,151 +210,62 @@ class _ScanedItemWidgetState extends State<ScanedItemWidget> {
                 Flexible(
                   child: Padding(
                     padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 8.0),
+                        EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 24.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            'assets/images/3face8da2a6c3dcd27cb4a1aaa32c926_w200.gif',
-                            width: 40.0,
-                            height: 40.0,
-                            fit: BoxFit.cover,
+                        LinearPercentIndicator(
+                          percent: valueOrDefault<double>(
+                            (int? elapsed) {
+                              return elapsed != null
+                                  ? 1 - (elapsed / 15000).toDouble()
+                                  : null;
+                            }(_model.timerMilliseconds),
+                            0.0,
                           ),
-                        ),
-                        Flexible(
-                          child: AutoSizeText(
-                            'Locating Item...',
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            style: FlutterFlowTheme.of(context).labelLarge,
+                          width: 150.0,
+                          lineHeight: 20.0,
+                          animation: true,
+                          animateFromLastPercent: true,
+                          progressColor: FlutterFlowTheme.of(context).secondary,
+                          backgroundColor:
+                              FlutterFlowTheme.of(context).secondaryText,
+                          center: Text(
+                            'Loading Item...',
+                            style: FlutterFlowTheme.of(context)
+                                .labelSmall
+                                .override(
+                                  fontFamily: 'Lato',
+                                  color: FlutterFlowTheme.of(context).btnText,
+                                ),
                           ),
+                          barRadius: Radius.circular(12.0),
+                          padding: EdgeInsets.zero,
                         ),
-                      ].divide(SizedBox(width: 16.0)),
+                      ],
                     ),
                   ),
                 ),
-                Flexible(
-                  flex: 2,
-                  child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 16.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                            },
-                            text: '',
-                            icon: Icon(
-                              Icons.chevron_left_rounded,
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              size: 20.0,
-                            ),
-                            options: FFButtonOptions(
-                              height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  8.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Lato',
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                  ),
-                              elevation: 2.0,
-                              borderSide: BorderSide(
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              _model.barcodeScanAgain =
-                                  await FlutterBarcodeScanner.scanBarcode(
-                                '#C62828', // scanning line color
-                                'Cancel', // cancel button text
-                                true, // whether to show the flash icon
-                                ScanMode.BARCODE,
-                              );
-
-                              if (functions
-                                          .barcodeScanInt(
-                                              _model.barcodeScanAgain!)
-                                          .toString() !=
-                                      null &&
-                                  functions
-                                          .barcodeScanInt(
-                                              _model.barcodeScanAgain!)
-                                          .toString() !=
-                                      '') {
-                                await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  enableDrag: false,
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: MediaQuery.viewInsetsOf(context),
-                                      child: ScanedItemWidget(
-                                        input: _model.barcodeScanAgain!,
-                                      ),
-                                    );
-                                  },
-                                ).then((value) => safeSetState(() {}));
-                              }
-
-                              setState(() {});
-                            },
-                            text: 'Scan More',
-                            icon: FaIcon(
-                              FontAwesomeIcons.barcode,
-                              size: 20.0,
-                            ),
-                            options: FFButtonOptions(
-                              width: MediaQuery.sizeOf(context).width * 0.5,
-                              height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 8.0, 0.0),
-                              color: FlutterFlowTheme.of(context).primary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Lato',
-                                    color: Colors.white,
-                                  ),
-                              elevation: 2.0,
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                        ),
-                      ].divide(SizedBox(width: 8.0)),
-                    ),
+                FlutterFlowTimer(
+                  initialTime: _model.timerMilliseconds,
+                  getDisplayTime: (value) => StopWatchTimer.getDisplayTime(
+                    value,
+                    hours: false,
+                    milliSecond: false,
                   ),
+                  controller: _model.timerController,
+                  onChanged: (value, displayTime, shouldUpdate) {
+                    _model.timerMilliseconds = value;
+                    _model.timerValue = displayTime;
+                    if (shouldUpdate) setState(() {});
+                  },
+                  textAlign: TextAlign.start,
+                  style: FlutterFlowTheme.of(context).headlineSmall.override(
+                        fontFamily: 'Lato',
+                        fontSize: 0.0,
+                      ),
                 ),
               ].addToStart(SizedBox(height: 4.0)),
             ),

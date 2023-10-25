@@ -16,26 +16,10 @@ class LookupRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "input" field.
-  String? _input;
-  String get input => _input ?? '';
-  bool hasInput() => _input != null;
-
-  // "timestamp" field.
-  DateTime? _timestamp;
-  DateTime? get timestamp => _timestamp;
-  bool hasTimestamp() => _timestamp != null;
-
   // "userRef" field.
   DocumentReference? _userRef;
   DocumentReference? get userRef => _userRef;
   bool hasUserRef() => _userRef != null;
-
-  // "openFoodFactsAPI" field.
-  OpenFoodFactsApiStruct? _openFoodFactsAPI;
-  OpenFoodFactsApiStruct get openFoodFactsAPI =>
-      _openFoodFactsAPI ?? OpenFoodFactsApiStruct();
-  bool hasOpenFoodFactsAPI() => _openFoodFactsAPI != null;
 
   // "logo" field.
   String? _logo;
@@ -47,33 +31,61 @@ class LookupRecord extends FirestoreRecord {
   String get nutritionPanel => _nutritionPanel ?? '';
   bool hasNutritionPanel() => _nutritionPanel != null;
 
-  // "searchList" field.
-  String? _searchList;
-  String get searchList => _searchList ?? '';
-  bool hasSearchList() => _searchList != null;
-
   // "googleVisionAPIResponse" field.
   String? _googleVisionAPIResponse;
   String get googleVisionAPIResponse => _googleVisionAPIResponse ?? '';
   bool hasGoogleVisionAPIResponse() => _googleVisionAPIResponse != null;
 
-  // "details" field.
-  DetailsStruct? _details;
-  DetailsStruct get details => _details ?? DetailsStruct();
-  bool hasDetails() => _details != null;
+  // "openFoodFacts" field.
+  OpenFoodFactsApiStruct? _openFoodFacts;
+  OpenFoodFactsApiStruct get openFoodFacts =>
+      _openFoodFacts ?? OpenFoodFactsApiStruct();
+  bool hasOpenFoodFacts() => _openFoodFacts != null;
+
+  // "code" field.
+  String? _code;
+  String get code => _code ?? '';
+  bool hasCode() => _code != null;
+
+  // "name" field.
+  String? _name;
+  String get name => _name ?? '';
+  bool hasName() => _name != null;
+
+  // "brand" field.
+  String? _brand;
+  String get brand => _brand ?? '';
+  bool hasBrand() => _brand != null;
+
+  // "trivia" field.
+  String? _trivia;
+  String get trivia => _trivia ?? '';
+  bool hasTrivia() => _trivia != null;
+
+  // "size" field.
+  String? _size;
+  String get size => _size ?? '';
+  bool hasSize() => _size != null;
+
+  // "timestamp" field.
+  int? _timestamp;
+  int get timestamp => _timestamp ?? 0;
+  bool hasTimestamp() => _timestamp != null;
 
   void _initializeFields() {
-    _input = snapshotData['input'] as String?;
-    _timestamp = snapshotData['timestamp'] as DateTime?;
     _userRef = snapshotData['userRef'] as DocumentReference?;
-    _openFoodFactsAPI =
-        OpenFoodFactsApiStruct.maybeFromMap(snapshotData['openFoodFactsAPI']);
     _logo = snapshotData['logo'] as String?;
     _nutritionPanel = snapshotData['nutritionPanel'] as String?;
-    _searchList = snapshotData['searchList'] as String?;
     _googleVisionAPIResponse =
         snapshotData['googleVisionAPIResponse'] as String?;
-    _details = DetailsStruct.maybeFromMap(snapshotData['details']);
+    _openFoodFacts =
+        OpenFoodFactsApiStruct.maybeFromMap(snapshotData['openFoodFacts']);
+    _code = snapshotData['code'] as String?;
+    _name = snapshotData['name'] as String?;
+    _brand = snapshotData['brand'] as String?;
+    _trivia = snapshotData['trivia'] as String?;
+    _size = snapshotData['size'] as String?;
+    _timestamp = castToType<int>(snapshotData['timestamp']);
   }
 
   static CollectionReference get collection =>
@@ -110,36 +122,36 @@ class LookupRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createLookupRecordData({
-  String? input,
-  DateTime? timestamp,
   DocumentReference? userRef,
-  OpenFoodFactsApiStruct? openFoodFactsAPI,
   String? logo,
   String? nutritionPanel,
-  String? searchList,
   String? googleVisionAPIResponse,
-  DetailsStruct? details,
+  OpenFoodFactsApiStruct? openFoodFacts,
+  String? code,
+  String? name,
+  String? brand,
+  String? trivia,
+  String? size,
+  int? timestamp,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
-      'input': input,
-      'timestamp': timestamp,
       'userRef': userRef,
-      'openFoodFactsAPI': OpenFoodFactsApiStruct().toMap(),
       'logo': logo,
       'nutritionPanel': nutritionPanel,
-      'searchList': searchList,
       'googleVisionAPIResponse': googleVisionAPIResponse,
-      'details': DetailsStruct().toMap(),
+      'openFoodFacts': OpenFoodFactsApiStruct().toMap(),
+      'code': code,
+      'name': name,
+      'brand': brand,
+      'trivia': trivia,
+      'size': size,
+      'timestamp': timestamp,
     }.withoutNulls,
   );
 
-  // Handle nested data for "openFoodFactsAPI" field.
-  addOpenFoodFactsApiStructData(
-      firestoreData, openFoodFactsAPI, 'openFoodFactsAPI');
-
-  // Handle nested data for "details" field.
-  addDetailsStructData(firestoreData, details, 'details');
+  // Handle nested data for "openFoodFacts" field.
+  addOpenFoodFactsApiStructData(firestoreData, openFoodFacts, 'openFoodFacts');
 
   return firestoreData;
 }
@@ -149,28 +161,32 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
 
   @override
   bool equals(LookupRecord? e1, LookupRecord? e2) {
-    return e1?.input == e2?.input &&
-        e1?.timestamp == e2?.timestamp &&
-        e1?.userRef == e2?.userRef &&
-        e1?.openFoodFactsAPI == e2?.openFoodFactsAPI &&
+    return e1?.userRef == e2?.userRef &&
         e1?.logo == e2?.logo &&
         e1?.nutritionPanel == e2?.nutritionPanel &&
-        e1?.searchList == e2?.searchList &&
         e1?.googleVisionAPIResponse == e2?.googleVisionAPIResponse &&
-        e1?.details == e2?.details;
+        e1?.openFoodFacts == e2?.openFoodFacts &&
+        e1?.code == e2?.code &&
+        e1?.name == e2?.name &&
+        e1?.brand == e2?.brand &&
+        e1?.trivia == e2?.trivia &&
+        e1?.size == e2?.size &&
+        e1?.timestamp == e2?.timestamp;
   }
 
   @override
   int hash(LookupRecord? e) => const ListEquality().hash([
-        e?.input,
-        e?.timestamp,
         e?.userRef,
-        e?.openFoodFactsAPI,
         e?.logo,
         e?.nutritionPanel,
-        e?.searchList,
         e?.googleVisionAPIResponse,
-        e?.details
+        e?.openFoodFacts,
+        e?.code,
+        e?.name,
+        e?.brand,
+        e?.trivia,
+        e?.size,
+        e?.timestamp
       ]);
 
   @override

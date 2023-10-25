@@ -220,7 +220,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                        'Thank you. Enjoy ScriptSafe ad free!',
+                                        'Thank you. Enjoy NutriScan ad free!',
                                         style: TextStyle(
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,

@@ -155,31 +155,6 @@ class BarcodeScanCall {
       cache: false,
     );
   }
-
-  dynamic name(dynamic response) => getJsonField(
-        response,
-        r'''$.name''',
-      );
-  dynamic brand(dynamic response) => getJsonField(
-        response,
-        r'''$.brand''',
-      );
-  dynamic size(dynamic response) => getJsonField(
-        response,
-        r'''$.size''',
-      );
-  dynamic weight(dynamic response) => getJsonField(
-        response,
-        r'''$.weight''',
-      );
-  dynamic nutrition(dynamic response) => getJsonField(
-        response,
-        r'''$.nutritionBreakdown''',
-      );
-  dynamic trivia(dynamic response) => getJsonField(
-        response,
-        r'''$.trivia''',
-      );
 }
 
 /// End Buildship Group Code
