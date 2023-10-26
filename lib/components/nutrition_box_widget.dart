@@ -24,7 +24,6 @@ class NutritionBoxWidget extends StatefulWidget {
     double? carbs,
     String? carbUnits,
     double? carbsPerServing,
-    String? servingSize,
   })  : this.source = source ?? '-',
         this.energy = energy ?? 0.0,
         this.energyUnits = energyUnits ?? '0',
@@ -35,7 +34,6 @@ class NutritionBoxWidget extends StatefulWidget {
         this.carbs = carbs ?? 0.0,
         this.carbUnits = carbUnits ?? '0',
         this.carbsPerServing = carbsPerServing ?? 0.0,
-        this.servingSize = servingSize ?? '0',
         super(key: key);
 
   final String source;
@@ -48,7 +46,6 @@ class NutritionBoxWidget extends StatefulWidget {
   final double carbs;
   final String carbUnits;
   final double carbsPerServing;
-  final String servingSize;
 
   @override
   _NutritionBoxWidgetState createState() => _NutritionBoxWidgetState();
@@ -68,7 +65,7 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
     super.initState();
     _model = createModel(context, () => NutritionBoxModel());
 
-    _model.expandableController = ExpandableController(initialExpanded: true);
+    _model.expandableController = ExpandableController(initialExpanded: false);
   }
 
   @override
@@ -203,10 +200,7 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             4.0, 4.0, 4.0, 4.0),
                                         child: AutoSizeText(
-                                          valueOrDefault<String>(
-                                            'per serving ${widget.servingSize != null && widget.servingSize != '' ? '(${widget.servingSize})' : ''}',
-                                            'per serving',
-                                          ),
+                                          'per 100g',
                                           textAlign: TextAlign.center,
                                           maxLines: 2,
                                           style: FlutterFlowTheme.of(context)
@@ -268,7 +262,11 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
               tapBodyToExpand: false,
               tapBodyToCollapse: false,
               headerAlignment: ExpandablePanelHeaderAlignment.center,
-              hasIcon: false,
+              hasIcon: true,
+              expandIcon: Icons.keyboard_arrow_down_rounded,
+              collapseIcon: Icons.keyboard_arrow_up_outlined,
+              iconSize: 24.0,
+              iconColor: FlutterFlowTheme.of(context).secondaryText,
             ),
           ),
         ),

@@ -1,6 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -122,10 +122,24 @@ class _NutritionPanelGoogleVisionWidgetState
                   color: Colors.transparent,
                 ),
               ),
-              child: AutoSizeText(
-                widget.markdown!,
-                textAlign: TextAlign.center,
-                style: FlutterFlowTheme.of(context).bodyMedium,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width * 1.0,
+                        height: MediaQuery.sizeOf(context).height * 1.0,
+                        child: custom_widgets.MarkdownWidget(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: MediaQuery.sizeOf(context).height * 1.0,
+                          mdcolor: FlutterFlowTheme.of(context).primaryText,
+                          data: widget.markdown!,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             theme: ExpandableThemeData(
@@ -133,7 +147,11 @@ class _NutritionPanelGoogleVisionWidgetState
               tapBodyToExpand: false,
               tapBodyToCollapse: false,
               headerAlignment: ExpandablePanelHeaderAlignment.center,
-              hasIcon: false,
+              hasIcon: true,
+              expandIcon: Icons.keyboard_arrow_down_rounded,
+              collapseIcon: Icons.keyboard_arrow_up_rounded,
+              iconSize: 24.0,
+              iconColor: FlutterFlowTheme.of(context).secondaryText,
             ),
           ),
         ),

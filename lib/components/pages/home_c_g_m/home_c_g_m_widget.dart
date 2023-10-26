@@ -215,9 +215,7 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           if (valueOrDefault<bool>(
-                            (_model.pageLoadAPICall?.succeeded ?? true)
-                                ? true
-                                : false,
+                            FFAppState().latestMmol != null ? true : false,
                             false,
                           ))
                             Flexible(
@@ -480,28 +478,78 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
                 Flexible(
                   child: Align(
                     alignment: AlignmentDirectional(1.00, 1.00),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: AlignmentDirectional(1.00, 1.00),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 24.0, 0.0),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(1.00, 1.00),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Flexible(
+                          child: Align(
+                            alignment: AlignmentDirectional(1.00, 1.00),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 24.0, 0.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Align(
+                                      alignment:
+                                          AlignmentDirectional(1.00, 1.00),
+                                      child: FlutterFlowIconButton(
+                                        borderColor: Colors.transparent,
+                                        borderRadius: 50.0,
+                                        borderWidth: 1.0,
+                                        buttonSize: 60.0,
+                                        fillColor: FlutterFlowTheme.of(context)
+                                            .secondary,
+                                        icon: Icon(
+                                          FFIcons.k12Hour,
+                                          color: Colors.white,
+                                          size: 25.0,
+                                        ),
+                                        onPressed: () async {
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            barrierColor: Color(0x00000000),
+                                            context: context,
+                                            builder: (context) {
+                                              return GestureDetector(
+                                                onTap: () => _model.unfocusNode
+                                                        .canRequestFocus
+                                                    ? FocusScope.of(context)
+                                                        .requestFocus(
+                                                            _model.unfocusNode)
+                                                    : FocusScope.of(context)
+                                                        .unfocus(),
+                                                child: Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child: POSTInsulinWidget(
+                                                    insulinType: 'Optisulin',
+                                                    latestMmol:
+                                                        FFAppState().latestMmol,
+                                                    userRef:
+                                                        currentUserReference,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ).then(
+                                              (value) => safeSetState(() {}));
+                                        },
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment:
+                                          AlignmentDirectional(1.00, 1.00),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 8.0),
                                         child: FlutterFlowIconButton(
                                           borderColor: Colors.transparent,
                                           borderRadius: 50.0,
@@ -511,7 +559,7 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
                                               FlutterFlowTheme.of(context)
                                                   .secondary,
                                           icon: Icon(
-                                            FFIcons.k12Hour,
+                                            FFIcons.kicon,
                                             color: Colors.white,
                                             size: 25.0,
                                           ),
@@ -537,7 +585,7 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
                                                         MediaQuery.viewInsetsOf(
                                                             context),
                                                     child: POSTInsulinWidget(
-                                                      insulinType: 'Optisulin',
+                                                      insulinType: 'Novorapid',
                                                       latestMmol: FFAppState()
                                                           .latestMmol,
                                                       userRef:
@@ -551,72 +599,14 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
                                           },
                                         ),
                                       ),
-                                      Align(
-                                        alignment:
-                                            AlignmentDirectional(1.00, 1.00),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 8.0),
-                                          child: FlutterFlowIconButton(
-                                            borderColor: Colors.transparent,
-                                            borderRadius: 50.0,
-                                            borderWidth: 1.0,
-                                            buttonSize: 60.0,
-                                            fillColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                            icon: Icon(
-                                              FFIcons.kicon,
-                                              color: Colors.white,
-                                              size: 25.0,
-                                            ),
-                                            onPressed: () async {
-                                              showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                barrierColor: Color(0x00000000),
-                                                context: context,
-                                                builder: (context) {
-                                                  return GestureDetector(
-                                                    onTap: () => _model
-                                                            .unfocusNode
-                                                            .canRequestFocus
-                                                        ? FocusScope.of(context)
-                                                            .requestFocus(_model
-                                                                .unfocusNode)
-                                                        : FocusScope.of(context)
-                                                            .unfocus(),
-                                                    child: Padding(
-                                                      padding: MediaQuery
-                                                          .viewInsetsOf(
-                                                              context),
-                                                      child: POSTInsulinWidget(
-                                                        insulinType:
-                                                            'Novorapid',
-                                                        latestMmol: FFAppState()
-                                                            .latestMmol,
-                                                        userRef:
-                                                            currentUserReference,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ).then((value) =>
-                                                  safeSetState(() {}));
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ].divide(SizedBox(height: 8.0)),
-                                  ),
+                                    ),
+                                  ].divide(SizedBox(height: 8.0)),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -18,3 +18,4 @@ export '/components/pages/home_carbs/home_carbs_widget.dart'
     show HomeCarbsWidget;
 export '/components/pages/remove_ads/remove_ads_widget.dart'
     show RemoveAdsWidget;
+export '/components/pages/details/details_widget.dart' show DetailsWidget;

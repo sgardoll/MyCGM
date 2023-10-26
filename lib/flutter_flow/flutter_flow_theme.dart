@@ -306,8 +306,8 @@ class ThemeTypography extends Typography {
   TextStyle get labelSmall => GoogleFonts.getFont(
         'Lato',
         color: theme.primaryText,
-        fontWeight: FontWeight.w500,
-        fontSize: 11.0,
+        fontWeight: FontWeight.normal,
+        fontSize: 10.0,
       );
   String get bodyLargeFamily => 'Lato';
   TextStyle get bodyLarge => GoogleFonts.getFont(

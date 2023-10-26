@@ -178,6 +178,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'removeAds',
               path: 'removeAds',
               builder: (context, params) => RemoveAdsWidget(),
+            ),
+            FFRoute(
+              name: 'Details',
+              path: 'details',
+              builder: (context, params) => DetailsWidget(
+                docRef: params.getParam(
+                    'docRef', ParamType.DocumentReference, false, ['lookup']),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

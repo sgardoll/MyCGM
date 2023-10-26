@@ -5,13 +5,12 @@ import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'index.dart'; // Imports other custom widgets
-import '/custom_code/actions/index.dart'; // Imports custom actions
 import '/flutter_flow/custom_functions.dart'; // Imports custom functions
 import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import '/components/scaned_item/scaned_item_widget.dart';
+import '/components/nav_bar1/nav_bar1_model.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScanBox extends StatefulWidget {
@@ -45,7 +44,7 @@ class _QrScanBoxState extends State<QrScanBox> {
           builder: (context) {
             return Padding(
               padding: MediaQuery.viewInsetsOf(context),
-              child: ScanedItemWidget(
+              child: NavBar1Widget(
                 input: scanData.code!,
               ),
             );

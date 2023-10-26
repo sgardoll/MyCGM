@@ -221,15 +221,15 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                     SnackBar(
                                       content: Text(
                                         'Thank you. Enjoy NutriScan ad free!',
-                                        style: TextStyle(
+                                        style: GoogleFonts.getFont(
+                                          'Lato',
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                         ),
                                       ),
                                       duration: Duration(milliseconds: 4000),
                                       backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
+                                          FlutterFlowTheme.of(context).primary,
                                     ),
                                   );
 
@@ -239,15 +239,15 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                     SnackBar(
                                       content: Text(
                                         'Purchase was unsuccessful',
-                                        style: TextStyle(
+                                        style: GoogleFonts.getFont(
+                                          'Lato',
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                         ),
                                       ),
                                       duration: Duration(milliseconds: 4000),
                                       backgroundColor:
-                                          FlutterFlowTheme.of(context)
-                                              .secondary,
+                                          FlutterFlowTheme.of(context).primary,
                                     ),
                                   );
                                 }

@@ -1,6 +1,5 @@
 import '/backend/backend.dart';
 import '/components/nav_bar1_widget.dart';
-import '/components/scaned_item_details/scaned_item_details_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -109,11 +108,11 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                     Flexible(
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
-                            15.0, 16.0, 30.0, 0.0),
+                            16.0, 16.0, 16.0, 0.0),
                         child: StreamBuilder<List<LookupRecord>>(
                           stream: queryLookupRecord(
-                            queryBuilder: (lookupRecord) => lookupRecord
-                                .orderBy('timestamp', descending: true),
+                            queryBuilder: (lookupRecord) =>
+                                lookupRecord.orderBy('name'),
                           ),
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
@@ -145,32 +144,22 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      useSafeArea: true,
-                                      context: context,
-                                      builder: (context) {
-                                        return GestureDetector(
-                                          onTap: () => _model
-                                                  .unfocusNode.canRequestFocus
-                                              ? FocusScope.of(context)
-                                                  .requestFocus(
-                                                      _model.unfocusNode)
-                                              : FocusScope.of(context)
-                                                  .unfocus(),
-                                          child: Padding(
-                                            padding: MediaQuery.viewInsetsOf(
-                                                context),
-                                            child: ScanedItemDetailsWidget(
-                                              docRef: listViewLookupRecord
-                                                  .reference,
-                                              input: listViewLookupRecord.code,
-                                            ),
-                                          ),
-                                        );
+                                    context.pushNamed(
+                                      'Details',
+                                      queryParameters: {
+                                        'docRef': serializeParam(
+                                          listViewLookupRecord.reference,
+                                          ParamType.DocumentReference,
+                                        ),
+                                      }.withoutNulls,
+                                      extra: <String, dynamic>{
+                                        kTransitionInfoKey: TransitionInfo(
+                                          hasTransition: true,
+                                          transitionType:
+                                              PageTransitionType.rightToLeft,
+                                        ),
                                       },
-                                    ).then((value) => safeSetState(() {}));
+                                    );
                                   },
                                   child: Slidable(
                                     endActionPane: ActionPane(
@@ -197,7 +186,10 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                             .titleMedium,
                                       ),
                                       subtitle: Text(
-                                        listViewLookupRecord.code,
+                                        valueOrDefault<String>(
+                                          '${listViewLookupRecord.size} | ${listViewLookupRecord.brand}',
+                                          '-',
+                                        ),
                                         style: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(

@@ -1,6 +1,6 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
-import '/components/scaned_item/scaned_item_widget.dart';
+import '/components/barcode_scan_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -66,16 +66,16 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
       applyInitialState: true,
       effects: [
         MoveEffect(
-          curve: Curves.easeInOut,
+          curve: Curves.elasticOut,
           delay: 0.ms,
-          duration: 600.ms,
+          duration: 800.ms,
           begin: Offset(0.0, 100.0),
           end: Offset(0.0, 0.0),
         ),
         FadeEffect(
-          curve: Curves.easeInOut,
+          curve: Curves.elasticOut,
           delay: 0.ms,
-          duration: 600.ms,
+          duration: 800.ms,
           begin: 0.0,
           end: 1.0,
         ),
@@ -163,6 +163,30 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     return Stack(
       alignment: AlignmentDirectional(0.0, 1.0),
       children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (valueOrDefault<bool>(
+              _model.input != null && _model.input != '' ? true : false,
+              false,
+            ))
+              Flexible(
+                child: Align(
+                  alignment: AlignmentDirectional(1.00, 1.00),
+                  child: wrapWithModel(
+                    model: _model.barcodeScanModel,
+                    updateCallback: () => setState(() {}),
+                    updateOnChange: true,
+                    child: BarcodeScanWidget(
+                      input: _model.input!,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
         Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -595,25 +619,10 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             if (functions.barcodeScanInt(
                                                     _model.barcodeScan!) >
                                                 1) {
-                                              showModalBottomSheet(
-                                                isScrollControlled: true,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                useSafeArea: true,
-                                                context: context,
-                                                builder: (context) {
-                                                  return Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child: ScanedItemWidget(
-                                                      input:
-                                                          _model.barcodeScan!,
-                                                    ),
-                                                  );
-                                                },
-                                              ).then((value) =>
-                                                  safeSetState(() {}));
+                                              setState(() {
+                                                _model.input =
+                                                    _model.barcodeScan;
+                                              });
                                             }
                                           } else {
                                             context.pushNamed('loginPage');

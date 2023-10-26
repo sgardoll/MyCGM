@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -1568,84 +1569,93 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             ),
                           ),
                         ),
-                      Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
-                        child: InkWell(
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () async {
-                            context.pushNamed('removeAds');
-                          },
-                          child: Material(
-                            color: Colors.transparent,
-                            elevation: 12.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width * 1.0,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF5F5F5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 3.0,
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    offset: Offset(0.0, 2.0),
-                                  )
-                                ],
+                      if (valueOrDefault<bool>(
+                        isWeb ||
+                                revenue_cat.activeEntitlementIds
+                                    .contains('premium')
+                            ? false
+                            : true,
+                        true,
+                      ))
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              8.0, 8.0, 8.0, 8.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              context.pushNamed('removeAds');
+                            },
+                            child: Material(
+                              color: Colors.transparent,
+                              elevation: 12.0,
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 8.0, 8.0, 8.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 4.0, 12.0, 0.0),
-                                      child: Icon(
-                                        Icons.ad_units_rounded,
-                                        color: FlutterFlowTheme.of(context)
-                                            .primary,
-                                        size: 32.0,
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Align(
-                                        alignment:
-                                            AlignmentDirectional(-1.00, 0.00),
-                                        child: Text(
-                                          'Remove Ads',
-                                          style: FlutterFlowTheme.of(context)
-                                              .headlineSmall,
+                              child: Container(
+                                width: MediaQuery.sizeOf(context).width * 1.0,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFF5F5F5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 3.0,
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      offset: Offset(0.0, 2.0),
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      8.0, 8.0, 8.0, 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12.0, 4.0, 12.0, 0.0),
+                                        child: Icon(
+                                          Icons.ad_units_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primary,
+                                          size: 32.0,
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 4.0, 0.0, 0.0),
-                                      child: Icon(
-                                        Icons.keyboard_arrow_right,
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        size: 40.0,
+                                      Flexible(
+                                        child: Align(
+                                          alignment:
+                                              AlignmentDirectional(-1.00, 0.00),
+                                          child: Text(
+                                            'Remove Ads',
+                                            style: FlutterFlowTheme.of(context)
+                                                .headlineSmall,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12.0, 4.0, 0.0, 0.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_right,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                          size: 40.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
                       Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),

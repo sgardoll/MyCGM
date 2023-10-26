@@ -2,56 +2,49 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
+import '/components/nutrition_box_widget.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
-import '/components/scaned_item/scaned_item_widget.dart';
-import '/components/scaned_item_details/scaned_item_details_widget.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
-import 'dart:ui';
-import '/custom_code/actions/index.dart' as actions;
-import '/flutter_flow/custom_functions.dart' as functions;
-import 'scaned_item_details_widget.dart' show ScanedItemDetailsWidget;
+import 'details_widget.dart' show DetailsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class ScanedItemDetailsModel extends FlutterFlowModel<ScanedItemDetailsWidget> {
-  ///  State fields for stateful widgets in this component.
+class DetailsModel extends FlutterFlowModel<DetailsWidget> {
+  ///  State fields for stateful widgets in this page.
 
-  bool isDataUploading1 = false;
-  FFUploadedFile uploadedLocalFile1 =
-      FFUploadedFile(bytes: Uint8List.fromList([]));
-  String uploadedFileUrl1 = '';
-
-  // Stores action output result for [Backend Call - API (BuildshipGoogleVision)] action in ScanedItemDetails widget.
-  ApiCallResponse? buildshipAPIGoogleVision;
+  final unfocusNode = FocusNode();
+  // Model for NutritionBox component.
+  late NutritionBoxModel nutritionBoxModel;
   // Model for NutritionPanelGoogleVision component.
   late NutritionPanelGoogleVisionModel nutritionPanelGoogleVisionModel;
-  bool isDataUploading2 = false;
-  FFUploadedFile uploadedLocalFile2 =
+  bool isDataUploading = false;
+  FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));
+  String uploadedFileUrl = '';
 
-  // Stores action output result for [Custom Action - cropImage] action in Button widget.
-  FFUploadedFile? croppedImage;
-  var barcodeScanAgain = '';
+  // Stores action output result for [Backend Call - API (BuildshipGoogleVision)] action in Button widget.
+  ApiCallResponse? buildshipAPIGoogleVision;
 
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
+    nutritionBoxModel = createModel(context, () => NutritionBoxModel());
     nutritionPanelGoogleVisionModel =
         createModel(context, () => NutritionPanelGoogleVisionModel());
   }
 
   void dispose() {
+    unfocusNode.dispose();
+    nutritionBoxModel.dispose();
     nutritionPanelGoogleVisionModel.dispose();
   }
 

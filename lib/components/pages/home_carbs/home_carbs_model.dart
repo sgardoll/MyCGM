@@ -1,6 +1,5 @@
 import '/backend/backend.dart';
 import '/components/nav_bar1_widget.dart';
-import '/components/scaned_item_details/scaned_item_details_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
