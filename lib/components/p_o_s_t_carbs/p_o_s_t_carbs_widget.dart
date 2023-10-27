@@ -282,9 +282,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                   TextSearch(
                                                 records
                                                     .map(
-                                                      (record) =>
-                                                          TextSearchItem(
-                                                              record, [
+                                                      (record) => TextSearchItem
+                                                          .fromTerms(record, [
                                                         record.foodNameFull!
                                                       ]),
                                                     )

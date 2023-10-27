@@ -56,39 +56,34 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: responsiveVisibility(
-          context: context,
-          desktop: false,
-        )
-            ? AppBar(
-                backgroundColor: FlutterFlowTheme.of(context).primary,
-                automaticallyImplyLeading: false,
-                leading: FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30.0,
-                  borderWidth: 1.0,
-                  buttonSize: 60.0,
-                  icon: Icon(
-                    Icons.arrow_back_sharp,
-                    color: FlutterFlowTheme.of(context).primaryText,
-                    size: 30.0,
-                  ),
-                  onPressed: () async {
-                    context.pop();
-                  },
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          leading: FlutterFlowIconButton(
+            borderColor: Colors.transparent,
+            borderRadius: 30.0,
+            borderWidth: 1.0,
+            buttonSize: 60.0,
+            icon: Icon(
+              Icons.chevron_left_rounded,
+              color: FlutterFlowTheme.of(context).primaryText,
+              size: 30.0,
+            ),
+            onPressed: () async {
+              context.pop();
+            },
+          ),
+          title: Text(
+            'Remove Ads',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Lato',
+                  color: FlutterFlowTheme.of(context).primaryText,
                 ),
-                title: Text(
-                  'Remove Ads',
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Lato',
-                        color: FlutterFlowTheme.of(context).primaryText,
-                      ),
-                ),
-                actions: [],
-                centerTitle: false,
-                elevation: 6.0,
-              )
-            : null,
+          ),
+          actions: [],
+          centerTitle: false,
+          elevation: 6.0,
+        ),
         body: SafeArea(
           top: true,
           child: Column(

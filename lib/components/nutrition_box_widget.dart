@@ -65,7 +65,7 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
     super.initState();
     _model = createModel(context, () => NutritionBoxModel());
 
-    _model.expandableController = ExpandableController(initialExpanded: false);
+    _model.expandableController = ExpandableController(initialExpanded: true);
   }
 
   @override
@@ -132,125 +132,129 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
               ),
             ),
             collapsed: Container(),
-            expanded: SingleChildScrollView(
-              child: Column(
+            expanded: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+              child: Row(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  wrapWithModel(
-                    model: _model.nutriCirclesModel1,
-                    updateCallback: () => setState(() {}),
-                    updateOnChange: true,
-                    child: NutriCirclesWidget(
-                      energy: valueOrDefault<double>(
-                        widget.energy,
-                        0.0,
-                      ),
-                      energyUnits: valueOrDefault<String>(
-                        widget.energyUnits,
-                        '0',
-                      ),
-                      protein: valueOrDefault<double>(
-                        widget.protein,
-                        0.0,
-                      ),
-                      proteinUnits: valueOrDefault<String>(
-                        widget.proteinUnits,
-                        '0',
-                      ),
-                      carbs: valueOrDefault<double>(
-                        widget.carbs,
-                        0.0,
-                      ),
-                      carbsUnits: valueOrDefault<String>(
-                        widget.carbUnits,
-                        '0',
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                    child: wrapWithModel(
+                      model: _model.nutriCirclesModel1,
+                      updateCallback: () => setState(() {}),
+                      updateOnChange: true,
+                      child: NutriCirclesWidget(
+                        energy: valueOrDefault<double>(
+                          widget.energy,
+                          0.0,
+                        ),
+                        energyUnits: valueOrDefault<String>(
+                          widget.energyUnits,
+                          '0',
+                        ),
+                        protein: valueOrDefault<double>(
+                          widget.protein,
+                          0.0,
+                        ),
+                        proteinUnits: valueOrDefault<String>(
+                          widget.proteinUnits,
+                          '0',
+                        ),
+                        carbs: valueOrDefault<double>(
+                          widget.carbs,
+                          0.0,
+                        ),
+                        carbsUnits: valueOrDefault<String>(
+                          widget.carbUnits,
+                          '0',
+                        ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 4.0, 4.0),
-                    child: Material(
-                      color: Colors.transparent,
-                      elevation: 1.0,
-                      shape: RoundedRectangleBorder(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
                         borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: FlutterFlowTheme.of(context).secondary,
+                        ),
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).tertiary,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Align(
-                                alignment: AlignmentDirectional(-1.00, -1.00),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      4.0, 0.0, 0.0, 0.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Color(0x420C2533),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Material(
+                            color: Colors.transparent,
+                            elevation: 1.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).tertiary,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 4.0, 0.0, 0.0),
+                                child: wrapWithModel(
+                                  model: _model.nutriCirclesModel2,
+                                  updateCallback: () => setState(() {}),
+                                  child: NutriCirclesWidget(
+                                    energy: valueOrDefault<double>(
+                                      widget.energy,
+                                      0.0,
                                     ),
-                                    child: Align(
-                                      alignment:
-                                          AlignmentDirectional(-1.00, 0.00),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            4.0, 4.0, 4.0, 4.0),
-                                        child: AutoSizeText(
-                                          'per 100g',
-                                          textAlign: TextAlign.center,
-                                          maxLines: 2,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodySmall
-                                              .override(
-                                                fontFamily: 'Lato',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .white,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                        ),
-                                      ),
+                                    energyUnits: valueOrDefault<String>(
+                                      widget.energyUnits,
+                                      '0',
+                                    ),
+                                    protein: valueOrDefault<double>(
+                                      widget.protein,
+                                      0.0,
+                                    ),
+                                    proteinUnits: valueOrDefault<String>(
+                                      widget.proteinUnits,
+                                      '0',
+                                    ),
+                                    carbs: valueOrDefault<double>(
+                                      widget.carbs,
+                                      0.0,
+                                    ),
+                                    carbsUnits: valueOrDefault<String>(
+                                      widget.carbUnits,
+                                      '0',
                                     ),
                                   ),
                                 ),
                               ),
-                              wrapWithModel(
-                                model: _model.nutriCirclesModel2,
-                                updateCallback: () => setState(() {}),
-                                child: NutriCirclesWidget(
-                                  energy: valueOrDefault<double>(
-                                    widget.energy,
-                                    0.0,
-                                  ),
-                                  energyUnits: valueOrDefault<String>(
-                                    widget.energyUnits,
-                                    '0',
-                                  ),
-                                  protein: valueOrDefault<double>(
-                                    widget.protein,
-                                    0.0,
-                                  ),
-                                  proteinUnits: valueOrDefault<String>(
-                                    widget.proteinUnits,
-                                    '0',
-                                  ),
-                                  carbs: valueOrDefault<double>(
-                                    widget.carbs,
-                                    0.0,
-                                  ),
-                                  carbsUnits: valueOrDefault<String>(
-                                    widget.carbUnits,
-                                    '0',
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
+                          Align(
+                            alignment: AlignmentDirectional(-1.00, 0.00),
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  4.0, 4.0, 4.0, 4.0),
+                              child: AutoSizeText(
+                                'per 100g',
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Lato',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      fontSize: 11.0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

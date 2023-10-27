@@ -27,14 +27,15 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
     double? fat100g,
     String? fatUnit,
     double? fatValue,
-    String? sugars,
-    double? sugars100g,
-    String? sugarsUnit,
-    double? sugarsValue,
     double? proteins,
     double? proteins100g,
     String? proteinsUnit,
     double? proteinsValue,
+    double? sugars,
+    double? sugars100g,
+    String? sugarsUnit,
+    double? sugarsValue,
+    String? imageUrl,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _carbohydrates = carbohydrates,
         _carbohydrates100g = carbohydrates100g,
@@ -53,14 +54,15 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         _fat100g = fat100g,
         _fatUnit = fatUnit,
         _fatValue = fatValue,
-        _sugars = sugars,
-        _sugars100g = sugars100g,
-        _sugarsUnit = sugarsUnit,
-        _sugarsValue = sugarsValue,
         _proteins = proteins,
         _proteins100g = proteins100g,
         _proteinsUnit = proteinsUnit,
         _proteinsValue = proteinsValue,
+        _sugars = sugars,
+        _sugars100g = sugars100g,
+        _sugarsUnit = sugarsUnit,
+        _sugarsValue = sugarsValue,
+        _imageUrl = imageUrl,
         super(firestoreUtilData);
 
   // "carbohydrates" field.
@@ -185,33 +187,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
   void incrementFatValue(double amount) => _fatValue = fatValue + amount;
   bool hasFatValue() => _fatValue != null;
 
-  // "sugars" field.
-  String? _sugars;
-  String get sugars => _sugars ?? '';
-  set sugars(String? val) => _sugars = val;
-  bool hasSugars() => _sugars != null;
-
-  // "sugars_100g" field.
-  double? _sugars100g;
-  double get sugars100g => _sugars100g ?? 0.0;
-  set sugars100g(double? val) => _sugars100g = val;
-  void incrementSugars100g(double amount) => _sugars100g = sugars100g + amount;
-  bool hasSugars100g() => _sugars100g != null;
-
-  // "sugars_unit" field.
-  String? _sugarsUnit;
-  String get sugarsUnit => _sugarsUnit ?? '';
-  set sugarsUnit(String? val) => _sugarsUnit = val;
-  bool hasSugarsUnit() => _sugarsUnit != null;
-
-  // "sugars_value" field.
-  double? _sugarsValue;
-  double get sugarsValue => _sugarsValue ?? 0.0;
-  set sugarsValue(double? val) => _sugarsValue = val;
-  void incrementSugarsValue(double amount) =>
-      _sugarsValue = sugarsValue + amount;
-  bool hasSugarsValue() => _sugarsValue != null;
-
   // "proteins" field.
   double? _proteins;
   double get proteins => _proteins ?? 0.0;
@@ -241,6 +216,40 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
       _proteinsValue = proteinsValue + amount;
   bool hasProteinsValue() => _proteinsValue != null;
 
+  // "sugars" field.
+  double? _sugars;
+  double get sugars => _sugars ?? 0.0;
+  set sugars(double? val) => _sugars = val;
+  void incrementSugars(double amount) => _sugars = sugars + amount;
+  bool hasSugars() => _sugars != null;
+
+  // "sugars_100g" field.
+  double? _sugars100g;
+  double get sugars100g => _sugars100g ?? 0.0;
+  set sugars100g(double? val) => _sugars100g = val;
+  void incrementSugars100g(double amount) => _sugars100g = sugars100g + amount;
+  bool hasSugars100g() => _sugars100g != null;
+
+  // "sugars_unit" field.
+  String? _sugarsUnit;
+  String get sugarsUnit => _sugarsUnit ?? '';
+  set sugarsUnit(String? val) => _sugarsUnit = val;
+  bool hasSugarsUnit() => _sugarsUnit != null;
+
+  // "sugars_value" field.
+  double? _sugarsValue;
+  double get sugarsValue => _sugarsValue ?? 0.0;
+  set sugarsValue(double? val) => _sugarsValue = val;
+  void incrementSugarsValue(double amount) =>
+      _sugarsValue = sugarsValue + amount;
+  bool hasSugarsValue() => _sugarsValue != null;
+
+  // "imageUrl" field.
+  String? _imageUrl;
+  String get imageUrl => _imageUrl ?? '';
+  set imageUrl(String? val) => _imageUrl = val;
+  bool hasImageUrl() => _imageUrl != null;
+
   static OpenFoodFactsApiStruct fromMap(Map<String, dynamic> data) =>
       OpenFoodFactsApiStruct(
         carbohydrates: castToType<double>(data['carbohydrates']),
@@ -261,14 +270,15 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         fat100g: castToType<double>(data['fat_100g']),
         fatUnit: data['fat_unit'] as String?,
         fatValue: castToType<double>(data['fat_value']),
-        sugars: data['sugars'] as String?,
-        sugars100g: castToType<double>(data['sugars_100g']),
-        sugarsUnit: data['sugars_unit'] as String?,
-        sugarsValue: castToType<double>(data['sugars_value']),
         proteins: castToType<double>(data['proteins']),
         proteins100g: castToType<double>(data['proteins_100g']),
         proteinsUnit: data['proteins_unit'] as String?,
         proteinsValue: castToType<double>(data['proteins_value']),
+        sugars: castToType<double>(data['sugars']),
+        sugars100g: castToType<double>(data['sugars_100g']),
+        sugarsUnit: data['sugars_unit'] as String?,
+        sugarsValue: castToType<double>(data['sugars_value']),
+        imageUrl: data['imageUrl'] as String?,
       );
 
   static OpenFoodFactsApiStruct? maybeFromMap(dynamic data) =>
@@ -294,14 +304,15 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         'fat_100g': _fat100g,
         'fat_unit': _fatUnit,
         'fat_value': _fatValue,
-        'sugars': _sugars,
-        'sugars_100g': _sugars100g,
-        'sugars_unit': _sugarsUnit,
-        'sugars_value': _sugarsValue,
         'proteins': _proteins,
         'proteins_100g': _proteins100g,
         'proteins_unit': _proteinsUnit,
         'proteins_value': _proteinsValue,
+        'sugars': _sugars,
+        'sugars_100g': _sugars100g,
+        'sugars_unit': _sugarsUnit,
+        'sugars_value': _sugarsValue,
+        'imageUrl': _imageUrl,
       }.withoutNulls;
 
   @override
@@ -374,22 +385,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           _fatValue,
           ParamType.double,
         ),
-        'sugars': serializeParam(
-          _sugars,
-          ParamType.String,
-        ),
-        'sugars_100g': serializeParam(
-          _sugars100g,
-          ParamType.double,
-        ),
-        'sugars_unit': serializeParam(
-          _sugarsUnit,
-          ParamType.String,
-        ),
-        'sugars_value': serializeParam(
-          _sugarsValue,
-          ParamType.double,
-        ),
         'proteins': serializeParam(
           _proteins,
           ParamType.double,
@@ -405,6 +400,26 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         'proteins_value': serializeParam(
           _proteinsValue,
           ParamType.double,
+        ),
+        'sugars': serializeParam(
+          _sugars,
+          ParamType.double,
+        ),
+        'sugars_100g': serializeParam(
+          _sugars100g,
+          ParamType.double,
+        ),
+        'sugars_unit': serializeParam(
+          _sugarsUnit,
+          ParamType.String,
+        ),
+        'sugars_value': serializeParam(
+          _sugarsValue,
+          ParamType.double,
+        ),
+        'imageUrl': serializeParam(
+          _imageUrl,
+          ParamType.String,
         ),
       }.withoutNulls;
 
@@ -496,26 +511,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           ParamType.double,
           false,
         ),
-        sugars: deserializeParam(
-          data['sugars'],
-          ParamType.String,
-          false,
-        ),
-        sugars100g: deserializeParam(
-          data['sugars_100g'],
-          ParamType.double,
-          false,
-        ),
-        sugarsUnit: deserializeParam(
-          data['sugars_unit'],
-          ParamType.String,
-          false,
-        ),
-        sugarsValue: deserializeParam(
-          data['sugars_value'],
-          ParamType.double,
-          false,
-        ),
         proteins: deserializeParam(
           data['proteins'],
           ParamType.double,
@@ -534,6 +529,31 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         proteinsValue: deserializeParam(
           data['proteins_value'],
           ParamType.double,
+          false,
+        ),
+        sugars: deserializeParam(
+          data['sugars'],
+          ParamType.double,
+          false,
+        ),
+        sugars100g: deserializeParam(
+          data['sugars_100g'],
+          ParamType.double,
+          false,
+        ),
+        sugarsUnit: deserializeParam(
+          data['sugars_unit'],
+          ParamType.String,
+          false,
+        ),
+        sugarsValue: deserializeParam(
+          data['sugars_value'],
+          ParamType.double,
+          false,
+        ),
+        imageUrl: deserializeParam(
+          data['imageUrl'],
+          ParamType.String,
           false,
         ),
       );
@@ -561,14 +581,15 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         fat100g == other.fat100g &&
         fatUnit == other.fatUnit &&
         fatValue == other.fatValue &&
+        proteins == other.proteins &&
+        proteins100g == other.proteins100g &&
+        proteinsUnit == other.proteinsUnit &&
+        proteinsValue == other.proteinsValue &&
         sugars == other.sugars &&
         sugars100g == other.sugars100g &&
         sugarsUnit == other.sugarsUnit &&
         sugarsValue == other.sugarsValue &&
-        proteins == other.proteins &&
-        proteins100g == other.proteins100g &&
-        proteinsUnit == other.proteinsUnit &&
-        proteinsValue == other.proteinsValue;
+        imageUrl == other.imageUrl;
   }
 
   @override
@@ -590,14 +611,15 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         fat100g,
         fatUnit,
         fatValue,
+        proteins,
+        proteins100g,
+        proteinsUnit,
+        proteinsValue,
         sugars,
         sugars100g,
         sugarsUnit,
         sugarsValue,
-        proteins,
-        proteins100g,
-        proteinsUnit,
-        proteinsValue
+        imageUrl
       ]);
 }
 
@@ -619,14 +641,15 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
   double? fat100g,
   String? fatUnit,
   double? fatValue,
-  String? sugars,
-  double? sugars100g,
-  String? sugarsUnit,
-  double? sugarsValue,
   double? proteins,
   double? proteins100g,
   String? proteinsUnit,
   double? proteinsValue,
+  double? sugars,
+  double? sugars100g,
+  String? sugarsUnit,
+  double? sugarsValue,
+  String? imageUrl,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -650,14 +673,15 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
       fat100g: fat100g,
       fatUnit: fatUnit,
       fatValue: fatValue,
-      sugars: sugars,
-      sugars100g: sugars100g,
-      sugarsUnit: sugarsUnit,
-      sugarsValue: sugarsValue,
       proteins: proteins,
       proteins100g: proteins100g,
       proteinsUnit: proteinsUnit,
       proteinsValue: proteinsValue,
+      sugars: sugars,
+      sugars100g: sugars100g,
+      sugarsUnit: sugarsUnit,
+      sugarsValue: sugarsValue,
+      imageUrl: imageUrl,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,

@@ -50,43 +50,34 @@ class _NutriCircleListWidgetState extends State<NutriCircleListWidget> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 40.0,
-          height: 40.0,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).secondary,
-            borderRadius: BorderRadius.circular(8.0),
-            shape: BoxShape.rectangle,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                child: AutoSizeText(
-                  '${widget.parameter1}g',
-                  maxLines: 1,
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Lato',
-                        color: FlutterFlowTheme.of(context).btnText,
-                        fontWeight: FontWeight.bold,
-                      ),
+        Flexible(
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 4.0),
+            child: Container(
+              width: 50.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                color: FlutterFlowTheme.of(context).secondaryBackground,
+                borderRadius: BorderRadius.circular(8.0),
+                shape: BoxShape.rectangle,
+                border: Border.all(
+                  color: FlutterFlowTheme.of(context).secondaryText,
+                  width: 0.5,
                 ),
               ),
-              Flexible(
-                child: AutoSizeText(
-                  'Carbs',
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  style: FlutterFlowTheme.of(context).bodySmall.override(
-                        fontFamily: 'Lato',
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        fontSize: 12.0,
-                      ),
-                ),
+              alignment: AlignmentDirectional(0.00, 0.00),
+              child: AutoSizeText(
+                widget.parameter1!,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: FlutterFlowTheme.of(context).bodySmall.override(
+                      fontFamily: 'Lato',
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      fontSize: 8.0,
+                      fontWeight: FontWeight.normal,
+                    ),
               ),
-            ],
+            ),
           ),
         ),
       ],

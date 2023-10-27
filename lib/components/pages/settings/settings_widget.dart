@@ -92,25 +92,20 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        appBar: responsiveVisibility(
-          context: context,
-          desktop: false,
-        )
-            ? AppBar(
-                backgroundColor: FlutterFlowTheme.of(context).primary,
-                automaticallyImplyLeading: false,
-                title: Text(
-                  'Settings',
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Lato',
-                        color: FlutterFlowTheme.of(context).secondary,
-                      ),
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Settings',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Lato',
+                  color: FlutterFlowTheme.of(context).secondary,
                 ),
-                actions: [],
-                centerTitle: false,
-                elevation: 6.0,
-              )
-            : null,
+          ),
+          actions: [],
+          centerTitle: false,
+          elevation: 6.0,
+        ),
         body: SafeArea(
           top: true,
           child: Stack(

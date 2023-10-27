@@ -1,6 +1,6 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
-import '/components/barcode_scan_widget.dart';
+import '/components/post_scan_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -117,16 +117,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (FFAppState().firstOpen == true) {
         _model.timerController.onStartTimer();
-        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-          animationsMap['containerOnActionTriggerAnimation']!
-              .controller
-              .forward(from: 0.0);
-        }
-        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-          animationsMap['containerOnActionTriggerAnimation']!
-              .controller
-              .reset();
-        }
         await Future.delayed(const Duration(milliseconds: 5000));
         if (animationsMap['containerOnActionTriggerAnimation'] != null) {
           await animationsMap['containerOnActionTriggerAnimation']!
@@ -163,30 +153,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     return Stack(
       alignment: AlignmentDirectional(0.0, 1.0),
       children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (valueOrDefault<bool>(
-              _model.input != null && _model.input != '' ? true : false,
-              false,
-            ))
-              Flexible(
-                child: Align(
-                  alignment: AlignmentDirectional(1.00, 1.00),
-                  child: wrapWithModel(
-                    model: _model.barcodeScanModel,
-                    updateCallback: () => setState(() {}),
-                    updateOnChange: true,
-                    child: BarcodeScanWidget(
-                      input: _model.input!,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
         Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -346,6 +312,33 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                       .animateOnActionTrigger(
                         animationsMap['containerOnActionTriggerAnimation']!,
                       ),
+                ),
+              ),
+          ],
+        ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (valueOrDefault<bool>(
+              FFAppState().barcodeScanData != null &&
+                      FFAppState().barcodeScanData != ''
+                  ? true
+                  : false,
+              false,
+            ))
+              Flexible(
+                child: Align(
+                  alignment: AlignmentDirectional(1.00, 1.00),
+                  child: wrapWithModel(
+                    model: _model.postScanModel,
+                    updateCallback: () => setState(() {}),
+                    updateOnChange: true,
+                    child: PostScanWidget(
+                      input: FFAppState().barcodeScanData,
+                    ),
+                  ),
                 ),
               ),
           ],
@@ -620,8 +613,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                     _model.barcodeScan!) >
                                                 1) {
                                               setState(() {
-                                                _model.input =
-                                                    _model.barcodeScan;
+                                                FFAppState().barcodeScanData =
+                                                    _model.barcodeScan!;
                                               });
                                             }
                                           } else {

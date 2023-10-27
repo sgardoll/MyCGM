@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/components/item/item_widget.dart';
 import '/components/nav_bar1_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -7,7 +8,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -59,25 +59,20 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        appBar: responsiveVisibility(
-          context: context,
-          desktop: false,
-        )
-            ? AppBar(
-                backgroundColor: FlutterFlowTheme.of(context).primary,
-                automaticallyImplyLeading: false,
-                title: Text(
-                  'Scanned Items',
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Lato',
-                        color: FlutterFlowTheme.of(context).primaryText,
-                      ),
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Scanned Items',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Lato',
+                  color: FlutterFlowTheme.of(context).primaryText,
                 ),
-                actions: [],
-                centerTitle: false,
-                elevation: 6.0,
-              )
-            : null,
+          ),
+          actions: [],
+          centerTitle: false,
+          elevation: 6.0,
+        ),
         body: SafeArea(
           top: true,
           child: Stack(
@@ -86,7 +81,7 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
               Align(
                 alignment: AlignmentDirectional(0.00, -1.00),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     if (valueOrDefault<bool>(
@@ -107,12 +102,16 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                       ),
                     Flexible(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 0.0),
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                         child: StreamBuilder<List<LookupRecord>>(
                           stream: queryLookupRecord(
-                            queryBuilder: (lookupRecord) =>
-                                lookupRecord.orderBy('name'),
+                            queryBuilder: (lookupRecord) => lookupRecord
+                                .where(
+                                  'name',
+                                  isNotEqualTo: 'No Search Results',
+                                )
+                                .orderBy('name'),
                           ),
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
@@ -130,11 +129,13 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                             }
                             List<LookupRecord> listViewLookupRecordList =
                                 snapshot.data!;
-                            return ListView.builder(
+                            return ListView.separated(
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
                               itemCount: listViewLookupRecordList.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(height: 8.0),
                               itemBuilder: (context, listViewIndex) {
                                 final listViewLookupRecord =
                                     listViewLookupRecordList[listViewIndex];
@@ -161,52 +162,21 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                       },
                                     );
                                   },
-                                  child: Slidable(
-                                    endActionPane: ActionPane(
-                                      motion: const ScrollMotion(),
-                                      extentRatio: 0.25,
-                                      children: [
-                                        SlidableAction(
-                                          label: 'Delete',
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                          icon: Icons.delete_rounded,
-                                          onPressed: (_) async {
-                                            await listViewLookupRecord.reference
-                                                .delete();
-                                          },
-                                        ),
-                                      ],
+                                  child: wrapWithModel(
+                                    model: _model.itemModels.getModel(
+                                      listViewLookupRecord.reference.id,
+                                      listViewIndex,
                                     ),
-                                    child: ListTile(
-                                      title: Text(
-                                        listViewLookupRecord.name,
-                                        style: FlutterFlowTheme.of(context)
-                                            .titleMedium,
+                                    updateCallback: () => setState(() {}),
+                                    child: ItemWidget(
+                                      key: Key(
+                                        'Keyle7_${listViewLookupRecord.reference.id}',
                                       ),
-                                      subtitle: Text(
-                                        valueOrDefault<String>(
-                                          '${listViewLookupRecord.size} | ${listViewLookupRecord.brand}',
-                                          '-',
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              fontFamily: 'Lato',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                            ),
-                                      ),
-                                      trailing: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        size: 20.0,
-                                      ),
-                                      tileColor: Colors.transparent,
-                                      dense: false,
+                                      imageUrl: listViewLookupRecord
+                                          .openFoodFacts.imageUrl,
+                                      title: listViewLookupRecord.name,
+                                      subtitle: listViewLookupRecord.brand,
+                                      size: listViewLookupRecord.size,
                                     ),
                                   ),
                                 );

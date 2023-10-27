@@ -1,7 +1,7 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/components/item/item_widget.dart';
 import '/components/nav_bar1_widget.dart';
-import '/components/value_list_item/value_list_item_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -68,25 +68,20 @@ class _HomeWidgetState extends State<HomeWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        appBar: responsiveVisibility(
-          context: context,
-          desktop: false,
-        )
-            ? AppBar(
-                backgroundColor: FlutterFlowTheme.of(context).primary,
-                automaticallyImplyLeading: false,
-                title: Text(
-                  'NutriScan',
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Lato',
-                        color: FlutterFlowTheme.of(context).primaryText,
-                      ),
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'NutriScan',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Lato',
+                  color: FlutterFlowTheme.of(context).primaryText,
                 ),
-                actions: [],
-                centerTitle: false,
-                elevation: 6.0,
-              )
-            : null,
+          ),
+          actions: [],
+          centerTitle: false,
+          elevation: 6.0,
+        ),
         body: SafeArea(
           top: true,
           child: Column(
@@ -124,61 +119,71 @@ class _HomeWidgetState extends State<HomeWidget> {
                             color: Colors.transparent,
                           ),
                         ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              12.0, 0.0, 12.0, 0.0),
-                          child: FutureBuilder<List<FoodDataRecord>>(
-                            future: FFAppState().foodData(
-                              uniqueQueryKey: valueOrDefault<String>(
-                                currentUserReference?.id,
-                                '1',
-                              ),
-                              requestFn: () => queryFoodDataRecordOnce(
-                                queryBuilder: (foodDataRecord) =>
-                                    foodDataRecord.orderBy('foodName'),
-                              ),
+                        child: FutureBuilder<List<FoodDatabaseRecord>>(
+                          future: FFAppState().foodData(
+                            uniqueQueryKey: valueOrDefault<String>(
+                              currentUserReference?.id,
+                              '1',
                             ),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 25.0,
-                                    height: 25.0,
-                                    child: SpinKitRipple(
-                                      color:
-                                          FlutterFlowTheme.of(context).primary,
-                                      size: 25.0,
-                                    ),
-                                  ),
-                                );
-                              }
-                              List<FoodDataRecord> listViewFoodDataRecordList =
-                                  snapshot.data!;
-                              return ListView.separated(
-                                padding: EdgeInsets.fromLTRB(
-                                  0,
-                                  8.0,
-                                  0,
-                                  8.0,
-                                ),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: listViewFoodDataRecordList.length,
-                                separatorBuilder: (_, __) =>
-                                    SizedBox(height: 8.0),
-                                itemBuilder: (context, listViewIndex) {
-                                  final listViewFoodDataRecord =
-                                      listViewFoodDataRecordList[listViewIndex];
-                                  return ValueListItemWidget(
-                                    key: Key(
-                                        'Keynep_${listViewIndex}_of_${listViewFoodDataRecordList.length}'),
-                                    doc: listViewFoodDataRecord,
-                                  );
-                                },
-                              );
-                            },
+                            requestFn: () => queryFoodDatabaseRecordOnce(
+                              queryBuilder: (foodDatabaseRecord) =>
+                                  foodDatabaseRecord.orderBy('foodName'),
+                            ),
                           ),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 25.0,
+                                  height: 25.0,
+                                  child: SpinKitRipple(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    size: 25.0,
+                                  ),
+                                ),
+                              );
+                            }
+                            List<FoodDatabaseRecord>
+                                listViewFoodDatabaseRecordList = snapshot.data!;
+                            return ListView.separated(
+                              padding: EdgeInsets.fromLTRB(
+                                0,
+                                8.0,
+                                0,
+                                100.0,
+                              ),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: listViewFoodDatabaseRecordList.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(height: 8.0),
+                              itemBuilder: (context, listViewIndex) {
+                                final listViewFoodDatabaseRecord =
+                                    listViewFoodDatabaseRecordList[
+                                        listViewIndex];
+                                return ItemWidget(
+                                  key: Key(
+                                      'Keypeh_${listViewIndex}_of_${listViewFoodDatabaseRecordList.length}'),
+                                  imageUrl: listViewFoodDatabaseRecord.icon,
+                                  title: (String input) {
+                                    return input.indexOf(',') == -1
+                                        ? input
+                                        : input.substring(
+                                            0, input.indexOf(','));
+                                  }(listViewFoodDatabaseRecord.foodName),
+                                  subtitle: (String input) {
+                                    return input.contains(',')
+                                        ? input
+                                            .substring(input.indexOf(',') + 1)
+                                            .trimLeft()
+                                        : '';
+                                  }(listViewFoodDatabaseRecord.foodName),
+                                  size: '-',
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                       Align(
@@ -194,6 +199,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           child: wrapWithModel(
                             model: _model.navBar1Model,
                             updateCallback: () => setState(() {}),
+                            updateOnChange: true,
                             child: NavBar1Widget(
                               activePage: 'Home',
                             ),

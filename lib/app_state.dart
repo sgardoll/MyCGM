@@ -260,11 +260,17 @@ class FFAppState extends ChangeNotifier {
     _firstOpen = _value;
   }
 
-  final _foodDataManager = FutureRequestManager<List<FoodDataRecord>>();
-  Future<List<FoodDataRecord>> foodData({
+  String _barcodeScanData = '';
+  String get barcodeScanData => _barcodeScanData;
+  set barcodeScanData(String _value) {
+    _barcodeScanData = _value;
+  }
+
+  final _foodDataManager = FutureRequestManager<List<FoodDatabaseRecord>>();
+  Future<List<FoodDatabaseRecord>> foodData({
     String? uniqueQueryKey,
     bool? overrideCache,
-    required Future<List<FoodDataRecord>> Function() requestFn,
+    required Future<List<FoodDatabaseRecord>> Function() requestFn,
   }) =>
       _foodDataManager.performRequest(
         uniqueQueryKey: uniqueQueryKey,

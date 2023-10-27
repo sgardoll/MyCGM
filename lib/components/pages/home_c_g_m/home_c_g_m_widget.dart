@@ -140,29 +140,20 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        appBar: responsiveVisibility(
-          context: context,
-          desktop: false,
-        )
-            ? PreferredSize(
-                preferredSize: Size.fromHeight(50.0),
-                child: AppBar(
-                  backgroundColor: FlutterFlowTheme.of(context).primary,
-                  automaticallyImplyLeading: false,
-                  title: Text(
-                    'My CGM',
-                    style: FlutterFlowTheme.of(context).headlineMedium.override(
-                          fontFamily: 'Lato',
-                          color: FlutterFlowTheme.of(context).secondary,
-                        ),
-                  ),
-                  actions: [],
-                  centerTitle: false,
-                  toolbarHeight: 50.0,
-                  elevation: 6.0,
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'My CGM',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Lato',
+                  color: FlutterFlowTheme.of(context).secondary,
                 ),
-              )
-            : null,
+          ),
+          actions: [],
+          centerTitle: false,
+          elevation: 6.0,
+        ),
         body: SafeArea(
           top: true,
           child: Container(

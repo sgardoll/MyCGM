@@ -1,6 +1,6 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
-import '/components/barcode_scan_widget.dart';
+import '/components/post_scan_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -23,14 +23,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
-  ///  Local state fields for this component.
-
-  String? input = '';
-
   ///  State fields for stateful widgets in this component.
 
-  // Model for BarcodeScan component.
-  late BarcodeScanModel barcodeScanModel;
+  // Model for PostScan component.
+  late PostScanModel postScanModel;
   var barcodeScan = '';
   // State field(s) for Timer widget.
   int timerMilliseconds = 5000;
@@ -45,11 +41,11 @@ class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
-    barcodeScanModel = createModel(context, () => BarcodeScanModel());
+    postScanModel = createModel(context, () => PostScanModel());
   }
 
   void dispose() {
-    barcodeScanModel.dispose();
+    postScanModel.dispose();
     timerController.dispose();
   }
 

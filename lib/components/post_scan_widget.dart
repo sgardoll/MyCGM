@@ -17,11 +17,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'barcode_scan_model.dart';
-export 'barcode_scan_model.dart';
+import 'post_scan_model.dart';
+export 'post_scan_model.dart';
 
-class BarcodeScanWidget extends StatefulWidget {
-  const BarcodeScanWidget({
+class PostScanWidget extends StatefulWidget {
+  const PostScanWidget({
     Key? key,
     required this.input,
   }) : super(key: key);
@@ -29,12 +29,12 @@ class BarcodeScanWidget extends StatefulWidget {
   final String? input;
 
   @override
-  _BarcodeScanWidgetState createState() => _BarcodeScanWidgetState();
+  _PostScanWidgetState createState() => _PostScanWidgetState();
 }
 
-class _BarcodeScanWidgetState extends State<BarcodeScanWidget>
+class _PostScanWidgetState extends State<PostScanWidget>
     with TickerProviderStateMixin {
-  late BarcodeScanModel _model;
+  late PostScanModel _model;
 
   final animationsMap = {
     'containerOnActionTriggerAnimation': AnimationInfo(
@@ -88,7 +88,7 @@ class _BarcodeScanWidgetState extends State<BarcodeScanWidget>
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => BarcodeScanModel());
+    _model = createModel(context, () => PostScanModel());
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {

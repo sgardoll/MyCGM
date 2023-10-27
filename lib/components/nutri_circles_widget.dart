@@ -118,6 +118,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                           fontFamily: 'Lato',
                           color: FlutterFlowTheme.of(context).secondary,
                           fontSize: 12.0,
+                          fontWeight: FontWeight.normal,
                         ),
                   ),
                 ],
@@ -146,8 +147,14 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   4.0, 4.0, 4.0, 4.0),
                               child: AutoSizeText(
-                                '${widget.protein?.toString()}${widget.proteinUnits}',
+                                '${formatNumber(
+                                  widget.protein,
+                                  formatType: FormatType.custom,
+                                  format: '###0.0',
+                                  locale: '',
+                                )}${widget.proteinUnits}',
                                 textAlign: TextAlign.center,
+                                maxLines: 1,
                                 style: FlutterFlowTheme.of(context)
                                     .headlineMedium
                                     .override(
@@ -171,6 +178,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                           fontFamily: 'Lato',
                           color: FlutterFlowTheme.of(context).secondary,
                           fontSize: 12.0,
+                          fontWeight: FontWeight.normal,
                         ),
                   ),
                 ],
@@ -225,6 +233,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                           fontFamily: 'Lato',
                           color: FlutterFlowTheme.of(context).secondary,
                           fontSize: 12.0,
+                          fontWeight: FontWeight.normal,
                         ),
                   ),
                 ],

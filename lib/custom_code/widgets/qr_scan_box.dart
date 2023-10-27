@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import '/components/nav_bar1/nav_bar1_model.dart';
+import '/components/nav_bar1_widget.dart';
+// ... (other imports)
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScanBox extends StatefulWidget {
@@ -32,24 +33,15 @@ class _QrScanBoxState extends State<QrScanBox> {
   QRViewController? controller;
 
   void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      controller.pauseCamera();
       if (scanData.code != null && yourConditionHere(scanData.code!)) {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          useSafeArea: true,
-          context: context,
-          builder: (context) {
-            return Padding(
-              padding: MediaQuery.viewInsetsOf(context),
-              child: NavBar1Widget(
-                input: scanData.code!,
-              ),
-            );
-          },
-        ).then((value) => safeSetState(() {}));
+        // Update FFAppState
+        FFAppState().update(() {
+          FFAppState().barcodeScanData = scanData.code ?? ''; // Null check here
+        });
+
+        // Resume camera
+        controller.resumeCamera();
       }
     });
   }
