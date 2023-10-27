@@ -271,10 +271,18 @@ class _PostScanWidgetState extends State<PostScanWidget>
                       ),
                     ),
                   ),
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
+                    child: Text(
+                      'Loading Item...',
+                      style: FlutterFlowTheme.of(context).titleMedium,
+                    ),
+                  ),
                   Flexible(
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(16.0, 24.0, 16.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 24.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -297,16 +305,6 @@ class _PostScanWidgetState extends State<PostScanWidget>
                                   FlutterFlowTheme.of(context).secondary,
                               backgroundColor:
                                   FlutterFlowTheme.of(context).secondaryText,
-                              center: Text(
-                                'Loading Item...',
-                                style: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      fontFamily: 'Lato',
-                                      color:
-                                          FlutterFlowTheme.of(context).btnText,
-                                    ),
-                              ),
                               barRadius: Radius.circular(24.0),
                               padding: EdgeInsets.zero,
                             ),
