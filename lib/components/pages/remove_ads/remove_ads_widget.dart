@@ -172,11 +172,9 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                     ),
                                     Text(
                                       valueOrDefault<String>(
-                                        revenue_cat.offerings!.current!
-                                            .getPackage('premium')!
-                                            .storeProduct
-                                            .priceString,
-                                        '\$2.99',
+                                        revenue_cat.offerings!.current!.annual!
+                                            .storeProduct.priceString,
+                                        '\$',
                                       ),
                                       style: FlutterFlowTheme.of(context)
                                           .titleMedium
