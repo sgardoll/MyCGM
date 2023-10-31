@@ -183,9 +183,15 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                         ),
                                         Flexible(
                                           child: AutoSizeText(
-                                            revenue_cat.activeEntitlementIds
-                                                .contains('premium')
-                                                .toString(),
+                                            valueOrDefault<String>(
+                                              revenue_cat
+                                                  .offerings!
+                                                  .current!
+                                                  .lifetime!
+                                                  .storeProduct
+                                                  .priceString,
+                                              '\$ ',
+                                            ),
                                             textAlign: TextAlign.center,
                                             maxLines: 1,
                                             style: FlutterFlowTheme.of(context)
