@@ -99,25 +99,21 @@ class _ItemWidgetState extends State<ItemWidget> {
                             ),
                           ),
                           alignment: AlignmentDirectional(0.00, 0.00),
-                          child: Hero(
-                            tag: widget.imageUrl!,
-                            transitionOnUserGestures: true,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: CachedNetworkImage(
-                                fadeInDuration: Duration(milliseconds: 500),
-                                fadeOutDuration: Duration(milliseconds: 500),
-                                imageUrl: widget.imageUrl!,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: CachedNetworkImage(
+                              fadeInDuration: Duration(milliseconds: 500),
+                              fadeOutDuration: Duration(milliseconds: 500),
+                              imageUrl: widget.imageUrl!,
+                              width: 300.0,
+                              height: 200.0,
+                              fit: BoxFit.cover,
+                              errorWidget: (context, error, stackTrace) =>
+                                  Image.asset(
+                                'assets/images/error_image.png',
                                 width: 300.0,
                                 height: 200.0,
                                 fit: BoxFit.cover,
-                                errorWidget: (context, error, stackTrace) =>
-                                    Image.asset(
-                                  'assets/images/error_image.png',
-                                  width: 300.0,
-                                  height: 200.0,
-                                  fit: BoxFit.cover,
-                                ),
                               ),
                             ),
                           ),

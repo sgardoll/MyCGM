@@ -1,18 +1,14 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
-import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -31,84 +27,15 @@ class UnitsCheckWidget extends StatefulWidget {
   _UnitsCheckWidgetState createState() => _UnitsCheckWidgetState();
 }
 
-class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
-    with TickerProviderStateMixin {
+class _UnitsCheckWidgetState extends State<UnitsCheckWidget> {
   late UnitsCheckModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  var hasContainerTriggered1 = false;
-  var hasContainerTriggered2 = false;
-  var hasContainerTriggered3 = false;
-  final animationsMap = {
-    'containerOnActionTriggerAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 400.ms),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 400.ms,
-          duration: 600.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(4.0, 4.0),
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 1230.ms,
-          begin: 1.0,
-          end: 0.0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 1230.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(5.0, 5.0),
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 300.ms),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 300.ms,
-          duration: 2000.ms,
-          begin: 1.0,
-          end: 0.0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeOut,
-          delay: 300.ms,
-          duration: 2000.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(5.0, 5.0),
-        ),
-      ],
-    ),
-  };
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => UnitsCheckModel());
-
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
   }
 
   @override
@@ -137,95 +64,49 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: SafeArea(
           top: true,
           child: Stack(
             children: [
-              ClipRect(
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(
-                    sigmaX: 40.0,
-                    sigmaY: 40.0,
-                  ),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(1.00, -1.00),
-                        child: Container(
-                          width: 300.0,
-                          height: 400.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            shape: BoxShape.rectangle,
-                          ),
-                        ).animateOnActionTrigger(
-                            animationsMap[
-                                'containerOnActionTriggerAnimation1']!,
-                            hasBeenTriggered: hasContainerTriggered1),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(-3.27, -1.29),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.75,
-                          height: MediaQuery.sizeOf(context).width * 0.75,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).primary,
-                            shape: BoxShape.circle,
-                          ),
-                        ).animateOnActionTrigger(
-                            animationsMap[
-                                'containerOnActionTriggerAnimation2']!,
-                            hasBeenTriggered: hasContainerTriggered2),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0.00, 0.00),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.7,
-                          height: MediaQuery.sizeOf(context).width * 0.7,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).secondary,
-                            shape: BoxShape.circle,
-                          ),
-                        ).animateOnActionTrigger(
-                            animationsMap[
-                                'containerOnActionTriggerAnimation3']!,
-                            hasBeenTriggered: hasContainerTriggered3),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 64.0, 0.0, 0.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: Material(
+                          color: Colors.transparent,
+                          elevation: 6.0,
+                          child: Container(
+                            width: MediaQuery.sizeOf(context).width * 1.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              border: Border.all(
+                                color: Colors.transparent,
+                                width: 0.0,
+                              ),
+                            ),
                             child: Image.asset(
-                              'assets/images/Logo3.2-50Transparent.png',
-                              width: MediaQuery.sizeOf(context).width * 0.3,
-                              height: MediaQuery.sizeOf(context).height * 0.3,
+                              'assets/images/6-splash.png',
+                              width: MediaQuery.sizeOf(context).width * 1.0,
+                              height: MediaQuery.sizeOf(context).height * 0.15,
                               fit: BoxFit.contain,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: Padding(
                       padding:
-                          EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(12.0, 16.0, 12.0, 0.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -270,7 +151,7 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget>
                                               Icons.calculate,
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .alternate,
+                                                      .secondary,
                                               size: 32.0,
                                             ),
                                           ),

@@ -188,22 +188,19 @@ class _HomeWidgetState extends State<HomeWidget> {
                       ),
                       Align(
                         alignment: AlignmentDirectional(0.00, 1.00),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            border: Border.all(
-                              color: Colors.transparent,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            wrapWithModel(
+                              model: _model.navBar1Model,
+                              updateCallback: () => setState(() {}),
+                              updateOnChange: true,
+                              child: NavBar1Widget(
+                                activePage: 'Home',
+                              ),
                             ),
-                          ),
-                          child: wrapWithModel(
-                            model: _model.navBar1Model,
-                            updateCallback: () => setState(() {}),
-                            updateOnChange: true,
-                            child: NavBar1Widget(
-                              activePage: 'Home',
-                            ),
-                          ),
+                          ],
                         ),
                       ),
                     ],

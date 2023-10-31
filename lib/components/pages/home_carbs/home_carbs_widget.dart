@@ -82,7 +82,7 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                 alignment: AlignmentDirectional(0.00, -1.00),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     if (valueOrDefault<bool>(
                       isWeb ||
@@ -101,88 +101,94 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                             'ca-app-pub-3945304154369399/4626582701',
                       ),
                     Flexible(
-                      child: Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
-                        child: StreamBuilder<List<LookupRecord>>(
-                          stream: queryLookupRecord(
-                            queryBuilder: (lookupRecord) => lookupRecord
-                                .where(
-                                  'name',
-                                  isNotEqualTo: 'No Search Results',
-                                )
-                                .orderBy('name'),
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 25.0,
-                                  height: 25.0,
-                                  child: SpinKitRipple(
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 25.0,
-                                  ),
-                                ),
-                              );
-                            }
-                            List<LookupRecord> listViewLookupRecordList =
-                                snapshot.data!;
-                            return ListView.separated(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: listViewLookupRecordList.length,
-                              separatorBuilder: (_, __) =>
-                                  SizedBox(height: 8.0),
-                              itemBuilder: (context, listViewIndex) {
-                                final listViewLookupRecord =
-                                    listViewLookupRecordList[listViewIndex];
-                                return InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    context.pushNamed(
-                                      'Details',
-                                      queryParameters: {
-                                        'docRef': serializeParam(
-                                          listViewLookupRecord.reference,
-                                          ParamType.DocumentReference,
-                                        ),
-                                      }.withoutNulls,
-                                      extra: <String, dynamic>{
-                                        kTransitionInfoKey: TransitionInfo(
-                                          hasTransition: true,
-                                          transitionType:
-                                              PageTransitionType.rightToLeft,
-                                        ),
-                                      },
-                                    );
-                                  },
-                                  child: wrapWithModel(
-                                    model: _model.itemModels.getModel(
-                                      listViewLookupRecord.reference.id,
-                                      listViewIndex,
-                                    ),
-                                    updateCallback: () => setState(() {}),
-                                    child: ItemWidget(
-                                      key: Key(
-                                        'Keyle7_${listViewLookupRecord.reference.id}',
-                                      ),
-                                      imageUrl: listViewLookupRecord
-                                          .openFoodFacts.imageUrl,
-                                      title: listViewLookupRecord.name,
-                                      subtitle: listViewLookupRecord.brand,
-                                      size: listViewLookupRecord.size,
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width * 1.0,
+                        height: MediaQuery.sizeOf(context).height * 1.0,
+                        decoration: BoxDecoration(),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 16.0, 0.0, 0.0),
+                          child: StreamBuilder<List<LookupRecord>>(
+                            stream: queryLookupRecord(
+                              queryBuilder: (lookupRecord) => lookupRecord
+                                  .where(
+                                    'name',
+                                    isNotEqualTo: 'No Search Results',
+                                  )
+                                  .orderBy('name'),
+                            ),
+                            builder: (context, snapshot) {
+                              // Customize what your widget looks like when it's loading.
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 25.0,
+                                    height: 25.0,
+                                    child: SpinKitRipple(
+                                      color:
+                                          FlutterFlowTheme.of(context).primary,
+                                      size: 25.0,
                                     ),
                                   ),
                                 );
-                              },
-                            );
-                          },
+                              }
+                              List<LookupRecord> listViewLookupRecordList =
+                                  snapshot.data!;
+                              return ListView.separated(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: listViewLookupRecordList.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(height: 8.0),
+                                itemBuilder: (context, listViewIndex) {
+                                  final listViewLookupRecord =
+                                      listViewLookupRecordList[listViewIndex];
+                                  return InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      context.pushNamed(
+                                        'Details',
+                                        queryParameters: {
+                                          'docRef': serializeParam(
+                                            listViewLookupRecord.reference,
+                                            ParamType.DocumentReference,
+                                          ),
+                                        }.withoutNulls,
+                                        extra: <String, dynamic>{
+                                          kTransitionInfoKey: TransitionInfo(
+                                            hasTransition: true,
+                                            transitionType:
+                                                PageTransitionType.rightToLeft,
+                                          ),
+                                        },
+                                      );
+                                    },
+                                    child: wrapWithModel(
+                                      model: _model.itemModels.getModel(
+                                        listViewLookupRecord.reference.id,
+                                        listViewIndex,
+                                      ),
+                                      updateCallback: () => setState(() {}),
+                                      child: ItemWidget(
+                                        key: Key(
+                                          'Keyle7_${listViewLookupRecord.reference.id}',
+                                        ),
+                                        imageUrl: listViewLookupRecord
+                                            .openFoodFacts.imageUrl,
+                                        title: listViewLookupRecord.name,
+                                        subtitle: listViewLookupRecord.brand,
+                                        size: listViewLookupRecord.size,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),

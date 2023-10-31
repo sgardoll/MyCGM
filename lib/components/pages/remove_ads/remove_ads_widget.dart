@@ -55,7 +55,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
@@ -171,7 +171,13 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                           ),
                                     ),
                                     Text(
-                                      '\$2.99',
+                                      valueOrDefault<String>(
+                                        revenue_cat.offerings!.current!
+                                            .getPackage('premium')!
+                                            .storeProduct
+                                            .priceString,
+                                        '\$2.99',
+                                      ),
                                       style: FlutterFlowTheme.of(context)
                                           .titleMedium
                                           .override(
@@ -217,7 +223,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                       content: Text(
                                         'Thank you. Enjoy NutriScan ad free!',
                                         style: GoogleFonts.getFont(
-                                          'Lato',
+                                          'Rubik',
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                         ),
@@ -235,7 +241,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                       content: Text(
                                         'Purchase was unsuccessful',
                                         style: GoogleFonts.getFont(
-                                          'Lato',
+                                          'Rubik',
                                           color: FlutterFlowTheme.of(context)
                                               .primaryText,
                                         ),

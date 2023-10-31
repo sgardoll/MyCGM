@@ -102,7 +102,7 @@ class _PostScanWidgetState extends State<PostScanWidget>
       if (_model.doesBarcodeExist!.length >= 1 ? true : false) {
         _model.timerController.onStopTimer();
         if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-          await animationsMap['containerOnActionTriggerAnimation']!
+          animationsMap['containerOnActionTriggerAnimation']!
               .controller
               .forward(from: 0.0);
         }
@@ -115,6 +115,12 @@ class _PostScanWidgetState extends State<PostScanWidget>
               ParamType.DocumentReference,
             ),
           }.withoutNulls,
+          extra: <String, dynamic>{
+            kTransitionInfoKey: TransitionInfo(
+              hasTransition: true,
+              transitionType: PageTransitionType.bottomToTop,
+            ),
+          },
         );
       } else {
         var lookupRecordReference = LookupRecord.collection.doc();
@@ -133,7 +139,7 @@ class _PostScanWidgetState extends State<PostScanWidget>
         );
         _model.timerController.onStopTimer();
         if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-          await animationsMap['containerOnActionTriggerAnimation']!
+          animationsMap['containerOnActionTriggerAnimation']!
               .controller
               .forward(from: 0.0);
         }
@@ -146,6 +152,12 @@ class _PostScanWidgetState extends State<PostScanWidget>
               ParamType.DocumentReference,
             ),
           }.withoutNulls,
+          extra: <String, dynamic>{
+            kTransitionInfoKey: TransitionInfo(
+              hasTransition: true,
+              transitionType: PageTransitionType.bottomToTop,
+            ),
+          },
         );
       }
     });

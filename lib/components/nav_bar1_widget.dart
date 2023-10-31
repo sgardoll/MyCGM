@@ -1,6 +1,7 @@
 import '/auth/base_auth_user_provider.dart';
 import '/auth/firebase_auth/auth_util.dart';
-import '/components/post_scan_widget.dart';
+import '/backend/api_requests/api_calls.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -10,6 +11,8 @@ import '/custom_code/widgets/index.dart' as custom_widgets;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -114,20 +117,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     _model = createModel(context, () => NavBar1Model());
 
     // On component load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (FFAppState().firstOpen == true) {
-        _model.timerController.onStartTimer();
-        await Future.delayed(const Duration(milliseconds: 5000));
-        if (animationsMap['containerOnActionTriggerAnimation'] != null) {
-          await animationsMap['containerOnActionTriggerAnimation']!
-              .controller
-              .forward(from: 0.0);
-        }
-        _model.updatePage(() {
-          FFAppState().firstOpen = false;
-        });
-      }
-    });
+    SchedulerBinding.instance.addPostFrameCallback((_) async {});
 
     setupAnimations(
       animationsMap.values.where((anim) =>
@@ -153,196 +143,175 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     return Stack(
       alignment: AlignmentDirectional(0.0, 1.0),
       children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (valueOrDefault<bool>(
-              FFAppState().firstOpen ? true : false,
-              false,
-            ))
-              Align(
-                alignment: AlignmentDirectional(1.00, 1.00),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
-                  child: Material(
-                    color: Colors.transparent,
-                    elevation: 12.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(0.0),
-                        bottomRight: Radius.circular(0.0),
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(0.0),
-                        bottomRight: Radius.circular(0.0),
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
-                      ),
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 1200),
-                        curve: Curves.easeInOut,
-                        width: MediaQuery.sizeOf(context).width * 0.75,
-                        height: 165.0,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).primaryBackground,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 4.0,
-                              color: Color(0x33000000),
-                              offset: Offset(0.0, -2.0),
-                            )
-                          ],
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(0.0),
-                            bottomRight: Radius.circular(0.0),
-                            topLeft: Radius.circular(20.0),
-                            topRight: Radius.circular(20.0),
-                          ),
-                          border: Border.all(
-                            color: FlutterFlowTheme.of(context).secondary,
-                            width: 6.0,
-                          ),
+        if (responsiveVisibility(
+          context: context,
+          phone: false,
+          tablet: false,
+          tabletLandscape: false,
+          desktop: false,
+        ))
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (valueOrDefault<bool>(
+                FFAppState().firstOpen ? true : false,
+                false,
+              ))
+                Align(
+                  alignment: AlignmentDirectional(1.00, 1.00),
+                  child: Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
+                    child: Material(
+                      color: Colors.transparent,
+                      elevation: 12.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(0.0),
+                          bottomRight: Radius.circular(0.0),
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0),
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Flexible(
-                              child: Material(
-                                color: Colors.transparent,
-                                elevation: 2.0,
-                                child: ClipRRect(
-                                  child: Container(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 1.0,
-                                    height: 30.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondary,
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Flexible(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    8.0, 0.0, 0.0, 0.0),
-                                            child: AutoSizeText(
-                                              'Quick Barcode Scan',
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .override(
-                                                        fontFamily: 'Lato',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .white,
-                                                      ),
-                                            ),
-                                          ),
-                                        ),
-                                        Flexible(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 8.0, 0.0),
-                                            child: InkWell(
-                                              splashColor: Colors.transparent,
-                                              focusColor: Colors.transparent,
-                                              hoverColor: Colors.transparent,
-                                              highlightColor:
-                                                  Colors.transparent,
-                                              onTap: () async {
-                                                if (animationsMap[
-                                                        'containerOnActionTriggerAnimation'] !=
-                                                    null) {
-                                                  await animationsMap[
-                                                          'containerOnActionTriggerAnimation']!
-                                                      .controller
-                                                      .forward(from: 0.0);
-                                                }
-                                                setState(() {
-                                                  FFAppState().firstOpen =
-                                                      false;
-                                                });
-                                              },
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_outlined,
-                                                color:
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(0.0),
+                          bottomRight: Radius.circular(0.0),
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0),
+                        ),
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 1200),
+                          curve: Curves.easeInOut,
+                          width: MediaQuery.sizeOf(context).width * 0.75,
+                          height: 165.0,
+                          decoration: BoxDecoration(
+                            color:
+                                FlutterFlowTheme.of(context).primaryBackground,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 4.0,
+                                color: Color(0x33000000),
+                                offset: Offset(0.0, -2.0),
+                              )
+                            ],
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(0.0),
+                              bottomRight: Radius.circular(0.0),
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0),
+                            ),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).secondary,
+                              width: 6.0,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: Material(
+                                  color: Colors.transparent,
+                                  elevation: 2.0,
+                                  child: ClipRRect(
+                                    child: Container(
+                                      width: MediaQuery.sizeOf(context).width *
+                                          1.0,
+                                      height: 30.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondary,
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(8.0, 0.0, 0.0, 0.0),
+                                              child: AutoSizeText(
+                                                'Quick Barcode Scan',
+                                                textAlign: TextAlign.center,
+                                                maxLines: 1,
+                                                style:
                                                     FlutterFlowTheme.of(context)
-                                                        .white,
-                                                size: 24.0,
+                                                        .titleSmall
+                                                        .override(
+                                                          fontFamily: 'Lato',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .white,
+                                                        ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          Flexible(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 8.0, 0.0),
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  if (animationsMap[
+                                                          'containerOnActionTriggerAnimation'] !=
+                                                      null) {
+                                                    await animationsMap[
+                                                            'containerOnActionTriggerAnimation']!
+                                                        .controller
+                                                        .forward(from: 0.0);
+                                                  }
+                                                  setState(() {
+                                                    FFAppState().firstOpen =
+                                                        false;
+                                                  });
+                                                },
+                                                child: Icon(
+                                                  Icons
+                                                      .keyboard_arrow_down_outlined,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .white,
+                                                  size: 24.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              width: MediaQuery.sizeOf(context).width * 1.0,
-                              height: 130.0,
-                              child: custom_widgets.QrScanBox(
+                              Container(
                                 width: MediaQuery.sizeOf(context).width * 1.0,
                                 height: 130.0,
+                                child: custom_widgets.QrScanBox(
+                                  width: MediaQuery.sizeOf(context).width * 1.0,
+                                  height: 130.0,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                      .animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation1']!)
-                      .animateOnActionTrigger(
-                        animationsMap['containerOnActionTriggerAnimation']!,
-                      ),
-                ),
-              ),
-          ],
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (valueOrDefault<bool>(
-              FFAppState().barcodeScanData != null &&
-                      FFAppState().barcodeScanData != ''
-                  ? true
-                  : false,
-              false,
-            ))
-              Flexible(
-                child: Align(
-                  alignment: AlignmentDirectional(1.00, 1.00),
-                  child: wrapWithModel(
-                    model: _model.postScanModel,
-                    updateCallback: () => setState(() {}),
-                    updateOnChange: true,
-                    child: PostScanWidget(
-                      input: FFAppState().barcodeScanData,
-                    ),
+                    )
+                        .animateOnPageLoad(
+                            animationsMap['containerOnPageLoadAnimation1']!)
+                        .animateOnActionTrigger(
+                          animationsMap['containerOnActionTriggerAnimation']!,
+                        ),
                   ),
                 ),
-              ),
-          ],
-        ),
+            ],
+          ),
         Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -584,50 +553,19 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                   ),
                                   child: Stack(
                                     children: [
-                                      FlutterFlowIconButton(
-                                        borderColor: Colors.transparent,
-                                        borderRadius: 100.0,
-                                        borderWidth: 1.0,
-                                        buttonSize: 60.0,
-                                        fillColor: FlutterFlowTheme.of(context)
-                                            .primary,
-                                        icon: FaIcon(
-                                          FontAwesomeIcons.barcode,
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondary,
-                                          size: 30.0,
-                                        ),
-                                        showLoadingIndicator: true,
-                                        onPressed: () async {
-                                          if (loggedIn) {
-                                            _model.barcodeScan =
-                                                await FlutterBarcodeScanner
-                                                    .scanBarcode(
-                                              '#C62828', // scanning line color
-                                              'Cancel', // cancel button text
-                                              true, // whether to show the flash icon
-                                              ScanMode.BARCODE,
-                                            );
-
-                                            if (functions.barcodeScanInt(
-                                                    _model.barcodeScan!) >
-                                                1) {
-                                              setState(() {
-                                                FFAppState().barcodeScanData =
-                                                    _model.barcodeScan!;
-                                              });
-                                            }
-                                          } else {
-                                            context.pushNamed('loginPage');
-                                          }
-
-                                          setState(() {});
-                                        },
-                                      ),
                                       if (valueOrDefault<bool>(
-                                        FFAppState().firstOpen ? true : false,
-                                        false,
-                                      ))
+                                            FFAppState().firstOpen
+                                                ? true
+                                                : false,
+                                            false,
+                                          ) &&
+                                          responsiveVisibility(
+                                            context: context,
+                                            phone: false,
+                                            tablet: false,
+                                            tabletLandscape: false,
+                                            desktop: false,
+                                          ))
                                         CircularPercentIndicator(
                                           percent: valueOrDefault<double>(
                                             (int? elapsed) {
@@ -664,6 +602,100 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                           ),
                                         ).animateOnPageLoad(animationsMap[
                                             'containerOnPageLoadAnimation2']!),
+                                      FlutterFlowIconButton(
+                                        borderColor: Colors.transparent,
+                                        borderRadius: 100.0,
+                                        borderWidth: 1.0,
+                                        buttonSize: 60.0,
+                                        fillColor: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        icon: FaIcon(
+                                          FontAwesomeIcons.barcode,
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondary,
+                                          size: 30.0,
+                                        ),
+                                        showLoadingIndicator: true,
+                                        onPressed: () async {
+                                          if (loggedIn) {
+                                            _model.barcodeScan =
+                                                await FlutterBarcodeScanner
+                                                    .scanBarcode(
+                                              '#C62828', // scanning line color
+                                              'Cancel', // cancel button text
+                                              true, // whether to show the flash icon
+                                              ScanMode.BARCODE,
+                                            );
+
+                                            if (functions.barcodeScanInt(
+                                                    _model.barcodeScan!) >
+                                                1) {
+                                              _model.doesCodeExist =
+                                                  await queryLookupRecordOnce(
+                                                queryBuilder: (lookupRecord) =>
+                                                    lookupRecord.where(
+                                                  'code',
+                                                  isEqualTo: _model.barcodeScan,
+                                                ),
+                                                singleRecord: true,
+                                              ).then((s) => s.firstOrNull);
+                                              if (_model.doesCodeExist
+                                                      ?.hasCode() ==
+                                                  true) {
+                                                context.pushNamed(
+                                                  'Details',
+                                                  queryParameters: {
+                                                    'docRef': serializeParam(
+                                                      _model.doesCodeExist
+                                                          ?.reference,
+                                                      ParamType
+                                                          .DocumentReference,
+                                                    ),
+                                                  }.withoutNulls,
+                                                );
+                                              } else {
+                                                _model.buildshipAPI =
+                                                    await BuildshipGroup
+                                                        .barcodeScanCall
+                                                        .call(
+                                                  input: _model.barcodeScan,
+                                                );
+                                                if ((_model.buildshipAPI
+                                                        ?.succeeded ??
+                                                    true)) {
+                                                  _model.getNewDocref =
+                                                      await queryLookupRecordOnce(
+                                                    queryBuilder:
+                                                        (lookupRecord) =>
+                                                            lookupRecord.where(
+                                                      'code',
+                                                      isEqualTo:
+                                                          _model.barcodeScan,
+                                                    ),
+                                                    singleRecord: true,
+                                                  ).then((s) => s.firstOrNull);
+
+                                                  context.pushNamed(
+                                                    'Details',
+                                                    queryParameters: {
+                                                      'docRef': serializeParam(
+                                                        _model.getNewDocref
+                                                            ?.reference,
+                                                        ParamType
+                                                            .DocumentReference,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                }
+                                              }
+                                            }
+                                          } else {
+                                            context.pushNamed('loginPage');
+                                          }
+
+                                          setState(() {});
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -680,9 +712,16 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
           ],
         ),
         if (valueOrDefault<bool>(
-          FFAppState().firstOpen ? true : false,
-          false,
-        ))
+              FFAppState().firstOpen ? true : false,
+              false,
+            ) &&
+            responsiveVisibility(
+              context: context,
+              phone: false,
+              tablet: false,
+              tabletLandscape: false,
+              desktop: false,
+            ))
           FlutterFlowTimer(
             initialTime: _model.timerMilliseconds,
             getDisplayTime: (value) => StopWatchTimer.getDisplayTime(

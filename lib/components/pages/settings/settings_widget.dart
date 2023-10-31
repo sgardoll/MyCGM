@@ -92,6 +92,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
@@ -1565,12 +1566,22 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           ),
                         ),
                       if (valueOrDefault<bool>(
-                        isWeb ||
-                                revenue_cat.activeEntitlementIds
-                                    .contains('premium')
-                            ? false
-                            : true,
-                        true,
+                        () {
+                          if (isWeb) {
+                            return false;
+                          } else if (revenue_cat.activeEntitlementIds
+                                  .contains(valueOrDefault<String>(
+                                revenue_cat
+                                    .offerings!.current!.lifetime!.identifier,
+                                'premium',
+                              )) ==
+                              false) {
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        }(),
+                        false,
                       ))
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(

@@ -2,6 +2,7 @@ import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
+import '/components/loading_widget.dart';
 import '/components/nutrition_box_widget.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
@@ -36,6 +37,8 @@ class DetailsModel extends FlutterFlowModel<DetailsWidget> {
 
   // Stores action output result for [Backend Call - API (BuildshipGoogleVision)] action in Button widget.
   ApiCallResponse? buildshipAPIGoogleVision;
+  // Model for loading component.
+  late LoadingModel loadingModel;
 
   /// Initialization and disposal methods.
 
@@ -43,12 +46,14 @@ class DetailsModel extends FlutterFlowModel<DetailsWidget> {
     nutritionBoxModel = createModel(context, () => NutritionBoxModel());
     nutritionPanelGoogleVisionModel =
         createModel(context, () => NutritionPanelGoogleVisionModel());
+    loadingModel = createModel(context, () => LoadingModel());
   }
 
   void dispose() {
     unfocusNode.dispose();
     nutritionBoxModel.dispose();
     nutritionPanelGoogleVisionModel.dispose();
+    loadingModel.dispose();
   }
 
   /// Action blocks are added here.

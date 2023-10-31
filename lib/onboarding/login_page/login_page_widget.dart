@@ -6,7 +6,6 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -31,66 +30,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
   late LoginPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  var hasContainerTriggered1 = false;
-  var hasContainerTriggered2 = false;
-  var hasContainerTriggered3 = false;
+
   final animationsMap = {
-    'containerOnActionTriggerAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 400.ms),
-        ScaleEffect(
-          curve: Curves.easeInOut,
-          delay: 400.ms,
-          duration: 600.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(4.0, 4.0),
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 1.ms),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 1230.ms,
-          begin: 1.0,
-          end: 0.0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeOut,
-          delay: 0.ms,
-          duration: 1230.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(5.0, 5.0),
-        ),
-      ],
-    ),
-    'containerOnActionTriggerAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      applyInitialState: true,
-      effects: [
-        VisibilityEffect(duration: 300.ms),
-        FadeEffect(
-          curve: Curves.easeOut,
-          delay: 300.ms,
-          duration: 2000.ms,
-          begin: 1.0,
-          end: 0.0,
-        ),
-        ScaleEffect(
-          curve: Curves.easeOut,
-          delay: 300.ms,
-          duration: 2000.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(5.0, 5.0),
-        ),
-      ],
-    ),
     'tabBarOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
@@ -127,12 +68,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     _model.passwordCreateFocusNode ??= FocusNode();
     _model.passwordCreateConfirmController ??= TextEditingController();
     _model.passwordCreateConfirmFocusNode ??= FocusNode();
-    setupAnimations(
-      animationsMap.values.where((anim) =>
-          anim.trigger == AnimationTrigger.onActionTrigger ||
-          !anim.applyInitialState),
-      this,
-    );
   }
 
   @override
@@ -167,60 +102,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
           height: double.infinity,
           child: Stack(
             children: [
-              ClipRect(
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(
-                    sigmaX: 40.0,
-                    sigmaY: 40.0,
-                  ),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(1.00, -1.00),
-                        child: Container(
-                          width: 300.0,
-                          height: 400.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).tertiary,
-                            shape: BoxShape.rectangle,
-                          ),
-                        ).animateOnActionTrigger(
-                            animationsMap[
-                                'containerOnActionTriggerAnimation1']!,
-                            hasBeenTriggered: hasContainerTriggered1),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(-3.27, -1.29),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.75,
-                          height: MediaQuery.sizeOf(context).width * 0.75,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).primary,
-                            shape: BoxShape.circle,
-                          ),
-                        ).animateOnActionTrigger(
-                            animationsMap[
-                                'containerOnActionTriggerAnimation2']!,
-                            hasBeenTriggered: hasContainerTriggered2),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(0.00, 0.00),
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.7,
-                          height: MediaQuery.sizeOf(context).width * 0.7,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).secondary,
-                            shape: BoxShape.circle,
-                          ),
-                        ).animateOnActionTrigger(
-                            animationsMap[
-                                'containerOnActionTriggerAnimation3']!,
-                            hasBeenTriggered: hasContainerTriggered3),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -1264,45 +1145,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                             0.0, 24.0, 0.0, 0.0),
                                         child: FFButtonWidget(
                                           onPressed: () async {
-                                            if (animationsMap[
-                                                    'containerOnActionTriggerAnimation2'] !=
-                                                null) {
-                                              setState(() =>
-                                                  hasContainerTriggered2 =
-                                                      true);
-                                              SchedulerBinding.instance
-                                                  .addPostFrameCallback(
-                                                      (_) async => animationsMap[
-                                                              'containerOnActionTriggerAnimation2']!
-                                                          .controller
-                                                          .forward(from: 0.0));
-                                            }
-                                            if (animationsMap[
-                                                    'containerOnActionTriggerAnimation1'] !=
-                                                null) {
-                                              setState(() =>
-                                                  hasContainerTriggered1 =
-                                                      true);
-                                              SchedulerBinding.instance
-                                                  .addPostFrameCallback(
-                                                      (_) async => animationsMap[
-                                                              'containerOnActionTriggerAnimation1']!
-                                                          .controller
-                                                          .forward(from: 0.0));
-                                            }
-                                            if (animationsMap[
-                                                    'containerOnActionTriggerAnimation3'] !=
-                                                null) {
-                                              setState(() =>
-                                                  hasContainerTriggered3 =
-                                                      true);
-                                              SchedulerBinding.instance
-                                                  .addPostFrameCallback(
-                                                      (_) async => animationsMap[
-                                                              'containerOnActionTriggerAnimation3']!
-                                                          .controller
-                                                          .forward(from: 0.0));
-                                            }
                                             GoRouter.of(context)
                                                 .prepareAuthEvent();
                                             if (_model.passwordCreateController
