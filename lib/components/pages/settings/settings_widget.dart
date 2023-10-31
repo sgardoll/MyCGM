@@ -1567,11 +1567,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ),
                       if (valueOrDefault<bool>(
                         isWeb ||
-                                valueOrDefault<bool>(
-                                  revenue_cat.activeEntitlementIds
-                                      .contains('premium'),
-                                  false,
-                                )
+                                revenue_cat.activeEntitlementIds
+                                    .contains('premium')
                             ? false
                             : true,
                         true,
