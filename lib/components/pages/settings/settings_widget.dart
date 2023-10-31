@@ -1566,22 +1566,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           ),
                         ),
                       if (valueOrDefault<bool>(
-                        () {
-                          if (isWeb) {
-                            return false;
-                          } else if (revenue_cat.activeEntitlementIds
-                                  .contains(valueOrDefault<String>(
-                                revenue_cat
-                                    .offerings!.current!.lifetime!.identifier,
-                                'premium',
-                              )) ==
-                              false) {
-                            return true;
-                          } else {
-                            return false;
-                          }
-                        }(),
-                        false,
+                        isWeb ||
+                                valueOrDefault<bool>(
+                                  revenue_cat.activeEntitlementIds
+                                      .contains('premium'),
+                                  false,
+                                )
+                            ? false
+                            : true,
+                        true,
                       ))
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
