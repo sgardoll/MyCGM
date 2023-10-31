@@ -168,7 +168,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                         Flexible(
                                           child: Text(
                                             'just ',
-                                            textAlign: TextAlign.center,
+                                            textAlign: TextAlign.end,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodySmall
                                                 .override(
@@ -192,7 +192,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                                                   .priceString,
                                               '\$ ',
                                             ),
-                                            textAlign: TextAlign.center,
+                                            textAlign: TextAlign.start,
                                             maxLines: 1,
                                             style: FlutterFlowTheme.of(context)
                                                 .titleMedium
