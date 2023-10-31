@@ -70,7 +70,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.pop();
+              context.safePop();
             },
           ),
           title: Text(
@@ -306,8 +306,6 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                 child: FFButtonWidget(
                   onPressed: () async {
                     await revenue_cat.restorePurchases();
-
-                    context.pushNamed('home');
                   },
                   text: 'Restore Purchases',
                   options: FFButtonOptions(
