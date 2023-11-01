@@ -334,7 +334,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                           child: Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 4.0, 16.0, 4.0),
+                                                    16.0, 4.0, 16.0, 0.0),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
@@ -419,7 +419,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(
-                                                      16.0, 8.0, 16.0, 16.0),
+                                                      16.0, 8.0, 16.0, 8.0),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 mainAxisAlignment:
@@ -685,7 +685,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(
-                                                      16.0, 0.0, 16.0, 0.0),
+                                                      16.0, 4.0, 16.0, 0.0),
                                               child: AnimatedContainer(
                                                 duration:
                                                     Duration(milliseconds: 100),
