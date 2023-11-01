@@ -75,11 +75,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
             body: Center(
               child: SizedBox(
-                width: 25.0,
-                height: 25.0,
+                width: 30.0,
+                height: 30.0,
                 child: SpinKitRipple(
-                  color: FlutterFlowTheme.of(context).primary,
-                  size: 25.0,
+                  color: FlutterFlowTheme.of(context).secondary,
+                  size: 30.0,
                 ),
               ),
             ),

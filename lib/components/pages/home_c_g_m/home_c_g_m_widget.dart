@@ -171,7 +171,8 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
               children: [
                 Flexible(
                   child: RefreshIndicator(
-                    color: FlutterFlowTheme.of(context).primary,
+                    color: FlutterFlowTheme.of(context).secondary,
+                    backgroundColor: FlutterFlowTheme.of(context).primary,
                     onRefresh: () async {
                       _model.pullAPICall = await GetBloodGlucoseCall.call(
                         apiKey: valueOrDefault(currentUserDocument?.apiKey, ''),
