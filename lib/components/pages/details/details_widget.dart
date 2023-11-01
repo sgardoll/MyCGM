@@ -357,23 +357,23 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                             ),
                                           ),
                                         ),
-                                        Flexible(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    16.0, 8.0, 16.0, 16.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                if (valueOrDefault<bool>(
-                                                  detailsLookupRecord
-                                                          .hasGoogleVisionResponse()
-                                                      ? false
-                                                      : true,
-                                                  true,
-                                                ))
+                                        if (valueOrDefault<bool>(
+                                          detailsLookupRecord
+                                                  .hasGoogleVisionResponse()
+                                              ? false
+                                              : true,
+                                          true,
+                                        ))
+                                          Flexible(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 8.0, 16.0, 16.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
                                                   Flexible(
                                                     child: FFButtonWidget(
                                                       onPressed: () async {
@@ -572,10 +572,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                       ),
                                                     ),
                                                   ),
-                                              ].divide(SizedBox(width: 8.0)),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
                                         Flexible(
                                           child: Padding(
                                             padding:

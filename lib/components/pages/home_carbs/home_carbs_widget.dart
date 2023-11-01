@@ -163,6 +163,8 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                             hasTransition: true,
                                             transitionType:
                                                 PageTransitionType.rightToLeft,
+                                            duration:
+                                                Duration(milliseconds: 300),
                                           ),
                                         },
                                       );
