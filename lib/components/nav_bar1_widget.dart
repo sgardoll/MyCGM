@@ -8,7 +8,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/widgets/index.dart' as custom_widgets;
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -722,21 +721,50 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             ScanMode.BARCODE,
                                           );
 
-                                          if (functions.barcodeScanInt(
-                                                  _model.barcodeScan!) >
-                                              1) {
-                                            _model.doesCodeExist =
-                                                await queryLookupRecordOnce(
-                                              queryBuilder: (lookupRecord) =>
-                                                  lookupRecord.where(
-                                                'code',
-                                                isEqualTo: _model.barcodeScan,
-                                              ),
-                                              singleRecord: true,
-                                            ).then((s) => s.firstOrNull);
-                                            if (_model.doesCodeExist
-                                                    ?.hasCode() ==
-                                                true) {
+                                          _model.doesCodeExist =
+                                              await queryLookupRecordOnce(
+                                            queryBuilder: (lookupRecord) =>
+                                                lookupRecord.where(
+                                              'code',
+                                              isEqualTo: _model.barcodeScan,
+                                            ),
+                                            singleRecord: true,
+                                          ).then((s) => s.firstOrNull);
+                                          if (_model.doesCodeExist?.hasCode() ==
+                                              true) {
+                                            setState(() {
+                                              _model.loadingItem = false;
+                                            });
+
+                                            context.pushNamed(
+                                              'Details',
+                                              queryParameters: {
+                                                'docRef': serializeParam(
+                                                  _model
+                                                      .doesCodeExist?.reference,
+                                                  ParamType.DocumentReference,
+                                                ),
+                                              }.withoutNulls,
+                                            );
+                                          } else {
+                                            _model.buildshipAPI =
+                                                await BuildshipGroup
+                                                    .barcodeScanCall
+                                                    .call(
+                                              input: _model.barcodeScan,
+                                            );
+                                            if ((_model
+                                                    .buildshipAPI?.succeeded ??
+                                                true)) {
+                                              _model.getNewDocref =
+                                                  await queryLookupRecordOnce(
+                                                queryBuilder: (lookupRecord) =>
+                                                    lookupRecord.where(
+                                                  'code',
+                                                  isEqualTo: _model.barcodeScan,
+                                                ),
+                                                singleRecord: true,
+                                              ).then((s) => s.firstOrNull);
                                               setState(() {
                                                 _model.loadingItem = false;
                                               });
@@ -745,49 +773,12 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 'Details',
                                                 queryParameters: {
                                                   'docRef': serializeParam(
-                                                    _model.doesCodeExist
+                                                    _model.getNewDocref
                                                         ?.reference,
                                                     ParamType.DocumentReference,
                                                   ),
                                                 }.withoutNulls,
                                               );
-                                            } else {
-                                              _model.buildshipAPI =
-                                                  await BuildshipGroup
-                                                      .barcodeScanCall
-                                                      .call(
-                                                input: _model.barcodeScan,
-                                              );
-                                              if ((_model.buildshipAPI
-                                                      ?.succeeded ??
-                                                  true)) {
-                                                _model.getNewDocref =
-                                                    await queryLookupRecordOnce(
-                                                  queryBuilder:
-                                                      (lookupRecord) =>
-                                                          lookupRecord.where(
-                                                    'code',
-                                                    isEqualTo:
-                                                        _model.barcodeScan,
-                                                  ),
-                                                  singleRecord: true,
-                                                ).then((s) => s.firstOrNull);
-                                                setState(() {
-                                                  _model.loadingItem = false;
-                                                });
-
-                                                context.pushNamed(
-                                                  'Details',
-                                                  queryParameters: {
-                                                    'docRef': serializeParam(
-                                                      _model.getNewDocref
-                                                          ?.reference,
-                                                      ParamType
-                                                          .DocumentReference,
-                                                    ),
-                                                  }.withoutNulls,
-                                                );
-                                              }
                                             }
                                           }
 
