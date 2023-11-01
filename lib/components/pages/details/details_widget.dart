@@ -15,7 +15,9 @@ import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,10 +28,12 @@ export 'details_model.dart';
 class DetailsWidget extends StatefulWidget {
   const DetailsWidget({
     Key? key,
-    required this.docRef,
+    this.docRef,
+    this.code,
   }) : super(key: key);
 
   final DocumentReference? docRef;
+  final String? code;
 
   @override
   _DetailsWidgetState createState() => _DetailsWidgetState();
@@ -44,6 +48,42 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => DetailsModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.code != null && widget.code != '') {
+        _model.codeLookup = await queryLookupRecordOnce(
+          queryBuilder: (lookupRecord) => lookupRecord.where(
+            'code',
+            isEqualTo: widget.code,
+          ),
+          singleRecord: true,
+        ).then((s) => s.firstOrNull);
+        setState(() {
+          _model.docRef = _model.codeLookup?.reference;
+        });
+      } else {
+        if (widget.docRef?.id != null && widget.docRef?.id != '') {
+          setState(() {
+            _model.docRef = widget.docRef;
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Error loading product',
+                style: GoogleFonts.getFont(
+                  'Lato',
+                  color: FlutterFlowTheme.of(context).primaryText,
+                ),
+              ),
+              duration: Duration(milliseconds: 4000),
+              backgroundColor: FlutterFlowTheme.of(context).primary,
+            ),
+          );
+        }
+      }
+    });
   }
 
   @override
@@ -127,7 +167,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                       child: CachedNetworkImage(
                         fadeInDuration: Duration(milliseconds: 500),
                         fadeOutDuration: Duration(milliseconds: 500),
-                        imageUrl: detailsLookupRecord.openFoodFacts.imageUrl,
+                        imageUrl: valueOrDefault<String>(
+                          detailsLookupRecord.openFoodFacts.imageUrl,
+                          'https://www.connectio.com.au/nutri/error.png',
+                        ),
                         fit: BoxFit.cover,
                         errorWidget: (context, error, stackTrace) =>
                             Image.asset(
@@ -186,7 +229,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                         AlignmentDirectional(
                                                             -1.00, 0.00),
                                                     child: AutoSizeText(
-                                                      detailsLookupRecord.name,
+                                                      valueOrDefault<String>(
+                                                        detailsLookupRecord
+                                                            .name,
+                                                        'Loading',
+                                                      ),
                                                       textAlign:
                                                           TextAlign.start,
                                                       maxLines: 2,
@@ -253,8 +300,12 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                                         8.0,
                                                                         0.0),
                                                             child: AutoSizeText(
-                                                              detailsLookupRecord
-                                                                  .size,
+                                                              valueOrDefault<
+                                                                  String>(
+                                                                detailsLookupRecord
+                                                                    .size,
+                                                                '...',
+                                                              ),
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,

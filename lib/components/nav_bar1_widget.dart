@@ -378,7 +378,10 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     16.0, 6.0, 0.0, 0.0),
                                             child: AutoSizeText(
-                                              'Loading Scanned Item',
+                                              valueOrDefault<String>(
+                                                _model.loadingText,
+                                                'Scanning',
+                                              ),
                                               textAlign: TextAlign.center,
                                               maxLines: 1,
                                               style:
@@ -732,6 +735,14 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                           ).then((s) => s.firstOrNull);
                                           if (_model.doesCodeExist?.hasCode() ==
                                               true) {
+                                            if (animationsMap[
+                                                    'containerOnActionTriggerAnimation'] !=
+                                                null) {
+                                              await animationsMap[
+                                                      'containerOnActionTriggerAnimation']!
+                                                  .controller
+                                                  .reverse();
+                                            }
                                             setState(() {
                                               _model.loadingItem = false;
                                             });
@@ -756,15 +767,14 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             if ((_model
                                                     .buildshipAPI?.succeeded ??
                                                 true)) {
-                                              _model.getNewDocref =
-                                                  await queryLookupRecordOnce(
-                                                queryBuilder: (lookupRecord) =>
-                                                    lookupRecord.where(
-                                                  'code',
-                                                  isEqualTo: _model.barcodeScan,
-                                                ),
-                                                singleRecord: true,
-                                              ).then((s) => s.firstOrNull);
+                                              if (animationsMap[
+                                                      'containerOnActionTriggerAnimation'] !=
+                                                  null) {
+                                                await animationsMap[
+                                                        'containerOnActionTriggerAnimation']!
+                                                    .controller
+                                                    .reverse();
+                                              }
                                               setState(() {
                                                 _model.loadingItem = false;
                                               });
@@ -772,13 +782,31 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               context.pushNamed(
                                                 'Details',
                                                 queryParameters: {
-                                                  'docRef': serializeParam(
-                                                    _model.getNewDocref
-                                                        ?.reference,
-                                                    ParamType.DocumentReference,
+                                                  'code': serializeParam(
+                                                    _model.barcodeScan,
+                                                    ParamType.String,
                                                   ),
                                                 }.withoutNulls,
                                               );
+                                            } else {
+                                              setState(() {
+                                                _model.loadingText =
+                                                    'Item Not Found';
+                                              });
+                                              await Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 20000));
+                                              if (animationsMap[
+                                                      'containerOnActionTriggerAnimation'] !=
+                                                  null) {
+                                                await animationsMap[
+                                                        'containerOnActionTriggerAnimation']!
+                                                    .controller
+                                                    .reverse();
+                                              }
+                                              setState(() {
+                                                _model.loadingItem = false;
+                                              });
                                             }
                                           }
 

@@ -16,16 +16,24 @@ import 'details_widget.dart' show DetailsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class DetailsModel extends FlutterFlowModel<DetailsWidget> {
+  ///  Local state fields for this page.
+
+  DocumentReference? docRef;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // Stores action output result for [Firestore Query - Query a collection] action in Details widget.
+  LookupRecord? codeLookup;
   // Model for NutritionBox component.
   late NutritionBoxModel nutritionBoxModel;
   bool isDataUploading = false;

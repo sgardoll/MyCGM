@@ -185,6 +185,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => DetailsWidget(
                 docRef: params.getParam(
                     'docRef', ParamType.DocumentReference, false, ['lookup']),
+                code: params.getParam('code', ParamType.String),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

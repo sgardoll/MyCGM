@@ -29,6 +29,8 @@ class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
 
   bool? loadingItem = false;
 
+  String loadingText = 'Loading Scanned Item';
+
   ///  State fields for stateful widgets in this component.
 
   var barcodeScan = '';
@@ -36,8 +38,6 @@ class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
   LookupRecord? doesCodeExist;
   // Stores action output result for [Backend Call - API (Barcode Scan)] action in BarcodeFAB widget.
   ApiCallResponse? buildshipAPI;
-  // Stores action output result for [Firestore Query - Query a collection] action in BarcodeFAB widget.
-  LookupRecord? getNewDocref;
   // State field(s) for Timer widget.
   int timerMilliseconds = 5000;
   String timerValue = StopWatchTimer.getDisplayTime(
