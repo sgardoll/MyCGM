@@ -28,8 +28,6 @@ class DetailsModel extends FlutterFlowModel<DetailsWidget> {
   final unfocusNode = FocusNode();
   // Model for NutritionBox component.
   late NutritionBoxModel nutritionBoxModel;
-  // Model for NutritionPanelGoogleVision component.
-  late NutritionPanelGoogleVisionModel nutritionPanelGoogleVisionModel;
   bool isDataUploading = false;
   FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));
@@ -37,6 +35,8 @@ class DetailsModel extends FlutterFlowModel<DetailsWidget> {
 
   // Stores action output result for [Backend Call - API (BuildshipGoogleVision)] action in Button widget.
   ApiCallResponse? buildshipAPIGoogleVision;
+  // Model for NutritionPanelGoogleVision component.
+  late NutritionPanelGoogleVisionModel nutritionPanelGoogleVisionModel;
   // Model for loading component.
   late LoadingModel loadingModel;
 

@@ -93,150 +93,466 @@ class _DetailsWidgetState extends State<DetailsWidget> {
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(150.0),
-              child: AppBar(
-                backgroundColor: FlutterFlowTheme.of(context).primary,
-                iconTheme:
-                    IconThemeData(color: FlutterFlowTheme.of(context).btnText),
-                automaticallyImplyLeading: true,
-                leading: FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30.0,
-                  borderWidth: 1.0,
-                  buttonSize: 60.0,
-                  fillColor: Color(0x40000000),
-                  icon: Icon(
-                    Icons.chevron_left_rounded,
-                    color: FlutterFlowTheme.of(context).btnText,
-                    size: 30.0,
+            body: NestedScrollView(
+              floatHeaderSlivers: true,
+              headerSliverBuilder: (context, _) => [
+                SliverAppBar(
+                  expandedHeight: 150.0,
+                  collapsedHeight: 56.0,
+                  pinned: false,
+                  floating: false,
+                  backgroundColor: FlutterFlowTheme.of(context).primary,
+                  iconTheme: IconThemeData(
+                      color: FlutterFlowTheme.of(context).btnText),
+                  automaticallyImplyLeading: true,
+                  leading: FlutterFlowIconButton(
+                    borderColor: Colors.transparent,
+                    borderRadius: 30.0,
+                    borderWidth: 1.0,
+                    buttonSize: 60.0,
+                    fillColor: Color(0x40000000),
+                    icon: Icon(
+                      Icons.chevron_left_rounded,
+                      color: FlutterFlowTheme.of(context).btnText,
+                      size: 30.0,
+                    ),
+                    onPressed: () async {
+                      context.safePop();
+                    },
                   ),
-                  onPressed: () async {
-                    context.safePop();
-                  },
-                ),
-                actions: [],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: CachedNetworkImage(
-                      fadeInDuration: Duration(milliseconds: 500),
-                      fadeOutDuration: Duration(milliseconds: 500),
-                      imageUrl: detailsLookupRecord.openFoodFacts.imageUrl,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, error, stackTrace) => Image.asset(
-                        'assets/images/error_image.png',
+                  actions: [],
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: CachedNetworkImage(
+                        fadeInDuration: Duration(milliseconds: 500),
+                        fadeOutDuration: Duration(milliseconds: 500),
+                        imageUrl: detailsLookupRecord.openFoodFacts.imageUrl,
                         fit: BoxFit.cover,
+                        errorWidget: (context, error, stackTrace) =>
+                            Image.asset(
+                          'assets/images/error_image.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                centerTitle: false,
-                elevation: 6.0,
-              ),
-            ),
-            body: SafeArea(
-              top: true,
-              child: Builder(
+                  centerTitle: false,
+                  elevation: 6.0,
+                )
+              ],
+              body: Builder(
                 builder: (context) {
-                  if (detailsLookupRecord.name != null &&
-                      detailsLookupRecord.name != '') {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: MediaQuery.sizeOf(context).width * 1.0,
-                            height: MediaQuery.sizeOf(context).height * 1.0,
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 8.0, 16.0, 8.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            flex: 4,
-                                            child: Align(
-                                              alignment: AlignmentDirectional(
-                                                  -1.00, 0.00),
-                                              child: AutoSizeText(
-                                                detailsLookupRecord.name,
-                                                textAlign: TextAlign.start,
-                                                maxLines: 2,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineMedium
-                                                        .override(
-                                                          fontFamily: 'Lato',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            flex: 1,
-                                            child: Align(
-                                              alignment: AlignmentDirectional(
-                                                  1.00, 0.00),
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 0.0, 0.0, 4.0),
-                                                child: Material(
-                                                  color: Colors.transparent,
-                                                  elevation: 2.0,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                  ),
-                                                  child: Container(
-                                                    height: 30.0,
-                                                    decoration: BoxDecoration(
-                                                      color: FlutterFlowTheme
-                                                              .of(context)
-                                                          .secondaryBackground,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                    ),
+                  return SafeArea(
+                    top: false,
+                    child: Builder(
+                      builder: (context) {
+                        if (detailsLookupRecord.name != null &&
+                            detailsLookupRecord.name != '') {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  width: MediaQuery.sizeOf(context).width * 1.0,
+                                  height:
+                                      MediaQuery.sizeOf(context).height * 1.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 8.0, 16.0, 8.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Flexible(
+                                                  flex: 4,
+                                                  child: Align(
                                                     alignment:
                                                         AlignmentDirectional(
-                                                            0.00, 0.00),
+                                                            -1.00, 0.00),
+                                                    child: AutoSizeText(
+                                                      detailsLookupRecord.name,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      maxLines: 2,
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .headlineMedium
+                                                          .override(
+                                                            fontFamily: 'Lato',
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryText,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                  flex: 1,
+                                                  child: Align(
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                            1.00, 0.00),
                                                     child: Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
-                                                                  8.0,
                                                                   0.0,
-                                                                  8.0,
-                                                                  0.0),
-                                                      child: AutoSizeText(
-                                                        detailsLookupRecord
-                                                            .size,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
+                                                                  0.0,
+                                                                  0.0,
+                                                                  4.0),
+                                                      child: Material(
+                                                        color:
+                                                            Colors.transparent,
+                                                        elevation: 2.0,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                        ),
+                                                        child: Container(
+                                                          height: 30.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryBackground,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                          alignment:
+                                                              AlignmentDirectional(
+                                                                  0.00, 0.00),
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        8.0,
+                                                                        0.0,
+                                                                        8.0,
+                                                                        0.0),
+                                                            child: AutoSizeText(
+                                                              detailsLookupRecord
+                                                                  .size,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodySmall
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Lato',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondary,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ].divide(SizedBox(width: 8.0)),
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 4.0, 16.0, 4.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                if (valueOrDefault<bool>(
+                                                  detailsLookupRecord
+                                                              .openFoodFacts !=
+                                                          null
+                                                      ? true
+                                                      : false,
+                                                  false,
+                                                ))
+                                                  Flexible(
+                                                    child: wrapWithModel(
+                                                      model: _model
+                                                          .nutritionBoxModel,
+                                                      updateCallback: () =>
+                                                          setState(() {}),
+                                                      child: NutritionBoxWidget(
+                                                        source:
+                                                            'Open Food Facts',
+                                                        energy:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .energy
+                                                                .toDouble(),
+                                                        energyUnits:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .energyKcalUnit,
+                                                        energyPerServing:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .energyKcal100g,
+                                                        protein:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .proteins,
+                                                        proteinUnits:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .proteinsUnit,
+                                                        proteinPerServing:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .proteins100g,
+                                                        carbs:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .carbohydrates,
+                                                        carbUnits:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .carbohydratesUnit,
+                                                        carbsPerServing:
+                                                            detailsLookupRecord
+                                                                .openFoodFacts
+                                                                .nutriments
+                                                                .carbohydrates100g,
+                                                      ),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 8.0, 16.0, 16.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                if (valueOrDefault<bool>(
+                                                  detailsLookupRecord
+                                                          .hasGoogleVisionResponse()
+                                                      ? false
+                                                      : true,
+                                                  true,
+                                                ))
+                                                  Flexible(
+                                                    child: FFButtonWidget(
+                                                      onPressed: () async {
+                                                        final selectedMedia =
+                                                            await selectMedia(
+                                                          multiImage: false,
+                                                        );
+                                                        if (selectedMedia !=
+                                                                null &&
+                                                            selectedMedia.every((m) =>
+                                                                validateFileFormat(
+                                                                    m.storagePath,
+                                                                    context))) {
+                                                          setState(() => _model
+                                                                  .isDataUploading =
+                                                              true);
+                                                          var selectedUploadedFiles =
+                                                              <FFUploadedFile>[];
+
+                                                          var downloadUrls =
+                                                              <String>[];
+                                                          try {
+                                                            showUploadMessage(
+                                                              context,
+                                                              'Uploading file...',
+                                                              showLoading: true,
+                                                            );
+                                                            selectedUploadedFiles =
+                                                                selectedMedia
+                                                                    .map((m) =>
+                                                                        FFUploadedFile(
+                                                                          name: m
+                                                                              .storagePath
+                                                                              .split('/')
+                                                                              .last,
+                                                                          bytes:
+                                                                              m.bytes,
+                                                                          height: m
+                                                                              .dimensions
+                                                                              ?.height,
+                                                                          width: m
+                                                                              .dimensions
+                                                                              ?.width,
+                                                                          blurHash:
+                                                                              m.blurHash,
+                                                                        ))
+                                                                    .toList();
+
+                                                            downloadUrls =
+                                                                (await Future
+                                                                        .wait(
+                                                              selectedMedia.map(
+                                                                (m) async =>
+                                                                    await uploadData(
+                                                                        m.storagePath,
+                                                                        m.bytes),
+                                                              ),
+                                                            ))
+                                                                    .where((u) =>
+                                                                        u !=
+                                                                        null)
+                                                                    .map((u) =>
+                                                                        u!)
+                                                                    .toList();
+                                                          } finally {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .hideCurrentSnackBar();
+                                                            _model.isDataUploading =
+                                                                false;
+                                                          }
+                                                          if (selectedUploadedFiles
+                                                                      .length ==
+                                                                  selectedMedia
+                                                                      .length &&
+                                                              downloadUrls
+                                                                      .length ==
+                                                                  selectedMedia
+                                                                      .length) {
+                                                            setState(() {
+                                                              _model.uploadedLocalFile =
+                                                                  selectedUploadedFiles
+                                                                      .first;
+                                                              _model.uploadedFileUrl =
+                                                                  downloadUrls
+                                                                      .first;
+                                                            });
+                                                            showUploadMessage(
+                                                                context,
+                                                                'Success!');
+                                                          } else {
+                                                            setState(() {});
+                                                            showUploadMessage(
+                                                                context,
+                                                                'Failed to upload data');
+                                                            return;
+                                                          }
+                                                        }
+
+                                                        _model.buildshipAPIGoogleVision =
+                                                            await BuildshipGoogleVisionCall
+                                                                .call(
+                                                          url: _model
+                                                              .uploadedFileUrl,
+                                                          input:
+                                                              detailsLookupRecord
+                                                                  .code,
+                                                        );
+                                                        if ((_model
+                                                                .buildshipAPIGoogleVision
+                                                                ?.succeeded ??
+                                                            true)) {
+                                                          await widget.docRef!
+                                                              .update(
+                                                                  createLookupRecordData(
+                                                            googleVisionResponse:
+                                                                (_model.buildshipAPIGoogleVision
+                                                                        ?.bodyText ??
+                                                                    ''),
+                                                            nutritionPanel: _model
+                                                                .uploadedFileUrl,
+                                                          ));
+                                                        } else {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Text(
+                                                                'Nutritional Panel Text Detection Unsuccessful',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                ),
+                                                              ),
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      4000),
+                                                              backgroundColor:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primary,
+                                                            ),
+                                                          );
+                                                        }
+
+                                                        setState(() {});
+                                                      },
+                                                      text:
+                                                          'Capture Nutritional Table',
+                                                      icon: Icon(
+                                                        Icons.add_a_photo_sharp,
+                                                        size: 20.0,
+                                                      ),
+                                                      options: FFButtonOptions(
+                                                        height: 40.0,
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    16.0,
+                                                                    0.0,
+                                                                    16.0,
+                                                                    0.0),
+                                                        iconPadding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    8.0,
+                                                                    0.0),
+                                                        color:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .bodySmall
+                                                                .primary,
+                                                        textStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
                                                                 .override(
                                                                   fontFamily:
                                                                       'Lato',
@@ -244,415 +560,199 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                                           context)
                                                                       .secondary,
                                                                 ),
+                                                        elevation: 2.0,
+                                                        borderSide: BorderSide(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 1.0,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
+                                              ].divide(SizedBox(width: 8.0)),
                                             ),
                                           ),
-                                        ].divide(SizedBox(width: 8.0)),
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 4.0, 16.0, 4.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          if (valueOrDefault<bool>(
-                                            detailsLookupRecord.openFoodFacts !=
-                                                    null
-                                                ? true
-                                                : false,
-                                            false,
-                                          ))
-                                            Flexible(
-                                              child: wrapWithModel(
-                                                model: _model.nutritionBoxModel,
-                                                updateCallback: () =>
-                                                    setState(() {}),
-                                                child: NutritionBoxWidget(
-                                                  source: 'Open Food Facts',
-                                                  energy: detailsLookupRecord
-                                                      .openFoodFacts.energy
-                                                      .toDouble(),
-                                                  energyUnits:
-                                                      detailsLookupRecord
-                                                          .openFoodFacts
-                                                          .energyKcalUnit,
-                                                  energyPerServing:
-                                                      detailsLookupRecord
-                                                          .openFoodFacts
-                                                          .energyKcal100g,
-                                                  protein: detailsLookupRecord
-                                                      .openFoodFacts.proteins,
-                                                  proteinUnits:
-                                                      detailsLookupRecord
-                                                          .openFoodFacts
-                                                          .proteinsUnit,
-                                                  proteinPerServing:
-                                                      detailsLookupRecord
-                                                          .openFoodFacts
-                                                          .proteins100g,
-                                                  carbs: detailsLookupRecord
-                                                      .openFoodFacts
-                                                      .carbohydrates,
-                                                  carbUnits: detailsLookupRecord
-                                                      .openFoodFacts
-                                                      .carbohydratesUnit,
-                                                  carbsPerServing:
-                                                      detailsLookupRecord
-                                                          .openFoodFacts
-                                                          .carbohydrates100g,
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 4.0, 16.0, 4.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          if (valueOrDefault<bool>(
-                                            detailsLookupRecord
-                                                            .googleVisionResponse !=
-                                                        null &&
-                                                    detailsLookupRecord
-                                                            .googleVisionResponse !=
-                                                        ''
-                                                ? true
-                                                : false,
-                                            false,
-                                          ))
-                                            Flexible(
-                                              child: wrapWithModel(
-                                                model: _model
-                                                    .nutritionPanelGoogleVisionModel,
-                                                updateCallback: () =>
-                                                    setState(() {}),
-                                                child: Hero(
-                                                  tag: 'googleVision',
-                                                  transitionOnUserGestures:
-                                                      true,
-                                                  child: Material(
-                                                    color: Colors.transparent,
-                                                    child:
-                                                        NutritionPanelGoogleVisionWidget(
-                                                      source:
-                                                          'Nutritional Infomation',
-                                                      markdown: detailsLookupRecord
-                                                          .googleVisionResponse,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  if (valueOrDefault<bool>(
-                                    detailsLookupRecord.hasTrivia()
-                                        ? true
-                                        : false,
-                                    false,
-                                  ))
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            16.0, 0.0, 16.0, 0.0),
-                                        child: AnimatedContainer(
-                                          duration: Duration(milliseconds: 100),
-                                          curve: Curves.bounceOut,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  1.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondary,
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
+                                        ),
+                                        Flexible(
                                           child: Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 8.0, 8.0, 8.0),
+                                                    16.0, 4.0, 16.0, 4.0),
                                             child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          8.0, 0.0, 0.0, 0.0),
-                                                  child: Icon(
-                                                    Icons.info_outlined,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground,
-                                                    size: 24.0,
-                                                  ),
-                                                ),
-                                                Flexible(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: AutoSizeText(
-                                                      detailsLookupRecord
-                                                          .trivia,
-                                                      maxLines: 3,
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodySmall
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Lato',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .btnText,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                              ),
+                                                if (valueOrDefault<bool>(
+                                                  detailsLookupRecord
+                                                                  .googleVisionResponse !=
+                                                              null &&
+                                                          detailsLookupRecord
+                                                                  .googleVisionResponse !=
+                                                              ''
+                                                      ? true
+                                                      : false,
+                                                  false,
+                                                ))
+                                                  Flexible(
+                                                    child: wrapWithModel(
+                                                      model: _model
+                                                          .nutritionPanelGoogleVisionModel,
+                                                      updateCallback: () =>
+                                                          setState(() {}),
+                                                      child: Hero(
+                                                        tag: 'googleVision',
+                                                        transitionOnUserGestures:
+                                                            true,
+                                                        child: Material(
+                                                          color: Colors
+                                                              .transparent,
+                                                          child:
+                                                              NutritionPanelGoogleVisionWidget(
+                                                            source:
+                                                                'Nutritional Infomation',
+                                                            markdown:
+                                                                detailsLookupRecord
+                                                                    .googleVisionResponse,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 8.0, 16.0, 16.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
+                                        if (valueOrDefault<bool>(
+                                          detailsLookupRecord.hasTrivia()
+                                              ? true
+                                              : false,
+                                          false,
+                                        ))
                                           Flexible(
-                                            child: FFButtonWidget(
-                                              onPressed: () async {
-                                                final selectedMedia =
-                                                    await selectMedia(
-                                                  multiImage: false,
-                                                );
-                                                if (selectedMedia != null &&
-                                                    selectedMedia.every((m) =>
-                                                        validateFileFormat(
-                                                            m.storagePath,
-                                                            context))) {
-                                                  setState(() => _model
-                                                      .isDataUploading = true);
-                                                  var selectedUploadedFiles =
-                                                      <FFUploadedFile>[];
-
-                                                  var downloadUrls = <String>[];
-                                                  try {
-                                                    showUploadMessage(
-                                                      context,
-                                                      'Uploading file...',
-                                                      showLoading: true,
-                                                    );
-                                                    selectedUploadedFiles =
-                                                        selectedMedia
-                                                            .map((m) =>
-                                                                FFUploadedFile(
-                                                                  name: m
-                                                                      .storagePath
-                                                                      .split(
-                                                                          '/')
-                                                                      .last,
-                                                                  bytes:
-                                                                      m.bytes,
-                                                                  height: m
-                                                                      .dimensions
-                                                                      ?.height,
-                                                                  width: m
-                                                                      .dimensions
-                                                                      ?.width,
-                                                                  blurHash: m
-                                                                      .blurHash,
-                                                                ))
-                                                            .toList();
-
-                                                    downloadUrls = (await Future
-                                                            .wait(
-                                                      selectedMedia.map(
-                                                        (m) async =>
-                                                            await uploadData(
-                                                                m.storagePath,
-                                                                m.bytes),
-                                                      ),
-                                                    ))
-                                                        .where((u) => u != null)
-                                                        .map((u) => u!)
-                                                        .toList();
-                                                  } finally {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .hideCurrentSnackBar();
-                                                    _model.isDataUploading =
-                                                        false;
-                                                  }
-                                                  if (selectedUploadedFiles
-                                                              .length ==
-                                                          selectedMedia
-                                                              .length &&
-                                                      downloadUrls.length ==
-                                                          selectedMedia
-                                                              .length) {
-                                                    setState(() {
-                                                      _model.uploadedLocalFile =
-                                                          selectedUploadedFiles
-                                                              .first;
-                                                      _model.uploadedFileUrl =
-                                                          downloadUrls.first;
-                                                    });
-                                                    showUploadMessage(
-                                                        context, 'Success!');
-                                                  } else {
-                                                    setState(() {});
-                                                    showUploadMessage(context,
-                                                        'Failed to upload data');
-                                                    return;
-                                                  }
-                                                }
-
-                                                _model.buildshipAPIGoogleVision =
-                                                    await BuildshipGoogleVisionCall
-                                                        .call(
-                                                  url: _model.uploadedFileUrl,
-                                                  input:
-                                                      detailsLookupRecord.code,
-                                                );
-                                                if ((_model
-                                                        .buildshipAPIGoogleVision
-                                                        ?.succeeded ??
-                                                    true)) {
-                                                  await widget.docRef!.update(
-                                                      createLookupRecordData(
-                                                    googleVisionResponse: (_model
-                                                            .buildshipAPIGoogleVision
-                                                            ?.bodyText ??
-                                                        ''),
-                                                    nutritionPanel:
-                                                        _model.uploadedFileUrl,
-                                                  ));
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        'Nutritional Panel Text Detection Unsuccessful',
-                                                        style: TextStyle(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                        ),
-                                                      ),
-                                                      duration: Duration(
-                                                          milliseconds: 4000),
-                                                      backgroundColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary,
-                                                    ),
-                                                  );
-                                                }
-
-                                                setState(() {});
-                                              },
-                                              text: 'Capture Nutritional Table',
-                                              icon: Icon(
-                                                Icons.add_a_photo_sharp,
-                                                size: 20.0,
-                                              ),
-                                              options: FFButtonOptions(
-                                                height: 40.0,
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        16.0, 0.0, 16.0, 0.0),
-                                                iconPadding:
-                                                    EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                            0.0, 0.0, 8.0, 0.0),
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                textStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily: 'Lato',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondary,
-                                                        ),
-                                                elevation: 2.0,
-                                                borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                  width: 1.0,
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 0.0, 16.0, 0.0),
+                                              child: AnimatedContainer(
+                                                duration:
+                                                    Duration(milliseconds: 100),
+                                                curve: Curves.bounceOut,
+                                                width:
+                                                    MediaQuery.sizeOf(context)
+                                                            .width *
+                                                        1.0,
+                                                decoration: BoxDecoration(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 8.0, 8.0, 8.0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    8.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        child: Icon(
+                                                          Icons.info_outlined,
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryBackground,
+                                                          size: 24.0,
+                                                        ),
+                                                      ),
+                                                      Flexible(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      8.0,
+                                                                      0.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: AutoSizeText(
+                                                            detailsLookupRecord
+                                                                .trivia,
+                                                            maxLines: 4,
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodySmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Lato',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .btnText,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ].divide(SizedBox(width: 8.0)),
-                                      ),
+                                      ].addToStart(SizedBox(height: 8.0)),
                                     ),
                                   ),
-                                ].addToStart(SizedBox(height: 8.0)),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        if (valueOrDefault<bool>(
-                          isWeb ||
-                                  revenue_cat.activeEntitlementIds
-                                      .contains('premium')
-                              ? false
-                              : true,
-                          true,
-                        ))
-                          Align(
-                            alignment: AlignmentDirectional(0.00, -1.00),
-                            child: FlutterFlowAdBanner(
-                              width: MediaQuery.sizeOf(context).width * 1.0,
-                              height: 100.0,
-                              showsTestAd: false,
-                              iOSAdUnitID:
-                                  'ca-app-pub-3945304154369399/8928009543',
-                              androidAdUnitID:
-                                  'ca-app-pub-3945304154369399/4626582701',
-                            ),
-                          ),
-                      ],
-                    );
-                  } else {
-                    return wrapWithModel(
-                      model: _model.loadingModel,
-                      updateCallback: () => setState(() {}),
-                      child: LoadingWidget(),
-                    );
-                  }
+                              if (valueOrDefault<bool>(
+                                isWeb ||
+                                        revenue_cat.activeEntitlementIds
+                                            .contains('premium')
+                                    ? false
+                                    : true,
+                                true,
+                              ))
+                                Align(
+                                  alignment: AlignmentDirectional(0.00, -1.00),
+                                  child: FlutterFlowAdBanner(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 1.0,
+                                    height: 100.0,
+                                    showsTestAd: false,
+                                    iOSAdUnitID:
+                                        'ca-app-pub-3945304154369399/8928009543',
+                                    androidAdUnitID:
+                                        'ca-app-pub-3945304154369399/4626582701',
+                                  ),
+                                ),
+                            ],
+                          );
+                        } else {
+                          return wrapWithModel(
+                            model: _model.loadingModel,
+                            updateCallback: () => setState(() {}),
+                            child: LoadingWidget(),
+                          );
+                        }
+                      },
+                    ),
+                  );
                 },
               ),
             ),

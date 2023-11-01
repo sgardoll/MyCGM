@@ -114,7 +114,7 @@ class _NutritionPanelGoogleVisionWidgetState
             expanded: Container(
               width: MediaQuery.sizeOf(context).width * 1.0,
               constraints: BoxConstraints(
-                maxHeight: 500.0,
+                maxHeight: 350.0,
               ),
               decoration: BoxDecoration(
                 color: Colors.transparent,
@@ -127,15 +127,11 @@ class _NutritionPanelGoogleVisionWidgetState
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Flexible(
-                      child: Container(
+                      child: custom_widgets.MarkdownWidget(
                         width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: MediaQuery.sizeOf(context).height * 1.0,
-                        child: custom_widgets.MarkdownWidget(
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: MediaQuery.sizeOf(context).height * 1.0,
-                          mdcolor: FlutterFlowTheme.of(context).primaryText,
-                          data: widget.markdown!,
-                        ),
+                        height: 350.0,
+                        mdcolor: FlutterFlowTheme.of(context).primaryText,
+                        data: widget.markdown!,
                       ),
                     ),
                   ],
@@ -145,7 +141,7 @@ class _NutritionPanelGoogleVisionWidgetState
             theme: ExpandableThemeData(
               tapHeaderToExpand: true,
               tapBodyToExpand: false,
-              tapBodyToCollapse: false,
+              tapBodyToCollapse: true,
               headerAlignment: ExpandablePanelHeaderAlignment.center,
               hasIcon: true,
               expandIcon: Icons.keyboard_arrow_down_rounded,

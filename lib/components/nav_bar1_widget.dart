@@ -44,6 +44,25 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
   late NavBar1Model _model;
 
   final animationsMap = {
+    'containerOnPageLoadAnimation1': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(-100.0, 0.0),
+          end: Offset(0.0, 0.0),
+        ),
+        FadeEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: 0.0,
+          end: 1.0,
+        ),
+      ],
+    ),
     'containerOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
@@ -64,7 +83,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
         ),
       ],
     ),
-    'containerOnPageLoadAnimation1': AnimationInfo(
+    'containerOnPageLoadAnimation2': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       applyInitialState: true,
       effects: [
@@ -84,7 +103,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
         ),
       ],
     ),
-    'containerOnPageLoadAnimation2': AnimationInfo(
+    'containerOnPageLoadAnimation3': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
         ScaleEffect(
@@ -249,41 +268,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               ),
                                             ),
                                           ),
-                                          Flexible(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 0.0, 8.0, 0.0),
-                                              child: InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  if (animationsMap[
-                                                          'containerOnActionTriggerAnimation'] !=
-                                                      null) {
-                                                    await animationsMap[
-                                                            'containerOnActionTriggerAnimation']!
-                                                        .controller
-                                                        .forward(from: 0.0);
-                                                  }
-                                                  setState(() {
-                                                    FFAppState().firstOpen =
-                                                        false;
-                                                  });
-                                                },
-                                                child: Icon(
-                                                  Icons
-                                                      .keyboard_arrow_down_outlined,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .white,
-                                                  size: 24.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -302,16 +286,132 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                           ),
                         ),
                       ),
-                    )
-                        .animateOnPageLoad(
-                            animationsMap['containerOnPageLoadAnimation1']!)
-                        .animateOnActionTrigger(
-                          animationsMap['containerOnActionTriggerAnimation']!,
-                        ),
+                    ).animateOnPageLoad(
+                        animationsMap['containerOnPageLoadAnimation1']!),
                   ),
                 ),
             ],
           ),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (_model.loadingItem ?? true)
+              Align(
+                alignment: AlignmentDirectional(1.00, 1.00),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
+                  child: Material(
+                    color: Colors.transparent,
+                    elevation: 12.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(0.0),
+                        bottomRight: Radius.circular(0.0),
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(0.0),
+                        bottomRight: Radius.circular(0.0),
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 1200),
+                        curve: Curves.easeInOut,
+                        width: MediaQuery.sizeOf(context).width * 0.75,
+                        height: 45.0,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 4.0,
+                              color: Color(0x33000000),
+                              offset: Offset(0.0, -2.0),
+                            )
+                          ],
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(0.0),
+                            bottomRight: Radius.circular(0.0),
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
+                          border: Border.all(
+                            color: FlutterFlowTheme.of(context).secondary,
+                            width: 6.0,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Material(
+                                color: Colors.transparent,
+                                elevation: 2.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  child: Container(
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 1.0,
+                                    height: 35.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16.0, 6.0, 0.0, 0.0),
+                                            child: AutoSizeText(
+                                              'Loading Scanned Item',
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .override(
+                                                        fontFamily: 'Lato',
+                                                        fontSize: 14.0,
+                                                      ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                      .animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation2']!)
+                      .animateOnActionTrigger(
+                        animationsMap['containerOnActionTriggerAnimation']!,
+                      ),
+                ),
+              ),
+          ],
+        ),
         Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -438,49 +538,42 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                       ),
                     ),
                     if (valueOrDefault<bool>(
-                      valueOrDefault<bool>(
-                                  currentUserDocument?.hasCgmFeatures, false) ==
-                              true
-                          ? true
-                          : false,
+                      FFAppState().hasCgmFeatures == true ? true : false,
                       false,
                     ))
                       Flexible(
                         flex: 1,
-                        child: AuthUserStreamWidget(
-                          builder: (context) => FlutterFlowIconButton(
-                            borderColor: Colors.transparent,
-                            borderRadius: 30.0,
-                            borderWidth: 1.0,
-                            buttonSize: 50.0,
-                            fillColor: valueOrDefault<Color>(
-                              widget.activePage == 'CGM'
-                                  ? Color(0xC1FFFFFF)
-                                  : Colors.transparent,
-                              Colors.transparent,
-                            ),
-                            hoverColor:
-                                FlutterFlowTheme.of(context).primaryText,
-                            hoverIconColor: valueOrDefault<Color>(
-                              widget.activePage == 'CGM'
-                                  ? FlutterFlowTheme.of(context).alternate
-                                  : FlutterFlowTheme.of(context).primary,
-                              FlutterFlowTheme.of(context).primary,
-                            ),
-                            icon: Icon(
-                              Icons.bloodtype,
-                              color: valueOrDefault<Color>(
-                                widget.activePage == 'CGM'
-                                    ? FlutterFlowTheme.of(context).secondary
-                                    : FlutterFlowTheme.of(context).white,
-                                FlutterFlowTheme.of(context).white,
-                              ),
-                              size: 24.0,
-                            ),
-                            onPressed: () async {
-                              context.pushNamed('homeCGM');
-                            },
+                        child: FlutterFlowIconButton(
+                          borderColor: Colors.transparent,
+                          borderRadius: 30.0,
+                          borderWidth: 1.0,
+                          buttonSize: 50.0,
+                          fillColor: valueOrDefault<Color>(
+                            widget.activePage == 'CGM'
+                                ? Color(0xC1FFFFFF)
+                                : Colors.transparent,
+                            Colors.transparent,
                           ),
+                          hoverColor: FlutterFlowTheme.of(context).primaryText,
+                          hoverIconColor: valueOrDefault<Color>(
+                            widget.activePage == 'CGM'
+                                ? FlutterFlowTheme.of(context).alternate
+                                : FlutterFlowTheme.of(context).primary,
+                            FlutterFlowTheme.of(context).primary,
+                          ),
+                          icon: Icon(
+                            Icons.bloodtype,
+                            color: valueOrDefault<Color>(
+                              widget.activePage == 'CGM'
+                                  ? FlutterFlowTheme.of(context).secondary
+                                  : FlutterFlowTheme.of(context).white,
+                              FlutterFlowTheme.of(context).white,
+                            ),
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            context.pushNamed('homeCGM');
+                          },
                         ),
                       ),
                     Flexible(
@@ -601,7 +694,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             shape: BoxShape.circle,
                                           ),
                                         ).animateOnPageLoad(animationsMap[
-                                            'containerOnPageLoadAnimation2']!),
+                                            'containerOnPageLoadAnimation3']!),
                                       FlutterFlowIconButton(
                                         borderColor: Colors.transparent,
                                         borderRadius: 100.0,
@@ -627,6 +720,9 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               ScanMode.BARCODE,
                                             );
 
+                                            setState(() {
+                                              _model.loadingItem = true;
+                                            });
                                             if (functions.barcodeScanInt(
                                                     _model.barcodeScan!) >
                                                 1) {
@@ -642,6 +738,10 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               if (_model.doesCodeExist
                                                       ?.hasCode() ==
                                                   true) {
+                                                setState(() {
+                                                  _model.loadingItem = false;
+                                                });
+
                                                 context.pushNamed(
                                                   'Details',
                                                   queryParameters: {
@@ -674,6 +774,9 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                     ),
                                                     singleRecord: true,
                                                   ).then((s) => s.firstOrNull);
+                                                  setState(() {
+                                                    _model.loadingItem = false;
+                                                  });
 
                                                   context.pushNamed(
                                                     'Details',

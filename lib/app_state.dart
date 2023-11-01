@@ -52,6 +52,10 @@ class FFAppState extends ChangeNotifier {
       _bgColor = _colorFromIntValue(await secureStorage.getInt('ff_bgColor')) ??
           _bgColor;
     });
+    await _safeInitAsync(() async {
+      _hasCgmFeatures =
+          await secureStorage.getBool('ff_hasCgmFeatures') ?? _hasCgmFeatures;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -264,6 +268,17 @@ class FFAppState extends ChangeNotifier {
   String get barcodeScanData => _barcodeScanData;
   set barcodeScanData(String _value) {
     _barcodeScanData = _value;
+  }
+
+  bool _hasCgmFeatures = false;
+  bool get hasCgmFeatures => _hasCgmFeatures;
+  set hasCgmFeatures(bool _value) {
+    _hasCgmFeatures = _value;
+    secureStorage.setBool('ff_hasCgmFeatures', _value);
+  }
+
+  void deleteHasCgmFeatures() {
+    secureStorage.delete(key: 'ff_hasCgmFeatures');
   }
 
   final _foodDataManager = FutureRequestManager<List<FoodDatabaseRecord>>();

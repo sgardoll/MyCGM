@@ -36,15 +36,24 @@ class _MarkdownWidgetState extends State<MarkdownWidget> {
     return MarkdownBody(
       data: widget.data,
       styleSheet: MarkdownStyleSheet(
-        p: FlutterFlowTheme.of(context).bodyMedium,
-        listBullet: FlutterFlowTheme.of(context).bodyLarge,
-        code: FlutterFlowTheme.of(context).bodyMedium.copyWith(
-              backgroundColor: Colors.transparent,
-              fontFamily: 'Lato',
-              fontSize: 10,
-            ),
+        p: TextStyle(),
+        listBullet: TextStyle(),
+        code: TextStyle(
+          backgroundColor: Colors.transparent,
+          fontFamily: 'Lato',
+          fontSize: 10,
+        ),
         codeblockPadding: EdgeInsets.all(4),
         codeblockDecoration: BoxDecoration(color: widget.mdcolor),
+        tableHead: TextStyle(
+          fontFamily: 'Lato',
+          fontSize: 10,
+          fontWeight: FontWeight.bold, // Make the tableHead text bold
+        ),
+        tableBody: TextStyle(
+          fontFamily: 'Lato',
+          fontSize: 10,
+        ),
       ),
     );
   }

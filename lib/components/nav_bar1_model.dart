@@ -26,6 +26,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
+  ///  Local state fields for this component.
+
+  bool? loadingItem = false;
+
   ///  State fields for stateful widgets in this component.
 
   var barcodeScan = '';

@@ -564,6 +564,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget> {
                                 _model.highValueController.text),
                             lowValue:
                                 double.tryParse(_model.lowValueController.text),
+                            hasCgmFeatures: true,
                           ));
 
                           context.pushNamed('home');

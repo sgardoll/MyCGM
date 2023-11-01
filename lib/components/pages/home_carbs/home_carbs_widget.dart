@@ -177,8 +177,11 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                         key: Key(
                                           'Keyle7_${listViewLookupRecord.reference.id}',
                                         ),
-                                        imageUrl: listViewLookupRecord
-                                            .openFoodFacts.imageUrl,
+                                        imageUrl: valueOrDefault<String>(
+                                          listViewLookupRecord
+                                              .openFoodFacts.imageUrl,
+                                          'https://www.connectio.com.au/nutri/error.png',
+                                        ),
                                         title: listViewLookupRecord.name,
                                         subtitle: listViewLookupRecord.brand,
                                         size: listViewLookupRecord.size,

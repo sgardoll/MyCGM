@@ -206,7 +206,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                               _model.emailAddressController,
                                           focusNode:
                                               _model.emailAddressFocusNode,
-                                          autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelStyle:
@@ -301,7 +300,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                                                       _model.passwordController,
                                                   focusNode:
                                                       _model.passwordFocusNode,
-                                                  autofocus: true,
                                                   obscureText: !_model
                                                       .passwordVisibility,
                                                   decoration: InputDecoration(

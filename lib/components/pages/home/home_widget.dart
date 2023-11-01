@@ -37,6 +37,8 @@ class _HomeWidgetState extends State<HomeWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       FFAppState().update(() {
         FFAppState().searchOn = false;
+        FFAppState().hasCgmFeatures =
+            valueOrDefault<bool>(currentUserDocument?.hasCgmFeatures, false);
       });
     });
   }
@@ -165,7 +167,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 return ItemWidget(
                                   key: Key(
                                       'Keypeh_${listViewIndex}_of_${listViewFoodDatabaseRecordList.length}'),
-                                  imageUrl: listViewFoodDatabaseRecord.icon,
+                                  imageUrl: valueOrDefault<String>(
+                                    listViewFoodDatabaseRecord.icon,
+                                    'https://www.connectio.com.au/nutri/error.png',
+                                  ),
                                   title: (String input) {
                                     return input.indexOf(',') == -1
                                         ? input
