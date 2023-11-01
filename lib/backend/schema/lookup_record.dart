@@ -71,6 +71,11 @@ class LookupRecord extends FirestoreRecord {
   NutrimentsStruct get openFoodFacts => _openFoodFacts ?? NutrimentsStruct();
   bool hasOpenFoodFacts() => _openFoodFacts != null;
 
+  // "servingsPerPack" field.
+  double? _servingsPerPack;
+  double get servingsPerPack => _servingsPerPack ?? 0.0;
+  bool hasServingsPerPack() => _servingsPerPack != null;
+
   void _initializeFields() {
     _userRef = snapshotData['userRef'] as DocumentReference?;
     _logo = snapshotData['logo'] as String?;
@@ -84,6 +89,7 @@ class LookupRecord extends FirestoreRecord {
     _googleVisionResponse = snapshotData['googleVisionResponse'] as String?;
     _openFoodFacts =
         NutrimentsStruct.maybeFromMap(snapshotData['openFoodFacts']);
+    _servingsPerPack = castToType<double>(snapshotData['servingsPerPack']);
   }
 
   static CollectionReference get collection =>
@@ -131,6 +137,7 @@ Map<String, dynamic> createLookupRecordData({
   int? timestamp,
   String? googleVisionResponse,
   NutrimentsStruct? openFoodFacts,
+  double? servingsPerPack,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -145,6 +152,7 @@ Map<String, dynamic> createLookupRecordData({
       'timestamp': timestamp,
       'googleVisionResponse': googleVisionResponse,
       'openFoodFacts': NutrimentsStruct().toMap(),
+      'servingsPerPack': servingsPerPack,
     }.withoutNulls,
   );
 
@@ -169,7 +177,8 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e1?.size == e2?.size &&
         e1?.timestamp == e2?.timestamp &&
         e1?.googleVisionResponse == e2?.googleVisionResponse &&
-        e1?.openFoodFacts == e2?.openFoodFacts;
+        e1?.openFoodFacts == e2?.openFoodFacts &&
+        e1?.servingsPerPack == e2?.servingsPerPack;
   }
 
   @override
@@ -184,7 +193,8 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e?.size,
         e?.timestamp,
         e?.googleVisionResponse,
-        e?.openFoodFacts
+        e?.openFoodFacts,
+        e?.servingsPerPack
       ]);
 
   @override

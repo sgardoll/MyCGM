@@ -712,6 +712,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                         ),
                                         showLoadingIndicator: true,
                                         onPressed: () async {
+                                          var _shouldSetState = false;
                                           setState(() {
                                             _model.loadingItem = true;
                                           });
@@ -724,6 +725,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             ScanMode.BARCODE,
                                           );
 
+                                          _shouldSetState = true;
                                           _model.doesCodeExist =
                                               await queryLookupRecordOnce(
                                             queryBuilder: (lookupRecord) =>
@@ -733,6 +735,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             ),
                                             singleRecord: true,
                                           ).then((s) => s.firstOrNull);
+                                          _shouldSetState = true;
                                           if (_model.doesCodeExist?.hasCode() ==
                                               true) {
                                             if (animationsMap[
@@ -764,6 +767,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                     .call(
                                               input: _model.barcodeScan,
                                             );
+                                            _shouldSetState = true;
                                             if ((_model
                                                     .buildshipAPI?.succeeded ??
                                                 true)) {
@@ -795,7 +799,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               });
                                               await Future.delayed(
                                                   const Duration(
-                                                      milliseconds: 20000));
+                                                      milliseconds: 5000));
                                               if (animationsMap[
                                                       'containerOnActionTriggerAnimation'] !=
                                                   null) {
@@ -807,10 +811,13 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               setState(() {
                                                 _model.loadingItem = false;
                                               });
+                                              if (_shouldSetState)
+                                                setState(() {});
+                                              return;
                                             }
                                           }
 
-                                          setState(() {});
+                                          if (_shouldSetState) setState(() {});
                                         },
                                       ),
                                     ],
