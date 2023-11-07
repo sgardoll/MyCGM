@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:from_css_color/from_css_color.dart';
+import '/backend/algolia/serialization_util.dart';
+import '/backend/algolia/algolia_manager.dart';
 import 'package:collection/collection.dart';
 
 import '/backend/schema/util/firestore_util.dart';
@@ -110,10 +113,35 @@ class FoodDatabaseRecord extends FirestoreRecord {
   double get freesugarsg => _freesugarsg ?? 0.0;
   bool hasFreesugarsg() => _freesugarsg != null;
 
-  // "icon" field.
-  String? _icon;
-  String get icon => _icon ?? '';
-  bool hasIcon() => _icon != null;
+  // "imageUrl" field.
+  String? _imageUrl;
+  String get imageUrl => _imageUrl ?? '';
+  bool hasImageUrl() => _imageUrl != null;
+
+  // "markdownTable" field.
+  String? _markdownTable;
+  String get markdownTable => _markdownTable ?? '';
+  bool hasMarkdownTable() => _markdownTable != null;
+
+  // "blurHash" field.
+  String? _blurHash;
+  String get blurHash => _blurHash ?? '';
+  bool hasBlurHash() => _blurHash != null;
+
+  // "createMarkdown" field.
+  bool? _createMarkdown;
+  bool get createMarkdown => _createMarkdown ?? false;
+  bool hasCreateMarkdown() => _createMarkdown != null;
+
+  // "buildship" field.
+  bool? _buildship;
+  bool get buildship => _buildship ?? false;
+  bool hasBuildship() => _buildship != null;
+
+  // "generateBlurhash" field.
+  bool? _generateBlurhash;
+  bool get generateBlurhash => _generateBlurhash ?? false;
+  bool hasGenerateBlurhash() => _generateBlurhash != null;
 
   void _initializeFields() {
     _source = snapshotData['Source'] as String?;
@@ -137,7 +165,12 @@ class FoodDatabaseRecord extends FirestoreRecord {
     _totalsugarsg = castToType<double>(snapshotData['totalsugarsg']);
     _addedsugarsg = castToType<double>(snapshotData['addedsugarsg']);
     _freesugarsg = castToType<double>(snapshotData['freesugarsg']);
-    _icon = snapshotData['icon'] as String?;
+    _imageUrl = snapshotData['imageUrl'] as String?;
+    _markdownTable = snapshotData['markdownTable'] as String?;
+    _blurHash = snapshotData['blurHash'] as String?;
+    _createMarkdown = snapshotData['createMarkdown'] as bool?;
+    _buildship = snapshotData['buildship'] as bool?;
+    _generateBlurhash = snapshotData['generateBlurhash'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -160,6 +193,115 @@ class FoodDatabaseRecord extends FirestoreRecord {
     DocumentReference reference,
   ) =>
       FoodDatabaseRecord._(reference, mapFromFirestore(data));
+
+  static FoodDatabaseRecord fromAlgolia(AlgoliaObjectSnapshot snapshot) =>
+      FoodDatabaseRecord.getDocumentFromData(
+        {
+          'Source': snapshot.data['Source'],
+          'publicFoodKey': snapshot.data['publicFoodKey'],
+          'classification': convertAlgoliaParam(
+            snapshot.data['classification'],
+            ParamType.int,
+            false,
+          ),
+          'foodName': snapshot.data['foodName'],
+          'energyWithDietaryFibreEquatedKJ': convertAlgoliaParam(
+            snapshot.data['energyWithDietaryFibreEquatedKJ'],
+            ParamType.double,
+            false,
+          ),
+          'energyWithoutDietaryFibreEquatedKJ': convertAlgoliaParam(
+            snapshot.data['energyWithoutDietaryFibreEquatedKJ'],
+            ParamType.double,
+            false,
+          ),
+          'moistureWaterG': convertAlgoliaParam(
+            snapshot.data['moistureWaterG'],
+            ParamType.double,
+            false,
+          ),
+          'proteinG': convertAlgoliaParam(
+            snapshot.data['proteinG'],
+            ParamType.double,
+            false,
+          ),
+          'nitrogenG': convertAlgoliaParam(
+            snapshot.data['nitrogenG'],
+            ParamType.double,
+            false,
+          ),
+          'fatTotalG': convertAlgoliaParam(
+            snapshot.data['fatTotalG'],
+            ParamType.double,
+            false,
+          ),
+          'ashG': convertAlgoliaParam(
+            snapshot.data['ashG'],
+            ParamType.double,
+            false,
+          ),
+          'totalDietaryFibreG': convertAlgoliaParam(
+            snapshot.data['totalDietaryFibreG'],
+            ParamType.double,
+            false,
+          ),
+          'alcoholG': convertAlgoliaParam(
+            snapshot.data['alcoholG'],
+            ParamType.double,
+            false,
+          ),
+          'fructoseG': convertAlgoliaParam(
+            snapshot.data['fructoseG'],
+            ParamType.double,
+            false,
+          ),
+          'glycemicIndex': convertAlgoliaParam(
+            snapshot.data['glycemicIndex'],
+            ParamType.double,
+            false,
+          ),
+          'totalsugarsg': convertAlgoliaParam(
+            snapshot.data['totalsugarsg'],
+            ParamType.double,
+            false,
+          ),
+          'addedsugarsg': convertAlgoliaParam(
+            snapshot.data['addedsugarsg'],
+            ParamType.double,
+            false,
+          ),
+          'freesugarsg': convertAlgoliaParam(
+            snapshot.data['freesugarsg'],
+            ParamType.double,
+            false,
+          ),
+          'imageUrl': snapshot.data['imageUrl'],
+          'markdownTable': snapshot.data['markdownTable'],
+          'blurHash': snapshot.data['blurHash'],
+          'createMarkdown': snapshot.data['createMarkdown'],
+          'buildship': snapshot.data['buildship'],
+          'generateBlurhash': snapshot.data['generateBlurhash'],
+        },
+        FoodDatabaseRecord.collection.doc(snapshot.objectID),
+      );
+
+  static Future<List<FoodDatabaseRecord>> search({
+    String? term,
+    FutureOr<LatLng>? location,
+    int? maxResults,
+    double? searchRadiusMeters,
+    bool useCache = false,
+  }) =>
+      FFAlgoliaManager.instance
+          .algoliaQuery(
+            index: 'foodDatabase',
+            term: term,
+            maxResults: maxResults,
+            location: location,
+            searchRadiusMeters: searchRadiusMeters,
+            useCache: useCache,
+          )
+          .then((r) => r.map(fromAlgolia).toList());
 
   @override
   String toString() =>
@@ -193,7 +335,12 @@ Map<String, dynamic> createFoodDatabaseRecordData({
   double? totalsugarsg,
   double? addedsugarsg,
   double? freesugarsg,
-  String? icon,
+  String? imageUrl,
+  String? markdownTable,
+  String? blurHash,
+  bool? createMarkdown,
+  bool? buildship,
+  bool? generateBlurhash,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -215,7 +362,12 @@ Map<String, dynamic> createFoodDatabaseRecordData({
       'totalsugarsg': totalsugarsg,
       'addedsugarsg': addedsugarsg,
       'freesugarsg': freesugarsg,
-      'icon': icon,
+      'imageUrl': imageUrl,
+      'markdownTable': markdownTable,
+      'blurHash': blurHash,
+      'createMarkdown': createMarkdown,
+      'buildship': buildship,
+      'generateBlurhash': generateBlurhash,
     }.withoutNulls,
   );
 
@@ -248,7 +400,12 @@ class FoodDatabaseRecordDocumentEquality
         e1?.totalsugarsg == e2?.totalsugarsg &&
         e1?.addedsugarsg == e2?.addedsugarsg &&
         e1?.freesugarsg == e2?.freesugarsg &&
-        e1?.icon == e2?.icon;
+        e1?.imageUrl == e2?.imageUrl &&
+        e1?.markdownTable == e2?.markdownTable &&
+        e1?.blurHash == e2?.blurHash &&
+        e1?.createMarkdown == e2?.createMarkdown &&
+        e1?.buildship == e2?.buildship &&
+        e1?.generateBlurhash == e2?.generateBlurhash;
   }
 
   @override
@@ -271,7 +428,12 @@ class FoodDatabaseRecordDocumentEquality
         e?.totalsugarsg,
         e?.addedsugarsg,
         e?.freesugarsg,
-        e?.icon
+        e?.imageUrl,
+        e?.markdownTable,
+        e?.blurHash,
+        e?.createMarkdown,
+        e?.buildship,
+        e?.generateBlurhash
       ]);
 
   @override

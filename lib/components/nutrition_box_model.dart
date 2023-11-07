@@ -2,7 +2,6 @@ import '/components/nutri_circles_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'nutrition_box_widget.dart' show NutritionBoxWidget;
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,21 +16,17 @@ class NutritionBoxModel extends FlutterFlowModel<NutritionBoxWidget> {
   late ExpandableController expandableController;
 
   // Model for NutriCircles component.
-  late NutriCirclesModel nutriCirclesModel1;
-  // Model for NutriCircles component.
-  late NutriCirclesModel nutriCirclesModel2;
+  late NutriCirclesModel nutriCirclesModel;
 
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
-    nutriCirclesModel1 = createModel(context, () => NutriCirclesModel());
-    nutriCirclesModel2 = createModel(context, () => NutriCirclesModel());
+    nutriCirclesModel = createModel(context, () => NutriCirclesModel());
   }
 
   void dispose() {
     expandableController.dispose();
-    nutriCirclesModel1.dispose();
-    nutriCirclesModel2.dispose();
+    nutriCirclesModel.dispose();
   }
 
   /// Action blocks are added here.

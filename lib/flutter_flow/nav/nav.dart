@@ -187,6 +187,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     'docRef', ParamType.DocumentReference, false, ['lookup']),
                 code: params.getParam('code', ParamType.String),
               ),
+            ),
+            FFRoute(
+              name: 'DetailsDatabaseItem',
+              path: 'detailsDatabaseItem',
+              builder: (context, params) => DetailsDatabaseItemWidget(
+                docRef: params.getParam('docRef', ParamType.DocumentReference,
+                    false, ['foodDatabase']),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

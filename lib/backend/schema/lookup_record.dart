@@ -21,11 +21,6 @@ class LookupRecord extends FirestoreRecord {
   DocumentReference? get userRef => _userRef;
   bool hasUserRef() => _userRef != null;
 
-  // "logo" field.
-  String? _logo;
-  String get logo => _logo ?? '';
-  bool hasLogo() => _logo != null;
-
   // "nutritionPanel" field.
   String? _nutritionPanel;
   String get nutritionPanel => _nutritionPanel ?? '';
@@ -71,14 +66,18 @@ class LookupRecord extends FirestoreRecord {
   NutrimentsStruct get openFoodFacts => _openFoodFacts ?? NutrimentsStruct();
   bool hasOpenFoodFacts() => _openFoodFacts != null;
 
-  // "servingsPerPack" field.
-  double? _servingsPerPack;
-  double get servingsPerPack => _servingsPerPack ?? 0.0;
-  bool hasServingsPerPack() => _servingsPerPack != null;
+  // "blurHash" field.
+  String? _blurHash;
+  String get blurHash => _blurHash ?? '';
+  bool hasBlurHash() => _blurHash != null;
+
+  // "userId" field.
+  String? _userId;
+  String get userId => _userId ?? '';
+  bool hasUserId() => _userId != null;
 
   void _initializeFields() {
     _userRef = snapshotData['userRef'] as DocumentReference?;
-    _logo = snapshotData['logo'] as String?;
     _nutritionPanel = snapshotData['nutritionPanel'] as String?;
     _code = snapshotData['code'] as String?;
     _name = snapshotData['name'] as String?;
@@ -89,7 +88,8 @@ class LookupRecord extends FirestoreRecord {
     _googleVisionResponse = snapshotData['googleVisionResponse'] as String?;
     _openFoodFacts =
         NutrimentsStruct.maybeFromMap(snapshotData['openFoodFacts']);
-    _servingsPerPack = castToType<double>(snapshotData['servingsPerPack']);
+    _blurHash = snapshotData['blurHash'] as String?;
+    _userId = snapshotData['userId'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -127,7 +127,6 @@ class LookupRecord extends FirestoreRecord {
 
 Map<String, dynamic> createLookupRecordData({
   DocumentReference? userRef,
-  String? logo,
   String? nutritionPanel,
   String? code,
   String? name,
@@ -137,12 +136,12 @@ Map<String, dynamic> createLookupRecordData({
   int? timestamp,
   String? googleVisionResponse,
   NutrimentsStruct? openFoodFacts,
-  double? servingsPerPack,
+  String? blurHash,
+  String? userId,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'userRef': userRef,
-      'logo': logo,
       'nutritionPanel': nutritionPanel,
       'code': code,
       'name': name,
@@ -152,7 +151,8 @@ Map<String, dynamic> createLookupRecordData({
       'timestamp': timestamp,
       'googleVisionResponse': googleVisionResponse,
       'openFoodFacts': NutrimentsStruct().toMap(),
-      'servingsPerPack': servingsPerPack,
+      'blurHash': blurHash,
+      'userId': userId,
     }.withoutNulls,
   );
 
@@ -168,7 +168,6 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
   @override
   bool equals(LookupRecord? e1, LookupRecord? e2) {
     return e1?.userRef == e2?.userRef &&
-        e1?.logo == e2?.logo &&
         e1?.nutritionPanel == e2?.nutritionPanel &&
         e1?.code == e2?.code &&
         e1?.name == e2?.name &&
@@ -178,13 +177,13 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e1?.timestamp == e2?.timestamp &&
         e1?.googleVisionResponse == e2?.googleVisionResponse &&
         e1?.openFoodFacts == e2?.openFoodFacts &&
-        e1?.servingsPerPack == e2?.servingsPerPack;
+        e1?.blurHash == e2?.blurHash &&
+        e1?.userId == e2?.userId;
   }
 
   @override
   int hash(LookupRecord? e) => const ListEquality().hash([
         e?.userRef,
-        e?.logo,
         e?.nutritionPanel,
         e?.code,
         e?.name,
@@ -194,7 +193,8 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e?.timestamp,
         e?.googleVisionResponse,
         e?.openFoodFacts,
-        e?.servingsPerPack
+        e?.blurHash,
+        e?.userId
       ]);
 
   @override

@@ -5,10 +5,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart' as custom_widgets;
-import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -20,7 +17,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'nav_bar1_model.dart';
 export 'nav_bar1_model.dart';
@@ -43,25 +39,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
   late NavBar1Model _model;
 
   final animationsMap = {
-    'containerOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(-100.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-      ],
-    ),
     'containerOnActionTriggerAnimation': AnimationInfo(
       trigger: AnimationTrigger.onActionTrigger,
       applyInitialState: true,
@@ -82,7 +59,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
         ),
       ],
     ),
-    'containerOnPageLoadAnimation2': AnimationInfo(
+    'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       applyInitialState: true,
       effects: [
@@ -102,25 +79,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
         ),
       ],
     ),
-    'containerOnPageLoadAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        ScaleEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(1.0, 1.0),
-          end: Offset(1.5, 1.5),
-        ),
-        FadeEffect(
-          curve: Curves.bounceOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 1.0,
-          end: 0.0,
-        ),
-      ],
-    ),
   };
 
   @override
@@ -134,17 +92,12 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     super.initState();
     _model = createModel(context, () => NavBar1Model());
 
-    // On component load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {});
-
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
           !anim.applyInitialState),
       this,
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -161,136 +114,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
     return Stack(
       alignment: AlignmentDirectional(0.0, 1.0),
       children: [
-        if (responsiveVisibility(
-          context: context,
-          phone: false,
-          tablet: false,
-          tabletLandscape: false,
-          desktop: false,
-        ))
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              if (valueOrDefault<bool>(
-                FFAppState().firstOpen ? true : false,
-                false,
-              ))
-                Align(
-                  alignment: AlignmentDirectional(1.00, 1.00),
-                  child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
-                    child: Material(
-                      color: Colors.transparent,
-                      elevation: 12.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(0.0),
-                          bottomRight: Radius.circular(0.0),
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(0.0),
-                          bottomRight: Radius.circular(0.0),
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
-                        ),
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 1200),
-                          curve: Curves.easeInOut,
-                          width: MediaQuery.sizeOf(context).width * 0.75,
-                          height: 165.0,
-                          decoration: BoxDecoration(
-                            color:
-                                FlutterFlowTheme.of(context).primaryBackground,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 4.0,
-                                color: Color(0x33000000),
-                                offset: Offset(0.0, -2.0),
-                              )
-                            ],
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(0.0),
-                              bottomRight: Radius.circular(0.0),
-                              topLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0),
-                            ),
-                            border: Border.all(
-                              color: FlutterFlowTheme.of(context).secondary,
-                              width: 6.0,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Flexible(
-                                child: Material(
-                                  color: Colors.transparent,
-                                  elevation: 2.0,
-                                  child: ClipRRect(
-                                    child: Container(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          1.0,
-                                      height: 30.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondary,
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(8.0, 0.0, 0.0, 0.0),
-                                              child: AutoSizeText(
-                                                'Quick Barcode Scan',
-                                                textAlign: TextAlign.center,
-                                                maxLines: 1,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily: 'Lato',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .white,
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.sizeOf(context).width * 1.0,
-                                height: 130.0,
-                                child: custom_widgets.QrScanBox(
-                                  width: MediaQuery.sizeOf(context).width * 1.0,
-                                  height: 130.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ).animateOnPageLoad(
-                        animationsMap['containerOnPageLoadAnimation1']!),
-                  ),
-                ),
-            ],
-          ),
         Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -322,7 +145,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 1200),
                         curve: Curves.easeInOut,
-                        width: MediaQuery.sizeOf(context).width * 0.75,
+                        width: MediaQuery.sizeOf(context).width * 0.8,
                         height: 45.0,
                         decoration: BoxDecoration(
                           color: FlutterFlowTheme.of(context).primaryBackground,
@@ -406,7 +229,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                     ),
                   )
                       .animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation2']!)
+                          animationsMap['containerOnPageLoadAnimation']!)
                       .animateOnActionTrigger(
                         animationsMap['containerOnActionTriggerAnimation']!,
                       ),
@@ -446,6 +269,10 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                     bottomRight: Radius.circular(0.0),
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
+                  ),
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 0.0,
                   ),
                 ),
               ),
@@ -648,55 +475,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                   ),
                                   child: Stack(
                                     children: [
-                                      if (valueOrDefault<bool>(
-                                            FFAppState().firstOpen
-                                                ? true
-                                                : false,
-                                            false,
-                                          ) &&
-                                          responsiveVisibility(
-                                            context: context,
-                                            phone: false,
-                                            tablet: false,
-                                            tabletLandscape: false,
-                                            desktop: false,
-                                          ))
-                                        CircularPercentIndicator(
-                                          percent: valueOrDefault<double>(
-                                            (int? elapsed) {
-                                              return elapsed != null
-                                                  ? 1 -
-                                                      (elapsed / 5000)
-                                                          .toDouble()
-                                                  : null;
-                                            }(_model.timerMilliseconds),
-                                            0.0,
-                                          ),
-                                          radius: 30.0,
-                                          lineWidth: 6.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          backgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondary,
-                                        ),
-                                      if (valueOrDefault<bool>(
-                                        FFAppState().firstOpen ? true : false,
-                                        false,
-                                      ))
-                                        Container(
-                                          width: 100.0,
-                                          height: 100.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ).animateOnPageLoad(animationsMap[
-                                            'containerOnPageLoadAnimation3']!),
                                       FlutterFlowIconButton(
                                         borderColor: Colors.transparent,
                                         borderRadius: 100.0,
@@ -726,51 +504,23 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                           );
 
                                           _shouldSetState = true;
-                                          _model.doesCodeExist =
-                                              await queryLookupRecordOnce(
-                                            queryBuilder: (lookupRecord) =>
-                                                lookupRecord.where(
-                                              'code',
-                                              isEqualTo: _model.barcodeScan,
-                                            ),
-                                            singleRecord: true,
-                                          ).then((s) => s.firstOrNull);
-                                          _shouldSetState = true;
-                                          if (_model.doesCodeExist?.hasCode() ==
-                                              true) {
-                                            if (animationsMap[
-                                                    'containerOnActionTriggerAnimation'] !=
-                                                null) {
-                                              await animationsMap[
-                                                      'containerOnActionTriggerAnimation']!
-                                                  .controller
-                                                  .reverse();
-                                            }
-                                            setState(() {
-                                              _model.loadingItem = false;
-                                            });
-
-                                            context.pushNamed(
-                                              'Details',
-                                              queryParameters: {
-                                                'docRef': serializeParam(
-                                                  _model
-                                                      .doesCodeExist?.reference,
-                                                  ParamType.DocumentReference,
-                                                ),
-                                              }.withoutNulls,
-                                            );
-                                          } else {
-                                            _model.buildshipAPI =
-                                                await BuildshipGroup
-                                                    .barcodeScanCall
-                                                    .call(
-                                              input: _model.barcodeScan,
+                                          setState(() {
+                                            _model.loadingText =
+                                                'Scanned ${_model.barcodeScan}';
+                                          });
+                                          if (_model.barcodeScan != '-1'
+                                              ? true
+                                              : false) {
+                                            _model.doesCodeExist =
+                                                await queryLookupRecordCount(
+                                              queryBuilder: (lookupRecord) =>
+                                                  lookupRecord.where(
+                                                'code',
+                                                isEqualTo: _model.barcodeScan,
+                                              ),
                                             );
                                             _shouldSetState = true;
-                                            if ((_model
-                                                    .buildshipAPI?.succeeded ??
-                                                true)) {
+                                            if (_model.doesCodeExist! >= 1) {
                                               if (animationsMap[
                                                       'containerOnActionTriggerAnimation'] !=
                                                   null) {
@@ -781,6 +531,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               }
                                               setState(() {
                                                 _model.loadingItem = false;
+                                                _model.loadingText =
+                                                    'Opening Camera';
                                               });
 
                                               context.pushNamed(
@@ -793,28 +545,81 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 }.withoutNulls,
                                               );
                                             } else {
-                                              setState(() {
-                                                _model.loadingText =
-                                                    'Item Not Found';
-                                              });
-                                              await Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 5000));
-                                              if (animationsMap[
-                                                      'containerOnActionTriggerAnimation'] !=
-                                                  null) {
-                                                await animationsMap[
-                                                        'containerOnActionTriggerAnimation']!
-                                                    .controller
-                                                    .reverse();
+                                              _model.buildshipAPI =
+                                                  await BuildshipGroup
+                                                      .barcodeScanCall
+                                                      .call(
+                                                input: _model.barcodeScan,
+                                                userId: currentUserUid,
+                                              );
+                                              _shouldSetState = true;
+                                              if ((_model.buildshipAPI
+                                                      ?.succeeded ??
+                                                  true)) {
+                                                if (animationsMap[
+                                                        'containerOnActionTriggerAnimation'] !=
+                                                    null) {
+                                                  await animationsMap[
+                                                          'containerOnActionTriggerAnimation']!
+                                                      .controller
+                                                      .reverse();
+                                                }
+                                                setState(() {
+                                                  _model.loadingItem = false;
+                                                  _model.loadingText =
+                                                      'Opening Camera';
+                                                });
+
+                                                context.pushNamed(
+                                                  'Details',
+                                                  queryParameters: {
+                                                    'code': serializeParam(
+                                                      _model.barcodeScan,
+                                                      ParamType.String,
+                                                    ),
+                                                  }.withoutNulls,
+                                                );
+                                              } else {
+                                                setState(() {
+                                                  _model.loadingText =
+                                                      'Item Not Found';
+                                                });
+                                                await Future.delayed(
+                                                    const Duration(
+                                                        milliseconds: 5000));
+                                                if (animationsMap[
+                                                        'containerOnActionTriggerAnimation'] !=
+                                                    null) {
+                                                  await animationsMap[
+                                                          'containerOnActionTriggerAnimation']!
+                                                      .controller
+                                                      .reverse();
+                                                }
+                                                setState(() {
+                                                  _model.loadingItem = false;
+                                                  _model.loadingText =
+                                                      'Opening Camera';
+                                                });
+                                                if (_shouldSetState)
+                                                  setState(() {});
+                                                return;
                                               }
-                                              setState(() {
-                                                _model.loadingItem = false;
-                                              });
-                                              if (_shouldSetState)
-                                                setState(() {});
-                                              return;
                                             }
+                                          } else {
+                                            if (animationsMap[
+                                                    'containerOnActionTriggerAnimation'] !=
+                                                null) {
+                                              await animationsMap[
+                                                      'containerOnActionTriggerAnimation']!
+                                                  .controller
+                                                  .reverse();
+                                            }
+                                            setState(() {
+                                              _model.loadingItem = false;
+                                            });
+                                            if (_shouldSetState)
+                                              setState(() {});
+                                            return;
                                           }
 
                                           if (_shouldSetState) setState(() {});
@@ -835,36 +640,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
             ),
           ],
         ),
-        if (valueOrDefault<bool>(
-              FFAppState().firstOpen ? true : false,
-              false,
-            ) &&
-            responsiveVisibility(
-              context: context,
-              phone: false,
-              tablet: false,
-              tabletLandscape: false,
-              desktop: false,
-            ))
-          FlutterFlowTimer(
-            initialTime: _model.timerMilliseconds,
-            getDisplayTime: (value) => StopWatchTimer.getDisplayTime(
-              value,
-              hours: false,
-              milliSecond: false,
-            ),
-            controller: _model.timerController,
-            onChanged: (value, displayTime, shouldUpdate) {
-              _model.timerMilliseconds = value;
-              _model.timerValue = displayTime;
-              if (shouldUpdate) setState(() {});
-            },
-            textAlign: TextAlign.start,
-            style: FlutterFlowTheme.of(context).headlineSmall.override(
-                  fontFamily: 'Lato',
-                  color: Colors.transparent,
-                ),
-          ),
       ],
     );
   }

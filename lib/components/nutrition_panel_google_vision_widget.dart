@@ -141,7 +141,7 @@ class _NutritionPanelGoogleVisionWidgetState
             theme: ExpandableThemeData(
               tapHeaderToExpand: true,
               tapBodyToExpand: false,
-              tapBodyToCollapse: true,
+              tapBodyToCollapse: false,
               headerAlignment: ExpandablePanelHeaderAlignment.center,
               hasIcon: true,
               expandIcon: Icons.keyboard_arrow_down_rounded,

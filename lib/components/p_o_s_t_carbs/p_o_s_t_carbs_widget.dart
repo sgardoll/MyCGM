@@ -1,6 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
-import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -14,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:text_search/text_search.dart';
 import 'p_o_s_t_carbs_model.dart';
 export 'p_o_s_t_carbs_model.dart';
 
@@ -46,10 +44,13 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
 
     _model.searchFieldController ??= TextEditingController();
     _model.searchFieldFocusNode ??= FocusNode();
+
     _model.gramsCarbsController1 ??= TextEditingController();
     _model.gramsCarbsFocusNode1 ??= FocusNode();
+
     _model.foodNameController ??= TextEditingController();
     _model.foodNameFocusNode ??= FocusNode();
+
     _model.gramsCarbsController2 ??= TextEditingController();
     _model.gramsCarbsFocusNode2 ??= FocusNode();
   }
@@ -274,37 +275,8 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                         size: 25.0,
                                       ),
                                       showLoadingIndicator: true,
-                                      onPressed: () async {
-                                        await queryFoodDataRecordOnce()
-                                            .then(
-                                              (records) => _model
-                                                      .simpleSearchResults =
-                                                  TextSearch(
-                                                records
-                                                    .map(
-                                                      (record) => TextSearchItem
-                                                          .fromTerms(record, [
-                                                        record.foodNameFull!
-                                                      ]),
-                                                    )
-                                                    .toList(),
-                                              )
-                                                      .search(_model
-                                                          .searchFieldController
-                                                          .text)
-                                                      .map((r) => r.object)
-                                                      .toList(),
-                                            )
-                                            .onError((_, __) =>
-                                                _model.simpleSearchResults = [])
-                                            .whenComplete(
-                                                () => setState(() {}));
-
-                                        await _model.pageViewController
-                                            ?.nextPage(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.ease,
-                                        );
+                                      onPressed: () {
+                                        print('searchButton pressed ...');
                                       },
                                     ),
                                   ],
@@ -687,54 +659,6 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                                                           Color(0x00000000),
                                                     ),
                                                   );
-                                                  if (_model
-                                                          .addCustomFoodToggleValue !=
-                                                      null) {
-                                                    var foodDataRecordReference =
-                                                        FoodDataRecord
-                                                            .collection
-                                                            .doc();
-                                                    await foodDataRecordReference
-                                                        .set(
-                                                            createFoodDataRecordData(
-                                                      source: currentUserUid,
-                                                      foodNameFull: '',
-                                                      totalsugarsg:
-                                                          double.tryParse(_model
-                                                              .gramsCarbsController2
-                                                              .text),
-                                                    ));
-                                                    _model.addFoodToDatabase =
-                                                        FoodDataRecord
-                                                            .getDocumentFromData(
-                                                                createFoodDataRecordData(
-                                                                  source:
-                                                                      currentUserUid,
-                                                                  foodNameFull:
-                                                                      '',
-                                                                  totalsugarsg:
-                                                                      double.tryParse(_model
-                                                                          .gramsCarbsController2
-                                                                          .text),
-                                                                ),
-                                                                foodDataRecordReference);
-                                                    await _model
-                                                        .pageViewController
-                                                        ?.nextPage(
-                                                      duration: Duration(
-                                                          milliseconds: 300),
-                                                      curve: Curves.ease,
-                                                    );
-                                                  } else {
-                                                    await _model
-                                                        .pageViewController
-                                                        ?.animateToPage(
-                                                      2,
-                                                      duration: Duration(
-                                                          milliseconds: 500),
-                                                      curve: Curves.ease,
-                                                    );
-                                                  }
                                                 } else {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
@@ -781,75 +705,53 @@ class _POSTCarbsWidgetState extends State<POSTCarbsWidget> {
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 16.0),
-                                child: Builder(
-                                  builder: (context) {
-                                    final searchResultsListView =
-                                        _model.simpleSearchResults.toList();
-                                    return ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: searchResultsListView.length,
-                                      itemBuilder: (context,
-                                          searchResultsListViewIndex) {
-                                        final searchResultsListViewItem =
-                                            searchResultsListView[
-                                                searchResultsListViewIndex];
-                                        return InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            setState(() {
-                                              _model.addToCarbItemsSummary(
-                                                  searchResultsListViewItem
-                                                      .reference);
-                                            });
-                                          },
-                                          child: ListTile(
-                                            title: Text(
-                                              searchResultsListViewItem
-                                                  .foodNameFull,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .headlineSmall
-                                                      .override(
-                                                        fontFamily: 'Lato',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 16.0,
-                                                      ),
-                                            ),
-                                            subtitle: Text(
-                                              '${searchResultsListViewItem.totalsugarsg.toString()} grams',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily: 'Lato',
-                                                        color:
-                                                            Color(0xBEFFFFFF),
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                            ),
-                                            trailing: Icon(
-                                              Icons.add_circle_rounded,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryText,
-                                              size: 45.0,
-                                            ),
-                                            tileColor: Color(0xFFF5F5F5),
-                                            dense: false,
-                                          ),
-                                        );
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        setState(() {});
                                       },
-                                    );
-                                  },
+                                      child: ListTile(
+                                        title: Text(
+                                          'Lorem ipsum dolor...',
+                                          style: FlutterFlowTheme.of(context)
+                                              .headlineSmall
+                                              .override(
+                                                fontFamily: 'Lato',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryText,
+                                                fontSize: 16.0,
+                                              ),
+                                        ),
+                                        subtitle: Text(
+                                          ' grams',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Lato',
+                                                color: Color(0xBEFFFFFF),
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                        ),
+                                        trailing: Icon(
+                                          Icons.add_circle_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryText,
+                                          size: 45.0,
+                                        ),
+                                        tileColor: Color(0xFFF5F5F5),
+                                        dense: false,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               Divider(

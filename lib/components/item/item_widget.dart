@@ -1,15 +1,14 @@
 import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:provider/provider.dart';
 import 'item_model.dart';
 export 'item_model.dart';
@@ -21,12 +20,15 @@ class ItemWidget extends StatefulWidget {
     this.title,
     this.subtitle,
     this.size,
-  }) : super(key: key);
+    String? blurHash,
+  })  : this.blurHash = blurHash ?? 'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
+        super(key: key);
 
   final String? imageUrl;
   final String? title;
   final String? subtitle;
   final String? size;
+  final String blurHash;
 
   @override
   _ItemWidgetState createState() => _ItemWidgetState();
@@ -36,15 +38,14 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
   late ItemModel _model;
 
   final animationsMap = {
-    'imageOnPageLoadAnimation': AnimationInfo(
+    'containerOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       effects: [
-        VisibilityEffect(duration: 1.ms),
         MoveEffect(
           curve: Curves.easeInOut,
           delay: 0.ms,
           duration: 300.ms,
-          begin: Offset(-100.0, 0.0),
+          begin: Offset(100.0, 0.0),
           end: Offset(0.0, 0.0),
         ),
         FadeEffect(
@@ -135,22 +136,31 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                               ),
                             ),
                             alignment: AlignmentDirectional(0.00, 0.00),
-                            child: CachedNetworkImage(
-                              fadeInDuration: Duration(milliseconds: 500),
-                              fadeOutDuration: Duration(milliseconds: 500),
-                              imageUrl: widget.imageUrl!,
-                              width: 300.0,
-                              height: 200.0,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, error, stackTrace) =>
-                                  Image.asset(
-                                'assets/images/error_image.png',
+                            child: Hero(
+                              tag: widget.imageUrl!,
+                              transitionOnUserGestures: true,
+                              child: OctoImage(
+                                placeholderBuilder: OctoPlaceholder.blurHash(
+                                  valueOrDefault<String>(
+                                    widget.blurHash,
+                                    'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
+                                  ),
+                                ),
+                                image: NetworkImage(
+                                  widget.imageUrl!,
+                                ),
                                 width: 300.0,
                                 height: 200.0,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Image.asset(
+                                  'assets/images/error_image.png',
+                                  width: 300.0,
+                                  height: 200.0,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ).animateOnPageLoad(
-                                animationsMap['imageOnPageLoadAnimation']!),
+                            ),
                           ),
                         ),
                       ),
@@ -168,7 +178,7 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                                     4.0, 0.0, 0.0, 0.0),
                                 child: AutoSizeText(
                                   widget.title!,
-                                  maxLines: 2,
+                                  maxLines: 3,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyLarge
                                       .override(
@@ -188,9 +198,10 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                           child: Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 8.0, 0.0),
-                            child: Text(
+                            child: AutoSizeText(
                               widget.subtitle!,
                               textAlign: TextAlign.end,
+                              maxLines: 1,
                               style: FlutterFlowTheme.of(context)
                                   .labelSmall
                                   .override(
@@ -210,7 +221,15 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     if (valueOrDefault<bool>(
-                      widget.size != '-' ? true : false,
+                      () {
+                        if (widget.size == '') {
+                          return false;
+                        } else if (widget.size != '-') {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      }(),
                       false,
                     ))
                       Align(
@@ -246,21 +265,13 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                    Align(
-                      alignment: AlignmentDirectional(0.00, 0.00),
-                      child: FlutterFlowIconButton(
-                        borderColor: FlutterFlowTheme.of(context).alternate,
-                        borderRadius: 8.0,
-                        borderWidth: 2.0,
-                        buttonSize: 45.0,
-                        icon: Icon(
-                          Icons.chevron_right_rounded,
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                          size: 30.0,
-                        ),
-                        onPressed: () {
-                          print('IconButton pressed ...');
-                        },
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                      child: Icon(
+                        Icons.chevron_right_rounded,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        size: 30.0,
                       ),
                     ),
                   ],
@@ -269,7 +280,7 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
             ),
           ),
         ),
-      ),
+      ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
     );
   }
 }

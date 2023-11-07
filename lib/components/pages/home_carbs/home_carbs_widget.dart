@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/item/item_widget.dart';
 import '/components/nav_bar1_widget.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'home_carbs_model.dart';
 export 'home_carbs_model.dart';
@@ -58,12 +60,12 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).secondary,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
           title: Text(
-            'Scanned Items',
+            'Scanned',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Lato',
                   color: FlutterFlowTheme.of(context).primaryText,
@@ -101,26 +103,40 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                             'ca-app-pub-3945304154369399/4626582701',
                       ),
                     Flexible(
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: MediaQuery.sizeOf(context).height * 1.0,
-                        decoration: BoxDecoration(),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 16.0, 0.0, 0.0),
-                          child: StreamBuilder<List<LookupRecord>>(
-                            stream: queryLookupRecord(
-                              queryBuilder: (lookupRecord) => lookupRecord
-                                  .where(
-                                    'name',
-                                    isNotEqualTo: 'No Search Results',
-                                  )
-                                  .orderBy('name'),
-                            ),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
+                      child: Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 80.0),
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: MediaQuery.sizeOf(context).height * 1.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 8.0, 0.0, 0.0),
+                            child: PagedListView<DocumentSnapshot<Object?>?,
+                                LookupRecord>.separated(
+                              pagingController: _model.setListViewController(
+                                LookupRecord.collection
+                                    .where(
+                                      'name',
+                                      isNotEqualTo: 'No Search Results',
+                                    )
+                                    .orderBy('name'),
+                              ),
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              reverse: false,
+                              scrollDirection: Axis.vertical,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(height: 8.0),
+                              builderDelegate:
+                                  PagedChildBuilderDelegate<LookupRecord>(
+                                // Customize what your widget looks like when it's loading the first page.
+                                firstPageProgressIndicatorBuilder: (_) =>
+                                    Center(
                                   child: SizedBox(
                                     width: 30.0,
                                     height: 30.0,
@@ -130,20 +146,24 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                       size: 30.0,
                                     ),
                                   ),
-                                );
-                              }
-                              List<LookupRecord> listViewLookupRecordList =
-                                  snapshot.data!;
-                              return ListView.separated(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: listViewLookupRecordList.length,
-                                separatorBuilder: (_, __) =>
-                                    SizedBox(height: 8.0),
-                                itemBuilder: (context, listViewIndex) {
-                                  final listViewLookupRecord =
-                                      listViewLookupRecordList[listViewIndex];
+                                ),
+                                // Customize what your widget looks like when it's loading another page.
+                                newPageProgressIndicatorBuilder: (_) => Center(
+                                  child: SizedBox(
+                                    width: 30.0,
+                                    height: 30.0,
+                                    child: SpinKitRipple(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondary,
+                                      size: 30.0,
+                                    ),
+                                  ),
+                                ),
+
+                                itemBuilder: (context, _, listViewIndex) {
+                                  final listViewLookupRecord = _model
+                                      .listViewPagingController!
+                                      .itemList![listViewIndex];
                                   return InkWell(
                                     splashColor: Colors.transparent,
                                     focusColor: Colors.transparent,
@@ -163,11 +183,51 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                             hasTransition: true,
                                             transitionType:
                                                 PageTransitionType.rightToLeft,
-                                            duration:
-                                                Duration(milliseconds: 300),
                                           ),
                                         },
                                       );
+                                    },
+                                    onLongPress: () async {
+                                      if (listViewLookupRecord.userId ==
+                                          currentUserUid) {
+                                        HapticFeedback.heavyImpact();
+                                        var confirmDialogResponse =
+                                            await showDialog<bool>(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      title:
+                                                          Text('Delete item?'),
+                                                      content: Text(
+                                                          'Do you want to delete this item?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                          child: Text('Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                          child: Text('Yes'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ) ??
+                                                false;
+                                        if (confirmDialogResponse) {
+                                          await listViewLookupRecord.reference
+                                              .delete();
+                                        } else {
+                                          Navigator.pop(context);
+                                        }
+                                      }
                                     },
                                     child: wrapWithModel(
                                       model: _model.itemModels.getModel(
@@ -175,6 +235,7 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                         listViewIndex,
                                       ),
                                       updateCallback: () => setState(() {}),
+                                      updateOnChange: true,
                                       child: ItemWidget(
                                         key: Key(
                                           'Keyle7_${listViewLookupRecord.reference.id}',
@@ -187,12 +248,16 @@ class _HomeCarbsWidgetState extends State<HomeCarbsWidget> {
                                         title: listViewLookupRecord.name,
                                         subtitle: listViewLookupRecord.brand,
                                         size: listViewLookupRecord.size,
+                                        blurHash: valueOrDefault<String>(
+                                          listViewLookupRecord.blurHash,
+                                          'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
+                                        ),
                                       ),
                                     ),
                                   );
                                 },
-                              );
-                            },
+                              ),
+                            ),
                           ),
                         ),
                       ),

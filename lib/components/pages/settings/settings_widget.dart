@@ -46,23 +46,29 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     _model.nightscoutController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.nightscout, ''));
     _model.nightscoutFocusNode ??= FocusNode();
+
     _model.apiController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.apiKey, ''));
     _model.apiFocusNode ??= FocusNode();
+
     _model.tokenController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.token, ''));
     _model.tokenFocusNode ??= FocusNode();
+
     _model.expandableController2 = ExpandableController(initialExpanded: false);
     _model.expandableController3 = ExpandableController(initialExpanded: false);
     _model.highValueController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.highValue, 0.0).toString());
     _model.highValueFocusNode ??= FocusNode();
+
     _model.lowValueController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.lowValue, 0.0).toString());
     _model.lowValueFocusNode ??= FocusNode();
+
     _model.carbRatioController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.carbRatio, 0.0).toString());
     _model.carbRatioFocusNode ??= FocusNode();
+
     _model.expandableController4 = ExpandableController(initialExpanded: false);
   }
 
@@ -1872,13 +1878,17 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                       Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
-                        child: Text(
+                        child: SelectionArea(
+                            child: AutoSizeText(
                           'Food composition publications are licensed by Food Standards Australia New Zealand (FSANZ) under a licence based on a Creative Commons Attribution-ShareAlike 3.0 Australia licence. ',
-                          style: TextStyle(
+                          textAlign: TextAlign.center,
+                          maxLines: 5,
+                          style: GoogleFonts.getFont(
+                            'Lato',
                             color: FlutterFlowTheme.of(context).primaryText,
                             fontSize: 12.0,
                           ),
-                        ),
+                        )),
                       ),
                     ],
                   ),

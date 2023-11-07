@@ -33,9 +33,11 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget> {
     _model.nightscoutController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.nightscout, ''));
     _model.nightscoutFocusNode ??= FocusNode();
+
     _model.apiController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.apiKey, ''));
     _model.apiFocusNode ??= FocusNode();
+
     _model.tokenController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.token, ''));
     _model.tokenFocusNode ??= FocusNode();

@@ -5,11 +5,8 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_timer.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'nav_bar1_widget.dart' show NavBar1Widget;
-import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -21,7 +18,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
@@ -29,32 +25,21 @@ class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
 
   bool? loadingItem = false;
 
-  String loadingText = 'Loading Scanned Item';
+  String loadingText = 'Opening Camera';
 
   ///  State fields for stateful widgets in this component.
 
   var barcodeScan = '';
   // Stores action output result for [Firestore Query - Query a collection] action in BarcodeFAB widget.
-  LookupRecord? doesCodeExist;
+  int? doesCodeExist;
   // Stores action output result for [Backend Call - API (Barcode Scan)] action in BarcodeFAB widget.
   ApiCallResponse? buildshipAPI;
-  // State field(s) for Timer widget.
-  int timerMilliseconds = 5000;
-  String timerValue = StopWatchTimer.getDisplayTime(
-    5000,
-    hours: false,
-    milliSecond: false,
-  );
-  FlutterFlowTimerController timerController =
-      FlutterFlowTimerController(StopWatchTimer(mode: StopWatchMode.countDown));
 
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}
 
-  void dispose() {
-    timerController.dispose();
-  }
+  void dispose() {}
 
   /// Action blocks are added here.
 

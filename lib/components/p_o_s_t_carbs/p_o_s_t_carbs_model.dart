@@ -1,6 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
-import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -15,7 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:text_search/text_search.dart';
 
 class POSTCarbsModel extends FlutterFlowModel<POSTCarbsWidget> {
   ///  Local state fields for this component.
@@ -48,7 +46,6 @@ class POSTCarbsModel extends FlutterFlowModel<POSTCarbsWidget> {
   FocusNode? searchFieldFocusNode;
   TextEditingController? searchFieldController;
   String? Function(BuildContext, String?)? searchFieldControllerValidator;
-  List<FoodDataRecord> simpleSearchResults = [];
   // State field(s) for gramsCarbs widget.
   FocusNode? gramsCarbsFocusNode1;
   TextEditingController? gramsCarbsController1;
@@ -72,8 +69,6 @@ class POSTCarbsModel extends FlutterFlowModel<POSTCarbsWidget> {
   String? Function(BuildContext, String?)? foodNameControllerValidator;
   // Stores action output result for [Backend Call - API (PostCarbs)] action in IconButton widget.
   ApiCallResponse? apiResultPostCarbs;
-  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
-  FoodDataRecord? addFoodToDatabase;
   // State field(s) for gramsCarbs widget.
   FocusNode? gramsCarbsFocusNode2;
   TextEditingController? gramsCarbsController2;

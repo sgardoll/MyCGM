@@ -140,6 +140,7 @@ class DetectTextGETCall {
 class BarcodeScanCall {
   Future<ApiCallResponse> call({
     String? input = '',
+    String? userId = '',
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'Barcode Scan',
@@ -148,6 +149,7 @@ class BarcodeScanCall {
       headers: {},
       params: {
         'input': input,
+        'userId': userId,
       },
       returnBody: true,
       encodeBodyUtf8: false,

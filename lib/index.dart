@@ -19,3 +19,5 @@ export '/components/pages/home_carbs/home_carbs_widget.dart'
 export '/components/pages/remove_ads/remove_ads_widget.dart'
     show RemoveAdsWidget;
 export '/components/pages/details/details_widget.dart' show DetailsWidget;
+export '/components/pages/details_database_item/details_database_item_widget.dart'
+    show DetailsDatabaseItemWidget;

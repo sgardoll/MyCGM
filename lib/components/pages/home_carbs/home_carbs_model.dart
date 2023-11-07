@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/item/item_widget.dart';
 import '/components/nav_bar1_widget.dart';
@@ -11,12 +12,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 class HomeCarbsModel extends FlutterFlowModel<HomeCarbsWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // State field(s) for ListView widget.
+
+  PagingController<DocumentSnapshot?, LookupRecord>? listViewPagingController;
+  Query? listViewPagingQuery;
+  List<StreamSubscription?> listViewStreamSubscriptions = [];
+
   // Models for Item dynamic component.
   late FlutterFlowDynamicModels<ItemModel> itemModels;
   // Model for NavBar1 component.
@@ -31,6 +39,9 @@ class HomeCarbsModel extends FlutterFlowModel<HomeCarbsWidget> {
 
   void dispose() {
     unfocusNode.dispose();
+    listViewStreamSubscriptions.forEach((s) => s?.cancel());
+    listViewPagingController?.dispose();
+
     itemModels.dispose();
     navBar1Model.dispose();
   }
@@ -38,4 +49,35 @@ class HomeCarbsModel extends FlutterFlowModel<HomeCarbsWidget> {
   /// Action blocks are added here.
 
   /// Additional helper methods are added here.
+
+  PagingController<DocumentSnapshot?, LookupRecord> setListViewController(
+    Query query, {
+    DocumentReference<Object?>? parent,
+  }) {
+    listViewPagingController ??= _createListViewController(query, parent);
+    if (listViewPagingQuery != query) {
+      listViewPagingQuery = query;
+      listViewPagingController?.refresh();
+    }
+    return listViewPagingController!;
+  }
+
+  PagingController<DocumentSnapshot?, LookupRecord> _createListViewController(
+    Query query,
+    DocumentReference<Object?>? parent,
+  ) {
+    final controller =
+        PagingController<DocumentSnapshot?, LookupRecord>(firstPageKey: null);
+    return controller
+      ..addPageRequestListener(
+        (nextPageMarker) => queryLookupRecordPage(
+          queryBuilder: (_) => listViewPagingQuery ??= query,
+          nextPageMarker: nextPageMarker,
+          streamSubscriptions: listViewStreamSubscriptions,
+          controller: controller,
+          pageSize: 25,
+          isStream: true,
+        ),
+      );
+  }
 }

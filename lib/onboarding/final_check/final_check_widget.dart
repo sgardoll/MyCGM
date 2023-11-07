@@ -38,6 +38,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget> {
     _model.highValueController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.highValue, 0.0).toString());
     _model.highValueFocusNode ??= FocusNode();
+
     _model.lowValueController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.lowValue, 0.0).toString());
     _model.lowValueFocusNode ??= FocusNode();

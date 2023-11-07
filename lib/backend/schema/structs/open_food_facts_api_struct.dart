@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_getters_setters
-
+import '/backend/algolia/serialization_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
@@ -555,6 +555,144 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           data['imageUrl'],
           ParamType.String,
           false,
+        ),
+      );
+
+  static OpenFoodFactsApiStruct fromAlgoliaData(Map<String, dynamic> data) =>
+      OpenFoodFactsApiStruct(
+        carbohydrates: convertAlgoliaParam(
+          data['carbohydrates'],
+          ParamType.double,
+          false,
+        ),
+        carbohydrates100g: convertAlgoliaParam(
+          data['carbohydrates_100g'],
+          ParamType.double,
+          false,
+        ),
+        carbohydratesUnit: convertAlgoliaParam(
+          data['carbohydrates_unit'],
+          ParamType.String,
+          false,
+        ),
+        carbohydratesValue: convertAlgoliaParam(
+          data['carbohydrates_value'],
+          ParamType.double,
+          false,
+        ),
+        energy: convertAlgoliaParam(
+          data['energy'],
+          ParamType.int,
+          false,
+        ),
+        energyKcal: convertAlgoliaParam(
+          data['energy-kcal'],
+          ParamType.double,
+          false,
+        ),
+        energyKcal100g: convertAlgoliaParam(
+          data['energy-kcal_100g'],
+          ParamType.double,
+          false,
+        ),
+        energyKcalUnit: convertAlgoliaParam(
+          data['energy-kcal_unit'],
+          ParamType.String,
+          false,
+        ),
+        energyKcalValue: convertAlgoliaParam(
+          data['energy-kcal_value'],
+          ParamType.double,
+          false,
+        ),
+        energyKcalValueComputed: convertAlgoliaParam(
+          data['energy-kcal_value_computed'],
+          ParamType.double,
+          false,
+        ),
+        energy100g: convertAlgoliaParam(
+          data['energy_100g'],
+          ParamType.int,
+          false,
+        ),
+        energyUnit: convertAlgoliaParam(
+          data['energy_unit'],
+          ParamType.String,
+          false,
+        ),
+        energyValue: convertAlgoliaParam(
+          data['energy_value'],
+          ParamType.double,
+          false,
+        ),
+        fat: convertAlgoliaParam(
+          data['fat'],
+          ParamType.double,
+          false,
+        ),
+        fat100g: convertAlgoliaParam(
+          data['fat_100g'],
+          ParamType.double,
+          false,
+        ),
+        fatUnit: convertAlgoliaParam(
+          data['fat_unit'],
+          ParamType.String,
+          false,
+        ),
+        fatValue: convertAlgoliaParam(
+          data['fat_value'],
+          ParamType.double,
+          false,
+        ),
+        proteins: convertAlgoliaParam(
+          data['proteins'],
+          ParamType.double,
+          false,
+        ),
+        proteins100g: convertAlgoliaParam(
+          data['proteins_100g'],
+          ParamType.double,
+          false,
+        ),
+        proteinsUnit: convertAlgoliaParam(
+          data['proteins_unit'],
+          ParamType.String,
+          false,
+        ),
+        proteinsValue: convertAlgoliaParam(
+          data['proteins_value'],
+          ParamType.double,
+          false,
+        ),
+        sugars: convertAlgoliaParam(
+          data['sugars'],
+          ParamType.double,
+          false,
+        ),
+        sugars100g: convertAlgoliaParam(
+          data['sugars_100g'],
+          ParamType.double,
+          false,
+        ),
+        sugarsUnit: convertAlgoliaParam(
+          data['sugars_unit'],
+          ParamType.String,
+          false,
+        ),
+        sugarsValue: convertAlgoliaParam(
+          data['sugars_value'],
+          ParamType.double,
+          false,
+        ),
+        imageUrl: convertAlgoliaParam(
+          data['imageUrl'],
+          ParamType.String,
+          false,
+        ),
+        firestoreUtilData: FirestoreUtilData(
+          clearUnsetFields: false,
+          create: true,
         ),
       );
 
