@@ -169,10 +169,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => HomeWidget(),
             ),
             FFRoute(
-              name: 'homeCarbs',
+              name: 'homeScanned',
               path: 'Carbs',
               requireAuth: true,
-              builder: (context, params) => HomeCarbsWidget(),
+              builder: (context, params) => HomeScannedWidget(),
             ),
             FFRoute(
               name: 'removeAds',

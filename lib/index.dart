@@ -14,8 +14,8 @@ export '/onboarding/carb_ratio_check/carb_ratio_check_widget.dart'
 export '/t_v_builds/main_t_v/main_t_v_widget.dart' show MainTVWidget;
 export '/components/pages/home_c_g_m/home_c_g_m_widget.dart' show HomeCGMWidget;
 export '/components/pages/home/home_widget.dart' show HomeWidget;
-export '/components/pages/home_carbs/home_carbs_widget.dart'
-    show HomeCarbsWidget;
+export '/components/pages/home_scanned/home_scanned_widget.dart'
+    show HomeScannedWidget;
 export '/components/pages/remove_ads/remove_ads_widget.dart'
     show RemoveAdsWidget;
 export '/components/pages/details/details_widget.dart' show DetailsWidget;

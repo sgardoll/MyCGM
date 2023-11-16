@@ -56,6 +56,8 @@ class _MainTVWidgetState extends State<MainTVWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => MainTVModel());
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'MainTV'});
   }
 
   @override

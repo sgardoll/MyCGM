@@ -1,5 +1,4 @@
-import '/auth/firebase_auth/auth_util.dart';
-import '/backend/backend.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,9 +15,11 @@ class CreateBlurhashWidget extends StatefulWidget {
   const CreateBlurhashWidget({
     Key? key,
     required this.docRef,
+    required this.imageUrl,
   }) : super(key: key);
 
   final DocumentReference? docRef;
+  final String? imageUrl;
 
   @override
   _CreateBlurhashWidgetState createState() => _CreateBlurhashWidgetState();
@@ -40,9 +41,10 @@ class _CreateBlurhashWidgetState extends State<CreateBlurhashWidget> {
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await widget.docRef!.update(createFoodDatabaseRecordData(
-        generateBlurhash: true,
-      ));
+      _model.generBLURHASH = await GenerateBlurhashGroup.generateBlurCall.call(
+        imageUrl: widget.imageUrl,
+        docref: widget.docRef?.id,
+      );
     });
   }
 

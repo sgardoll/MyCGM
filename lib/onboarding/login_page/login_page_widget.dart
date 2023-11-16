@@ -51,6 +51,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
     super.initState();
     _model = createModel(context, () => LoginPageModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'loginPage'});
     _model.tabBarController = TabController(
       vsync: this,
       length: 2,
@@ -130,15 +131,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              // Logo
                               Flexible(
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 40.05, 0.0, 0.0),
-                                  child: Image.asset(
-                                    'assets/images/6-splash.png',
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.3,
-                                    fit: BoxFit.contain,
+                                  child: Semantics(
+                                    label: 'Logo',
+                                    child: Image.asset(
+                                      'assets/images/6-splash.png',
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.3,
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
                               ),

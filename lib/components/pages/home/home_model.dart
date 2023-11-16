@@ -1,6 +1,5 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/item/item_widget.dart';
+import '/components/item_database/item_database_widget.dart';
 import '/components/nav_bar1_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -10,6 +9,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'home_widget.dart' show HomeWidget;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -28,8 +28,6 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // Models for Item dynamic component.
-  late FlutterFlowDynamicModels<ItemModel> itemModels1;
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, FoodDatabaseRecord>?
@@ -37,8 +35,6 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   Query? listViewPagingQuery2;
   List<StreamSubscription?> listViewStreamSubscriptions2 = [];
 
-  // Models for Item dynamic component.
-  late FlutterFlowDynamicModels<ItemModel> itemModels2;
   // Model for NavBar1 component.
   late NavBar1Model navBar1Model;
   // State field(s) for TextField widget.
@@ -51,18 +47,14 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
-    itemModels1 = FlutterFlowDynamicModels(() => ItemModel());
-    itemModels2 = FlutterFlowDynamicModels(() => ItemModel());
     navBar1Model = createModel(context, () => NavBar1Model());
   }
 
   void dispose() {
     unfocusNode.dispose();
-    itemModels1.dispose();
     listViewStreamSubscriptions2.forEach((s) => s?.cancel());
     listViewPagingController2?.dispose();
 
-    itemModels2.dispose();
     navBar1Model.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();

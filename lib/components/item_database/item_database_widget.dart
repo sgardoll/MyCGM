@@ -10,11 +10,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:provider/provider.dart';
-import 'item_model.dart';
-export 'item_model.dart';
+import 'item_database_model.dart';
+export 'item_database_model.dart';
 
-class ItemWidget extends StatefulWidget {
-  const ItemWidget({
+class ItemDatabaseWidget extends StatefulWidget {
+  const ItemDatabaseWidget({
     Key? key,
     this.imageUrl,
     this.title,
@@ -31,11 +31,12 @@ class ItemWidget extends StatefulWidget {
   final String blurHash;
 
   @override
-  _ItemWidgetState createState() => _ItemWidgetState();
+  _ItemDatabaseWidgetState createState() => _ItemDatabaseWidgetState();
 }
 
-class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
-  late ItemModel _model;
+class _ItemDatabaseWidgetState extends State<ItemDatabaseWidget>
+    with TickerProviderStateMixin {
+  late ItemDatabaseModel _model;
 
   final animationsMap = {
     'containerOnPageLoadAnimation': AnimationInfo(
@@ -68,7 +69,7 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => ItemModel());
+    _model = createModel(context, () => ItemDatabaseModel());
   }
 
   @override
@@ -136,29 +137,25 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                               ),
                             ),
                             alignment: AlignmentDirectional(0.00, 0.00),
-                            child: Hero(
-                              tag: widget.imageUrl!,
-                              transitionOnUserGestures: true,
-                              child: OctoImage(
-                                placeholderBuilder: OctoPlaceholder.blurHash(
-                                  valueOrDefault<String>(
-                                    widget.blurHash,
-                                    'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
-                                  ),
+                            child: OctoImage(
+                              placeholderBuilder: OctoPlaceholder.blurHash(
+                                valueOrDefault<String>(
+                                  widget.blurHash,
+                                  'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
                                 ),
-                                image: NetworkImage(
-                                  widget.imageUrl!,
-                                ),
+                              ),
+                              image: NetworkImage(
+                                widget.imageUrl!,
+                              ),
+                              width: 300.0,
+                              height: 200.0,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                'assets/images/error_image.png',
                                 width: 300.0,
                                 height: 200.0,
                                 fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Image.asset(
-                                  'assets/images/error_image.png',
-                                  width: 300.0,
-                                  height: 200.0,
-                                  fit: BoxFit.cover,
-                                ),
                               ),
                             ),
                           ),

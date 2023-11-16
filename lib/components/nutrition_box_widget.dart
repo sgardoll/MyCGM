@@ -84,126 +84,111 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
 
     return Container(
       width: MediaQuery.sizeOf(context).width * 1.0,
-      decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).alternate,
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(
-          color: FlutterFlowTheme.of(context).secondaryText,
-          width: 2.0,
-        ),
-      ),
-      child: Container(
-        width: MediaQuery.sizeOf(context).width * 1.0,
-        color: Color(0x00000000),
-        child: ExpandableNotifier(
-          controller: _model.expandableController,
-          child: ExpandablePanel(
-            header: Align(
-              alignment: AlignmentDirectional(-1.00, 0.00),
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 4.0),
-                child: Material(
-                  color: Colors.transparent,
-                  elevation: 2.0,
-                  shape: RoundedRectangleBorder(
+      color: Color(0x00000000),
+      child: ExpandableNotifier(
+        controller: _model.expandableController,
+        child: ExpandablePanel(
+          header: Align(
+            alignment: AlignmentDirectional(-1.00, 0.00),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 4.0),
+              child: Material(
+                color: Colors.transparent,
+                elevation: 2.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width * 1.0,
+                  height: 30.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  child: Container(
-                    width: MediaQuery.sizeOf(context).width * 1.0,
-                    height: 30.0,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    alignment: AlignmentDirectional(-1.00, 0.00),
-                    child: Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                      child: Text(
-                        valueOrDefault<String>(
-                          widget.source,
-                          '-',
-                        ),
-                        style: FlutterFlowTheme.of(context).bodySmall.override(
-                              fontFamily: 'Lato',
-                              color: FlutterFlowTheme.of(context).secondary,
-                            ),
+                  alignment: AlignmentDirectional(-1.00, 0.00),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                    child: Text(
+                      valueOrDefault<String>(
+                        widget.source,
+                        '-',
                       ),
+                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                            fontFamily: 'Lato',
+                            color: FlutterFlowTheme.of(context).secondary,
+                          ),
                     ),
                   ),
                 ),
               ),
             ),
-            collapsed: Container(),
-            expanded: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                    child: wrapWithModel(
-                      model: _model.nutriCirclesModel,
-                      updateCallback: () => setState(() {}),
-                      updateOnChange: true,
-                      child: NutriCirclesWidget(
-                        energy: valueOrDefault<double>(
-                          widget.energy,
-                          0.0,
-                        ),
-                        energyUnits: valueOrDefault<String>(
-                          widget.energyUnits,
-                          '0',
-                        ),
-                        protein: valueOrDefault<double>(
-                          widget.protein,
-                          0.0,
-                        ),
-                        proteinUnits: valueOrDefault<String>(
-                          widget.proteinUnits,
-                          '0',
-                        ),
-                        carbs: valueOrDefault<double>(
-                          widget.carbs,
-                          0.0,
-                        ),
-                        carbsUnits: valueOrDefault<String>(
-                          widget.carbUnits,
-                          '0',
-                        ),
-                        fats: widget.fats!,
-                        fatUnits: widget.fatUnits!,
+          ),
+          collapsed: Container(),
+          expanded: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(4.0, 4.0, 4.0, 4.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                  child: wrapWithModel(
+                    model: _model.nutriCirclesModel,
+                    updateCallback: () => setState(() {}),
+                    updateOnChange: true,
+                    child: NutriCirclesWidget(
+                      energy: valueOrDefault<double>(
+                        widget.energy,
+                        0.0,
+                      ),
+                      energyUnits: 'kJ',
+                      protein: valueOrDefault<double>(
+                        widget.protein,
+                        0.0,
+                      ),
+                      proteinUnits: valueOrDefault<String>(
+                        widget.proteinUnits,
+                        '0',
+                      ),
+                      carbs: valueOrDefault<double>(
+                        widget.carbs,
+                        0.0,
+                      ),
+                      carbsUnits: valueOrDefault<String>(
+                        widget.carbUnits,
+                        '0',
+                      ),
+                      fats: widget.fats!,
+                      fatUnits: widget.fatUnits!,
+                    ),
+                  ),
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                        color: FlutterFlowTheme.of(context).secondary,
                       ),
                     ),
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(
-                          color: FlutterFlowTheme.of(context).secondary,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            theme: ExpandableThemeData(
-              tapHeaderToExpand: true,
-              tapBodyToExpand: false,
-              tapBodyToCollapse: false,
-              headerAlignment: ExpandablePanelHeaderAlignment.center,
-              hasIcon: true,
-              expandIcon: Icons.keyboard_arrow_down_rounded,
-              collapseIcon: Icons.keyboard_arrow_up_outlined,
-              iconSize: 24.0,
-              iconColor: FlutterFlowTheme.of(context).secondaryText,
-            ),
+          ),
+          theme: ExpandableThemeData(
+            tapHeaderToExpand: true,
+            tapBodyToExpand: false,
+            tapBodyToCollapse: false,
+            headerAlignment: ExpandablePanelHeaderAlignment.center,
+            hasIcon: true,
+            expandIcon: Icons.keyboard_arrow_down_rounded,
+            collapseIcon: Icons.keyboard_arrow_up_outlined,
+            iconSize: 24.0,
+            iconColor: FlutterFlowTheme.of(context).secondaryText,
           ),
         ),
       ),

@@ -1,9 +1,9 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -113,9 +113,6 @@ class _NutritionPanelGoogleVisionWidgetState
             collapsed: Container(),
             expanded: Container(
               width: MediaQuery.sizeOf(context).width * 1.0,
-              constraints: BoxConstraints(
-                maxHeight: 350.0,
-              ),
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 border: Border.all(
@@ -124,15 +121,11 @@ class _NutritionPanelGoogleVisionWidgetState
               ),
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    Flexible(
-                      child: custom_widgets.MarkdownWidget(
-                        width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: 350.0,
-                        mdcolor: FlutterFlowTheme.of(context).primaryText,
-                        data: widget.markdown!,
-                      ),
+                    MarkdownBody(
+                      data: widget.markdown!,
+                      selectable: true,
                     ),
                   ],
                 ),

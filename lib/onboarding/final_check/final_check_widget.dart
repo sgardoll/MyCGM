@@ -35,6 +35,7 @@ class _FinalCheckWidgetState extends State<FinalCheckWidget> {
     super.initState();
     _model = createModel(context, () => FinalCheckModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'finalCheck'});
     _model.highValueController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.highValue, 0.0).toString());
     _model.highValueFocusNode ??= FocusNode();

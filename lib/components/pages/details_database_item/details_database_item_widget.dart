@@ -5,6 +5,7 @@ import '/components/create_markdown_on_empty_widget.dart';
 import '/components/nutri_circles_widget.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
+import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -16,6 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:octo_image/octo_image.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'details_database_item_model.dart';
 export 'details_database_item_model.dart';
@@ -42,6 +45,9 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => DetailsDatabaseItemModel());
+
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'DetailsDatabaseItem'});
   }
 
   @override
@@ -146,17 +152,6 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                           height: MediaQuery.sizeOf(context).height * 1.0,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              alignment: AlignmentDirectional(0.00, 0.00),
-                              image: Image.network(
-                                valueOrDefault<String>(
-                                  detailsDatabaseItemFoodDatabaseRecord
-                                      .imageUrl,
-                                  'https://www.connectio.com.au/nutri/error.png',
-                                ),
-                              ).image,
-                            ),
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 4.0,
@@ -171,11 +166,78 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                               topRight: Radius.circular(0.0),
                             ),
                           ),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.fade,
+                                  child: FlutterFlowExpandedImageView(
+                                    image: OctoImage(
+                                      placeholderBuilder:
+                                          OctoPlaceholder.blurHash(
+                                        detailsDatabaseItemFoodDatabaseRecord
+                                            .blurHash,
+                                      ),
+                                      image: NetworkImage(
+                                        detailsDatabaseItemFoodDatabaseRecord
+                                            .imageUrl,
+                                      ),
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                        'assets/images/error_image.png',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    allowRotation: false,
+                                    tag: detailsDatabaseItemFoodDatabaseRecord
+                                        .imageUrl,
+                                    useHeroAnimation: true,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Hero(
+                              tag: detailsDatabaseItemFoodDatabaseRecord
+                                  .imageUrl,
+                              transitionOnUserGestures: true,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: OctoImage(
+                                  placeholderBuilder: OctoPlaceholder.blurHash(
+                                    detailsDatabaseItemFoodDatabaseRecord
+                                        .blurHash,
+                                  ),
+                                  image: NetworkImage(
+                                    detailsDatabaseItemFoodDatabaseRecord
+                                        .imageUrl,
+                                  ),
+                                  width: 300.0,
+                                  height: 200.0,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(
+                                    'assets/images/error_image.png',
+                                    width: 300.0,
+                                    height: 200.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                   centerTitle: false,
+                  toolbarHeight: 56.0,
                   elevation: 6.0,
                 )
               ],
@@ -258,9 +320,8 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                                 detailsDatabaseItemFoodDatabaseRecord
                                                     .proteinG,
                                             proteinUnits: 'g',
-                                            carbs:
-                                                detailsDatabaseItemFoodDatabaseRecord
-                                                    .totalsugarsg,
+                                            carbs: detailsDatabaseItemFoodDatabaseRecord
+                                                .availableCarbohydrateWithSugarAlcoholsG,
                                             carbsUnits: 'g',
                                             fats:
                                                 detailsDatabaseItemFoodDatabaseRecord
@@ -299,7 +360,7 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                                 child:
                                                     NutritionPanelGoogleVisionWidget(
                                                   source:
-                                                      'Nutritional Infomation',
+                                                      'Nutritional Breakdown - per 100g / ml',
                                                   markdown:
                                                       detailsDatabaseItemFoodDatabaseRecord
                                                           .markdownTable,
@@ -307,6 +368,18 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                               ),
                                             ),
                                         ],
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 8.0, 0.0, 0.0),
+                                      child: AutoSizeText(
+                                        'Source: Food Standards Australia New Zealand (FSANZ)',
+                                        maxLines: 3,
+                                        style: FlutterFlowTheme.of(context)
+                                            .labelSmall,
                                       ),
                                     ),
                                   ),
@@ -344,6 +417,9 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                       updateCallback: () => setState(() {}),
                                       child: CreateBlurhashWidget(
                                         docRef: widget.docRef!,
+                                        imageUrl:
+                                            detailsDatabaseItemFoodDatabaseRecord
+                                                .imageUrl,
                                       ),
                                     ),
                                   if (valueOrDefault<bool>(

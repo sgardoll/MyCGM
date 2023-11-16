@@ -30,6 +30,8 @@ class _NightscoutCheckWidgetState extends State<NightscoutCheckWidget> {
     super.initState();
     _model = createModel(context, () => NightscoutCheckModel());
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'nightscoutCheck'});
     _model.nightscoutController ??= TextEditingController(
         text: valueOrDefault(currentUserDocument?.nightscout, ''));
     _model.nightscoutFocusNode ??= FocusNode();

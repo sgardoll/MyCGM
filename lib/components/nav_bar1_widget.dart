@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -145,7 +146,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 1200),
                         curve: Curves.easeInOut,
-                        width: MediaQuery.sizeOf(context).width * 0.8,
+                        width: MediaQuery.sizeOf(context).width * 0.85,
                         height: 45.0,
                         decoration: BoxDecoration(
                           color: FlutterFlowTheme.of(context).primaryBackground,
@@ -191,11 +192,11 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Flexible(
+                                        Expanded(
                                           child: Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
@@ -205,7 +206,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 _model.loadingText,
                                                 'Scanning',
                                               ),
-                                              textAlign: TextAlign.center,
+                                              textAlign: TextAlign.start,
                                               maxLines: 1,
                                               style:
                                                   FlutterFlowTheme.of(context)
@@ -217,7 +218,26 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             ),
                                           ),
                                         ),
-                                      ],
+                                      ].addToEnd(SizedBox(
+                                          width: valueOrDefault<double>(
+                                        () {
+                                          if (MediaQuery.sizeOf(context).width <
+                                              kBreakpointSmall) {
+                                            return 50.0;
+                                          } else if (MediaQuery.sizeOf(context)
+                                                  .width <
+                                              kBreakpointMedium) {
+                                            return 150.0;
+                                          } else if (MediaQuery.sizeOf(context)
+                                                  .width <
+                                              kBreakpointLarge) {
+                                            return 300.0;
+                                          } else {
+                                            return 50.0;
+                                          }
+                                        }(),
+                                        50.0,
+                                      ))),
                                     ),
                                   ),
                                 ),
@@ -313,7 +333,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                           FlutterFlowTheme.of(context).primary,
                         ),
                         icon: Icon(
-                          Icons.home_rounded,
+                          Icons.fastfood_rounded,
                           color: valueOrDefault<Color>(
                             widget.activePage == 'Home'
                                 ? FlutterFlowTheme.of(context).secondary
@@ -348,7 +368,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                           FlutterFlowTheme.of(context).primary,
                         ),
                         icon: Icon(
-                          Icons.fastfood_rounded,
+                          Icons.devices_fold_outlined,
                           color: valueOrDefault<Color>(
                             widget.activePage == 'Carbs'
                                 ? FlutterFlowTheme.of(context).secondary
@@ -359,7 +379,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                         ),
                         onPressed: () async {
                           if (loggedIn) {
-                            context.pushNamed('homeCarbs');
+                            context.pushNamed('homeScanned');
                           } else {
                             context.pushNamed('loginPage');
                           }
@@ -508,19 +528,48 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             _model.loadingText =
                                                 'Scanned ${_model.barcodeScan}';
                                           });
+                                          _model.getOpenFoodFactsName =
+                                              await OpenFoodFactsCall.call(
+                                            barcode: _model.barcodeScan,
+                                          );
+                                          _shouldSetState = true;
+                                          if (OpenFoodFactsCall.productName(
+                                                (_model.getOpenFoodFactsName
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ) !=
+                                              null) {
+                                            setState(() {
+                                              _model.loadingText =
+                                                  valueOrDefault<String>(
+                                                'Loading ${OpenFoodFactsCall.productName(
+                                                  (_model.getOpenFoodFactsName
+                                                          ?.jsonBody ??
+                                                      ''),
+                                                ).toString()}',
+                                                'Loading...',
+                                              );
+                                            });
+                                          } else {
+                                            setState(() {
+                                              _model.loadingText = 'Loading...';
+                                            });
+                                          }
+
                                           if (_model.barcodeScan != '-1'
                                               ? true
                                               : false) {
                                             _model.doesCodeExist =
-                                                await queryLookupRecordCount(
+                                                await queryLookupRecordOnce(
                                               queryBuilder: (lookupRecord) =>
                                                   lookupRecord.where(
                                                 'code',
                                                 isEqualTo: _model.barcodeScan,
                                               ),
-                                            );
+                                              singleRecord: true,
+                                            ).then((s) => s.firstOrNull);
                                             _shouldSetState = true;
-                                            if (_model.doesCodeExist! >= 1) {
+                                            if (_model.doesCodeExist != null) {
                                               if (animationsMap[
                                                       'containerOnActionTriggerAnimation'] !=
                                                   null) {
@@ -542,6 +591,11 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                     _model.barcodeScan,
                                                     ParamType.String,
                                                   ),
+                                                  'docRef': serializeParam(
+                                                    _model.doesCodeExist
+                                                        ?.reference,
+                                                    ParamType.DocumentReference,
+                                                  ),
                                                 }.withoutNulls,
                                               );
                                             } else {
@@ -549,8 +603,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                   await BuildshipGroup
                                                       .barcodeScanCall
                                                       .call(
-                                                input: _model.barcodeScan,
                                                 userId: currentUserUid,
+                                                input: _model.barcodeScan,
                                               );
                                               _shouldSetState = true;
                                               if ((_model.buildshipAPI
@@ -577,12 +631,18 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                       _model.barcodeScan,
                                                       ParamType.String,
                                                     ),
+                                                    'docRef': serializeParam(
+                                                      functions.getDocRef(
+                                                          _model.loadingText),
+                                                      ParamType
+                                                          .DocumentReference,
+                                                    ),
                                                   }.withoutNulls,
                                                 );
                                               } else {
                                                 setState(() {
                                                   _model.loadingText =
-                                                      'Item Not Found';
+                                                      'Error Finding Item';
                                                 });
                                                 await Future.delayed(
                                                     const Duration(

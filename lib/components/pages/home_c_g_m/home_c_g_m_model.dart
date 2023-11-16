@@ -9,6 +9,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'home_c_g_m_widget.dart' show HomeCGMWidget;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,9 @@ class HomeCGMModel extends FlutterFlowModel<HomeCGMWidget> {
   // Stores action output result for [Backend Call - API (GetBloodGlucose)] action in homeCGM widget.
   ApiCallResponse? pageLoadAPICall;
   // Stores action output result for [Backend Call - API (GetBloodGlucose)] action in Column widget.
-  ApiCallResponse? pullAPICall;
+  ApiCallResponse? longPressAPICall;
+  // Stores action output result for [Backend Call - API (GetBloodGlucose)] action in Column widget.
+  ApiCallResponse? pullRefreshAPICall;
   // Model for NavBar1 component.
   late NavBar1Model navBar1Model;
 

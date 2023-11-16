@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'dart:async';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'settings_widget.dart' show SettingsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -19,6 +20,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class SettingsModel extends FlutterFlowModel<SettingsWidget> {
+  ///  Local state fields for this page.
+
+  bool nightscoutUpdated = false;
+
+  bool unitsUpdated = false;
+
+  bool diabUpdated = false;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -61,6 +70,8 @@ class SettingsModel extends FlutterFlowModel<SettingsWidget> {
   // State field(s) for Expandable widget.
   late ExpandableController expandableController4;
 
+  // State field(s) for CheckboxListTile widget.
+  bool? checkboxListTileValue;
   // Model for NavBar1 component.
   late NavBar1Model navBar1Model;
 

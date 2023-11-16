@@ -143,6 +143,20 @@ class FoodDatabaseRecord extends FirestoreRecord {
   bool get generateBlurhash => _generateBlurhash ?? false;
   bool hasGenerateBlurhash() => _generateBlurhash != null;
 
+  // "availableCarbohydrateWithSugarAlcoholsG" field.
+  double? _availableCarbohydrateWithSugarAlcoholsG;
+  double get availableCarbohydrateWithSugarAlcoholsG =>
+      _availableCarbohydrateWithSugarAlcoholsG ?? 0.0;
+  bool hasAvailableCarbohydrateWithSugarAlcoholsG() =>
+      _availableCarbohydrateWithSugarAlcoholsG != null;
+
+  // "availableCarbohydrateWithoutSugarAlcoholsG" field.
+  double? _availableCarbohydrateWithoutSugarAlcoholsG;
+  double get availableCarbohydrateWithoutSugarAlcoholsG =>
+      _availableCarbohydrateWithoutSugarAlcoholsG ?? 0.0;
+  bool hasAvailableCarbohydrateWithoutSugarAlcoholsG() =>
+      _availableCarbohydrateWithoutSugarAlcoholsG != null;
+
   void _initializeFields() {
     _source = snapshotData['Source'] as String?;
     _publicFoodKey = snapshotData['publicFoodKey'] as String?;
@@ -171,6 +185,10 @@ class FoodDatabaseRecord extends FirestoreRecord {
     _createMarkdown = snapshotData['createMarkdown'] as bool?;
     _buildship = snapshotData['buildship'] as bool?;
     _generateBlurhash = snapshotData['generateBlurhash'] as bool?;
+    _availableCarbohydrateWithSugarAlcoholsG = castToType<double>(
+        snapshotData['availableCarbohydrateWithSugarAlcoholsG']);
+    _availableCarbohydrateWithoutSugarAlcoholsG = castToType<double>(
+        snapshotData['availableCarbohydrateWithoutSugarAlcoholsG']);
   }
 
   static CollectionReference get collection =>
@@ -281,6 +299,16 @@ class FoodDatabaseRecord extends FirestoreRecord {
           'createMarkdown': snapshot.data['createMarkdown'],
           'buildship': snapshot.data['buildship'],
           'generateBlurhash': snapshot.data['generateBlurhash'],
+          'availableCarbohydrateWithSugarAlcoholsG': convertAlgoliaParam(
+            snapshot.data['availableCarbohydrateWithSugarAlcoholsG'],
+            ParamType.double,
+            false,
+          ),
+          'availableCarbohydrateWithoutSugarAlcoholsG': convertAlgoliaParam(
+            snapshot.data['availableCarbohydrateWithoutSugarAlcoholsG'],
+            ParamType.double,
+            false,
+          ),
         },
         FoodDatabaseRecord.collection.doc(snapshot.objectID),
       );
@@ -341,6 +369,8 @@ Map<String, dynamic> createFoodDatabaseRecordData({
   bool? createMarkdown,
   bool? buildship,
   bool? generateBlurhash,
+  double? availableCarbohydrateWithSugarAlcoholsG,
+  double? availableCarbohydrateWithoutSugarAlcoholsG,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -368,6 +398,10 @@ Map<String, dynamic> createFoodDatabaseRecordData({
       'createMarkdown': createMarkdown,
       'buildship': buildship,
       'generateBlurhash': generateBlurhash,
+      'availableCarbohydrateWithSugarAlcoholsG':
+          availableCarbohydrateWithSugarAlcoholsG,
+      'availableCarbohydrateWithoutSugarAlcoholsG':
+          availableCarbohydrateWithoutSugarAlcoholsG,
     }.withoutNulls,
   );
 
@@ -405,7 +439,11 @@ class FoodDatabaseRecordDocumentEquality
         e1?.blurHash == e2?.blurHash &&
         e1?.createMarkdown == e2?.createMarkdown &&
         e1?.buildship == e2?.buildship &&
-        e1?.generateBlurhash == e2?.generateBlurhash;
+        e1?.generateBlurhash == e2?.generateBlurhash &&
+        e1?.availableCarbohydrateWithSugarAlcoholsG ==
+            e2?.availableCarbohydrateWithSugarAlcoholsG &&
+        e1?.availableCarbohydrateWithoutSugarAlcoholsG ==
+            e2?.availableCarbohydrateWithoutSugarAlcoholsG;
   }
 
   @override
@@ -433,7 +471,9 @@ class FoodDatabaseRecordDocumentEquality
         e?.blurHash,
         e?.createMarkdown,
         e?.buildship,
-        e?.generateBlurhash
+        e?.generateBlurhash,
+        e?.availableCarbohydrateWithSugarAlcoholsG,
+        e?.availableCarbohydrateWithoutSugarAlcoholsG
       ]);
 
   @override

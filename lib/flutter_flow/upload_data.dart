@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:blurhash_dart/blurhash_dart.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:video_player/video_player.dart';
+import 'package:image/image.dart' as img;
 
 import '../auth/firebase_auth/auth_util.dart';
 import 'flutter_flow_theme.dart';
@@ -182,12 +184,17 @@ Future<List<SelectedFile>?> selectMedia({
               ? _getVideoDimensions(media.path)
               : _getImageDimensions(mediaBytes)
           : null;
-
+      final blurHash = includeBlurHash
+          ? isVideo
+              ? null
+              : await _getImageBlurHash(mediaBytes)
+          : null;
       return SelectedFile(
         storagePath: path,
         filePath: media.path,
         bytes: mediaBytes,
         dimensions: await dimensions,
+        blurHash: blurHash,
       );
     }));
   }
@@ -214,13 +221,18 @@ Future<List<SelectedFile>?> selectMedia({
           ? _getVideoDimensions(pickedMedia.path)
           : _getImageDimensions(mediaBytes)
       : null;
-
+  final blurHash = includeBlurHash
+      ? isVideo
+          ? null
+          : await _getImageBlurHash(mediaBytes)
+      : null;
   return [
     SelectedFile(
       storagePath: path,
       filePath: pickedMedia.path,
       bytes: mediaBytes,
       dimensions: await dimensions,
+      blurHash: blurHash,
     ),
   ];
 }
@@ -323,6 +335,19 @@ Future<MediaDimensions> _getVideoDimensions(String path) async {
   final size = videoPlayerController.value.size;
   return MediaDimensions(width: size.width, height: size.height);
 }
+
+String? _generateBlurHash(Uint8List mediaBytes) {
+  final image = img.decodeImage(mediaBytes);
+  if (image != null) {
+    final resizedImg = img.copyResize(image, width: 64);
+    final blurHash = BlurHash.encode(resizedImg);
+    return blurHash.hash;
+  }
+  return null;
+}
+
+Future<String?> _getImageBlurHash(Uint8List mediaBytes) async =>
+    await compute(_generateBlurHash, mediaBytes);
 
 String _getStoragePath(
   String? pathPrefix,

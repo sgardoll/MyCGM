@@ -36,6 +36,8 @@ class _UnitsCheckWidgetState extends State<UnitsCheckWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => UnitsCheckModel());
+
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'unitsCheck'});
   }
 
   @override

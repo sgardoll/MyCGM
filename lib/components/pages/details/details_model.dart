@@ -1,5 +1,4 @@
 import '/auth/firebase_auth/auth_util.dart';
-import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
 import '/components/nutrition_box_widget.dart';
@@ -11,10 +10,10 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
+import 'dart:async';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'details_widget.dart' show DetailsWidget;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +42,6 @@ class DetailsModel extends FlutterFlowModel<DetailsWidget> {
       FFUploadedFile(bytes: Uint8List.fromList([]));
   String uploadedFileUrl = '';
 
-  // Stores action output result for [Backend Call - API (BuildshipGoogleVision)] action in Button widget.
-  ApiCallResponse? buildshipAPIGoogleVision;
   // Model for NutritionPanelGoogleVision component.
   late NutritionPanelGoogleVisionModel nutritionPanelGoogleVisionModel;
 

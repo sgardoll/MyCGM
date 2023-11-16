@@ -35,6 +35,8 @@ class _CarbRatioCheckWidgetState extends State<CarbRatioCheckWidget> {
     super.initState();
     _model = createModel(context, () => CarbRatioCheckModel());
 
+    logFirebaseEvent('screen_view',
+        parameters: {'screen_name': 'carbRatioCheck'});
     _model.carbRatioController ??= TextEditingController();
     _model.carbRatioFocusNode ??= FocusNode();
   }
@@ -91,11 +93,16 @@ class _CarbRatioCheckWidgetState extends State<CarbRatioCheckWidget> {
                             width: 0.0,
                           ),
                         ),
-                        child: Image.asset(
-                          'assets/images/6-splash.png',
-                          width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: MediaQuery.sizeOf(context).height * 0.15,
-                          fit: BoxFit.contain,
+                        child:
+                            // Logo
+                            Semantics(
+                          label: 'Logo',
+                          child: Image.asset(
+                            'assets/images/6-splash.png',
+                            width: MediaQuery.sizeOf(context).width * 1.0,
+                            height: MediaQuery.sizeOf(context).height * 0.15,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),

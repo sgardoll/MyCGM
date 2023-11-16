@@ -281,6 +281,12 @@ class FFAppState extends ChangeNotifier {
     secureStorage.delete(key: 'ff_hasCgmFeatures');
   }
 
+  int _lastSgvDate = 0;
+  int get lastSgvDate => _lastSgvDate;
+  set lastSgvDate(int _value) {
+    _lastSgvDate = _value;
+  }
+
   final _foodDataManager = FutureRequestManager<List<FoodDatabaseRecord>>();
   Future<List<FoodDatabaseRecord>> foodData({
     String? uniqueQueryKey,

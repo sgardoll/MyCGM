@@ -1,5 +1,4 @@
 import '/auth/firebase_auth/auth_util.dart';
-import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
 import '/components/nutrition_box_widget.dart';
@@ -11,9 +10,9 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
+import 'dart:async';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +50,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
     super.initState();
     _model = createModel(context, () => DetailsModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Details'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (widget.docRef?.id != null && widget.docRef?.id != '' ? true : false) {
@@ -83,7 +83,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
           ),
         );
 
-        context.goNamed('homeCarbs');
+        context.goNamed('homeScanned');
       }
     });
   }
@@ -109,7 +109,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
     context.watch<FFAppState>();
 
     return StreamBuilder<LookupRecord>(
-      stream: LookupRecord.getDocument(_model.loadedDocRef!),
+      stream: LookupRecord.getDocument(widget.docRef!),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -191,12 +191,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                           decoration: BoxDecoration(
                             color:
                                 FlutterFlowTheme.of(context).primaryBackground,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(
-                                'https://www.connectio.com.au/nutri/error.png',
-                              ),
-                            ),
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 4.0,
@@ -232,7 +226,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                       image: OctoImage(
                                         placeholderBuilder:
                                             OctoPlaceholder.blurHash(
-                                          detailsLookupRecord.blurHash,
+                                          valueOrDefault<String>(
+                                            detailsLookupRecord.blurHash,
+                                            'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
+                                          ),
                                         ),
                                         image: NetworkImage(
                                           detailsLookupRecord
@@ -267,7 +264,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                   child: OctoImage(
                                     placeholderBuilder:
                                         OctoPlaceholder.blurHash(
-                                      detailsLookupRecord.blurHash,
+                                      valueOrDefault<String>(
+                                        detailsLookupRecord.blurHash,
+                                        'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
+                                      ),
                                     ),
                                     image: NetworkImage(
                                       detailsLookupRecord
@@ -294,6 +294,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                     ),
                   ),
                   centerTitle: false,
+                  toolbarHeight: 56.0,
                   elevation: 6.0,
                 )
               ],
@@ -454,66 +455,89 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Flexible(
-                                                child: wrapWithModel(
-                                                  model:
-                                                      _model.nutritionBoxModel,
-                                                  updateCallback: () =>
-                                                      setState(() {}),
-                                                  updateOnChange: true,
-                                                  child: NutritionBoxWidget(
-                                                    source:
-                                                        'Open Food Facts - per 100g',
-                                                    energy: detailsLookupRecord
-                                                        .openFoodFacts
-                                                        .nutriments
-                                                        .energyKcal,
-                                                    energyUnits:
-                                                        detailsLookupRecord
-                                                            .openFoodFacts
-                                                            .nutriments
-                                                            .energyKcalUnit,
-                                                    energyPerServing:
-                                                        detailsLookupRecord
-                                                            .openFoodFacts
-                                                            .nutriments
-                                                            .energyKcal100g,
-                                                    protein: detailsLookupRecord
-                                                        .openFoodFacts
-                                                        .nutriments
-                                                        .proteins,
-                                                    proteinUnits:
-                                                        detailsLookupRecord
-                                                            .openFoodFacts
-                                                            .nutriments
-                                                            .proteinsUnit,
-                                                    proteinPerServing:
-                                                        detailsLookupRecord
-                                                            .openFoodFacts
-                                                            .nutriments
-                                                            .proteins100g,
-                                                    carbs: detailsLookupRecord
-                                                        .openFoodFacts
-                                                        .nutriments
-                                                        .carbohydrates,
-                                                    carbUnits:
-                                                        detailsLookupRecord
-                                                            .openFoodFacts
-                                                            .nutriments
-                                                            .carbohydratesUnit,
-                                                    carbsPerServing:
-                                                        detailsLookupRecord
-                                                            .openFoodFacts
-                                                            .nutriments
-                                                            .carbohydrates100g,
-                                                    fats: detailsLookupRecord
-                                                        .openFoodFacts
-                                                        .nutriments
-                                                        .fat,
-                                                    fatUnits:
-                                                        detailsLookupRecord
-                                                            .openFoodFacts
-                                                            .nutriments
-                                                            .fatUnit,
+                                                child: AnimatedContainer(
+                                                  duration: Duration(
+                                                      milliseconds: 100),
+                                                  curve: Curves.easeInOut,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width *
+                                                          1.0,
+                                                  decoration: BoxDecoration(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryBackground,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                      width: 2.0,
+                                                    ),
+                                                  ),
+                                                  child: wrapWithModel(
+                                                    model: _model
+                                                        .nutritionBoxModel,
+                                                    updateCallback: () =>
+                                                        setState(() {}),
+                                                    updateOnChange: true,
+                                                    child: NutritionBoxWidget(
+                                                      source:
+                                                          'Open Food Facts - per 100g / 100ml',
+                                                      energy:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .energy
+                                                              .toDouble(),
+                                                      energyUnits:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .energyKcalUnit,
+                                                      energyPerServing:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .energyKcal100g,
+                                                      protein:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .proteins,
+                                                      proteinUnits:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .proteinsUnit,
+                                                      proteinPerServing:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .proteins100g,
+                                                      carbs: detailsLookupRecord
+                                                          .openFoodFacts
+                                                          .nutriments
+                                                          .carbohydrates,
+                                                      carbUnits:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .carbohydratesUnit,
+                                                      carbsPerServing:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .carbohydrates100g,
+                                                      fats: detailsLookupRecord
+                                                          .openFoodFacts
+                                                          .nutriments
+                                                          .fat,
+                                                      fatUnits:
+                                                          detailsLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .fatUnit,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -522,10 +546,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                         ),
                                       ),
                                     if (valueOrDefault<bool>(
-                                      detailsLookupRecord.nutritionPanel !=
+                                      detailsLookupRecord
+                                                      .googleVisionResponse !=
                                                   null &&
                                               detailsLookupRecord
-                                                      .nutritionPanel !=
+                                                      .googleVisionResponse !=
                                                   ''
                                           ? false
                                           : true,
@@ -546,6 +571,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                   onPressed: () async {
                                                     final selectedMedia =
                                                         await selectMedia(
+                                                      maxWidth: 1024.00,
+                                                      maxHeight: 1024.00,
+                                                      imageQuality: 98,
+                                                      includeBlurHash: true,
                                                       multiImage: false,
                                                     );
                                                     if (selectedMedia != null &&
@@ -636,24 +665,25 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                       }
                                                     }
 
-                                                    _model.buildshipAPIGoogleVision =
-                                                        await BuildshipGoogleVisionCall
-                                                            .call(
-                                                      url: _model
-                                                          .uploadedFileUrl,
-                                                      input: detailsLookupRecord
-                                                          .code,
+                                                    unawaited(
+                                                      () async {
+                                                        await widget.docRef!.update(
+                                                            createLookupRecordData(
+                                                          nutritionPanel: _model
+                                                              .uploadedFileUrl,
+                                                        ));
+                                                      }(),
                                                     );
-                                                    if ((_model
-                                                            .buildshipAPIGoogleVision
-                                                            ?.succeeded ??
-                                                        true)) {
+                                                    if (_model.uploadedFileUrl !=
+                                                            null &&
+                                                        _model.uploadedFileUrl !=
+                                                            '') {
                                                       ScaffoldMessenger.of(
                                                               context)
                                                           .showSnackBar(
                                                         SnackBar(
                                                           content: Text(
-                                                            'Nutritional Panel Added Successfully',
+                                                            'Analysing Nutritional Panel',
                                                             style: GoogleFonts
                                                                 .getFont(
                                                               'Lato',
@@ -671,19 +701,13 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                                   .primary,
                                                         ),
                                                       );
-
-                                                      await widget.docRef!.update(
-                                                          createLookupRecordData(
-                                                        nutritionPanel: _model
-                                                            .uploadedFileUrl,
-                                                      ));
                                                     } else {
                                                       ScaffoldMessenger.of(
                                                               context)
                                                           .showSnackBar(
                                                         SnackBar(
                                                           content: Text(
-                                                            'Nutritional Panel Text Detection Unsuccessful',
+                                                            'Nutritional Panel Capture Unsuccessful',
                                                             style: GoogleFonts
                                                                 .getFont(
                                                               'Lato',
@@ -702,8 +726,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                         ),
                                                       );
                                                     }
-
-                                                    setState(() {});
                                                   },
                                                   text:
                                                       'Capture Nutritional Table',
@@ -749,10 +771,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                         ),
                                       ),
                                     if (valueOrDefault<bool>(
-                                      detailsLookupRecord.nutritionPanel !=
+                                      detailsLookupRecord
+                                                      .googleVisionResponse !=
                                                   null &&
                                               detailsLookupRecord
-                                                      .nutritionPanel !=
+                                                      .googleVisionResponse !=
                                                   ''
                                           ? true
                                           : false,

@@ -1,6 +1,5 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/item/item_widget.dart';
+import '/components/item_database/item_database_widget.dart';
 import '/components/nav_bar1_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -9,6 +8,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -62,12 +62,11 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
     super.initState();
     _model = createModel(context, () => HomeModel());
 
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'home'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      FFAppState().update(() {
+      setState(() {
         FFAppState().searchOn = false;
-        FFAppState().hasCgmFeatures =
-            valueOrDefault<bool>(currentUserDocument?.hasCgmFeatures, false);
       });
     });
 
@@ -112,7 +111,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
-          title: Text(
+          title: AutoSizeText(
             'NutriScan',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Lato',
@@ -334,7 +333,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                     androidAdUnitID: 'ca-app-pub-3945304154369399/4626582701',
                   ),
                 ),
-              Flexible(
+              Expanded(
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 1.0,
                   height: MediaQuery.sizeOf(context).height * 1.0,
@@ -381,7 +380,6 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                         0,
                                         100.0,
                                       ),
-                                      shrinkWrap: true,
                                       scrollDirection: Axis.vertical,
                                       itemCount: searchResults.length,
                                       separatorBuilder: (_, __) =>
@@ -415,38 +413,32 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                               },
                                             );
                                           },
-                                          child: wrapWithModel(
-                                            model: _model.itemModels1.getModel(
-                                              searchResultsItem.reference.id,
-                                              searchResultsIndex,
+                                          child: ItemDatabaseWidget(
+                                            key: Key(
+                                                'Keyp5f_${searchResultsIndex}_of_${searchResults.length}'),
+                                            imageUrl: valueOrDefault<String>(
+                                              searchResultsItem.imageUrl,
+                                              'https://www.connectio.com.au/nutri/error.png',
                                             ),
-                                            updateCallback: () =>
-                                                setState(() {}),
-                                            updateOnChange: true,
-                                            child: ItemWidget(
-                                              key: Key(
-                                                'Keyr9h_${searchResultsItem.reference.id}',
-                                              ),
-                                              imageUrl:
-                                                  searchResultsItem.imageUrl,
-                                              title: (String input) {
-                                                return input.indexOf(',') == -1
-                                                    ? input
-                                                    : input.substring(
-                                                        0, input.indexOf(','));
-                                              }(searchResultsItem.foodName),
-                                              subtitle: (String input) {
-                                                return input.contains(',')
-                                                    ? input
-                                                        .substring(
-                                                            input.indexOf(',') +
-                                                                1)
-                                                        .trimLeft()
-                                                    : '';
-                                              }(searchResultsItem.foodName),
-                                              size: '-',
-                                              blurHash:
-                                                  searchResultsItem.blurHash,
+                                            title: (String input) {
+                                              return input.indexOf(',') == -1
+                                                  ? input
+                                                  : input.substring(
+                                                      0, input.indexOf(','));
+                                            }(searchResultsItem.foodName),
+                                            subtitle: (String input) {
+                                              return input.contains(',')
+                                                  ? input
+                                                      .substring(
+                                                          input.indexOf(',') +
+                                                              1)
+                                                      .trimLeft()
+                                                  : '';
+                                            }(searchResultsItem.foodName),
+                                            size: '-',
+                                            blurHash: valueOrDefault<String>(
+                                              searchResultsItem.blurHash,
+                                              'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
                                             ),
                                           ),
                                         );
@@ -468,7 +460,6 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                     0,
                                     100.0,
                                   ),
-                                  shrinkWrap: true,
                                   reverse: false,
                                   scrollDirection: Axis.vertical,
                                   separatorBuilder: (_, __) =>
@@ -532,43 +523,31 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                             },
                                           );
                                         },
-                                        child: wrapWithModel(
-                                          model: _model.itemModels2.getModel(
-                                            listViewFoodDatabaseRecord
-                                                .reference.id,
-                                            listViewIndex,
-                                          ),
-                                          updateCallback: () => setState(() {}),
-                                          updateOnChange: true,
-                                          child: ItemWidget(
-                                            key: Key(
-                                              'Keypeh_${listViewFoodDatabaseRecord.reference.id}',
-                                            ),
-                                            imageUrl: listViewFoodDatabaseRecord
-                                                .imageUrl,
-                                            title: (String input) {
-                                              return input.indexOf(',') == -1
-                                                  ? input
-                                                  : input.substring(
-                                                      0, input.indexOf(','));
-                                            }(listViewFoodDatabaseRecord
-                                                .foodName),
-                                            subtitle: (String input) {
-                                              return input.contains(',')
-                                                  ? input
-                                                      .substring(
-                                                          input.indexOf(',') +
-                                                              1)
-                                                      .trimLeft()
-                                                  : '';
-                                            }(listViewFoodDatabaseRecord
-                                                .foodName),
-                                            size: '-',
-                                            blurHash: valueOrDefault<String>(
-                                              listViewFoodDatabaseRecord
-                                                  .blurHash,
-                                              'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
-                                            ),
+                                        child: ItemDatabaseWidget(
+                                          key: Key(
+                                              'Keyz3t_${listViewIndex}_of_${_model.listViewPagingController2!.itemList!.length}'),
+                                          imageUrl: listViewFoodDatabaseRecord
+                                              .imageUrl,
+                                          title: (String input) {
+                                            return input.indexOf(',') == -1
+                                                ? input
+                                                : input.substring(
+                                                    0, input.indexOf(','));
+                                          }(listViewFoodDatabaseRecord
+                                              .foodName),
+                                          subtitle: (String input) {
+                                            return input.contains(',')
+                                                ? input
+                                                    .substring(
+                                                        input.indexOf(',') + 1)
+                                                    .trimLeft()
+                                                : '';
+                                          }(listViewFoodDatabaseRecord
+                                              .foodName),
+                                          size: '-',
+                                          blurHash: valueOrDefault<String>(
+                                            listViewFoodDatabaseRecord.blurHash,
+                                            'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
                                           ),
                                         ),
                                       );
@@ -586,12 +565,14 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            wrapWithModel(
-                              model: _model.navBar1Model,
-                              updateCallback: () => setState(() {}),
-                              updateOnChange: true,
-                              child: NavBar1Widget(
-                                activePage: 'Home',
+                            Flexible(
+                              child: wrapWithModel(
+                                model: _model.navBar1Model,
+                                updateCallback: () => setState(() {}),
+                                updateOnChange: true,
+                                child: NavBar1Widget(
+                                  activePage: 'Home',
+                                ),
                               ),
                             ),
                           ],

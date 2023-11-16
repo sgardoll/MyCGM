@@ -92,7 +92,8 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   4.0, 4.0, 4.0, 4.0),
-                              child: AutoSizeText(
+                              child: SelectionArea(
+                                  child: AutoSizeText(
                                 valueOrDefault<String>(
                                   formatNumber(
                                     widget.energy,
@@ -112,7 +113,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                                           FlutterFlowTheme.of(context).btnText,
                                       fontWeight: FontWeight.bold,
                                     ),
-                              ),
+                              )),
                             ),
                           ),
                         ],
@@ -157,9 +158,10 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     4.0, 4.0, 4.0, 4.0),
-                                child: AutoSizeText(
+                                child: SelectionArea(
+                                    child: AutoSizeText(
                                   formatNumber(
-                                    widget.energy! * 0.239,
+                                    widget.energy! / 4.184,
                                     formatType: FormatType.custom,
                                     format: '####0',
                                     locale: '',
@@ -174,7 +176,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                                             .btnText,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                ),
+                                )),
                               ),
                             ),
                           ],
@@ -202,7 +204,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                 children: [
                   Flexible(
                     child: Container(
-                      width: 40.0,
+                      width: 45.0,
                       height: 40.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondary,
@@ -218,7 +220,8 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   4.0, 4.0, 4.0, 4.0),
-                              child: AutoSizeText(
+                              child: SelectionArea(
+                                  child: AutoSizeText(
                                 '${formatNumber(
                                   widget.protein,
                                   formatType: FormatType.custom,
@@ -233,9 +236,10 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                                       fontFamily: 'Lato',
                                       color:
                                           FlutterFlowTheme.of(context).btnText,
+                                      fontSize: 10.0,
                                       fontWeight: FontWeight.bold,
                                     ),
-                              ),
+                              )),
                             ),
                           ),
                         ],
@@ -262,7 +266,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                 children: [
                   Flexible(
                     child: Container(
-                      width: 40.0,
+                      width: 45.0,
                       height: 40.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondary,
@@ -278,7 +282,8 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   4.0, 4.0, 4.0, 4.0),
-                              child: AutoSizeText(
+                              child: SelectionArea(
+                                  child: AutoSizeText(
                                 '${formatNumber(
                                   widget.carbs,
                                   formatType: FormatType.custom,
@@ -293,9 +298,10 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                                       fontFamily: 'Lato',
                                       color:
                                           FlutterFlowTheme.of(context).btnText,
+                                      fontSize: 10.0,
                                       fontWeight: FontWeight.bold,
                                     ),
-                              ),
+                              )),
                             ),
                           ),
                         ],
@@ -322,7 +328,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                 children: [
                   Flexible(
                     child: Container(
-                      width: 40.0,
+                      width: 45.0,
                       height: 40.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondary,
@@ -338,7 +344,8 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                             child: Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   4.0, 4.0, 4.0, 4.0),
-                              child: AutoSizeText(
+                              child: SelectionArea(
+                                  child: AutoSizeText(
                                 '${formatNumber(
                                   widget.fats,
                                   formatType: FormatType.custom,
@@ -353,9 +360,10 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                                       fontFamily: 'Lato',
                                       color:
                                           FlutterFlowTheme.of(context).btnText,
+                                      fontSize: 10.0,
                                       fontWeight: FontWeight.bold,
                                     ),
-                              ),
+                              )),
                             ),
                           ),
                         ],

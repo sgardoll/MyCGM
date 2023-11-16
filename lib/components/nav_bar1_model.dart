@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'nav_bar1_widget.dart' show NavBar1Widget;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,8 +31,10 @@ class NavBar1Model extends FlutterFlowModel<NavBar1Widget> {
   ///  State fields for stateful widgets in this component.
 
   var barcodeScan = '';
+  // Stores action output result for [Backend Call - API (OpenFoodFacts)] action in BarcodeFAB widget.
+  ApiCallResponse? getOpenFoodFactsName;
   // Stores action output result for [Firestore Query - Query a collection] action in BarcodeFAB widget.
-  int? doesCodeExist;
+  LookupRecord? doesCodeExist;
   // Stores action output result for [Backend Call - API (Barcode Scan)] action in BarcodeFAB widget.
   ApiCallResponse? buildshipAPI;
 

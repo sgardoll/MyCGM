@@ -206,7 +206,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                     ),
                     icon: Icon(
                       Icons.send_rounded,
-                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      color: FlutterFlowTheme.of(context).primaryText,
                       size: 25.0,
                     ),
                     showLoadingIndicator: true,
