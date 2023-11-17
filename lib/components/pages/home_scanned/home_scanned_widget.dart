@@ -8,8 +8,11 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
+import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,7 +68,18 @@ class _HomeScannedWidgetState extends State<HomeScannedWidget> {
               isNotEqualTo: 'No Search Results',
             )
             .orderBy('name'),
-      ),
+      )..listen((snapshot) async {
+          List<LookupRecord> homeScannedLookupRecordList = snapshot;
+          if (_model.homeScannedPreviousSnapshot != null &&
+              !const ListEquality(LookupRecordDocumentEquality()).equals(
+                  homeScannedLookupRecordList,
+                  _model.homeScannedPreviousSnapshot)) {
+            setState(() => _model.documentRequestCompleter = null);
+
+            setState(() {});
+          }
+          _model.homeScannedPreviousSnapshot = snapshot;
+        }),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -162,17 +176,21 @@ class _HomeScannedWidgetState extends State<HomeScannedWidget> {
                                               )
                                             ],
                                           ),
-                                          child: StreamBuilder<LookupRecord>(
-                                            stream: LookupRecord.getDocument(
-                                                homeScannedLookupRecordList
-                                                    .where((e) =>
-                                                        e.userId ==
-                                                        currentUserUid)
-                                                    .toList()
-                                                    .sortedList(
-                                                        (e) => e.timestamp)
-                                                    .last
-                                                    .reference),
+                                          child: FutureBuilder<LookupRecord>(
+                                            future: (_model
+                                                        .documentRequestCompleter ??=
+                                                    Completer<LookupRecord>()
+                                                      ..complete(LookupRecord.getDocumentOnce(
+                                                          homeScannedLookupRecordList
+                                                              .where((e) =>
+                                                                  e.userId ==
+                                                                  currentUserUid)
+                                                              .toList()
+                                                              .sortedList((e) =>
+                                                                  e.timestamp)
+                                                              .last
+                                                              .reference)))
+                                                .future,
                                             builder: (context, snapshot) {
                                               // Customize what your widget looks like when it's loading.
                                               if (!snapshot.hasData) {

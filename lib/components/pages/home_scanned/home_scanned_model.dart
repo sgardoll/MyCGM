@@ -8,9 +8,12 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
+import 'dart:async';
 import 'home_scanned_widget.dart' show HomeScannedWidget;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +23,8 @@ class HomeScannedModel extends FlutterFlowModel<HomeScannedWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  List<LookupRecord>? homeScannedPreviousSnapshot;
+  Completer<LookupRecord>? documentRequestCompleter;
   // Model for Item component.
   late ItemModel itemModel1;
   // Models for Item dynamic component.
@@ -45,4 +50,19 @@ class HomeScannedModel extends FlutterFlowModel<HomeScannedWidget> {
   /// Action blocks are added here.
 
   /// Additional helper methods are added here.
+
+  Future waitForDocumentRequestCompleted({
+    double minWait = 0,
+    double maxWait = double.infinity,
+  }) async {
+    final stopwatch = Stopwatch()..start();
+    while (true) {
+      await Future.delayed(Duration(milliseconds: 50));
+      final timeElapsed = stopwatch.elapsedMilliseconds;
+      final requestComplete = documentRequestCompleter?.isCompleted ?? false;
+      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
+        break;
+      }
+    }
+  }
 }
