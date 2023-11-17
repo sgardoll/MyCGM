@@ -28,6 +28,8 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // Models for ItemDatabase dynamic component.
+  late FlutterFlowDynamicModels<ItemDatabaseModel> itemDatabaseModels1;
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, FoodDatabaseRecord>?
@@ -35,6 +37,8 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   Query? listViewPagingQuery2;
   List<StreamSubscription?> listViewStreamSubscriptions2 = [];
 
+  // Models for ItemDatabase dynamic component.
+  late FlutterFlowDynamicModels<ItemDatabaseModel> itemDatabaseModels2;
   // Model for NavBar1 component.
   late NavBar1Model navBar1Model;
   // State field(s) for TextField widget.
@@ -47,14 +51,18 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
+    itemDatabaseModels1 = FlutterFlowDynamicModels(() => ItemDatabaseModel());
+    itemDatabaseModels2 = FlutterFlowDynamicModels(() => ItemDatabaseModel());
     navBar1Model = createModel(context, () => NavBar1Model());
   }
 
   void dispose() {
     unfocusNode.dispose();
+    itemDatabaseModels1.dispose();
     listViewStreamSubscriptions2.forEach((s) => s?.cancel());
     listViewPagingController2?.dispose();
 
+    itemDatabaseModels2.dispose();
     navBar1Model.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();

@@ -101,7 +101,7 @@ int barcodeScanInt(String barcodeScan) {
   return barcodeInt;
 }
 
-DocumentReference getDocRef(String input) {
+DocumentReference? getDocRef(String input) {
   // take a string and add 'lookup/' in front of it to return a document reference
   return FirebaseFirestore.instance.doc('lookup/$input');
 }

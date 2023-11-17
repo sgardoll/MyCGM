@@ -157,10 +157,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => MainTVWidget(),
             ),
             FFRoute(
-              name: 'homeCGM',
+              name: 'CGM',
               path: 'CGM',
               requireAuth: true,
-              builder: (context, params) => HomeCGMWidget(),
+              builder: (context, params) => CgmWidget(),
             ),
             FFRoute(
               name: 'home',
@@ -183,9 +183,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'Details',
               path: 'details',
               builder: (context, params) => DetailsWidget(
-                docRef: params.getParam(
-                    'docRef', ParamType.DocumentReference, false, ['lookup']),
                 code: params.getParam('code', ParamType.String),
+                imageUrl: params.getParam('imageUrl', ParamType.String),
               ),
             ),
             FFRoute(
@@ -194,6 +193,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => DetailsDatabaseItemWidget(
                 docRef: params.getParam('docRef', ParamType.DocumentReference,
                     false, ['foodDatabase']),
+                imageUrl: params.getParam('imageUrl', ParamType.String),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),

@@ -16,19 +16,18 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'home_c_g_m_model.dart';
-export 'home_c_g_m_model.dart';
+import 'cgm_model.dart';
+export 'cgm_model.dart';
 
-class HomeCGMWidget extends StatefulWidget {
-  const HomeCGMWidget({Key? key}) : super(key: key);
+class CgmWidget extends StatefulWidget {
+  const CgmWidget({Key? key}) : super(key: key);
 
   @override
-  _HomeCGMWidgetState createState() => _HomeCGMWidgetState();
+  _CgmWidgetState createState() => _CgmWidgetState();
 }
 
-class _HomeCGMWidgetState extends State<HomeCGMWidget>
-    with TickerProviderStateMixin {
-  late HomeCGMModel _model;
+class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
+  late CgmModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -77,9 +76,9 @@ class _HomeCGMWidgetState extends State<HomeCGMWidget>
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => HomeCGMModel());
+    _model = createModel(context, () => CgmModel());
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'homeCGM'});
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'CGM'});
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (valueOrDefault<bool>(

@@ -107,7 +107,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
           : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondary,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
@@ -323,20 +323,16 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                     : true,
                 true,
               ))
-                Align(
-                  alignment: AlignmentDirectional(0.00, -1.00),
-                  child: FlutterFlowAdBanner(
-                    width: MediaQuery.sizeOf(context).width * 1.0,
-                    height: 50.0,
-                    showsTestAd: false,
-                    iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
-                    androidAdUnitID: 'ca-app-pub-3945304154369399/4626582701',
-                  ),
+                FlutterFlowAdBanner(
+                  width: MediaQuery.sizeOf(context).width * 1.0,
+                  height: 50.0,
+                  showsTestAd: false,
+                  iOSAdUnitID: 'ca-app-pub-3945304154369399/8928009543',
+                  androidAdUnitID: 'ca-app-pub-3945304154369399/4626582701',
                 ),
-              Expanded(
+              Flexible(
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 1.0,
-                  height: MediaQuery.sizeOf(context).height * 1.0,
                   child: Stack(
                     children: [
                       Padding(
@@ -344,7 +340,6 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                             EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 80.0),
                         child: Container(
                           width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: MediaQuery.sizeOf(context).height * 1.0,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
@@ -378,7 +373,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                         0,
                                         8.0,
                                         0,
-                                        100.0,
+                                        0,
                                       ),
                                       scrollDirection: Axis.vertical,
                                       itemCount: searchResults.length,
@@ -388,57 +383,79 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                           (context, searchResultsIndex) {
                                         final searchResultsItem =
                                             searchResults[searchResultsIndex];
-                                        return InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            context.pushNamed(
-                                              'DetailsDatabaseItem',
-                                              queryParameters: {
-                                                'docRef': serializeParam(
-                                                  searchResultsItem.reference,
-                                                  ParamType.DocumentReference,
+                                        return Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 0.0, 16.0, 0.0),
+                                          child: InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              context.pushNamed(
+                                                'DetailsDatabaseItem',
+                                                queryParameters: {
+                                                  'docRef': serializeParam(
+                                                    searchResultsItem.reference,
+                                                    ParamType.DocumentReference,
+                                                  ),
+                                                  'imageUrl': serializeParam(
+                                                    searchResultsItem.imageUrl,
+                                                    ParamType.String,
+                                                  ),
+                                                }.withoutNulls,
+                                                extra: <String, dynamic>{
+                                                  kTransitionInfoKey:
+                                                      TransitionInfo(
+                                                    hasTransition: true,
+                                                    transitionType:
+                                                        PageTransitionType
+                                                            .rightToLeft,
+                                                  ),
+                                                },
+                                              );
+                                            },
+                                            child: wrapWithModel(
+                                              model: _model.itemDatabaseModels1
+                                                  .getModel(
+                                                searchResultsItem.reference.id,
+                                                searchResultsIndex,
+                                              ),
+                                              updateCallback: () =>
+                                                  setState(() {}),
+                                              updateOnChange: true,
+                                              child: ItemDatabaseWidget(
+                                                key: Key(
+                                                  'Keyp5f_${searchResultsItem.reference.id}',
                                                 ),
-                                              }.withoutNulls,
-                                              extra: <String, dynamic>{
-                                                kTransitionInfoKey:
-                                                    TransitionInfo(
-                                                  hasTransition: true,
-                                                  transitionType:
-                                                      PageTransitionType
-                                                          .rightToLeft,
+                                                imageUrl:
+                                                    searchResultsItem.imageUrl,
+                                                title: (String input) {
+                                                  return input.indexOf(',') ==
+                                                          -1
+                                                      ? input
+                                                      : input.substring(0,
+                                                          input.indexOf(','));
+                                                }(searchResultsItem.foodName),
+                                                subtitle: (String input) {
+                                                  return input.contains(',')
+                                                      ? input
+                                                          .substring(
+                                                              input.indexOf(
+                                                                      ',') +
+                                                                  1)
+                                                          .trimLeft()
+                                                      : '';
+                                                }(searchResultsItem.foodName),
+                                                size: '-',
+                                                blurHash:
+                                                    valueOrDefault<String>(
+                                                  searchResultsItem.blurHash,
+                                                  'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
                                                 ),
-                                              },
-                                            );
-                                          },
-                                          child: ItemDatabaseWidget(
-                                            key: Key(
-                                                'Keyp5f_${searchResultsIndex}_of_${searchResults.length}'),
-                                            imageUrl: valueOrDefault<String>(
-                                              searchResultsItem.imageUrl,
-                                              'https://www.connectio.com.au/nutri/error.png',
-                                            ),
-                                            title: (String input) {
-                                              return input.indexOf(',') == -1
-                                                  ? input
-                                                  : input.substring(
-                                                      0, input.indexOf(','));
-                                            }(searchResultsItem.foodName),
-                                            subtitle: (String input) {
-                                              return input.contains(',')
-                                                  ? input
-                                                      .substring(
-                                                          input.indexOf(',') +
-                                                              1)
-                                                      .trimLeft()
-                                                  : '';
-                                            }(searchResultsItem.foodName),
-                                            size: '-',
-                                            blurHash: valueOrDefault<String>(
-                                              searchResultsItem.blurHash,
-                                              'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
+                                                isDetailsPage: false,
+                                              ),
                                             ),
                                           ),
                                         );
@@ -458,7 +475,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                     0,
                                     8.0,
                                     0,
-                                    100.0,
+                                    0,
                                   ),
                                   reverse: false,
                                   scrollDirection: Axis.vertical,
@@ -497,57 +514,82 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                       final listViewFoodDatabaseRecord = _model
                                           .listViewPagingController2!
                                           .itemList![listViewIndex];
-                                      return InkWell(
-                                        splashColor: Colors.transparent,
-                                        focusColor: Colors.transparent,
-                                        hoverColor: Colors.transparent,
-                                        highlightColor: Colors.transparent,
-                                        onTap: () async {
-                                          context.pushNamed(
-                                            'DetailsDatabaseItem',
-                                            queryParameters: {
-                                              'docRef': serializeParam(
+                                      return Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            16.0, 0.0, 16.0, 0.0),
+                                        child: InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed(
+                                              'DetailsDatabaseItem',
+                                              queryParameters: {
+                                                'docRef': serializeParam(
+                                                  listViewFoodDatabaseRecord
+                                                      .reference,
+                                                  ParamType.DocumentReference,
+                                                ),
+                                                'imageUrl': serializeParam(
+                                                  listViewFoodDatabaseRecord
+                                                      .imageUrl,
+                                                  ParamType.String,
+                                                ),
+                                              }.withoutNulls,
+                                              extra: <String, dynamic>{
+                                                kTransitionInfoKey:
+                                                    TransitionInfo(
+                                                  hasTransition: true,
+                                                  transitionType:
+                                                      PageTransitionType
+                                                          .rightToLeft,
+                                                ),
+                                              },
+                                            );
+                                          },
+                                          child: wrapWithModel(
+                                            model: _model.itemDatabaseModels2
+                                                .getModel(
+                                              listViewFoodDatabaseRecord
+                                                  .reference.id,
+                                              listViewIndex,
+                                            ),
+                                            updateCallback: () =>
+                                                setState(() {}),
+                                            updateOnChange: true,
+                                            child: ItemDatabaseWidget(
+                                              key: Key(
+                                                'Keyz3t_${listViewFoodDatabaseRecord.reference.id}',
+                                              ),
+                                              imageUrl:
+                                                  listViewFoodDatabaseRecord
+                                                      .imageUrl,
+                                              title: (String input) {
+                                                return input.indexOf(',') == -1
+                                                    ? input
+                                                    : input.substring(
+                                                        0, input.indexOf(','));
+                                              }(listViewFoodDatabaseRecord
+                                                  .foodName),
+                                              subtitle: (String input) {
+                                                return input.contains(',')
+                                                    ? input
+                                                        .substring(
+                                                            input.indexOf(',') +
+                                                                1)
+                                                        .trimLeft()
+                                                    : '';
+                                              }(listViewFoodDatabaseRecord
+                                                  .foodName),
+                                              size: '-',
+                                              blurHash: valueOrDefault<String>(
                                                 listViewFoodDatabaseRecord
-                                                    .reference,
-                                                ParamType.DocumentReference,
+                                                    .blurHash,
+                                                'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
                                               ),
-                                            }.withoutNulls,
-                                            extra: <String, dynamic>{
-                                              kTransitionInfoKey:
-                                                  TransitionInfo(
-                                                hasTransition: true,
-                                                transitionType:
-                                                    PageTransitionType
-                                                        .rightToLeft,
-                                              ),
-                                            },
-                                          );
-                                        },
-                                        child: ItemDatabaseWidget(
-                                          key: Key(
-                                              'Keyz3t_${listViewIndex}_of_${_model.listViewPagingController2!.itemList!.length}'),
-                                          imageUrl: listViewFoodDatabaseRecord
-                                              .imageUrl,
-                                          title: (String input) {
-                                            return input.indexOf(',') == -1
-                                                ? input
-                                                : input.substring(
-                                                    0, input.indexOf(','));
-                                          }(listViewFoodDatabaseRecord
-                                              .foodName),
-                                          subtitle: (String input) {
-                                            return input.contains(',')
-                                                ? input
-                                                    .substring(
-                                                        input.indexOf(',') + 1)
-                                                    .trimLeft()
-                                                : '';
-                                          }(listViewFoodDatabaseRecord
-                                              .foodName),
-                                          size: '-',
-                                          blurHash: valueOrDefault<String>(
-                                            listViewFoodDatabaseRecord.blurHash,
-                                            'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
+                                              isDetailsPage: false,
+                                            ),
                                           ),
                                         ),
                                       );

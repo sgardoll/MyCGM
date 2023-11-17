@@ -6,7 +6,6 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -120,7 +119,10 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            if (_model.loadingItem ?? true)
+            if (valueOrDefault<bool>(
+              _model.loadingItem,
+              false,
+            ))
               Align(
                 alignment: AlignmentDirectional(1.00, 1.00),
                 child: Padding(
@@ -378,11 +380,15 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                           size: 24.0,
                         ),
                         onPressed: () async {
-                          if (loggedIn) {
-                            context.pushNamed('homeScanned');
-                          } else {
-                            context.pushNamed('loginPage');
-                          }
+                          context.pushNamed(
+                            'homeScanned',
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.fade,
+                              ),
+                            },
+                          );
                         },
                       ),
                     ),
@@ -421,7 +427,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                             size: 24.0,
                           ),
                           onPressed: () async {
-                            context.pushNamed('homeCGM');
+                            context.pushNamed('CGM');
                           },
                         ),
                       ),
@@ -524,52 +530,57 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                           );
 
                                           _shouldSetState = true;
-                                          setState(() {
-                                            _model.loadingText =
-                                                'Scanned ${_model.barcodeScan}';
-                                          });
-                                          _model.getOpenFoodFactsName =
-                                              await OpenFoodFactsCall.call(
-                                            barcode: _model.barcodeScan,
-                                          );
-                                          _shouldSetState = true;
-                                          if (OpenFoodFactsCall.productName(
-                                                (_model.getOpenFoodFactsName
-                                                        ?.jsonBody ??
-                                                    ''),
-                                              ) !=
-                                              null) {
+                                          if (_model.barcodeScan != '-1') {
                                             setState(() {
                                               _model.loadingText =
-                                                  valueOrDefault<String>(
-                                                'Loading ${OpenFoodFactsCall.productName(
+                                                  'Scanned ${_model.barcodeScan}';
+                                            });
+                                            _model.getOpenFoodFactsName =
+                                                await OpenFoodFactsCall.call(
+                                              barcode: valueOrDefault<String>(
+                                                _model.barcodeScan,
+                                                '0',
+                                              ),
+                                            );
+                                            _shouldSetState = true;
+                                            if (OpenFoodFactsCall.productName(
                                                   (_model.getOpenFoodFactsName
                                                           ?.jsonBody ??
                                                       ''),
-                                                ).toString()}',
-                                                'Loading...',
-                                              );
-                                            });
-                                          } else {
-                                            setState(() {
-                                              _model.loadingText = 'Loading...';
-                                            });
-                                          }
+                                                ) !=
+                                                null) {
+                                              setState(() {
+                                                _model.loadingText =
+                                                    valueOrDefault<String>(
+                                                  'Loading ${OpenFoodFactsCall.productName(
+                                                    (_model.getOpenFoodFactsName
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  ).toString()}',
+                                                  'Loading...',
+                                                );
+                                              });
+                                            } else {
+                                              setState(() {
+                                                _model.loadingText =
+                                                    'Loading...';
+                                              });
+                                            }
 
-                                          if (_model.barcodeScan != '-1'
-                                              ? true
-                                              : false) {
                                             _model.doesCodeExist =
-                                                await queryLookupRecordOnce(
+                                                await queryLookupRecordCount(
                                               queryBuilder: (lookupRecord) =>
                                                   lookupRecord.where(
                                                 'code',
-                                                isEqualTo: _model.barcodeScan,
+                                                isEqualTo:
+                                                    valueOrDefault<String>(
+                                                  _model.barcodeScan,
+                                                  '0',
+                                                ),
                                               ),
-                                              singleRecord: true,
-                                            ).then((s) => s.firstOrNull);
+                                            );
                                             _shouldSetState = true;
-                                            if (_model.doesCodeExist != null) {
+                                            if (_model.doesCodeExist! >= 1) {
                                               if (animationsMap[
                                                       'containerOnActionTriggerAnimation'] !=
                                                   null) {
@@ -591,14 +602,17 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                     _model.barcodeScan,
                                                     ParamType.String,
                                                   ),
-                                                  'docRef': serializeParam(
-                                                    _model.doesCodeExist
-                                                        ?.reference,
-                                                    ParamType.DocumentReference,
+                                                  'imageUrl': serializeParam(
+                                                    'https://www.connectio.com.au/nutri/error.png',
+                                                    ParamType.String,
                                                   ),
                                                 }.withoutNulls,
                                               );
                                             } else {
+                                              setState(() {
+                                                _model.loadingText =
+                                                    'Gathering product details...';
+                                              });
                                               _model.buildshipAPI =
                                                   await BuildshipGroup
                                                       .barcodeScanCall
@@ -613,7 +627,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 if (animationsMap[
                                                         'containerOnActionTriggerAnimation'] !=
                                                     null) {
-                                                  await animationsMap[
+                                                  animationsMap[
                                                           'containerOnActionTriggerAnimation']!
                                                       .controller
                                                       .reverse();
@@ -630,12 +644,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                     'code': serializeParam(
                                                       _model.barcodeScan,
                                                       ParamType.String,
-                                                    ),
-                                                    'docRef': serializeParam(
-                                                      functions.getDocRef(
-                                                          _model.loadingText),
-                                                      ParamType
-                                                          .DocumentReference,
                                                     ),
                                                   }.withoutNulls,
                                                 );
@@ -666,6 +674,10 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               }
                                             }
                                           } else {
+                                            setState(() {
+                                              _model.loadingText =
+                                                  'Scanning Cancelled';
+                                            });
                                             if (animationsMap[
                                                     'containerOnActionTriggerAnimation'] !=
                                                 null) {
@@ -674,9 +686,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                   .controller
                                                   .reverse();
                                             }
-                                            setState(() {
-                                              _model.loadingItem = false;
-                                            });
                                             if (_shouldSetState)
                                               setState(() {});
                                             return;

@@ -2,10 +2,10 @@ import '/backend/backend.dart';
 import '/components/create_blurhash_widget.dart';
 import '/components/create_image_on_empty_copy_widget.dart';
 import '/components/create_markdown_on_empty_widget.dart';
+import '/components/item_database/item_database_widget.dart';
 import '/components/nutri_circles_widget.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
-import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -18,8 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:octo_image/octo_image.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class DetailsDatabaseItemModel
@@ -31,6 +29,8 @@ class DetailsDatabaseItemModel
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // Model for ItemDatabase component.
+  late ItemDatabaseModel itemDatabaseModel;
   // Model for NutriCircles component.
   late NutriCirclesModel nutriCirclesModel;
   // Model for NutritionPanelGoogleVision component.
@@ -45,6 +45,7 @@ class DetailsDatabaseItemModel
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
+    itemDatabaseModel = createModel(context, () => ItemDatabaseModel());
     nutriCirclesModel = createModel(context, () => NutriCirclesModel());
     nutritionPanelGoogleVisionModel =
         createModel(context, () => NutritionPanelGoogleVisionModel());
@@ -57,6 +58,7 @@ class DetailsDatabaseItemModel
 
   void dispose() {
     unfocusNode.dispose();
+    itemDatabaseModel.dispose();
     nutriCirclesModel.dispose();
     nutritionPanelGoogleVisionModel.dispose();
     createMarkdownOnEmptyModel.dispose();

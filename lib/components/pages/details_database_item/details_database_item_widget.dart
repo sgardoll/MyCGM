@@ -2,10 +2,10 @@ import '/backend/backend.dart';
 import '/components/create_blurhash_widget.dart';
 import '/components/create_image_on_empty_copy_widget.dart';
 import '/components/create_markdown_on_empty_widget.dart';
+import '/components/item_database/item_database_widget.dart';
 import '/components/nutri_circles_widget.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
-import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -17,8 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:octo_image/octo_image.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'details_database_item_model.dart';
 export 'details_database_item_model.dart';
@@ -27,9 +25,11 @@ class DetailsDatabaseItemWidget extends StatefulWidget {
   const DetailsDatabaseItemWidget({
     Key? key,
     this.docRef,
+    this.imageUrl,
   }) : super(key: key);
 
   final DocumentReference? docRef;
+  final String? imageUrl;
 
   @override
   _DetailsDatabaseItemWidgetState createState() =>
@@ -103,7 +103,7 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                 SliverAppBar(
                   expandedHeight: 250.0,
                   collapsedHeight: 56.0,
-                  pinned: false,
+                  pinned: true,
                   floating: false,
                   backgroundColor: Colors.transparent,
                   iconTheme: IconThemeData(
@@ -149,7 +149,6 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                         ),
                         child: Container(
                           width: MediaQuery.sizeOf(context).width * 1.0,
-                          height: MediaQuery.sizeOf(context).height * 1.0,
                           decoration: BoxDecoration(
                             color: Colors.transparent,
                             boxShadow: [
@@ -166,70 +165,13 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                               topRight: Radius.circular(0.0),
                             ),
                           ),
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.fade,
-                                  child: FlutterFlowExpandedImageView(
-                                    image: OctoImage(
-                                      placeholderBuilder:
-                                          OctoPlaceholder.blurHash(
-                                        detailsDatabaseItemFoodDatabaseRecord
-                                            .blurHash,
-                                      ),
-                                      image: NetworkImage(
-                                        detailsDatabaseItemFoodDatabaseRecord
-                                            .imageUrl,
-                                      ),
-                                      fit: BoxFit.contain,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Image.asset(
-                                        'assets/images/error_image.png',
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    allowRotation: false,
-                                    tag: detailsDatabaseItemFoodDatabaseRecord
-                                        .imageUrl,
-                                    useHeroAnimation: true,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Hero(
-                              tag: detailsDatabaseItemFoodDatabaseRecord
-                                  .imageUrl,
-                              transitionOnUserGestures: true,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: OctoImage(
-                                  placeholderBuilder: OctoPlaceholder.blurHash(
-                                    detailsDatabaseItemFoodDatabaseRecord
-                                        .blurHash,
-                                  ),
-                                  image: NetworkImage(
-                                    detailsDatabaseItemFoodDatabaseRecord
-                                        .imageUrl,
-                                  ),
-                                  width: 300.0,
-                                  height: 200.0,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Image.asset(
-                                    'assets/images/error_image.png',
-                                    width: 300.0,
-                                    height: 200.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
+                          child: wrapWithModel(
+                            model: _model.itemDatabaseModel,
+                            updateCallback: () => setState(() {}),
+                            updateOnChange: true,
+                            child: ItemDatabaseWidget(
+                              imageUrl: widget.imageUrl,
+                              isDetailsPage: true,
                             ),
                           ),
                         ),
@@ -339,34 +281,54 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          if (valueOrDefault<bool>(
-                                            detailsDatabaseItemFoodDatabaseRecord
-                                                            .markdownTable !=
-                                                        null &&
-                                                    detailsDatabaseItemFoodDatabaseRecord
-                                                            .markdownTable !=
-                                                        ''
-                                                ? true
-                                                : false,
-                                            false,
-                                          ))
-                                            Flexible(
-                                              child: wrapWithModel(
-                                                model: _model
-                                                    .nutritionPanelGoogleVisionModel,
-                                                updateCallback: () =>
-                                                    setState(() {}),
-                                                updateOnChange: true,
-                                                child:
-                                                    NutritionPanelGoogleVisionWidget(
-                                                  source:
-                                                      'Nutritional Breakdown - per 100g / ml',
-                                                  markdown:
-                                                      detailsDatabaseItemFoodDatabaseRecord
-                                                          .markdownTable,
+                                          Flexible(
+                                            child: Container(
+                                              width: MediaQuery.sizeOf(context)
+                                                      .width *
+                                                  1.0,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryBackground,
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                border: Border.all(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryText,
+                                                  width: 2.0,
+                                                ),
+                                              ),
+                                              child: Visibility(
+                                                visible: valueOrDefault<bool>(
+                                                  detailsDatabaseItemFoodDatabaseRecord
+                                                                  .markdownTable !=
+                                                              null &&
+                                                          detailsDatabaseItemFoodDatabaseRecord
+                                                                  .markdownTable !=
+                                                              ''
+                                                      ? true
+                                                      : false,
+                                                  false,
+                                                ),
+                                                child: wrapWithModel(
+                                                  model: _model
+                                                      .nutritionPanelGoogleVisionModel,
+                                                  updateCallback: () =>
+                                                      setState(() {}),
+                                                  updateOnChange: true,
+                                                  child:
+                                                      NutritionPanelGoogleVisionWidget(
+                                                    source:
+                                                        'Nutritional Breakdown - per 100g / ml',
+                                                    markdown:
+                                                        detailsDatabaseItemFoodDatabaseRecord
+                                                            .markdownTable,
+                                                  ),
                                                 ),
                                               ),
                                             ),
+                                          ),
                                         ],
                                       ),
                                     ),

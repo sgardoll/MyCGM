@@ -1,27 +1,24 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/backend/firebase_storage/storage.dart';
+import '/components/item/item_widget.dart';
 import '/components/nutrition_box_widget.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
 import '/flutter_flow/flutter_flow_ad_banner.dart';
-import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import 'dart:async';
+import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:octo_image/octo_image.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'details_model.dart';
 export 'details_model.dart';
@@ -29,12 +26,12 @@ export 'details_model.dart';
 class DetailsWidget extends StatefulWidget {
   const DetailsWidget({
     Key? key,
-    this.docRef,
     this.code,
+    this.imageUrl,
   }) : super(key: key);
 
-  final DocumentReference? docRef;
   final String? code;
+  final String? imageUrl;
 
   @override
   _DetailsWidgetState createState() => _DetailsWidgetState();
@@ -51,41 +48,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
     _model = createModel(context, () => DetailsModel());
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'Details'});
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      if (widget.docRef?.id != null && widget.docRef?.id != '' ? true : false) {
-        setState(() {
-          _model.loadedDocRef = widget.docRef;
-        });
-      } else if (widget.code != null && widget.code != '' ? true : false) {
-        _model.codeLookup = await queryLookupRecordOnce(
-          queryBuilder: (lookupRecord) => lookupRecord.where(
-            'code',
-            isEqualTo: widget.code,
-          ),
-          singleRecord: true,
-        ).then((s) => s.firstOrNull);
-        setState(() {
-          _model.loadedDocRef = _model.codeLookup?.reference;
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Error loading product',
-              style: GoogleFonts.getFont(
-                'Lato',
-                color: FlutterFlowTheme.of(context).primaryText,
-              ),
-            ),
-            duration: Duration(milliseconds: 4000),
-            backgroundColor: FlutterFlowTheme.of(context).primary,
-          ),
-        );
-
-        context.goNamed('homeScanned');
-      }
-    });
   }
 
   @override
@@ -109,7 +71,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
     context.watch<FFAppState>();
 
     return StreamBuilder<LookupRecord>(
-      stream: LookupRecord.getDocument(widget.docRef!),
+      stream: LookupRecord.getDocument(functions.getDocRef(widget.code!)!),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -141,7 +103,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                 SliverAppBar(
                   expandedHeight: 250.0,
                   collapsedHeight: 56.0,
-                  pinned: false,
+                  pinned: true,
                   floating: false,
                   backgroundColor: Colors.transparent,
                   iconTheme: IconThemeData(
@@ -186,8 +148,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                           topRight: Radius.circular(0.0),
                         ),
                         child: Container(
-                          width: 100.0,
-                          height: 100.0,
+                          width: MediaQuery.sizeOf(context).width * 1.0,
                           decoration: BoxDecoration(
                             color:
                                 FlutterFlowTheme.of(context).primaryBackground,
@@ -205,88 +166,16 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                               topRight: Radius.circular(0.0),
                             ),
                           ),
-                          child: Visibility(
-                            visible: valueOrDefault<bool>(
-                              detailsLookupRecord.openFoodFacts.hasImageUrl()
-                                  ? true
-                                  : false,
-                              false,
-                            ),
-                            child: InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                await Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: FlutterFlowExpandedImageView(
-                                      image: OctoImage(
-                                        placeholderBuilder:
-                                            OctoPlaceholder.blurHash(
-                                          valueOrDefault<String>(
-                                            detailsLookupRecord.blurHash,
-                                            'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
-                                          ),
-                                        ),
-                                        image: NetworkImage(
-                                          detailsLookupRecord
-                                              .openFoodFacts.imageUrl,
-                                        ),
-                                        fit: BoxFit.contain,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                Image.asset(
-                                          'assets/images/error_image.png',
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                      allowRotation: false,
-                                      tag: detailsLookupRecord
-                                          .openFoodFacts.imageUrl,
-                                      useHeroAnimation: true,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Hero(
-                                tag: detailsLookupRecord.openFoodFacts.imageUrl,
-                                transitionOnUserGestures: true,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(8.0),
-                                    bottomRight: Radius.circular(8.0),
-                                    topLeft: Radius.circular(0.0),
-                                    topRight: Radius.circular(0.0),
-                                  ),
-                                  child: OctoImage(
-                                    placeholderBuilder:
-                                        OctoPlaceholder.blurHash(
-                                      valueOrDefault<String>(
-                                        detailsLookupRecord.blurHash,
-                                        'U9SF;Lof~qt7-;j[M{ay~qj[D%fQM{WBxuof',
-                                      ),
-                                    ),
-                                    image: NetworkImage(
-                                      detailsLookupRecord
-                                          .openFoodFacts.imageUrl,
-                                    ),
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Image.asset(
-                                      'assets/images/error_image.png',
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
+                          child: wrapWithModel(
+                            model: _model.itemModel,
+                            updateCallback: () => setState(() {}),
+                            updateOnChange: true,
+                            child: ItemWidget(
+                              imageUrl: valueOrDefault<String>(
+                                widget.imageUrl,
+                                'https://www.connectio.com.au/nutri/error.png',
                               ),
+                              isDetailsPage: true,
                             ),
                           ),
                         ),
@@ -307,10 +196,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (valueOrDefault<bool>(
-                          _model.loadedDocRef?.id != null &&
-                                  _model.loadedDocRef?.id != ''
-                              ? true
-                              : false,
+                          detailsLookupRecord != null ? true : false,
                           false,
                         ))
                           Expanded(
@@ -471,6 +357,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                         BorderRadius.circular(
                                                             8.0),
                                                     border: Border.all(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
                                                       width: 2.0,
                                                     ),
                                                   ),
@@ -667,8 +557,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
 
                                                     unawaited(
                                                       () async {
-                                                        await widget.docRef!.update(
-                                                            createLookupRecordData(
+                                                        await detailsLookupRecord
+                                                            .reference
+                                                            .update(
+                                                                createLookupRecordData(
                                                           nutritionPanel: _model
                                                               .uploadedFileUrl,
                                                         ));
@@ -790,18 +682,42 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Flexible(
-                                                child: wrapWithModel(
-                                                  model: _model
-                                                      .nutritionPanelGoogleVisionModel,
-                                                  updateCallback: () =>
-                                                      setState(() {}),
-                                                  updateOnChange: true,
-                                                  child:
-                                                      NutritionPanelGoogleVisionWidget(
-                                                    source:
-                                                        'Nutritional Infomation',
-                                                    markdown: detailsLookupRecord
-                                                        .googleVisionResponse,
+                                                child: Container(
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                              .width *
+                                                          1.0,
+                                                  decoration: BoxDecoration(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryBackground,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    border: Border.all(
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryText,
+                                                      width: 2.0,
+                                                    ),
+                                                  ),
+                                                  child: wrapWithModel(
+                                                    model: _model
+                                                        .nutritionPanelGoogleVisionModel,
+                                                    updateCallback: () =>
+                                                        setState(() {}),
+                                                    updateOnChange: true,
+                                                    child:
+                                                        NutritionPanelGoogleVisionWidget(
+                                                      source:
+                                                          'Nutritional Infomation',
+                                                      markdown: detailsLookupRecord
+                                                          .googleVisionResponse,
+                                                      nutritionPanel:
+                                                          detailsLookupRecord
+                                                              .nutritionPanel,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
