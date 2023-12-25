@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -124,7 +125,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
               false,
             ))
               Align(
-                alignment: AlignmentDirectional(1.00, 1.00),
+                alignment: AlignmentDirectional(1.0, 1.0),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 70.0),
                   child: Material(
@@ -306,7 +307,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Align(
-              alignment: AlignmentDirectional(0.00, 1.00),
+              alignment: AlignmentDirectional(0.0, 1.0),
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                 child: Row(
@@ -350,7 +351,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                       ),
                     ),
                     Flexible(
-                      flex: 1,
                       child: FlutterFlowIconButton(
                         borderColor: Colors.transparent,
                         borderRadius: 30.0,
@@ -370,7 +370,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                           FlutterFlowTheme.of(context).primary,
                         ),
                         icon: Icon(
-                          Icons.devices_fold_outlined,
+                          Icons.calendar_month,
                           color: valueOrDefault<Color>(
                             widget.activePage == 'Carbs'
                                 ? FlutterFlowTheme.of(context).secondary
@@ -381,7 +381,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                         ),
                         onPressed: () async {
                           context.pushNamed(
-                            'homeScanned',
+                            'Daily',
                             extra: <String, dynamic>{
                               kTransitionInfoKey: TransitionInfo(
                                 hasTransition: true,
@@ -473,7 +473,7 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                     Flexible(
                       flex: 1,
                       child: Align(
-                        alignment: AlignmentDirectional(0.00, 1.00),
+                        alignment: AlignmentDirectional(0.0, 1.0),
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 20.0),
@@ -535,40 +535,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               _model.loadingText =
                                                   'Scanned ${_model.barcodeScan}';
                                             });
-                                            _model.getOpenFoodFactsName =
-                                                await OpenFoodFactsCall.call(
-                                              barcode: valueOrDefault<String>(
-                                                _model.barcodeScan,
-                                                '0',
-                                              ),
-                                            );
-                                            _shouldSetState = true;
-                                            if (OpenFoodFactsCall.productName(
-                                                  (_model.getOpenFoodFactsName
-                                                          ?.jsonBody ??
-                                                      ''),
-                                                ) !=
-                                                null) {
-                                              setState(() {
-                                                _model.loadingText =
-                                                    valueOrDefault<String>(
-                                                  'Loading ${OpenFoodFactsCall.productName(
-                                                    (_model.getOpenFoodFactsName
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  ).toString()}',
-                                                  'Loading...',
-                                                );
-                                              });
-                                            } else {
-                                              setState(() {
-                                                _model.loadingText =
-                                                    'Loading...';
-                                              });
-                                            }
-
                                             _model.doesCodeExist =
-                                                await queryLookupRecordCount(
+                                                await queryLookupRecordOnce(
                                               queryBuilder: (lookupRecord) =>
                                                   lookupRecord.where(
                                                 'code',
@@ -578,13 +546,14 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                   '0',
                                                 ),
                                               ),
-                                            );
+                                              singleRecord: true,
+                                            ).then((s) => s.firstOrNull);
                                             _shouldSetState = true;
-                                            if (_model.doesCodeExist! >= 1) {
+                                            if (_model.doesCodeExist != null) {
                                               if (animationsMap[
                                                       'containerOnActionTriggerAnimation'] !=
                                                   null) {
-                                                await animationsMap[
+                                                animationsMap[
                                                         'containerOnActionTriggerAnimation']!
                                                     .controller
                                                     .reverse();
@@ -596,23 +565,16 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               });
 
                                               context.pushNamed(
-                                                'Details',
+                                                'Details-New',
                                                 queryParameters: {
-                                                  'code': serializeParam(
-                                                    _model.barcodeScan,
-                                                    ParamType.String,
-                                                  ),
-                                                  'imageUrl': serializeParam(
-                                                    'https://www.connectio.com.au/nutri/error.png',
-                                                    ParamType.String,
+                                                  'docRef': serializeParam(
+                                                    _model.doesCodeExist
+                                                        ?.reference,
+                                                    ParamType.DocumentReference,
                                                   ),
                                                 }.withoutNulls,
                                               );
                                             } else {
-                                              setState(() {
-                                                _model.loadingText =
-                                                    'Gathering product details...';
-                                              });
                                               _model.buildshipAPI =
                                                   await BuildshipGroup
                                                       .barcodeScanCall
@@ -621,9 +583,32 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 input: _model.barcodeScan,
                                               );
                                               _shouldSetState = true;
-                                              if ((_model.buildshipAPI
-                                                      ?.succeeded ??
-                                                  true)) {
+                                              setState(() {
+                                                _model.loadingText =
+                                                    valueOrDefault<String>(
+                                                  'Found ${OpenFoodFactsCall.productName(
+                                                    (_model.getOpenFoodFactsName
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  ).toString()}',
+                                                  'Finding prtoduct...',
+                                                );
+                                              });
+                                              _model.getOpenFoodFactsName =
+                                                  await OpenFoodFactsCall.call(
+                                                barcode: valueOrDefault<String>(
+                                                  _model.barcodeScan,
+                                                  '0',
+                                                ),
+                                              );
+                                              _shouldSetState = true;
+                                              if (BuildshipGroup.barcodeScanCall
+                                                      .path(
+                                                    (_model.buildshipAPI
+                                                            ?.jsonBody ??
+                                                        ''),
+                                                  ) !=
+                                                  null) {
                                                 if (animationsMap[
                                                         'containerOnActionTriggerAnimation'] !=
                                                     null) {
@@ -639,11 +624,15 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 });
 
                                                 context.pushNamed(
-                                                  'Details',
+                                                  'Details-New',
                                                   queryParameters: {
-                                                    'code': serializeParam(
-                                                      _model.barcodeScan,
-                                                      ParamType.String,
+                                                    'docRef': serializeParam(
+                                                      functions.getDocRefBuildshipResponse(
+                                                          (_model.buildshipAPI
+                                                                  ?.jsonBody ??
+                                                              '')),
+                                                      ParamType
+                                                          .DocumentReference,
                                                     ),
                                                   }.withoutNulls,
                                                 );

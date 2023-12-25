@@ -217,7 +217,7 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                             flex: 4,
                                             child: Align(
                                               alignment: AlignmentDirectional(
-                                                  -1.00, 0.00),
+                                                  -1.0, 0.0),
                                               child: AutoSizeText(
                                                 valueOrDefault<String>(
                                                   detailsDatabaseItemFoodDatabaseRecord
@@ -228,15 +228,7 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                                 maxLines: 2,
                                                 style:
                                                     FlutterFlowTheme.of(context)
-                                                        .headlineMedium
-                                                        .override(
-                                                          fontFamily: 'Lato',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                                        .headlineSmall,
                                               ),
                                             ),
                                           ),
@@ -247,7 +239,7 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                   Flexible(
                                     child: Align(
                                       alignment:
-                                          AlignmentDirectional(-1.00, 0.00),
+                                          AlignmentDirectional(-1.0, 0.0),
                                       child: Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             16.0, 0.0, 0.0, 0.0),
@@ -416,7 +408,7 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                           true,
                         ))
                           Align(
-                            alignment: AlignmentDirectional(0.00, -1.00),
+                            alignment: AlignmentDirectional(0.0, -1.0),
                             child: FlutterFlowAdBanner(
                               width: MediaQuery.sizeOf(context).width * 1.0,
                               height: 100.0,

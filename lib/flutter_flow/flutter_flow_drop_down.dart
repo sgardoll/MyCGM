@@ -16,6 +16,7 @@ class FlutterFlowDropDown<T> extends StatefulWidget {
     this.icon,
     this.width,
     this.height,
+    this.maxHeight,
     this.fillColor,
     this.searchHintTextStyle,
     this.searchCursorColor,
@@ -27,6 +28,7 @@ class FlutterFlowDropDown<T> extends StatefulWidget {
     required this.margin,
     this.hidesUnderline = false,
     this.disabled = false,
+    this.isOverButton = false,
     this.isSearchable = false,
     this.isMultiSelect = false,
   }) : super(key: key);
@@ -41,6 +43,7 @@ class FlutterFlowDropDown<T> extends StatefulWidget {
   final Widget? icon;
   final double? width;
   final double? height;
+  final double? maxHeight;
   final Color? fillColor;
   final TextStyle? searchHintTextStyle;
   final Color? searchCursorColor;
@@ -52,6 +55,7 @@ class FlutterFlowDropDown<T> extends StatefulWidget {
   final EdgeInsetsGeometry margin;
   final bool hidesUnderline;
   final bool disabled;
+  final bool isOverButton;
   final bool isSearchable;
   final bool isMultiSelect;
 
@@ -110,23 +114,19 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
     void Function(T?)? onChanged = widget.disabled || widget.isMultiSelect
         ? null
         : (value) => widget.controller.value = value;
-    final dropdownWidget = widget.isMultiSelect
-        ? _buildMultiSelectDropdown(
+    final dropdownWidget = _useDropdown2()
+        ? _buildDropdown(
+            value,
+            items,
+            onChanged,
             hintText,
             optionToDisplayValue,
             widget.isSearchable,
-            widget.onChangedForMultiSelect!,
             widget.disabled,
+            widget.isMultiSelect,
+            widget.onChangedForMultiSelect,
           )
-        : widget.isSearchable
-            ? _buildSearchableDropdown(
-                value,
-                items,
-                onChanged,
-                hintText,
-                optionToDisplayValue,
-              )
-            : _buildNonSearchableDropdown(value, items, onChanged, hintText);
+        : _buildLegacyDropdown(value, items, onChanged, hintText);
     final childWidget = DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(widget.borderRadius),
@@ -153,7 +153,7 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
     return childWidget;
   }
 
-  Widget _buildNonSearchableDropdown(
+  Widget _buildLegacyDropdown(
     T? value,
     List<DropdownMenuItem<T>>? items,
     void Function(T?)? onChanged,
@@ -172,89 +172,16 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
     );
   }
 
-  Widget _buildSearchableDropdown(
+  Widget _buildDropdown(
     T? value,
     List<DropdownMenuItem<T>>? items,
     void Function(T?)? onChanged,
     Text? hintText,
     Map<T, String> optionLabels,
-  ) {
-    final overlayColor = MaterialStateProperty.resolveWith<Color?>((states) =>
-        states.contains(MaterialState.focused) ? Colors.transparent : null);
-    final iconStyleData = widget.icon != null
-        ? IconStyleData(icon: widget.icon!)
-        : const IconStyleData();
-    return DropdownButton2<T>(
-      value: value,
-      hint: hintText,
-      items: items,
-      iconStyleData: iconStyleData,
-      buttonStyleData: ButtonStyleData(
-        elevation: widget.elevation.toInt(),
-        overlayColor: overlayColor,
-      ),
-      menuItemStyleData: MenuItemStyleData(overlayColor: overlayColor),
-      dropdownStyleData: DropdownStyleData(
-        elevation: widget.elevation.toInt(),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: widget.fillColor,
-        ),
-      ),
-      onChanged: onChanged,
-      isExpanded: true,
-      dropdownSearchData: DropdownSearchData<T>(
-        searchController: _textEditingController,
-        searchInnerWidgetHeight: 50,
-        searchInnerWidget: Container(
-          height: 50,
-          padding: const EdgeInsets.only(
-            top: 8,
-            bottom: 4,
-            right: 8,
-            left: 8,
-          ),
-          child: TextFormField(
-            expands: true,
-            maxLines: null,
-            controller: _textEditingController,
-            cursorColor: widget.searchCursorColor,
-            decoration: InputDecoration(
-              isDense: true,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 8,
-              ),
-              hintText: widget.searchHintText,
-              hintStyle: widget.searchHintTextStyle,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-        ),
-        searchMatchFn: (item, searchValue) {
-          return (optionLabels[item.value] ?? '')
-              .toLowerCase()
-              .contains(searchValue.toLowerCase());
-        },
-      ),
-
-      // This to clear the search value when you close the menu
-      onMenuStateChange: (isOpen) {
-        if (!isOpen) {
-          _textEditingController.clear();
-        }
-      },
-    );
-  }
-
-  Widget _buildMultiSelectDropdown(
-    Text? hintText,
-    Map<T, String> optionLabels,
     bool isSearchable,
-    Function(List<T>?) onChangedForMultiSelect,
     bool disabled,
+    bool isMultiSelect,
+    Function(List<T>?)? onChangedForMultiSelect,
   ) {
     final overlayColor = MaterialStateProperty.resolveWith<Color?>((states) =>
         states.contains(MaterialState.focused) ? Colors.transparent : null);
@@ -262,54 +189,60 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
         ? IconStyleData(icon: widget.icon!)
         : const IconStyleData();
     return DropdownButton2<T>(
-      value: selectedItems.isEmpty ? null : selectedItems.last,
+      value: isMultiSelect
+          ? selectedItems.isEmpty
+              ? null
+              : selectedItems.last
+          : value,
       hint: hintText,
-      items: widget.options.map((item) {
-        return DropdownMenuItem(
-          value: item,
-          // Disable default onTap to avoid closing menu when selecting an item
-          enabled: false,
-          child: StatefulBuilder(
-            builder: (context, menuSetState) {
-              final isSelected = selectedItems.contains(item);
-              return InkWell(
-                onTap: () {
-                  isSelected
-                      ? selectedItems.remove(item)
-                      : selectedItems.add(item);
-                  onChangedForMultiSelect(selectedItems);
-                  //This rebuilds the StatefulWidget to update the button's text
-                  setState(() {});
-                  //This rebuilds the dropdownMenu Widget to update the check mark
-                  menuSetState(() {});
-                },
-                child: Container(
-                  height: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      if (isSelected)
-                        const Icon(Icons.check_box_outlined)
-                      else
-                        const Icon(Icons.check_box_outline_blank),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Text(
-                          item as String,
-                          style: widget.textStyle,
+      items: isMultiSelect
+          ? widget.options.map((item) {
+              return DropdownMenuItem(
+                value: item,
+                // Disable default onTap to avoid closing menu when selecting an item
+                enabled: false,
+                child: StatefulBuilder(
+                  builder: (context, menuSetState) {
+                    final isSelected = selectedItems.contains(item);
+                    return InkWell(
+                      onTap: () {
+                        isSelected
+                            ? selectedItems.remove(item)
+                            : selectedItems.add(item);
+                        onChangedForMultiSelect!(selectedItems);
+                        //This rebuilds the StatefulWidget to update the button's text
+                        setState(() {});
+                        //This rebuilds the dropdownMenu Widget to update the check mark
+                        menuSetState(() {});
+                      },
+                      child: Container(
+                        height: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            if (isSelected)
+                              const Icon(Icons.check_box_outlined)
+                            else
+                              const Icon(Icons.check_box_outline_blank),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                item as String,
+                                style: widget.textStyle,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               );
-            },
-          ),
-        );
-      }).toList(),
+            }).toList()
+          : items,
       iconStyleData: iconStyleData,
       buttonStyleData: ButtonStyleData(
-        elevation: widget.elevation!.toInt(),
+        elevation: widget.elevation.toInt(),
         overlayColor: overlayColor,
       ),
       menuItemStyleData: MenuItemStyleData(overlayColor: overlayColor),
@@ -319,27 +252,35 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
           borderRadius: BorderRadius.circular(4),
           color: widget.fillColor,
         ),
+        isOverButton: widget.isOverButton,
+        maxHeight: widget.maxHeight,
       ),
       // onChanged is handled by the onChangedForMultiSelect function
-      onChanged: disabled ? null : (val) {},
+      onChanged: isMultiSelect
+          ? disabled
+              ? null
+              : (val) {}
+          : onChanged,
       isExpanded: true,
-      selectedItemBuilder: (context) {
-        return widget.options.map(
-          (item) {
-            return Container(
-              alignment: AlignmentDirectional.center,
-              child: Text(
-                selectedItems.join(', '),
-                style: const TextStyle(
-                  fontSize: 14,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                maxLines: 1,
-              ),
-            );
-          },
-        ).toList();
-      },
+      selectedItemBuilder: isMultiSelect
+          ? (context) {
+              return widget.options.map(
+                (item) {
+                  return Container(
+                    alignment: AlignmentDirectional.center,
+                    child: Text(
+                      selectedItems.join(', '),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      maxLines: 1,
+                    ),
+                  );
+                },
+              ).toList();
+            }
+          : null,
       dropdownSearchData: isSearchable
           ? DropdownSearchData<T>(
               searchController: _textEditingController,
@@ -387,5 +328,12 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
             }
           : null,
     );
+  }
+
+  bool _useDropdown2() {
+    return widget.isMultiSelect ||
+        widget.isSearchable ||
+        !widget.isOverButton ||
+        widget.maxHeight != null;
   }
 }

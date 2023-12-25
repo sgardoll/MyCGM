@@ -47,13 +47,13 @@ class FirebasePhoneAuthManager extends ChangeNotifier {
 class FirebaseAuthManager extends AuthManager
     with
         EmailSignInManager,
-        AnonymousSignInManager,
-        AppleSignInManager,
         GoogleSignInManager,
-        GithubSignInManager,
+        AppleSignInManager,
+        FacebookSignInManager,
+        AnonymousSignInManager,
         JwtSignInManager,
-        PhoneSignInManager,
-        FacebookSignInManager {
+        GithubSignInManager,
+        PhoneSignInManager {
   // Set when using phone verification (after phone number is provided).
   String? _phoneAuthVerificationCode;
   // Set when using phone sign in in web mode (ignored otherwise).
@@ -299,9 +299,12 @@ class FirebaseAuthManager extends AuthManager
           ? null
           : NutriScanFirebaseUser.fromUserCredential(userCredential);
     } on FirebaseAuthException catch (e) {
+      final errorMsg = e.message?.contains('auth/email-already-in-use') ?? false
+          ? 'The email is already in use by a different account'
+          : 'Error: ${e.message!}';
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.message!}')),
+        SnackBar(content: Text(errorMsg)),
       );
       return null;
     }

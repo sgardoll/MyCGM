@@ -14,10 +14,11 @@ export '/onboarding/carb_ratio_check/carb_ratio_check_widget.dart'
 export '/t_v_builds/main_t_v/main_t_v_widget.dart' show MainTVWidget;
 export '/components/pages/cgm/cgm_widget.dart' show CgmWidget;
 export '/components/pages/home/home_widget.dart' show HomeWidget;
-export '/components/pages/home_scanned/home_scanned_widget.dart'
-    show HomeScannedWidget;
 export '/components/pages/remove_ads/remove_ads_widget.dart'
     show RemoveAdsWidget;
 export '/components/pages/details/details_widget.dart' show DetailsWidget;
 export '/components/pages/details_database_item/details_database_item_widget.dart'
     show DetailsDatabaseItemWidget;
+export '/components/pages/daily/daily_widget.dart' show DailyWidget;
+export '/components/pages/details_new/details_new_widget.dart'
+    show DetailsNewWidget;

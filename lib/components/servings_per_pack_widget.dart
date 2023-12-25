@@ -66,7 +66,7 @@ class _ServingsPerPackWidgetState extends State<ServingsPerPackWidget> {
         mainAxisSize: MainAxisSize.max,
         children: [
           Align(
-            alignment: AlignmentDirectional(1.00, 0.00),
+            alignment: AlignmentDirectional(1.0, 0.0),
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 4.0),
               child: Material(
@@ -81,7 +81,7 @@ class _ServingsPerPackWidgetState extends State<ServingsPerPackWidget> {
                     color: FlutterFlowTheme.of(context).primaryBackground,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  alignment: AlignmentDirectional(0.00, 0.00),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
                     child: AutoSizeText(

@@ -143,7 +143,7 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                           hintText: 'units',
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).secondaryText,
+                              color: FlutterFlowTheme.of(context).secondary,
                               width: 3.0,
                             ),
                             borderRadius: BorderRadius.circular(50.0),
@@ -192,21 +192,10 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
                     borderRadius: 50.0,
                     borderWidth: 1.0,
                     buttonSize: 60.0,
-                    fillColor: valueOrDefault<Color>(
-                      () {
-                        if (widget.latestMmol! < 3.9) {
-                          return FlutterFlowTheme.of(context).tertiary;
-                        } else if (widget.latestMmol! > 9.4) {
-                          return FlutterFlowTheme.of(context).secondary;
-                        } else {
-                          return FlutterFlowTheme.of(context).primary;
-                        }
-                      }(),
-                      FlutterFlowTheme.of(context).primary,
-                    ),
+                    fillColor: FlutterFlowTheme.of(context).primary,
                     icon: Icon(
                       Icons.send_rounded,
-                      color: FlutterFlowTheme.of(context).primaryText,
+                      color: FlutterFlowTheme.of(context).secondary,
                       size: 25.0,
                     ),
                     showLoadingIndicator: true,

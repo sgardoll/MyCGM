@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import '../schema/structs/index.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 import 'api_manager.dart';
@@ -33,29 +34,46 @@ class GetTreatmentsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 
-  dynamic enteredBy(dynamic response) => getJsonField(
+  List<String>? enteredBy(dynamic response) => (getJsonField(
         response,
         r'''$[:].enteredBy''',
         true,
-      );
-  dynamic insulin(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  List<int>? insulin(dynamic response) => (getJsonField(
         response,
         r'''$[:].insulin''',
         true,
-      );
-  dynamic insulinInjections(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
+  List<String>? insulinInjections(dynamic response) => (getJsonField(
         response,
         r'''$[:].insulinInjections''',
         true,
-      );
-  dynamic createdAt(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  List<String>? createdAt(dynamic response) => (getJsonField(
         response,
         r'''$[:].created_at''',
         true,
-      );
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
 }
 
 /// End Nightscout Group Code
@@ -102,6 +120,7 @@ class ChatCompletionsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -136,6 +155,7 @@ class DetectTextCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -158,8 +178,18 @@ class BarcodeScanCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
+
+  dynamic path(dynamic response) => getJsonField(
+        response,
+        r'''$.path''',
+      );
+  dynamic status(dynamic response) => getJsonField(
+        response,
+        r'''$.status''',
+      );
 }
 
 class GenerateBlurhashCall {
@@ -180,6 +210,7 @@ class GenerateBlurhashCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -212,6 +243,7 @@ class GenerateBlurCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -358,6 +390,7 @@ class CreateChatCompletionCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -402,6 +435,7 @@ class CreateCompletionCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -435,6 +469,7 @@ class CreateEditCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -470,6 +505,7 @@ class CreateImageCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -493,6 +529,7 @@ class CreateImageEditCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -516,6 +553,7 @@ class CreateImageVariationCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -547,6 +585,7 @@ class CreateEmbeddingCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -579,6 +618,7 @@ class CreateSpeechCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -602,6 +642,7 @@ class CreateTranscriptionCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -625,6 +666,7 @@ class CreateTranslationCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -650,6 +692,7 @@ class ListFilesCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -673,6 +716,7 @@ class CreateFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -696,6 +740,7 @@ class DeleteFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -719,6 +764,7 @@ class RetrieveFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -742,6 +788,7 @@ class DownloadFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -778,6 +825,7 @@ class CreateFineTuningJobCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -805,6 +853,7 @@ class ListPaginatedFineTuningJobsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -828,6 +877,7 @@ class RetrieveFineTuningJobCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -857,6 +907,7 @@ class ListFineTuningEventsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -882,6 +933,7 @@ class CancelFineTuningJobCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -925,6 +977,7 @@ class CreateFineTuneCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -947,6 +1000,7 @@ class ListFineTunesCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -970,6 +1024,7 @@ class RetrieveFineTuneCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -994,6 +1049,7 @@ class CancelFineTuneCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1020,6 +1076,7 @@ class ListFineTuneEventsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1042,6 +1099,7 @@ class ListModelsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1065,6 +1123,7 @@ class RetrieveModelCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1088,6 +1147,7 @@ class DeleteModelCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1117,6 +1177,7 @@ class CreateModerationCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1148,6 +1209,7 @@ class ListAssistantsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1186,6 +1248,7 @@ class CreateAssistantCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1209,6 +1272,7 @@ class GetAssistantCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1248,6 +1312,7 @@ class ModifyAssistantCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1271,6 +1336,7 @@ class DeleteAssistantCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1309,6 +1375,7 @@ class CreateThreadCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1332,6 +1399,7 @@ class GetThreadCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1361,6 +1429,7 @@ class ModifyThreadCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1384,6 +1453,7 @@ class DeleteThreadCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1416,6 +1486,7 @@ class ListMessagesCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1450,6 +1521,7 @@ class CreateMessageCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1475,6 +1547,7 @@ class GetMessageCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1506,6 +1579,7 @@ class ModifyMessageCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1553,6 +1627,7 @@ class CreateThreadAndRunCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1585,6 +1660,7 @@ class ListRunsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1620,6 +1696,7 @@ class CreateRunCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1644,6 +1721,7 @@ class GetRunCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1674,6 +1752,7 @@ class ModifyRunCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1710,6 +1789,7 @@ class SubmitToolOuputsToRunCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1736,6 +1816,7 @@ class CancelRunCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1770,6 +1851,7 @@ class ListRunStepsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1796,6 +1878,7 @@ class GetRunStepCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1828,6 +1911,7 @@ class ListAssistantFilesCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1857,6 +1941,7 @@ class CreateAssistantFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1882,6 +1967,7 @@ class GetAssistantFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1907,6 +1993,7 @@ class DeleteAssistantFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1941,6 +2028,7 @@ class ListMessageFilesCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1967,6 +2055,7 @@ class GetMessageFileCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1995,47 +2084,72 @@ class GetBloodGlucoseCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 
-  static dynamic date(dynamic response) => getJsonField(
+  static List<int>? date(dynamic response) => (getJsonField(
         response,
         r'''$[:].date''',
         true,
-      );
-  static dynamic sgv(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
+  static List<int>? sgv(dynamic response) => (getJsonField(
         response,
         r'''$[:].sgv''',
         true,
-      );
-  static dynamic delta(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
+  static List<int>? delta(dynamic response) => (getJsonField(
         response,
         r'''$[:].delta''',
         true,
-      );
-  static dynamic dateString(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
+  static List<String>? dateString(dynamic response) => (getJsonField(
         response,
         r'''$[:].dateString''',
         true,
-      );
-  static dynamic singleSgv(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  static int? singleSgv(dynamic response) => castToType<int>(getJsonField(
         response,
         r'''$[0].sgv''',
-      );
-  static dynamic singleDateInt(dynamic response) => getJsonField(
+      ));
+  static int? singleDateInt(dynamic response) => castToType<int>(getJsonField(
         response,
         r'''$[0].date''',
-      );
-  static dynamic device(dynamic response) => getJsonField(
+      ));
+  static List<String>? device(dynamic response) => (getJsonField(
         response,
         r'''$[:].device''',
         true,
-      );
-  static dynamic direction(dynamic response) => getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  static List<String>? direction(dynamic response) => (getJsonField(
         response,
         r'''$[:].direction''',
         true,
-      );
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
 }
 
 class PostInsulinCall {
@@ -2070,6 +2184,7 @@ class PostInsulinCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2107,6 +2222,7 @@ class PostCarbsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2125,252 +2241,287 @@ class OpenFoodFactsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      alwaysAllowBody: false,
     );
   }
 
-  static dynamic productkeywords(dynamic response) => getJsonField(
+  static List<String>? productkeywords(dynamic response) => (getJsonField(
         response,
         r'''$.product._keywords''',
         true,
-      );
-  static dynamic productabbreviatedproductname(dynamic response) =>
-      getJsonField(
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  static String? productabbreviatedproductname(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.abbreviated_product_name''',
-      );
-  static dynamic productbrands(dynamic response) => getJsonField(
+      ));
+  static String? productbrands(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.brands''',
-      );
-  static dynamic productimagefrontsmallurl(dynamic response) => getJsonField(
+      ));
+  static String? productimagefrontsmallurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_front_small_url''',
-      );
-  static dynamic productimagefrontthumburl(dynamic response) => getJsonField(
+      ));
+  static String? productimagefrontthumburl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_front_thumb_url''',
-      );
-  static dynamic productimagefronturl(dynamic response) => getJsonField(
+      ));
+  static String? productimagefronturl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_front_url''',
-      );
-  static dynamic productimageingredientssmallurl(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productimageingredientssmallurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_ingredients_small_url''',
-      );
-  static dynamic productimageingredientsthumburl(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productimageingredientsthumburl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_ingredients_thumb_url''',
-      );
-  static dynamic productimageingredientsurl(dynamic response) => getJsonField(
+      ));
+  static String? productimageingredientsurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_ingredients_url''',
-      );
-  static dynamic productimagenutritionsmallurl(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productimagenutritionsmallurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_nutrition_small_url''',
-      );
-  static dynamic productimagenutritionthumburl(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productimagenutritionthumburl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_nutrition_thumb_url''',
-      );
-  static dynamic productimagenutritionurl(dynamic response) => getJsonField(
+      ));
+  static String? productimagenutritionurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_nutrition_url''',
-      );
-  static dynamic productimagepackagingsmallurl(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productimagepackagingsmallurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_packaging_small_url''',
-      );
-  static dynamic productimagepackagingthumburl(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productimagepackagingthumburl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_packaging_thumb_url''',
-      );
-  static dynamic productimagepackagingurl(dynamic response) => getJsonField(
+      ));
+  static String? productimagepackagingurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_packaging_url''',
-      );
-  static dynamic productimagesmallurl(dynamic response) => getJsonField(
+      ));
+  static String? productimagesmallurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_small_url''',
-      );
-  static dynamic productimagethumburl(dynamic response) => getJsonField(
+      ));
+  static String? productimagethumburl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_thumb_url''',
-      );
-  static dynamic productimageurl(dynamic response) => getJsonField(
+      ));
+  static String? productimageurl(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.image_url''',
-      );
-  static dynamic productimages(dynamic response) => getJsonField(
+      ));
+  static dynamic? productimages(dynamic response) => getJsonField(
         response,
         r'''$.product.images''',
       );
-  static dynamic productnonutritiondataimported(dynamic response) =>
-      getJsonField(
+  static String? productnonutritiondataimported(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.no_nutrition_data_imported''',
-      );
-  static dynamic productnutriments(dynamic response) => getJsonField(
+      ));
+  static dynamic? productnutriments(dynamic response) => getJsonField(
         response,
         r'''$.product.nutriments''',
       );
-  static dynamic productnutrimentscarbohydrates(dynamic response) =>
-      getJsonField(
+  static double? productnutrimentscarbohydrates(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.carbohydrates''',
-      );
-  static dynamic productnutrimentscarbohydrates100g(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentscarbohydrates100g(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.carbohydrates_100g''',
-      );
-  static dynamic productnutrimentscarbohydratesserving(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentscarbohydratesserving(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.carbohydrates_serving''',
-      );
-  static dynamic productnutrimentscarbohydratesunit(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productnutrimentscarbohydratesunit(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.nutriments.carbohydrates_unit''',
-      );
-  static dynamic productnutrimentscarbohydratesvalue(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentscarbohydratesvalue(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.carbohydrates_value''',
-      );
-  static dynamic productnutrimentsenergy(dynamic response) => getJsonField(
+      ));
+  static int? productnutrimentsenergy(dynamic response) =>
+      castToType<int>(getJsonField(
         response,
         r'''$.product.nutriments.energy''',
-      );
-  static dynamic productnutrimentsenergy100g(dynamic response) => getJsonField(
+      ));
+  static int? productnutrimentsenergy100g(dynamic response) =>
+      castToType<int>(getJsonField(
         response,
         r'''$.product.nutriments.energy_100g''',
-      );
-  static dynamic productnutrimentsenergyserving(dynamic response) =>
-      getJsonField(
+      ));
+  static int? productnutrimentsenergyserving(dynamic response) =>
+      castToType<int>(getJsonField(
         response,
         r'''$.product.nutriments.energy_serving''',
-      );
-  static dynamic productnutrimentsenergyunit(dynamic response) => getJsonField(
+      ));
+  static String? productnutrimentsenergyunit(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.nutriments.energy_unit''',
-      );
-  static dynamic productnutrimentsenergyvalue(dynamic response) => getJsonField(
+      ));
+  static int? productnutrimentsenergyvalue(dynamic response) =>
+      castToType<int>(getJsonField(
         response,
         r'''$.product.nutriments.energy_value''',
-      );
-  static dynamic productnutrimentsfat(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsfat(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fat''',
-      );
-  static dynamic productnutrimentsfat100g(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsfat100g(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fat_100g''',
-      );
-  static dynamic productnutrimentsfatserving(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsfatserving(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fat_serving''',
-      );
-  static dynamic productnutrimentsfatunit(dynamic response) => getJsonField(
+      ));
+  static String? productnutrimentsfatunit(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.nutriments.fat_unit''',
-      );
-  static dynamic productnutrimentsfatvalue(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsfatvalue(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fat_value''',
-      );
-  static dynamic productnutrimentsfiber(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsfiber(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fiber''',
-      );
-  static dynamic productnutrimentsfiber100g(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsfiber100g(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fiber_100g''',
-      );
-  static dynamic productnutrimentsfiberserving(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentsfiberserving(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fiber_serving''',
-      );
-  static dynamic productnutrimentsfiberunit(dynamic response) => getJsonField(
+      ));
+  static String? productnutrimentsfiberunit(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.nutriments.fiber_unit''',
-      );
-  static dynamic productnutrimentsfibervalue(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsfibervalue(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.fiber_value''',
-      );
-  static dynamic productnutrimentsproteins(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentsproteins(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.proteins''',
-      );
-  static dynamic productnutrimentsproteins100g(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentsproteins100g(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.proteins_100g''',
-      );
-  static dynamic productnutrimentsproteinsserving(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentsproteinsserving(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.proteins_serving''',
-      );
-  static dynamic productnutrimentsproteinsunit(dynamic response) =>
-      getJsonField(
+      ));
+  static String? productnutrimentsproteinsunit(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.nutriments.proteins_unit''',
-      );
-  static dynamic productnutrimentsproteinsvalue(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentsproteinsvalue(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.proteins_value''',
-      );
-  static dynamic productnutrimentssugars(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentssugars(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.sugars''',
-      );
-  static dynamic productnutrimentssugars100g(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentssugars100g(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.sugars_100g''',
-      );
-  static dynamic productnutrimentssugarsserving(dynamic response) =>
-      getJsonField(
+      ));
+  static double? productnutrimentssugarsserving(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.sugars_serving''',
-      );
-  static dynamic productnutrimentssugarsunit(dynamic response) => getJsonField(
+      ));
+  static String? productnutrimentssugarsunit(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.nutriments.sugars_unit''',
-      );
-  static dynamic productnutrimentssugarsvalue(dynamic response) => getJsonField(
+      ));
+  static double? productnutrimentssugarsvalue(dynamic response) =>
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments.sugars_value''',
-      );
-  static dynamic productnutrimentsestimatedcarbohydrates100g(
+      ));
+  static double? productnutrimentsestimatedcarbohydrates100g(
           dynamic response) =>
-      getJsonField(
+      castToType<double>(getJsonField(
         response,
         r'''$.product.nutriments_estimated.carbohydrates_100g''',
-      );
-  static dynamic productproductnameen(dynamic response) => getJsonField(
+      ));
+  static String? productproductnameen(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.product_name_en''',
-      );
-  static dynamic productquantity(dynamic response) => getJsonField(
+      ));
+  static String? productquantity(dynamic response) =>
+      castToType<String>(getJsonField(
         response,
         r'''$.product.quantity''',
-      );
-  static dynamic status(dynamic response) => getJsonField(
+      ));
+  static int? status(dynamic response) => castToType<int>(getJsonField(
         response,
         r'''$.status''',
-      );
+      ));
   static dynamic servingsize(dynamic response) => getJsonField(
         response,
         r'''$.product.serving_size''',

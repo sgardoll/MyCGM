@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 import '/backend/algolia/serialization_util.dart';
-
+import '/backend/schema/enums/enums.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 export 'package:collection/collection.dart' show ListEquality;
@@ -94,6 +94,10 @@ List<T>? getStructList<T>(
             .map((e) => structBuilder(e as Map<String, dynamic>))
             .toList();
 
+List<T>? getEnumList<T>(dynamic value) => value is! List
+    ? null
+    : value.map((e) => deserializeEnum<T>(e)).withoutNulls;
+
 Color? getSchemaColor(dynamic value) => value is String
     ? fromCssColor(value)
     : value is Color
@@ -105,27 +109,6 @@ List<Color>? getColorsList(dynamic value) =>
 
 List<T>? getDataList<T>(dynamic value) =>
     value is! List ? null : value.map((e) => castToType<T>(e)!).toList();
-
-T? castToType<T>(dynamic value) {
-  if (value == null) {
-    return null;
-  }
-  switch (T) {
-    case double:
-      // Doubles may be stored as ints in some cases.
-      return value.toDouble() as T;
-    case int:
-      // Likewise, ints may be stored as doubles. If this is the case
-      // (i.e. no decimal value), return the value as an int.
-      if (value is num && value.toInt() == value) {
-        return value.toInt() as T;
-      }
-      break;
-    default:
-      break;
-  }
-  return value as T;
-}
 
 extension MapDataExtensions on Map<String, dynamic> {
   Map<String, dynamic> get withoutNulls => Map.fromEntries(

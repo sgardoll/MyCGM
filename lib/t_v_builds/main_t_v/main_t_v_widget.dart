@@ -116,12 +116,12 @@ class _MainTVWidgetState extends State<MainTVWidget>
                   () {
                     if (GetBloodGlucoseCall.singleSgv(
                           mainTVGetBloodGlucoseResponse.jsonBody,
-                        ) <
+                        )! <
                         70) {
                       return FlutterFlowTheme.of(context).tertiary;
                     } else if (GetBloodGlucoseCall.singleSgv(
                           mainTVGetBloodGlucoseResponse.jsonBody,
-                        ) >
+                        )! >
                         169) {
                       return FlutterFlowTheme.of(context).secondary;
                     } else {
@@ -132,7 +132,7 @@ class _MainTVWidgetState extends State<MainTVWidget>
                 ),
               ),
               child: Align(
-                alignment: AlignmentDirectional(0.00, 0.00),
+                alignment: AlignmentDirectional(0.0, 0.0),
                 child: Stack(
                   alignment: AlignmentDirectional(0.0, 0.0),
                   children: [
@@ -142,7 +142,7 @@ class _MainTVWidgetState extends State<MainTVWidget>
                       true,
                     ))
                       Align(
-                        alignment: AlignmentDirectional(0.00, 0.00),
+                        alignment: AlignmentDirectional(0.0, 0.0),
                         child: CircularPercentIndicator(
                           percent: () {
                             if (GetBloodGlucoseCall.singleSgv(
@@ -152,18 +152,18 @@ class _MainTVWidgetState extends State<MainTVWidget>
                               return 0.1;
                             } else if (GetBloodGlucoseCall.singleSgv(
                                   mainTVGetBloodGlucoseResponse.jsonBody,
-                                ) <
+                                )! <
                                 70) {
                               return 0.1;
                             } else if (GetBloodGlucoseCall.singleSgv(
                                   mainTVGetBloodGlucoseResponse.jsonBody,
-                                ) >
+                                )! >
                                 169) {
                               return 1.0;
                             } else {
                               return ((GetBloodGlucoseCall.singleSgv(
                                         mainTVGetBloodGlucoseResponse.jsonBody,
-                                      ) -
+                                      )! -
                                       70) /
                                   (169 - 70));
                             }
@@ -177,12 +177,12 @@ class _MainTVWidgetState extends State<MainTVWidget>
                             () {
                               if (GetBloodGlucoseCall.singleSgv(
                                     mainTVGetBloodGlucoseResponse.jsonBody,
-                                  ) <
+                                  )! <
                                   70) {
                                 return FlutterFlowTheme.of(context).secondary;
                               } else if (GetBloodGlucoseCall.singleSgv(
                                     mainTVGetBloodGlucoseResponse.jsonBody,
-                                  ) >
+                                  )! >
                                   169) {
                                 return FlutterFlowTheme.of(context)
                                     .secondaryBackground;
@@ -206,7 +206,7 @@ class _MainTVWidgetState extends State<MainTVWidget>
                         children: [
                           Expanded(
                             child: Align(
-                              alignment: AlignmentDirectional(0.00, 0.00),
+                              alignment: AlignmentDirectional(0.0, 0.0),
                               child: RichText(
                                 textScaleFactor:
                                     MediaQuery.of(context).textScaleFactor,
@@ -217,7 +217,7 @@ class _MainTVWidgetState extends State<MainTVWidget>
                                         GetBloodGlucoseCall.singleSgv(
                                               mainTVGetBloodGlucoseResponse
                                                   .jsonBody,
-                                            ) /
+                                            )! /
                                             18.0,
                                         formatType: FormatType.custom,
                                         format: '#0.0',

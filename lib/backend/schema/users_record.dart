@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
+import '/backend/schema/enums/enums.dart';
 
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -86,6 +87,11 @@ class UsersRecord extends FirestoreRecord {
   bool get hasCgmFeatures => _hasCgmFeatures ?? false;
   bool hasHasCgmFeatures() => _hasCgmFeatures != null;
 
+  // "dailyFood" field.
+  List<DayPeriodStruct>? _dailyFood;
+  List<DayPeriodStruct> get dailyFood => _dailyFood ?? const [];
+  bool hasDailyFood() => _dailyFood != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -101,6 +107,10 @@ class UsersRecord extends FirestoreRecord {
     _lowValue = castToType<double>(snapshotData['low_value']);
     _carbRatio = castToType<double>(snapshotData['carbRatio']);
     _hasCgmFeatures = snapshotData['hasCgmFeatures'] as bool?;
+    _dailyFood = getStructList(
+      snapshotData['dailyFood'],
+      DayPeriodStruct.fromMap,
+    );
   }
 
   static CollectionReference get collection =>
@@ -179,6 +189,7 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
 
   @override
   bool equals(UsersRecord? e1, UsersRecord? e2) {
+    const listEquality = ListEquality();
     return e1?.email == e2?.email &&
         e1?.displayName == e2?.displayName &&
         e1?.photoUrl == e2?.photoUrl &&
@@ -192,7 +203,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e1?.highValue == e2?.highValue &&
         e1?.lowValue == e2?.lowValue &&
         e1?.carbRatio == e2?.carbRatio &&
-        e1?.hasCgmFeatures == e2?.hasCgmFeatures;
+        e1?.hasCgmFeatures == e2?.hasCgmFeatures &&
+        listEquality.equals(e1?.dailyFood, e2?.dailyFood);
   }
 
   @override
@@ -210,7 +222,8 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.highValue,
         e?.lowValue,
         e?.carbRatio,
-        e?.hasCgmFeatures
+        e?.hasCgmFeatures,
+        e?.dailyFood
       ]);
 
   @override

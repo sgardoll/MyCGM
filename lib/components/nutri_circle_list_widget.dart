@@ -65,7 +65,7 @@ class _NutriCircleListWidgetState extends State<NutriCircleListWidget> {
                   width: 0.5,
                 ),
               ),
-              alignment: AlignmentDirectional(0.00, 0.00),
+              alignment: AlignmentDirectional(0.0, 0.0),
               child: AutoSizeText(
                 widget.parameter1!,
                 textAlign: TextAlign.center,

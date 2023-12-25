@@ -120,7 +120,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           child: Stack(
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
+                padding: EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -131,8 +131,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         false,
                       ))
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              8.0, 8.0, 8.0, 8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 12.0,
@@ -156,15 +155,14 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 8.0, 8.0, 8.0),
+                                padding: EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Align(
                                       alignment:
-                                          AlignmentDirectional(0.00, -1.00),
+                                          AlignmentDirectional(0.0, -1.0),
                                       child: Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             12.0, 4.0, 12.0, 0.0),
@@ -818,8 +816,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         false,
                       ))
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              8.0, 8.0, 8.0, 8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 12.0,
@@ -843,8 +840,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 8.0, 8.0, 8.0),
+                                padding: EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1033,8 +1029,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         false,
                       ))
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              8.0, 8.0, 8.0, 8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Material(
                             color: Colors.transparent,
                             elevation: 12.0,
@@ -1058,8 +1053,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 8.0, 8.0, 8.0),
+                                padding: EdgeInsets.all(8.0),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1701,8 +1695,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         true,
                       ))
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              8.0, 8.0, 8.0, 8.0),
+                          padding: EdgeInsets.all(8.0),
                           child: InkWell(
                             splashColor: Colors.transparent,
                             focusColor: Colors.transparent,
@@ -1734,8 +1727,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      8.0, 8.0, 8.0, 8.0),
+                                  padding: EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment:
@@ -1756,7 +1748,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       Flexible(
                                         child: Align(
                                           alignment:
-                                              AlignmentDirectional(-1.00, 0.00),
+                                              AlignmentDirectional(-1.0, 0.0),
                                           child: Text(
                                             'Remove Ads',
                                             style: FlutterFlowTheme.of(context)
@@ -1782,8 +1774,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           ),
                         ),
                       Padding(
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 8.0, 8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: Material(
                           color: Colors.transparent,
                           elevation: 12.0,
@@ -1807,8 +1798,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  8.0, 8.0, 8.0, 8.0),
+                              padding: EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -2033,8 +2023,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            40.0, 40.0, 40.0, 40.0),
+                        padding: EdgeInsets.all(40.0),
                         child: FFButtonWidget(
                           onPressed: () async {
                             GoRouter.of(context).prepareAuthEvent();
@@ -2091,7 +2080,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                 ),
               ),
               Align(
-                alignment: AlignmentDirectional(0.00, 1.00),
+                alignment: AlignmentDirectional(0.0, 1.0),
                 child: wrapWithModel(
                   model: _model.navBar1Model,
                   updateCallback: () => setState(() {}),

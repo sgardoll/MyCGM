@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'flutter_flow/request_manager.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
+import '/backend/schema/enums/enums.dart';
 import 'backend/api_requests/api_manager.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:csv/csv.dart';
@@ -286,21 +286,6 @@ class FFAppState extends ChangeNotifier {
   set lastSgvDate(int _value) {
     _lastSgvDate = _value;
   }
-
-  final _foodDataManager = FutureRequestManager<List<FoodDatabaseRecord>>();
-  Future<List<FoodDatabaseRecord>> foodData({
-    String? uniqueQueryKey,
-    bool? overrideCache,
-    required Future<List<FoodDatabaseRecord>> Function() requestFn,
-  }) =>
-      _foodDataManager.performRequest(
-        uniqueQueryKey: uniqueQueryKey,
-        overrideCache: overrideCache,
-        requestFn: requestFn,
-      );
-  void clearFoodDataCache() => _foodDataManager.clear();
-  void clearFoodDataCacheKey(String? uniqueKey) =>
-      _foodDataManager.clearRequest(uniqueKey);
 }
 
 LatLng? _latLngFromString(String? val) {

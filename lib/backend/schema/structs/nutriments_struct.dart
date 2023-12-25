@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
+import '/backend/schema/enums/enums.dart';
 
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -47,8 +48,9 @@ class NutrimentsStruct extends FFFirebaseStruct {
         name: data['name'] as String?,
       );
 
-  static NutrimentsStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? NutrimentsStruct.fromMap(data) : null;
+  static NutrimentsStruct? maybeFromMap(dynamic data) => data is Map
+      ? NutrimentsStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'nutriments': _nutriments?.toMap(),

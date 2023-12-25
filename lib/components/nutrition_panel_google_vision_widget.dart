@@ -66,7 +66,7 @@ class _NutritionPanelGoogleVisionWidgetState
         controller: _model.expandableController,
         child: ExpandablePanel(
           header: Align(
-            alignment: AlignmentDirectional(-1.00, 0.00),
+            alignment: AlignmentDirectional(-1.0, 0.0),
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 4.0),
               child: Material(
@@ -85,7 +85,7 @@ class _NutritionPanelGoogleVisionWidgetState
                       color: Colors.transparent,
                     ),
                   ),
-                  alignment: AlignmentDirectional(-1.00, 0.00),
+                  alignment: AlignmentDirectional(-1.0, 0.0),
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
                     child: Text(

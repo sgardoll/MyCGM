@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
+import '/backend/schema/enums/enums.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
@@ -169,12 +170,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => HomeWidget(),
             ),
             FFRoute(
-              name: 'homeScanned',
-              path: 'Carbs',
-              requireAuth: true,
-              builder: (context, params) => HomeScannedWidget(),
-            ),
-            FFRoute(
               name: 'removeAds',
               path: 'removeAds',
               builder: (context, params) => RemoveAdsWidget(),
@@ -194,6 +189,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 docRef: params.getParam('docRef', ParamType.DocumentReference,
                     false, ['foodDatabase']),
                 imageUrl: params.getParam('imageUrl', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'Daily',
+              path: 'Daily',
+              requireAuth: true,
+              builder: (context, params) => DailyWidget(),
+            ),
+            FFRoute(
+              name: 'Details-New',
+              path: 'detailsNew',
+              builder: (context, params) => DetailsNewWidget(
+                imageUrl: params.getParam('imageUrl', ParamType.String),
+                docRef: params.getParam(
+                    'docRef', ParamType.DocumentReference, false, ['lookup']),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -377,10 +387,13 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: Color(0xFFF5EFE6),
-                  child: Image.asset(
-                    'assets/images/6-splash.png',
-                    fit: BoxFit.contain,
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/0zhao_8.jpg',
+                      width: MediaQuery.sizeOf(context).width * 0.6,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 )
               : page;
@@ -391,13 +404,20 @@ class FFRoute {
                   key: state.pageKey,
                   child: child,
                   transitionDuration: transitionInfo.duration,
-                  transitionsBuilder: PageTransition(
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) =>
+                          PageTransition(
                     type: transitionInfo.transitionType,
                     duration: transitionInfo.duration,
                     reverseDuration: transitionInfo.duration,
                     alignment: transitionInfo.alignment,
                     child: child,
-                  ).transitionsBuilder,
+                  ).buildTransitions(
+                    context,
+                    animation,
+                    secondaryAnimation,
+                    child,
+                  ),
                 )
               : MaterialPage(key: state.pageKey, child: child);
         },

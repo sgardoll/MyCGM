@@ -94,7 +94,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Align(
-                  alignment: AlignmentDirectional(0.00, 0.00),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
@@ -110,10 +110,9 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(0.00, 0.00),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Your contribution helps this small, independent developer continuously improve and offer high-quality services. ',
                       textAlign: TextAlign.center,
@@ -126,8 +125,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                 ),
                 Flexible(
                   child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Material(
                       color: Colors.transparent,
                       elevation: 6.0,
@@ -149,8 +147,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                           borderRadius: BorderRadius.circular(40.0),
                         ),
                         child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              16.0, 16.0, 16.0, 16.0),
+                          padding: EdgeInsets.all(16.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -251,7 +248,7 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                               ),
                               Flexible(
                                 child: Align(
-                                  alignment: AlignmentDirectional(1.00, 0.00),
+                                  alignment: AlignmentDirectional(1.0, 0.0),
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 0.0, 16.0, 0.0),
@@ -348,10 +345,9 @@ class _RemoveAdsWidgetState extends State<RemoveAdsWidget> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(0.00, 0.00),
+                  alignment: AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Thank you for your support and happy ad-free browsing!',
                       textAlign: TextAlign.center,

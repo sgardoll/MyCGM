@@ -11,7 +11,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import 'dart:async';
-import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,34 +19,34 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'details_model.dart';
-export 'details_model.dart';
+import 'details_new_model.dart';
+export 'details_new_model.dart';
 
-class DetailsWidget extends StatefulWidget {
-  const DetailsWidget({
+class DetailsNewWidget extends StatefulWidget {
+  const DetailsNewWidget({
     Key? key,
-    this.code,
     this.imageUrl,
+    required this.docRef,
   }) : super(key: key);
 
-  final String? code;
   final String? imageUrl;
+  final DocumentReference? docRef;
 
   @override
-  _DetailsWidgetState createState() => _DetailsWidgetState();
+  _DetailsNewWidgetState createState() => _DetailsNewWidgetState();
 }
 
-class _DetailsWidgetState extends State<DetailsWidget> {
-  late DetailsModel _model;
+class _DetailsNewWidgetState extends State<DetailsNewWidget> {
+  late DetailsNewModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => DetailsModel());
+    _model = createModel(context, () => DetailsNewModel());
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Details'});
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Details-New'});
   }
 
   @override
@@ -71,7 +70,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
     context.watch<FFAppState>();
 
     return StreamBuilder<LookupRecord>(
-      stream: LookupRecord.getDocument(functions.getDocRefCopy(widget.code!)!),
+      stream: LookupRecord.getDocument(widget.docRef!),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -89,7 +88,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
             ),
           );
         }
-        final detailsLookupRecord = snapshot.data!;
+        final detailsNewLookupRecord = snapshot.data!;
         return GestureDetector(
           onTap: () => _model.unfocusNode.canRequestFocus
               ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -179,7 +178,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                 'https://www.connectio.com.au/nutri/error.png',
                               ),
                               isDetailsPage: true,
-                              docRef: detailsLookupRecord.reference,
+                              docRef: detailsNewLookupRecord.reference,
                             ),
                           ),
                         ),
@@ -200,7 +199,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if (valueOrDefault<bool>(
-                          detailsLookupRecord != null ? true : false,
+                          detailsNewLookupRecord != null ? true : false,
                           false,
                         ))
                           Expanded(
@@ -231,7 +230,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                 alignment: AlignmentDirectional(
                                                     -1.0, 0.0),
                                                 child: AutoSizeText(
-                                                  detailsLookupRecord.name,
+                                                  detailsNewLookupRecord.name,
                                                   textAlign: TextAlign.start,
                                                   maxLines: 2,
                                                   style: FlutterFlowTheme.of(
@@ -241,9 +240,9 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                               ),
                                             ),
                                             if (valueOrDefault<bool>(
-                                              detailsLookupRecord.size !=
+                                              detailsNewLookupRecord.size !=
                                                           null &&
-                                                      detailsLookupRecord
+                                                      detailsNewLookupRecord
                                                               .size !=
                                                           ''
                                                   ? true
@@ -294,7 +293,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                                       8.0,
                                                                       0.0),
                                                           child: AutoSizeText(
-                                                            detailsLookupRecord
+                                                            detailsNewLookupRecord
                                                                 .size,
                                                             textAlign: TextAlign
                                                                 .center,
@@ -320,7 +319,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                       ),
                                     ),
                                     if (valueOrDefault<bool>(
-                                      detailsLookupRecord
+                                      detailsNewLookupRecord
                                               .openFoodFacts.nutriments
                                               .hasEnergy()
                                           ? true
@@ -369,55 +368,57 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                       source:
                                                           'Open Food Facts - per 100g / 100ml',
                                                       energy:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .energy,
                                                       energyUnits:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .energyKcalUnit,
                                                       energyPerServing:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .energyKcal100g,
                                                       protein:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .proteins,
                                                       proteinUnits:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .proteinsUnit,
                                                       proteinPerServing:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .proteins100g,
-                                                      carbs: detailsLookupRecord
-                                                          .openFoodFacts
-                                                          .nutriments
-                                                          .carbohydrates,
+                                                      carbs:
+                                                          detailsNewLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .carbohydrates,
                                                       carbUnits:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .carbohydratesUnit,
                                                       carbsPerServing:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .carbohydrates100g,
-                                                      fats: detailsLookupRecord
-                                                          .openFoodFacts
-                                                          .nutriments
-                                                          .fat,
+                                                      fats:
+                                                          detailsNewLookupRecord
+                                                              .openFoodFacts
+                                                              .nutriments
+                                                              .fat,
                                                       fatUnits:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .openFoodFacts
                                                               .nutriments
                                                               .fatUnit,
@@ -430,10 +431,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                         ),
                                       ),
                                     if (valueOrDefault<bool>(
-                                      detailsLookupRecord
+                                      detailsNewLookupRecord
                                                       .googleVisionResponse !=
                                                   null &&
-                                              detailsLookupRecord
+                                              detailsNewLookupRecord
                                                       .googleVisionResponse !=
                                                   ''
                                           ? false
@@ -551,7 +552,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
 
                                                     unawaited(
                                                       () async {
-                                                        await detailsLookupRecord
+                                                        await detailsNewLookupRecord
                                                             .reference
                                                             .update(
                                                                 createLookupRecordData(
@@ -657,10 +658,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                         ),
                                       ),
                                     if (valueOrDefault<bool>(
-                                      detailsLookupRecord
+                                      detailsNewLookupRecord
                                                       .googleVisionResponse !=
                                                   null &&
-                                              detailsLookupRecord
+                                              detailsNewLookupRecord
                                                       .googleVisionResponse !=
                                                   ''
                                           ? true
@@ -706,10 +707,11 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                         NutritionPanelGoogleVisionWidget(
                                                       source:
                                                           'Nutritional Infomation',
-                                                      markdown: detailsLookupRecord
-                                                          .googleVisionResponse,
+                                                      markdown:
+                                                          detailsNewLookupRecord
+                                                              .googleVisionResponse,
                                                       nutritionPanel:
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                               .nutritionPanel,
                                                     ),
                                                   ),
@@ -720,8 +722,9 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                         ),
                                       ),
                                     if (valueOrDefault<bool>(
-                                      detailsLookupRecord.trivia != null &&
-                                              detailsLookupRecord.trivia != ''
+                                      detailsNewLookupRecord.trivia != null &&
+                                              detailsNewLookupRecord.trivia !=
+                                                  ''
                                           ? true
                                           : false,
                                       false,
@@ -778,7 +781,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                                   0.0,
                                                                   0.0),
                                                       child: AutoSizeText(
-                                                        detailsLookupRecord
+                                                        detailsNewLookupRecord
                                                             .trivia,
                                                         maxLines: 4,
                                                         style:

@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:from_css_color/from_css_color.dart';
+import '/backend/algolia/serialization_util.dart';
+import '/backend/algolia/algolia_manager.dart';
 import 'package:collection/collection.dart';
 
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
+import '/backend/schema/enums/enums.dart';
 
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -111,6 +115,53 @@ class LookupRecord extends FirestoreRecord {
     DocumentReference reference,
   ) =>
       LookupRecord._(reference, mapFromFirestore(data));
+
+  static LookupRecord fromAlgolia(AlgoliaObjectSnapshot snapshot) =>
+      LookupRecord.getDocumentFromData(
+        {
+          'userRef': convertAlgoliaParam(
+            snapshot.data['userRef'],
+            ParamType.DocumentReference,
+            false,
+          ),
+          'nutritionPanel': snapshot.data['nutritionPanel'],
+          'code': snapshot.data['code'],
+          'name': snapshot.data['name'],
+          'brand': snapshot.data['brand'],
+          'trivia': snapshot.data['trivia'],
+          'size': snapshot.data['size'],
+          'timestamp': convertAlgoliaParam(
+            snapshot.data['timestamp'],
+            ParamType.int,
+            false,
+          ),
+          'googleVisionResponse': snapshot.data['googleVisionResponse'],
+          'openFoodFacts': NutrimentsStruct.fromAlgoliaData(
+                  snapshot.data['openFoodFacts'] ?? {})
+              .toMap(),
+          'blurHash': snapshot.data['blurHash'],
+          'userId': snapshot.data['userId'],
+        },
+        LookupRecord.collection.doc(snapshot.objectID),
+      );
+
+  static Future<List<LookupRecord>> search({
+    String? term,
+    FutureOr<LatLng>? location,
+    int? maxResults,
+    double? searchRadiusMeters,
+    bool useCache = false,
+  }) =>
+      FFAlgoliaManager.instance
+          .algoliaQuery(
+            index: 'lookup',
+            term: term,
+            maxResults: maxResults,
+            location: location,
+            searchRadiusMeters: searchRadiusMeters,
+            useCache: useCache,
+          )
+          .then((r) => r.map(fromAlgolia).toList());
 
   @override
   String toString() =>

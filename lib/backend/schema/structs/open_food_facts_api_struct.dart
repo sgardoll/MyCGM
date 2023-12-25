@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
+import '/backend/schema/enums/enums.dart';
 
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -14,13 +15,11 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
     double? carbohydrates100g,
     String? carbohydratesUnit,
     double? carbohydratesValue,
-    int? energy,
     double? energyKcal,
     double? energyKcal100g,
     String? energyKcalUnit,
     double? energyKcalValue,
     double? energyKcalValueComputed,
-    int? energy100g,
     String? energyUnit,
     double? energyValue,
     double? fat,
@@ -36,18 +35,17 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
     String? sugarsUnit,
     double? sugarsValue,
     String? imageUrl,
+    double? energy,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _carbohydrates = carbohydrates,
         _carbohydrates100g = carbohydrates100g,
         _carbohydratesUnit = carbohydratesUnit,
         _carbohydratesValue = carbohydratesValue,
-        _energy = energy,
         _energyKcal = energyKcal,
         _energyKcal100g = energyKcal100g,
         _energyKcalUnit = energyKcalUnit,
         _energyKcalValue = energyKcalValue,
         _energyKcalValueComputed = energyKcalValueComputed,
-        _energy100g = energy100g,
         _energyUnit = energyUnit,
         _energyValue = energyValue,
         _fat = fat,
@@ -63,6 +61,7 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         _sugarsUnit = sugarsUnit,
         _sugarsValue = sugarsValue,
         _imageUrl = imageUrl,
+        _energy = energy,
         super(firestoreUtilData);
 
   // "carbohydrates" field.
@@ -94,13 +93,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
   void incrementCarbohydratesValue(double amount) =>
       _carbohydratesValue = carbohydratesValue + amount;
   bool hasCarbohydratesValue() => _carbohydratesValue != null;
-
-  // "energy" field.
-  int? _energy;
-  int get energy => _energy ?? 0;
-  set energy(int? val) => _energy = val;
-  void incrementEnergy(int amount) => _energy = energy + amount;
-  bool hasEnergy() => _energy != null;
 
   // "energy-kcal" field.
   double? _energyKcal;
@@ -138,13 +130,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
   void incrementEnergyKcalValueComputed(double amount) =>
       _energyKcalValueComputed = energyKcalValueComputed + amount;
   bool hasEnergyKcalValueComputed() => _energyKcalValueComputed != null;
-
-  // "energy_100g" field.
-  int? _energy100g;
-  int get energy100g => _energy100g ?? 0;
-  set energy100g(int? val) => _energy100g = val;
-  void incrementEnergy100g(int amount) => _energy100g = energy100g + amount;
-  bool hasEnergy100g() => _energy100g != null;
 
   // "energy_unit" field.
   String? _energyUnit;
@@ -250,20 +235,25 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
   set imageUrl(String? val) => _imageUrl = val;
   bool hasImageUrl() => _imageUrl != null;
 
+  // "energy" field.
+  double? _energy;
+  double get energy => _energy ?? 0.0;
+  set energy(double? val) => _energy = val;
+  void incrementEnergy(double amount) => _energy = energy + amount;
+  bool hasEnergy() => _energy != null;
+
   static OpenFoodFactsApiStruct fromMap(Map<String, dynamic> data) =>
       OpenFoodFactsApiStruct(
         carbohydrates: castToType<double>(data['carbohydrates']),
         carbohydrates100g: castToType<double>(data['carbohydrates_100g']),
         carbohydratesUnit: data['carbohydrates_unit'] as String?,
         carbohydratesValue: castToType<double>(data['carbohydrates_value']),
-        energy: castToType<int>(data['energy']),
         energyKcal: castToType<double>(data['energy-kcal']),
         energyKcal100g: castToType<double>(data['energy-kcal_100g']),
         energyKcalUnit: data['energy-kcal_unit'] as String?,
         energyKcalValue: castToType<double>(data['energy-kcal_value']),
         energyKcalValueComputed:
             castToType<double>(data['energy-kcal_value_computed']),
-        energy100g: castToType<int>(data['energy_100g']),
         energyUnit: data['energy_unit'] as String?,
         energyValue: castToType<double>(data['energy_value']),
         fat: castToType<double>(data['fat']),
@@ -279,25 +269,23 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         sugarsUnit: data['sugars_unit'] as String?,
         sugarsValue: castToType<double>(data['sugars_value']),
         imageUrl: data['imageUrl'] as String?,
+        energy: castToType<double>(data['energy']),
       );
 
-  static OpenFoodFactsApiStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic>
-          ? OpenFoodFactsApiStruct.fromMap(data)
-          : null;
+  static OpenFoodFactsApiStruct? maybeFromMap(dynamic data) => data is Map
+      ? OpenFoodFactsApiStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'carbohydrates': _carbohydrates,
         'carbohydrates_100g': _carbohydrates100g,
         'carbohydrates_unit': _carbohydratesUnit,
         'carbohydrates_value': _carbohydratesValue,
-        'energy': _energy,
         'energy-kcal': _energyKcal,
         'energy-kcal_100g': _energyKcal100g,
         'energy-kcal_unit': _energyKcalUnit,
         'energy-kcal_value': _energyKcalValue,
         'energy-kcal_value_computed': _energyKcalValueComputed,
-        'energy_100g': _energy100g,
         'energy_unit': _energyUnit,
         'energy_value': _energyValue,
         'fat': _fat,
@@ -313,6 +301,7 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         'sugars_unit': _sugarsUnit,
         'sugars_value': _sugarsValue,
         'imageUrl': _imageUrl,
+        'energy': _energy,
       }.withoutNulls;
 
   @override
@@ -333,10 +322,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           _carbohydratesValue,
           ParamType.double,
         ),
-        'energy': serializeParam(
-          _energy,
-          ParamType.int,
-        ),
         'energy-kcal': serializeParam(
           _energyKcal,
           ParamType.double,
@@ -356,10 +341,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         'energy-kcal_value_computed': serializeParam(
           _energyKcalValueComputed,
           ParamType.double,
-        ),
-        'energy_100g': serializeParam(
-          _energy100g,
-          ParamType.int,
         ),
         'energy_unit': serializeParam(
           _energyUnit,
@@ -421,6 +402,10 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           _imageUrl,
           ParamType.String,
         ),
+        'energy': serializeParam(
+          _energy,
+          ParamType.double,
+        ),
       }.withoutNulls;
 
   static OpenFoodFactsApiStruct fromSerializableMap(
@@ -446,11 +431,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           ParamType.double,
           false,
         ),
-        energy: deserializeParam(
-          data['energy'],
-          ParamType.int,
-          false,
-        ),
         energyKcal: deserializeParam(
           data['energy-kcal'],
           ParamType.double,
@@ -474,11 +454,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         energyKcalValueComputed: deserializeParam(
           data['energy-kcal_value_computed'],
           ParamType.double,
-          false,
-        ),
-        energy100g: deserializeParam(
-          data['energy_100g'],
-          ParamType.int,
           false,
         ),
         energyUnit: deserializeParam(
@@ -556,6 +531,11 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           ParamType.String,
           false,
         ),
+        energy: deserializeParam(
+          data['energy'],
+          ParamType.double,
+          false,
+        ),
       );
 
   static OpenFoodFactsApiStruct fromAlgoliaData(Map<String, dynamic> data) =>
@@ -578,11 +558,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         carbohydratesValue: convertAlgoliaParam(
           data['carbohydrates_value'],
           ParamType.double,
-          false,
-        ),
-        energy: convertAlgoliaParam(
-          data['energy'],
-          ParamType.int,
           false,
         ),
         energyKcal: convertAlgoliaParam(
@@ -608,11 +583,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         energyKcalValueComputed: convertAlgoliaParam(
           data['energy-kcal_value_computed'],
           ParamType.double,
-          false,
-        ),
-        energy100g: convertAlgoliaParam(
-          data['energy_100g'],
-          ParamType.int,
           false,
         ),
         energyUnit: convertAlgoliaParam(
@@ -690,6 +660,11 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           ParamType.String,
           false,
         ),
+        energy: convertAlgoliaParam(
+          data['energy'],
+          ParamType.double,
+          false,
+        ),
         firestoreUtilData: FirestoreUtilData(
           clearUnsetFields: false,
           create: true,
@@ -706,13 +681,11 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         carbohydrates100g == other.carbohydrates100g &&
         carbohydratesUnit == other.carbohydratesUnit &&
         carbohydratesValue == other.carbohydratesValue &&
-        energy == other.energy &&
         energyKcal == other.energyKcal &&
         energyKcal100g == other.energyKcal100g &&
         energyKcalUnit == other.energyKcalUnit &&
         energyKcalValue == other.energyKcalValue &&
         energyKcalValueComputed == other.energyKcalValueComputed &&
-        energy100g == other.energy100g &&
         energyUnit == other.energyUnit &&
         energyValue == other.energyValue &&
         fat == other.fat &&
@@ -727,7 +700,8 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         sugars100g == other.sugars100g &&
         sugarsUnit == other.sugarsUnit &&
         sugarsValue == other.sugarsValue &&
-        imageUrl == other.imageUrl;
+        imageUrl == other.imageUrl &&
+        energy == other.energy;
   }
 
   @override
@@ -736,13 +710,11 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         carbohydrates100g,
         carbohydratesUnit,
         carbohydratesValue,
-        energy,
         energyKcal,
         energyKcal100g,
         energyKcalUnit,
         energyKcalValue,
         energyKcalValueComputed,
-        energy100g,
         energyUnit,
         energyValue,
         fat,
@@ -757,7 +729,8 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         sugars100g,
         sugarsUnit,
         sugarsValue,
-        imageUrl
+        imageUrl,
+        energy
       ]);
 }
 
@@ -766,13 +739,11 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
   double? carbohydrates100g,
   String? carbohydratesUnit,
   double? carbohydratesValue,
-  int? energy,
   double? energyKcal,
   double? energyKcal100g,
   String? energyKcalUnit,
   double? energyKcalValue,
   double? energyKcalValueComputed,
-  int? energy100g,
   String? energyUnit,
   double? energyValue,
   double? fat,
@@ -788,6 +759,7 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
   String? sugarsUnit,
   double? sugarsValue,
   String? imageUrl,
+  double? energy,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -798,13 +770,11 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
       carbohydrates100g: carbohydrates100g,
       carbohydratesUnit: carbohydratesUnit,
       carbohydratesValue: carbohydratesValue,
-      energy: energy,
       energyKcal: energyKcal,
       energyKcal100g: energyKcal100g,
       energyKcalUnit: energyKcalUnit,
       energyKcalValue: energyKcalValue,
       energyKcalValueComputed: energyKcalValueComputed,
-      energy100g: energy100g,
       energyUnit: energyUnit,
       energyValue: energyValue,
       fat: fat,
@@ -820,6 +790,7 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
       sugarsUnit: sugarsUnit,
       sugarsValue: sugarsValue,
       imageUrl: imageUrl,
+      energy: energy,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,

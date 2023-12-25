@@ -90,8 +90,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                         children: [
                           Flexible(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: SelectionArea(
                                   child: AutoSizeText(
                                 valueOrDefault<String>(
@@ -156,8 +155,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                           children: [
                             Flexible(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    4.0, 4.0, 4.0, 4.0),
+                                padding: EdgeInsets.all(4.0),
                                 child: SelectionArea(
                                     child: AutoSizeText(
                                   formatNumber(
@@ -218,8 +216,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                         children: [
                           Flexible(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: SelectionArea(
                                   child: AutoSizeText(
                                 '${formatNumber(
@@ -280,8 +277,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                         children: [
                           Flexible(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: SelectionArea(
                                   child: AutoSizeText(
                                 '${formatNumber(
@@ -342,8 +338,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                         children: [
                           Flexible(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: SelectionArea(
                                   child: AutoSizeText(
                                 '${formatNumber(

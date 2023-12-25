@@ -79,39 +79,21 @@ class _CarbRatioCheckWidgetState extends State<CarbRatioCheckWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                    child: Material(
-                      color: Colors.transparent,
-                      elevation: 6.0,
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width * 1.0,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          border: Border.all(
-                            color: Colors.transparent,
-                            width: 0.0,
-                          ),
-                        ),
-                        child:
-                            // Logo
-                            Semantics(
-                          label: 'Logo',
-                          child: Image.asset(
-                            'assets/images/6-splash.png',
-                            width: MediaQuery.sizeOf(context).width * 1.0,
-                            height: MediaQuery.sizeOf(context).height * 0.15,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
+                  // Logo
+                  Semantics(
+                    label: 'Logo',
+                    child: Image.asset(
+                      'assets/images/0zhao_8.jpg',
+                      width: MediaQuery.sizeOf(context).width * 1.0,
+                      height: MediaQuery.sizeOf(context).height * 0.15,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ],
               ),
               Flexible(
                 child: Align(
-                  alignment: AlignmentDirectional(0.00, -1.00),
+                  alignment: AlignmentDirectional(0.0, -1.0),
                   child: Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(12.0, 16.0, 12.0, 0.0),
@@ -130,8 +112,7 @@ class _CarbRatioCheckWidgetState extends State<CarbRatioCheckWidget> {
                               ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              16.0, 16.0, 16.0, 16.0),
+                          padding: EdgeInsets.all(16.0),
                           child: Card(
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             color: Color(0xFFF5F5F5),
@@ -163,9 +144,7 @@ class _CarbRatioCheckWidgetState extends State<CarbRatioCheckWidget> {
                                         ),
                                         Expanded(
                                           child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    12.0, 12.0, 12.0, 12.0),
+                                            padding: EdgeInsets.all(12.0),
                                             child: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               mainAxisAlignment:
@@ -292,7 +271,12 @@ class _CarbRatioCheckWidgetState extends State<CarbRatioCheckWidget> {
                                 data: ThemeData(
                                   checkboxTheme: CheckboxThemeData(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0.0),
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(0.0),
+                                        bottomRight: Radius.circular(0.0),
+                                        topLeft: Radius.circular(0.0),
+                                        topRight: Radius.circular(0.0),
+                                      ),
                                     ),
                                   ),
                                   unselectedWidgetColor:

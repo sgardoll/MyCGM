@@ -394,8 +394,8 @@ class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
                                             AlignmentDirectional(0.0, 0.0),
                                         children: [
                                           Align(
-                                            alignment: AlignmentDirectional(
-                                                0.00, -1.00),
+                                            alignment:
+                                                AlignmentDirectional(0.0, -1.0),
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(
@@ -549,24 +549,16 @@ class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
                                                                       BoxDecoration(
                                                                     color: valueOrDefault<
                                                                         Color>(
-                                                                      () {
-                                                                        if (FFAppState().lastSgvDate <=
-                                                                            (getCurrentTimestamp.millisecondsSinceEpoch -
-                                                                                240000)) {
-                                                                          return FlutterFlowTheme.of(context)
-                                                                              .info;
-                                                                        } else if (FFAppState().lastSgvDate >
-                                                                            240001) {
-                                                                          return FlutterFlowTheme.of(context)
-                                                                              .warning;
-                                                                        } else {
-                                                                          return FlutterFlowTheme.of(context)
-                                                                              .error;
-                                                                        }
-                                                                      }(),
+                                                                      FFAppState().lastSgvDate >=
+                                                                              (getCurrentTimestamp.millisecondsSinceEpoch -
+                                                                                  24000)
+                                                                          ? FlutterFlowTheme.of(context)
+                                                                              .info
+                                                                          : FlutterFlowTheme.of(context)
+                                                                              .primary,
                                                                       FlutterFlowTheme.of(
                                                                               context)
-                                                                          .secondaryText,
+                                                                          .error,
                                                                     ),
                                                                     shape: BoxShape
                                                                         .circle,
@@ -714,7 +706,7 @@ class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
                         ),
                       ),
                       Align(
-                        alignment: AlignmentDirectional(1.00, 1.00),
+                        alignment: AlignmentDirectional(1.0, 1.0),
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 24.0, 0.0),
@@ -724,7 +716,7 @@ class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Align(
-                                alignment: AlignmentDirectional(1.00, 1.00),
+                                alignment: AlignmentDirectional(1.0, 1.0),
                                 child: FlutterFlowIconButton(
                                   borderColor: Colors.transparent,
                                   borderRadius: 50.0,
@@ -769,7 +761,7 @@ class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
                                 ),
                               ),
                               Align(
-                                alignment: AlignmentDirectional(1.00, 1.00),
+                                alignment: AlignmentDirectional(1.0, 1.0),
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 8.0),
@@ -825,7 +817,7 @@ class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(0.00, 1.00),
+                  alignment: AlignmentDirectional(0.0, 1.0),
                   child: wrapWithModel(
                     model: _model.navBar1Model,
                     updateCallback: () => setState(() {}),

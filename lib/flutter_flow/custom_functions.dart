@@ -11,6 +11,7 @@ import 'uploaded_file.dart';
 import '/backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '/backend/schema/structs/index.dart';
+import '/backend/schema/enums/enums.dart';
 import '/auth/firebase_auth/auth_util.dart';
 
 String? minutesAgo(dynamic timestamp) {
@@ -71,6 +72,11 @@ String? novoCalcBasedOnRatio(
   return carbs.toStringAsFixed(1);
 }
 
+DocumentReference? getDocRefCopy(String input) {
+  // take a string and add 'lookup/' in front of it to return a document reference
+  return FirebaseFirestore.instance.doc('lookup/$input');
+}
+
 String novoTo1DecimalPlace(String units) {
   // if units is a number without a decimal place add .0 to it
   if (units.contains('.'))
@@ -101,7 +107,28 @@ int barcodeScanInt(String barcodeScan) {
   return barcodeInt;
 }
 
-DocumentReference? getDocRef(String input) {
-  // take a string and add 'lookup/' in front of it to return a document reference
-  return FirebaseFirestore.instance.doc('lookup/$input');
+DocumentReference? getDocRefBuildshipResponse(dynamic buildshipReturn) {
+  if (buildshipReturn == null) {
+    return null;
+  }
+
+  try {
+    Map<String, dynamic> data;
+
+    if (buildshipReturn is String) {
+      data = json.decode(buildshipReturn) as Map<String, dynamic>;
+    } else if (buildshipReturn is Map) {
+      data = Map<String, dynamic>.from(buildshipReturn);
+    } else {
+      return null; // Not a supported type
+    }
+
+    if (data.containsKey('path') && data['path'] is String) {
+      return FirebaseFirestore.instance.doc(data['path']);
+    }
+  } catch (e) {
+    print("Error parsing JSON or creating DocumentReference: $e");
+  }
+
+  return null;
 }
