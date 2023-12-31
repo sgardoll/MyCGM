@@ -1,6 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/enums/enums.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/item/item_widget.dart';
 import '/components/item_database/item_database_widget.dart';
@@ -9,9 +8,7 @@ import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -242,6 +239,8 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                 Expanded(
                                   child: TabBarView(
                                     controller: _model.tabBarController,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     children: [
                                       KeepAliveWidgetWrapper(
                                         builder: (context) => PagedListView<
@@ -258,6 +257,8 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                             0,
                                             0,
                                           ),
+                                          primary: false,
+                                          shrinkWrap: true,
                                           reverse: false,
                                           scrollDirection: Axis.vertical,
                                           separatorBuilder: (_, __) =>
@@ -478,186 +479,6 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                           MainAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Flexible(
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              if (valueOrDefault<
-                                                                  bool>(
-                                                                stackLookupRecord !=
-                                                                        null
-                                                                    ? true
-                                                                    : false,
-                                                                false,
-                                                              ))
-                                                                Flexible(
-                                                                  child:
-                                                                      ClipRRect(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            0.0),
-                                                                    child:
-                                                                        AnimatedContainer(
-                                                                      duration: Duration(
-                                                                          milliseconds:
-                                                                              100),
-                                                                      curve: Curves
-                                                                          .easeInOut,
-                                                                      width: MediaQuery.sizeOf(context)
-                                                                              .width *
-                                                                          1.0,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        gradient:
-                                                                            LinearGradient(
-                                                                          colors: [
-                                                                            FlutterFlowTheme.of(context).primaryBackground,
-                                                                            FlutterFlowTheme.of(context).tertiary
-                                                                          ],
-                                                                          stops: [
-                                                                            0.5,
-                                                                            1.0
-                                                                          ],
-                                                                          begin: AlignmentDirectional(
-                                                                              0.0,
-                                                                              -1.0),
-                                                                          end: AlignmentDirectional(
-                                                                              0,
-                                                                              1.0),
-                                                                        ),
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(0.0),
-                                                                        border:
-                                                                            Border.all(
-                                                                          color:
-                                                                              Colors.transparent,
-                                                                        ),
-                                                                      ),
-                                                                      child:
-                                                                          Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                16.0,
-                                                                                8.0,
-                                                                                0.0,
-                                                                                0.0),
-                                                                            child:
-                                                                                AutoSizeText(
-                                                                              'Most Recently Scanned',
-                                                                              textAlign: TextAlign.start,
-                                                                              style: FlutterFlowTheme.of(context).titleSmall.override(
-                                                                                    fontFamily: 'Lato',
-                                                                                    color: FlutterFlowTheme.of(context).secondary,
-                                                                                    fontSize: 14.0,
-                                                                                  ),
-                                                                            ),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding: EdgeInsetsDirectional.fromSTEB(
-                                                                                16.0,
-                                                                                4.0,
-                                                                                16.0,
-                                                                                16.0),
-                                                                            child:
-                                                                                InkWell(
-                                                                              splashColor: Colors.transparent,
-                                                                              focusColor: Colors.transparent,
-                                                                              hoverColor: Colors.transparent,
-                                                                              highlightColor: Colors.transparent,
-                                                                              onTap: () async {
-                                                                                context.pushNamed(
-                                                                                  'Details',
-                                                                                  queryParameters: {
-                                                                                    'code': serializeParam(
-                                                                                      stackLookupRecord?.code,
-                                                                                      ParamType.String,
-                                                                                    ),
-                                                                                    'imageUrl': serializeParam(
-                                                                                      stackLookupRecord?.openFoodFacts?.imageUrl,
-                                                                                      ParamType.String,
-                                                                                    ),
-                                                                                  }.withoutNulls,
-                                                                                  extra: <String, dynamic>{
-                                                                                    kTransitionInfoKey: TransitionInfo(
-                                                                                      hasTransition: true,
-                                                                                      transitionType: PageTransitionType.rightToLeft,
-                                                                                    ),
-                                                                                  },
-                                                                                );
-                                                                              },
-                                                                              onLongPress: () async {
-                                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                                  SnackBar(
-                                                                                    content: Text(
-                                                                                      currentUserUid,
-                                                                                      style: TextStyle(
-                                                                                        color: FlutterFlowTheme.of(context).alternate,
-                                                                                      ),
-                                                                                    ),
-                                                                                    duration: Duration(milliseconds: 4000),
-                                                                                    backgroundColor: FlutterFlowTheme.of(context).secondary,
-                                                                                  ),
-                                                                                );
-
-                                                                                await currentUserReference!.update({
-                                                                                  ...mapToFirestore(
-                                                                                    {
-                                                                                      'dailyFood': FieldValue.arrayUnion([
-                                                                                        getDayPeriodFirestoreData(
-                                                                                          updateDayPeriodStruct(
-                                                                                            DayPeriodStruct(
-                                                                                              timestamp: getCurrentTimestamp,
-                                                                                              foodRef: FoodRefStruct(
-                                                                                                foodLookupRef: stackLookupRecord?.reference,
-                                                                                              ),
-                                                                                              timeOfDay: FoodPeriod.Breakfast,
-                                                                                            ),
-                                                                                            clearUnsetFields: false,
-                                                                                          ),
-                                                                                          true,
-                                                                                        )
-                                                                                      ]),
-                                                                                    },
-                                                                                  ),
-                                                                                });
-                                                                              },
-                                                                              child: wrapWithModel(
-                                                                                model: _model.itemModel1,
-                                                                                updateCallback: () => setState(() {}),
-                                                                                updateOnChange: true,
-                                                                                child: ItemWidget(
-                                                                                  imageUrl: OpenFoodFactsApiStruct.maybeFromMap(stackLookupRecord?.openFoodFacts?.toMap())?.imageUrl,
-                                                                                  title: stackLookupRecord?.name,
-                                                                                  subtitle: stackLookupRecord?.brand,
-                                                                                  size: valueOrDefault<String>(
-                                                                                    stackLookupRecord?.size,
-                                                                                    '-',
-                                                                                  ),
-                                                                                  blurHash: valueOrDefault<String>(
-                                                                                    stackLookupRecord?.blurHash,
-                                                                                    'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
-                                                                                  ),
-                                                                                  isDetailsPage: false,
-                                                                                  docRef: stackLookupRecord!.reference,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                            ],
-                                                          ),
-                                                        ),
                                                         Padding(
                                                           padding:
                                                               EdgeInsetsDirectional
@@ -698,7 +519,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                                       .where(
                                                                         'name',
                                                                         isNotEqualTo:
-                                                                            "No Search Results",
+                                                                            null,
                                                                       )
                                                                       .orderBy(
                                                                           'name'),
@@ -842,7 +663,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                                         child:
                                                                             wrapWithModel(
                                                                           model: _model
-                                                                              .itemModels2
+                                                                              .itemModels
                                                                               .getModel(
                                                                             listViewLookupRecord.reference.id,
                                                                             listViewIndex,

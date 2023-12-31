@@ -1,6 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/backend/schema/enums/enums.dart';
 import '/backend/schema/structs/index.dart';
 import '/components/item/item_widget.dart';
 import '/components/item_database/item_database_widget.dart';
@@ -9,10 +8,8 @@ import '/flutter_flow/flutter_flow_ad_banner.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'home_widget.dart' show HomeWidget;
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +57,6 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
 
   // Models for ItemDatabase dynamic component.
   late FlutterFlowDynamicModels<ItemDatabaseModel> itemDatabaseModels1;
-  // Model for Item component.
-  late ItemModel itemModel1;
   // State field(s) for ListView widget.
 
   PagingController<DocumentSnapshot?, LookupRecord>? listViewPagingController2;
@@ -69,7 +64,7 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   List<StreamSubscription?> listViewStreamSubscriptions2 = [];
 
   // Models for Item dynamic component.
-  late FlutterFlowDynamicModels<ItemModel> itemModels2;
+  late FlutterFlowDynamicModels<ItemModel> itemModels;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
@@ -85,8 +80,7 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
 
   void initState(BuildContext context) {
     itemDatabaseModels1 = FlutterFlowDynamicModels(() => ItemDatabaseModel());
-    itemModel1 = createModel(context, () => ItemModel());
-    itemModels2 = FlutterFlowDynamicModels(() => ItemModel());
+    itemModels = FlutterFlowDynamicModels(() => ItemModel());
     itemDatabaseModels2 = FlutterFlowDynamicModels(() => ItemDatabaseModel());
     navBar1Model = createModel(context, () => NavBar1Model());
   }
@@ -98,11 +92,10 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
     listViewPagingController1?.dispose();
 
     itemDatabaseModels1.dispose();
-    itemModel1.dispose();
     listViewStreamSubscriptions2.forEach((s) => s?.cancel());
     listViewPagingController2?.dispose();
 
-    itemModels2.dispose();
+    itemModels.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();
 
