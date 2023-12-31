@@ -1,5 +1,4 @@
 import '/backend/backend.dart';
-import '/components/create_blurhash_widget.dart';
 import '/components/create_image_on_empty_copy_widget.dart';
 import '/components/create_markdown_on_empty_widget.dart';
 import '/components/item_database/item_database_widget.dart';
@@ -37,8 +36,6 @@ class DetailsDatabaseItemModel
   late NutritionPanelGoogleVisionModel nutritionPanelGoogleVisionModel;
   // Model for createMarkdownOnEmpty.
   late CreateMarkdownOnEmptyModel createMarkdownOnEmptyModel;
-  // Model for createBlurhash component.
-  late CreateBlurhashModel createBlurhashModel;
   // Model for createImageOnEmptyCopy component.
   late CreateImageOnEmptyCopyModel createImageOnEmptyCopyModel;
 
@@ -51,7 +48,6 @@ class DetailsDatabaseItemModel
         createModel(context, () => NutritionPanelGoogleVisionModel());
     createMarkdownOnEmptyModel =
         createModel(context, () => CreateMarkdownOnEmptyModel());
-    createBlurhashModel = createModel(context, () => CreateBlurhashModel());
     createImageOnEmptyCopyModel =
         createModel(context, () => CreateImageOnEmptyCopyModel());
   }
@@ -62,7 +58,6 @@ class DetailsDatabaseItemModel
     nutriCirclesModel.dispose();
     nutritionPanelGoogleVisionModel.dispose();
     createMarkdownOnEmptyModel.dispose();
-    createBlurhashModel.dispose();
     createImageOnEmptyCopyModel.dispose();
   }
 

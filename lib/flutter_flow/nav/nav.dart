@@ -152,12 +152,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'MainTV',
-              path: 'MainTV',
-              requireAuth: true,
-              builder: (context, params) => MainTVWidget(),
-            ),
-            FFRoute(
               name: 'CGM',
               path: 'CGM',
               requireAuth: true,

@@ -11,7 +11,6 @@ export '/onboarding/forgot_password/forgot_password_widget.dart'
     show ForgotPasswordWidget;
 export '/onboarding/carb_ratio_check/carb_ratio_check_widget.dart'
     show CarbRatioCheckWidget;
-export '/t_v_builds/main_t_v/main_t_v_widget.dart' show MainTVWidget;
 export '/components/pages/cgm/cgm_widget.dart' show CgmWidget;
 export '/components/pages/home/home_widget.dart' show HomeWidget;
 export '/components/pages/remove_ads/remove_ads_widget.dart'

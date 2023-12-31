@@ -1,5 +1,4 @@
 import '/backend/backend.dart';
-import '/components/create_blurhash_widget.dart';
 import '/components/create_image_on_empty_copy_widget.dart';
 import '/components/create_markdown_on_empty_widget.dart';
 import '/components/item_database/item_database_widget.dart';
@@ -363,27 +362,6 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                                       updateCallback: () => setState(() {}),
                                       child: CreateMarkdownOnEmptyWidget(
                                         docRef: widget.docRef!,
-                                      ),
-                                    ),
-                                  if (valueOrDefault<bool>(
-                                    detailsDatabaseItemFoodDatabaseRecord
-                                                    .blurHash ==
-                                                null ||
-                                            detailsDatabaseItemFoodDatabaseRecord
-                                                    .blurHash ==
-                                                ''
-                                        ? true
-                                        : false,
-                                    false,
-                                  ))
-                                    wrapWithModel(
-                                      model: _model.createBlurhashModel,
-                                      updateCallback: () => setState(() {}),
-                                      child: CreateBlurhashWidget(
-                                        docRef: widget.docRef!,
-                                        imageUrl:
-                                            detailsDatabaseItemFoodDatabaseRecord
-                                                .imageUrl,
                                       ),
                                     ),
                                   if (valueOrDefault<bool>(
