@@ -124,7 +124,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget>
                         alignment: AlignmentDirectional(0.0, 1.0),
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 40.0, 0.0, 0.0),
+                              16.0, 40.0, 16.0, 0.0),
                           child: Hero(
                             tag: 'logo',
                             transitionOnUserGestures: true,

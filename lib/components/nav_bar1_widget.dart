@@ -583,6 +583,14 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 input: _model.barcodeScan,
                                               );
                                               _shouldSetState = true;
+                                              _model.getOpenFoodFactsName =
+                                                  await OpenFoodFactsCall.call(
+                                                barcode: valueOrDefault<String>(
+                                                  _model.barcodeScan,
+                                                  '0',
+                                                ),
+                                              );
+                                              _shouldSetState = true;
                                               setState(() {
                                                 _model.loadingText =
                                                     valueOrDefault<String>(
@@ -594,14 +602,6 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                   'Finding prtoduct...',
                                                 );
                                               });
-                                              _model.getOpenFoodFactsName =
-                                                  await OpenFoodFactsCall.call(
-                                                barcode: valueOrDefault<String>(
-                                                  _model.barcodeScan,
-                                                  '0',
-                                                ),
-                                              );
-                                              _shouldSetState = true;
                                               if (BuildshipGroup.barcodeScanCall
                                                       .path(
                                                     (_model.buildshipAPI

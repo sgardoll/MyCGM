@@ -148,9 +148,9 @@ class _CgmWidgetState extends State<CgmWidget> with TickerProviderStateMixin {
           context: context,
           builder: (alertDialogContext) {
             return AlertDialog(
-              title: Text('Nightscout settings missing'),
+              title: Text('Nightscout, units or diabetes settings missing'),
               content: Text(
-                  'Please enter your Nightscout information in Settings to view this section'),
+                  'Please enter your missing details in Settings to view this section'),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(alertDialogContext),

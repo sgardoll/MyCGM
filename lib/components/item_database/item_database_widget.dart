@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:octo_image/octo_image.dart';
 import 'package:provider/provider.dart';
 import 'item_database_model.dart';
 export 'item_database_model.dart';
@@ -64,125 +63,119 @@ class _ItemDatabaseWidgetState extends State<ItemDatabaseWidget> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),
-      child: Container(
-        width: MediaQuery.sizeOf(context).width * 1.0,
-        decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).primaryBackground,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 8.0, 0.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(8.0),
-                  bottomRight: Radius.circular(8.0),
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Container(
+          width: MediaQuery.sizeOf(context).width * 1.0,
+          decoration: BoxDecoration(
+            color: FlutterFlowTheme.of(context).primaryBackground,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Stack(
+            children: [
+              Image.network(
+                valueOrDefault<String>(
+                  widget.imageUrl,
+                  'https://www.connectio.com.au/nutri/error.png',
                 ),
-                child: Container(
-                  width: 45.0,
-                  height: 45.0,
-                  constraints: BoxConstraints(
-                    maxWidth: 40.0,
-                    maxHeight: double.infinity,
-                  ),
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8.0),
-                      bottomRight: Radius.circular(8.0),
-                      topLeft: Radius.circular(8.0),
-                      topRight: Radius.circular(8.0),
-                    ),
-                  ),
-                  alignment: AlignmentDirectional(0.0, 0.0),
-                  child: OctoImage(
-                    placeholderBuilder: OctoPlaceholder.blurHash(
-                      valueOrDefault<String>(
-                        widget.blurHash,
-                        'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
-                      ),
-                    ),
-                    image: NetworkImage(
-                      valueOrDefault<String>(
-                        widget.imageUrl,
-                        'https://www.connectio.com.au/nutri/error.png',
-                      ),
-                    ),
-                    width: 45.0,
-                    height: 45.0,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Image.asset(
-                      'assets/images/error_image.jpg',
-                      width: 45.0,
-                      height: 45.0,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                width: valueOrDefault<double>(
+                  widget.isDetailsPage
+                      ? MediaQuery.sizeOf(context).height
+                      : 45.0,
+                  45.0,
                 ),
+                height: valueOrDefault<double>(
+                  widget.isDetailsPage
+                      ? MediaQuery.sizeOf(context).height
+                      : 45.0,
+                  45.0,
+                ),
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Image.asset(
+                  'assets/images/error_image.jpg',
+                  width: valueOrDefault<double>(
+                    widget.isDetailsPage
+                        ? MediaQuery.sizeOf(context).height
+                        : 45.0,
+                    45.0,
+                  ),
+                  height: valueOrDefault<double>(
+                    widget.isDetailsPage
+                        ? MediaQuery.sizeOf(context).height
+                        : 45.0,
+                    45.0,
+                  ),
+                  fit: BoxFit.cover,
+                ),
+                cacheWidth: 45,
+                cacheHeight: 45,
               ),
-            ),
-            Flexible(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: AlignmentDirectional(-1.0, 0.0),
-                            child: AutoSizeText(
-                              widget.title!,
-                              maxLines: 2,
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyLarge
-                                  .override(
-                                    fontFamily: 'Lato',
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w600,
+              if (widget.isDetailsPage ? false : true)
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(50.0, 0.0, 0.0, 0.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (valueOrDefault<bool>(
+                                widget.title != null && widget.title != ''
+                                    ? true
+                                    : false,
+                                false,
+                              ))
+                                Align(
+                                  alignment: AlignmentDirectional(-1.0, 0.0),
+                                  child: AutoSizeText(
+                                    widget.title!,
+                                    maxLines: 2,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyLarge
+                                        .override(
+                                          fontFamily: 'Lato',
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                   ),
-                            ),
+                                ),
+                              if (valueOrDefault<bool>(
+                                widget.subtitle != null && widget.subtitle != ''
+                                    ? true
+                                    : false,
+                                false,
+                              ))
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 8.0, 0.0),
+                                  child: AutoSizeText(
+                                    widget.subtitle!,
+                                    textAlign: TextAlign.start,
+                                    maxLines: 2,
+                                    style: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .override(
+                                          fontFamily: 'Lato',
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryText,
+                                        ),
+                                  ),
+                                ),
+                            ],
                           ),
-                          if (valueOrDefault<bool>(
-                            widget.subtitle != null && widget.subtitle != ''
-                                ? true
-                                : false,
-                            false,
-                          ))
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 8.0, 0.0),
-                              child: AutoSizeText(
-                                widget.subtitle!,
-                                textAlign: TextAlign.start,
-                                maxLines: 2,
-                                style: FlutterFlowTheme.of(context)
-                                    .labelSmall
-                                    .override(
-                                      fontFamily: 'Lato',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                    ),
-                              ),
-                            ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
+                ),
+            ],
+          ),
         ),
       ),
     );

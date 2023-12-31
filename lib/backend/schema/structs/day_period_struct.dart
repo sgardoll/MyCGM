@@ -53,7 +53,7 @@ class DayPeriodStruct extends FFFirebaseStruct {
   Map<String, dynamic> toMap() => {
         'timestamp': _timestamp,
         'foodRef': _foodRef?.toMap(),
-        'timeOfDay': _timeOfDay?.toString(),
+        'timeOfDay': _timeOfDay?.serialize(),
       }.withoutNulls;
 
   @override

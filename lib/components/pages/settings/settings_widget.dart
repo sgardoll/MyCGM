@@ -923,16 +923,6 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                                 setState(() =>
                                                                     _model.dropDownValue =
                                                                         val);
-                                                                unawaited(
-                                                                  () async {
-                                                                    await currentUserReference!
-                                                                        .update(
-                                                                            createUsersRecordData(
-                                                                      units: _model
-                                                                          .dropDownValue,
-                                                                    ));
-                                                                  }(),
-                                                                );
                                                                 setState(() {
                                                                   _model.unitsUpdated =
                                                                       true;
@@ -982,18 +972,72 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                                       ],
                                                     ),
                                                   ),
-                                                  Text(
-                                                    'Updated!',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily: 'Lato',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primary,
+                                                  if (valueOrDefault<bool>(
+                                                    _model.unitsUpdated == true
+                                                        ? true
+                                                        : false,
+                                                    false,
+                                                  ))
+                                                    FFButtonWidget(
+                                                      onPressed: () async {
+                                                        unawaited(
+                                                          () async {
+                                                            await currentUserReference!
+                                                                .update(
+                                                                    createUsersRecordData(
+                                                              units: _model
+                                                                  .dropDownValue,
+                                                            ));
+                                                          }(),
+                                                        );
+                                                        setState(() {
+                                                          _model.diabUpdated =
+                                                              false;
+                                                        });
+                                                      },
+                                                      text: 'Update',
+                                                      options: FFButtonOptions(
+                                                        width: 130.0,
+                                                        height: 40.0,
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        iconPadding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0),
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primary,
+                                                        textStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Lato',
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                        elevation: 2.0,
+                                                        borderSide: BorderSide(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 1.0,
                                                         ),
-                                                  ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8.0),
+                                                      ),
+                                                    ),
                                                 ],
                                               ),
                                             ),

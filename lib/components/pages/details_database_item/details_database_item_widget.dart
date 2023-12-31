@@ -169,9 +169,19 @@ class _DetailsDatabaseItemWidgetState extends State<DetailsDatabaseItemWidget> {
                             model: _model.itemDatabaseModel,
                             updateCallback: () => setState(() {}),
                             updateOnChange: true,
-                            child: ItemDatabaseWidget(
-                              imageUrl: widget.imageUrl,
-                              isDetailsPage: true,
+                            child: Hero(
+                              tag: 'foodDatabase',
+                              transitionOnUserGestures: true,
+                              child: Material(
+                                color: Colors.transparent,
+                                child: ItemDatabaseWidget(
+                                  imageUrl: widget.imageUrl,
+                                  blurHash:
+                                      detailsDatabaseItemFoodDatabaseRecord
+                                          .blurHash,
+                                  isDetailsPage: true,
+                                ),
+                              ),
                             ),
                           ),
                         ),
