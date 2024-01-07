@@ -1,6 +1,4 @@
 import '/backend/backend.dart';
-import '/components/create_image_on_empty_copy_widget.dart';
-import '/components/create_markdown_on_empty_widget.dart';
 import '/components/item_database/item_database_widget.dart';
 import '/components/nutri_circles_widget.dart';
 import '/components/nutrition_panel_google_vision_widget.dart';
@@ -34,10 +32,6 @@ class DetailsDatabaseItemModel
   late NutriCirclesModel nutriCirclesModel;
   // Model for NutritionPanelGoogleVision component.
   late NutritionPanelGoogleVisionModel nutritionPanelGoogleVisionModel;
-  // Model for createMarkdownOnEmpty.
-  late CreateMarkdownOnEmptyModel createMarkdownOnEmptyModel;
-  // Model for createImageOnEmptyCopy component.
-  late CreateImageOnEmptyCopyModel createImageOnEmptyCopyModel;
 
   /// Initialization and disposal methods.
 
@@ -46,10 +40,6 @@ class DetailsDatabaseItemModel
     nutriCirclesModel = createModel(context, () => NutriCirclesModel());
     nutritionPanelGoogleVisionModel =
         createModel(context, () => NutritionPanelGoogleVisionModel());
-    createMarkdownOnEmptyModel =
-        createModel(context, () => CreateMarkdownOnEmptyModel());
-    createImageOnEmptyCopyModel =
-        createModel(context, () => CreateImageOnEmptyCopyModel());
   }
 
   void dispose() {
@@ -57,8 +47,6 @@ class DetailsDatabaseItemModel
     itemDatabaseModel.dispose();
     nutriCirclesModel.dispose();
     nutritionPanelGoogleVisionModel.dispose();
-    createMarkdownOnEmptyModel.dispose();
-    createImageOnEmptyCopyModel.dispose();
   }
 
   /// Action blocks are added here.

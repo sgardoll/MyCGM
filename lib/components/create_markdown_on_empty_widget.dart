@@ -46,6 +46,8 @@ class _CreateMarkdownOnEmptyWidgetState
         createMarkdown: true,
       ));
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

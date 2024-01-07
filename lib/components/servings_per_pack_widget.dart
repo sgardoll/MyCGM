@@ -36,6 +36,8 @@ class _ServingsPerPackWidgetState extends State<ServingsPerPackWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ServingsPerPackModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

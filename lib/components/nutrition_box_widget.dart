@@ -69,6 +69,7 @@ class _NutritionBoxWidgetState extends State<NutritionBoxWidget> {
     _model = createModel(context, () => NutritionBoxModel());
 
     _model.expandableController = ExpandableController(initialExpanded: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

@@ -11,7 +11,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
 import 'dart:async';
-import '/flutter_flow/custom_functions.dart' as functions;
 import '/flutter_flow/revenue_cat_util.dart' as revenue_cat;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,32 +19,32 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'details_model.dart';
-export 'details_model.dart';
+import 'details_new_model.dart';
+export 'details_new_model.dart';
 
-class DetailsWidget extends StatefulWidget {
-  const DetailsWidget({
+class DetailsNewWidget extends StatefulWidget {
+  const DetailsNewWidget({
     Key? key,
-    this.code,
+    required this.docRef,
   }) : super(key: key);
 
-  final String? code;
+  final DocumentReference? docRef;
 
   @override
-  _DetailsWidgetState createState() => _DetailsWidgetState();
+  _DetailsNewWidgetState createState() => _DetailsNewWidgetState();
 }
 
-class _DetailsWidgetState extends State<DetailsWidget> {
-  late DetailsModel _model;
+class _DetailsNewWidgetState extends State<DetailsNewWidget> {
+  late DetailsNewModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => DetailsModel());
+    _model = createModel(context, () => DetailsNewModel());
 
-    logFirebaseEvent('screen_view', parameters: {'screen_name': 'Details'});
+    logFirebaseEvent('screen_view', parameters: {'screen_name': 'DetailsNew'});
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -70,7 +69,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
     context.watch<FFAppState>();
 
     return StreamBuilder<LookupRecord>(
-      stream: LookupRecord.getDocument(functions.getDocRefCopy(widget.code!)!),
+      stream: LookupRecord.getDocument(widget.docRef!),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -88,9 +87,9 @@ class _DetailsWidgetState extends State<DetailsWidget> {
             ),
           );
         }
-        final detailsLookupRecord = snapshot.data!;
+        final detailsNewLookupRecord = snapshot.data!;
         return Title(
-            title: 'Details',
+            title: 'DetailsNew',
             color: FlutterFlowTheme.of(context).primary.withAlpha(0XFF),
             child: GestureDetector(
               onTap: () => _model.unfocusNode.canRequestFocus
@@ -104,7 +103,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                   headerSliverBuilder: (context, _) => [
                     SliverAppBar(
                       expandedHeight: 250.0,
-                      collapsedHeight: 56.0,
+                      collapsedHeight: 45.0,
                       pinned: true,
                       floating: false,
                       backgroundColor: Colors.transparent,
@@ -134,8 +133,8 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                       flexibleSpace: FlexibleSpaceBar(
                         background: Visibility(
                           visible: valueOrDefault<bool>(
-                            detailsLookupRecord.imageUrl != null &&
-                                    detailsLookupRecord.imageUrl != ''
+                            detailsNewLookupRecord.imageUrl != null &&
+                                    detailsNewLookupRecord.imageUrl != ''
                                 ? true
                                 : false,
                             false,
@@ -145,17 +144,16 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                             updateCallback: () => setState(() {}),
                             updateOnChange: true,
                             child: ItemWidget(
-                              imageUrl: detailsLookupRecord.imageUrl,
-                              blurHash: detailsLookupRecord.blurHash,
+                              imageUrl: detailsNewLookupRecord.imageUrl,
+                              blurHash: detailsNewLookupRecord.blurHash,
                               isDetailsPage: true,
-                              docRef: detailsLookupRecord.reference,
+                              docRef: detailsNewLookupRecord.reference,
                             ),
                           ),
                         ),
                       ),
                       centerTitle: false,
                       toolbarHeight: 56.0,
-                      elevation: 6.0,
                     )
                   ],
                   body: Builder(
@@ -167,7 +165,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             if (valueOrDefault<bool>(
-                              detailsLookupRecord != null ? true : false,
+                              detailsNewLookupRecord != null ? true : false,
                               false,
                             ))
                               Expanded(
@@ -203,7 +201,8 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                         AlignmentDirectional(
                                                             -1.0, 0.0),
                                                     child: AutoSizeText(
-                                                      detailsLookupRecord.name,
+                                                      detailsNewLookupRecord
+                                                          .name,
                                                       textAlign:
                                                           TextAlign.start,
                                                       maxLines: 2,
@@ -215,9 +214,9 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                   ),
                                                 ),
                                                 if (valueOrDefault<bool>(
-                                                  detailsLookupRecord.size !=
+                                                  detailsNewLookupRecord.size !=
                                                               null &&
-                                                          detailsLookupRecord
+                                                          detailsNewLookupRecord
                                                                   .size !=
                                                               ''
                                                       ? true
@@ -274,7 +273,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                                           0.0),
                                                               child:
                                                                   AutoSizeText(
-                                                                detailsLookupRecord
+                                                                detailsNewLookupRecord
                                                                     .size,
                                                                 textAlign:
                                                                     TextAlign
@@ -301,7 +300,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                           ),
                                         ),
                                         if (valueOrDefault<bool>(
-                                          detailsLookupRecord
+                                          detailsNewLookupRecord
                                                   .openFoodFacts.nutriments
                                                   .hasEnergy()
                                               ? true
@@ -350,57 +349,57 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                           source:
                                                               'Open Food Facts - per 100g / 100ml',
                                                           energy:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .energy,
                                                           energyUnits:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .energyKcalUnit,
                                                           energyPerServing:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .energyKcal100g,
                                                           protein:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .proteins,
                                                           proteinUnits:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .proteinsUnit,
                                                           proteinPerServing:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .proteins100g,
                                                           carbs:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .carbohydrates,
                                                           carbUnits:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .carbohydratesUnit,
                                                           carbsPerServing:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .carbohydrates100g,
                                                           fats:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .fat,
                                                           fatUnits:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .openFoodFacts
                                                                   .nutriments
                                                                   .fatUnit,
@@ -412,11 +411,106 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                               ),
                                             ),
                                           ),
+                                        if (!valueOrDefault<bool>(
+                                          detailsNewLookupRecord
+                                                  .openFoodFacts.nutriments
+                                                  .hasEnergy()
+                                              ? true
+                                              : false,
+                                          false,
+                                        ))
+                                          Flexible(
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 0.0, 16.0, 0.0),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Flexible(
+                                                    child: Align(
+                                                      alignment:
+                                                          AlignmentDirectional(
+                                                              -1.0, 0.0),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0.0,
+                                                                    0.0,
+                                                                    0.0,
+                                                                    4.0),
+                                                        child: Material(
+                                                          color: Colors
+                                                              .transparent,
+                                                          elevation: 2.0,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                          ),
+                                                          child: Container(
+                                                            width: MediaQuery
+                                                                        .sizeOf(
+                                                                            context)
+                                                                    .width *
+                                                                1.0,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondaryBackground,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8.0),
+                                                            ),
+                                                            alignment:
+                                                                AlignmentDirectional(
+                                                                    -1.0, 0.0),
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          8.0,
+                                                                          8.0,
+                                                                          8.0,
+                                                                          8.0),
+                                                              child:
+                                                                  AutoSizeText(
+                                                                'OpenFoodFacts data unavailable. Please use the button below to capture the nutritional panel on pack to receive nutritional information for this product.',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                maxLines: 6,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodySmall
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Lato',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondary,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         if (valueOrDefault<bool>(
-                                          detailsLookupRecord
+                                          detailsNewLookupRecord
                                                           .googleVisionResponse !=
                                                       null &&
-                                                  detailsLookupRecord
+                                                  detailsNewLookupRecord
                                                           .googleVisionResponse !=
                                                       ''
                                               ? false
@@ -538,7 +632,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
 
                                                         unawaited(
                                                           () async {
-                                                            await detailsLookupRecord
+                                                            await detailsNewLookupRecord
                                                                 .reference
                                                                 .update(
                                                                     createLookupRecordData(
@@ -656,10 +750,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                             ),
                                           ),
                                         if (valueOrDefault<bool>(
-                                          detailsLookupRecord
+                                          detailsNewLookupRecord
                                                           .googleVisionResponse !=
                                                       null &&
-                                                  detailsLookupRecord
+                                                  detailsNewLookupRecord
                                                           .googleVisionResponse !=
                                                       ''
                                               ? true
@@ -705,10 +799,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                           source:
                                                               'Nutritional Infomation',
                                                           markdown:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .googleVisionResponse,
                                                           nutritionPanel:
-                                                              detailsLookupRecord
+                                                              detailsNewLookupRecord
                                                                   .nutritionPanel,
                                                         ),
                                                       ),
@@ -719,8 +813,10 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                             ),
                                           ),
                                         if (valueOrDefault<bool>(
-                                          detailsLookupRecord.trivia != null &&
-                                                  detailsLookupRecord.trivia !=
+                                          detailsNewLookupRecord.trivia !=
+                                                      null &&
+                                                  detailsNewLookupRecord
+                                                          .trivia !=
                                                       ''
                                               ? true
                                               : false,
@@ -786,7 +882,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                                                       0.0,
                                                                       0.0),
                                                           child: AutoSizeText(
-                                                            detailsLookupRecord
+                                                            detailsNewLookupRecord
                                                                 .trivia,
                                                             maxLines: 4,
                                                             style: FlutterFlowTheme

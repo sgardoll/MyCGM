@@ -18,7 +18,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 class HomeModel extends FlutterFlowModel<HomeWidget> {
@@ -48,23 +47,6 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   int get tabBarCurrentIndex =>
       tabBarController != null ? tabBarController!.index : 0;
 
-  // State field(s) for ListView widget.
-
-  PagingController<DocumentSnapshot?, FoodDatabaseRecord>?
-      listViewPagingController1;
-  Query? listViewPagingQuery1;
-  List<StreamSubscription?> listViewStreamSubscriptions1 = [];
-
-  // Models for ItemDatabase dynamic component.
-  late FlutterFlowDynamicModels<ItemDatabaseModel> itemDatabaseModels1;
-  // State field(s) for ListView widget.
-
-  PagingController<DocumentSnapshot?, LookupRecord>? listViewPagingController2;
-  Query? listViewPagingQuery2;
-  List<StreamSubscription?> listViewStreamSubscriptions2 = [];
-
-  // Models for Item dynamic component.
-  late FlutterFlowDynamicModels<ItemModel> itemModels;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
@@ -79,8 +61,6 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {
-    itemDatabaseModels1 = FlutterFlowDynamicModels(() => ItemDatabaseModel());
-    itemModels = FlutterFlowDynamicModels(() => ItemModel());
     itemDatabaseModels2 = FlutterFlowDynamicModels(() => ItemDatabaseModel());
     navBar1Model = createModel(context, () => NavBar1Model());
   }
@@ -88,14 +68,6 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   void dispose() {
     unfocusNode.dispose();
     tabBarController?.dispose();
-    listViewStreamSubscriptions1.forEach((s) => s?.cancel());
-    listViewPagingController1?.dispose();
-
-    itemDatabaseModels1.dispose();
-    listViewStreamSubscriptions2.forEach((s) => s?.cancel());
-    listViewPagingController2?.dispose();
-
-    itemModels.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();
 
@@ -106,68 +78,4 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   /// Action blocks are added here.
 
   /// Additional helper methods are added here.
-
-  PagingController<DocumentSnapshot?, FoodDatabaseRecord>
-      setListViewController1(
-    Query query, {
-    DocumentReference<Object?>? parent,
-  }) {
-    listViewPagingController1 ??= _createListViewController1(query, parent);
-    if (listViewPagingQuery1 != query) {
-      listViewPagingQuery1 = query;
-      listViewPagingController1?.refresh();
-    }
-    return listViewPagingController1!;
-  }
-
-  PagingController<DocumentSnapshot?, FoodDatabaseRecord>
-      _createListViewController1(
-    Query query,
-    DocumentReference<Object?>? parent,
-  ) {
-    final controller = PagingController<DocumentSnapshot?, FoodDatabaseRecord>(
-        firstPageKey: null);
-    return controller
-      ..addPageRequestListener(
-        (nextPageMarker) => queryFoodDatabaseRecordPage(
-          queryBuilder: (_) => listViewPagingQuery1 ??= query,
-          nextPageMarker: nextPageMarker,
-          streamSubscriptions: listViewStreamSubscriptions1,
-          controller: controller,
-          pageSize: 25,
-          isStream: true,
-        ),
-      );
-  }
-
-  PagingController<DocumentSnapshot?, LookupRecord> setListViewController2(
-    Query query, {
-    DocumentReference<Object?>? parent,
-  }) {
-    listViewPagingController2 ??= _createListViewController2(query, parent);
-    if (listViewPagingQuery2 != query) {
-      listViewPagingQuery2 = query;
-      listViewPagingController2?.refresh();
-    }
-    return listViewPagingController2!;
-  }
-
-  PagingController<DocumentSnapshot?, LookupRecord> _createListViewController2(
-    Query query,
-    DocumentReference<Object?>? parent,
-  ) {
-    final controller =
-        PagingController<DocumentSnapshot?, LookupRecord>(firstPageKey: null);
-    return controller
-      ..addPageRequestListener(
-        (nextPageMarker) => queryLookupRecordPage(
-          queryBuilder: (_) => listViewPagingQuery2 ??= query,
-          nextPageMarker: nextPageMarker,
-          streamSubscriptions: listViewStreamSubscriptions2,
-          controller: controller,
-          pageSize: 25,
-          isStream: true,
-        ),
-      );
-  }
 }

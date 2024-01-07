@@ -46,6 +46,7 @@ class _NutritionPanelGoogleVisionWidgetState
     _model = createModel(context, () => NutritionPanelGoogleVisionModel());
 
     _model.expandableController = ExpandableController(initialExpanded: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

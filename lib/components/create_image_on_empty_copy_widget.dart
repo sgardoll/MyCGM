@@ -46,6 +46,8 @@ class _CreateImageOnEmptyCopyWidgetState
         buildship: true,
       ));
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

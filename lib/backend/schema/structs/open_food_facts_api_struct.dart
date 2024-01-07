@@ -34,7 +34,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
     double? sugars100g,
     String? sugarsUnit,
     double? sugarsValue,
-    String? imageUrl,
     double? energy,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _carbohydrates = carbohydrates,
@@ -60,7 +59,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         _sugars100g = sugars100g,
         _sugarsUnit = sugarsUnit,
         _sugarsValue = sugarsValue,
-        _imageUrl = imageUrl,
         _energy = energy,
         super(firestoreUtilData);
 
@@ -229,12 +227,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
       _sugarsValue = sugarsValue + amount;
   bool hasSugarsValue() => _sugarsValue != null;
 
-  // "imageUrl" field.
-  String? _imageUrl;
-  String get imageUrl => _imageUrl ?? '';
-  set imageUrl(String? val) => _imageUrl = val;
-  bool hasImageUrl() => _imageUrl != null;
-
   // "energy" field.
   double? _energy;
   double get energy => _energy ?? 0.0;
@@ -268,7 +260,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         sugars100g: castToType<double>(data['sugars_100g']),
         sugarsUnit: data['sugars_unit'] as String?,
         sugarsValue: castToType<double>(data['sugars_value']),
-        imageUrl: data['imageUrl'] as String?,
         energy: castToType<double>(data['energy']),
       );
 
@@ -300,7 +291,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         'sugars_100g': _sugars100g,
         'sugars_unit': _sugarsUnit,
         'sugars_value': _sugarsValue,
-        'imageUrl': _imageUrl,
         'energy': _energy,
       }.withoutNulls;
 
@@ -397,10 +387,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         'sugars_value': serializeParam(
           _sugarsValue,
           ParamType.double,
-        ),
-        'imageUrl': serializeParam(
-          _imageUrl,
-          ParamType.String,
         ),
         'energy': serializeParam(
           _energy,
@@ -524,11 +510,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         sugarsValue: deserializeParam(
           data['sugars_value'],
           ParamType.double,
-          false,
-        ),
-        imageUrl: deserializeParam(
-          data['imageUrl'],
-          ParamType.String,
           false,
         ),
         energy: deserializeParam(
@@ -655,11 +636,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
           ParamType.double,
           false,
         ),
-        imageUrl: convertAlgoliaParam(
-          data['imageUrl'],
-          ParamType.String,
-          false,
-        ),
         energy: convertAlgoliaParam(
           data['energy'],
           ParamType.double,
@@ -700,7 +676,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         sugars100g == other.sugars100g &&
         sugarsUnit == other.sugarsUnit &&
         sugarsValue == other.sugarsValue &&
-        imageUrl == other.imageUrl &&
         energy == other.energy;
   }
 
@@ -729,7 +704,6 @@ class OpenFoodFactsApiStruct extends FFFirebaseStruct {
         sugars100g,
         sugarsUnit,
         sugarsValue,
-        imageUrl,
         energy
       ]);
 }
@@ -758,7 +732,6 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
   double? sugars100g,
   String? sugarsUnit,
   double? sugarsValue,
-  String? imageUrl,
   double? energy,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
@@ -789,7 +762,6 @@ OpenFoodFactsApiStruct createOpenFoodFactsApiStruct({
       sugars100g: sugars100g,
       sugarsUnit: sugarsUnit,
       sugarsValue: sugarsValue,
-      imageUrl: imageUrl,
       energy: energy,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,

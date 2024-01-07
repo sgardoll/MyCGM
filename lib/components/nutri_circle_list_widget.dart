@@ -34,6 +34,8 @@ class _NutriCircleListWidgetState extends State<NutriCircleListWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => NutriCircleListModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override

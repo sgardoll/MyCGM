@@ -31,8 +31,7 @@ class ItemWidget extends StatefulWidget {
     String? blurHash,
     bool? isDetailsPage,
     required this.docRef,
-  })  : this.imageUrl =
-            imageUrl ?? 'https://www.connectio.com.au/nutri/error.png',
+  })  : this.imageUrl = imageUrl ?? '',
         this.blurHash = blurHash ?? 'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
         this.isDetailsPage = isDetailsPage ?? false,
         super(key: key);
@@ -84,6 +83,8 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _model = createModel(context, () => ItemModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -250,17 +251,17 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(8.0),
-                bottomRight: Radius.circular(8.8),
+                bottomRight: Radius.circular(8.0),
                 topLeft: Radius.circular(0.0),
-                topRight: Radius.circular(8.0),
+                topRight: Radius.circular(0.0),
               ),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(8.0),
-                bottomRight: Radius.circular(8.8),
+                bottomRight: Radius.circular(8.0),
                 topLeft: Radius.circular(0.0),
-                topRight: Radius.circular(8.0),
+                topRight: Radius.circular(0.0),
               ),
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 1.0,
@@ -276,9 +277,9 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                   ],
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.8),
+                    bottomRight: Radius.circular(8.0),
                     topLeft: Radius.circular(0.0),
-                    topRight: Radius.circular(8.0),
+                    topRight: Radius.circular(0.0),
                   ),
                 ),
                 child: Stack(
@@ -296,16 +297,10 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                             child: FlutterFlowExpandedImageView(
                               image: OctoImage(
                                 placeholderBuilder: OctoPlaceholder.blurHash(
-                                  valueOrDefault<String>(
-                                    widget.blurHash,
-                                    'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
-                                  ),
+                                  widget.blurHash,
                                 ),
                                 image: NetworkImage(
-                                  valueOrDefault<String>(
-                                    widget.imageUrl,
-                                    'https://www.connectio.com.au/nutri/error.png',
-                                  ),
+                                  widget.imageUrl,
                                 ),
                                 fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) =>
@@ -315,33 +310,21 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                                 ),
                               ),
                               allowRotation: false,
-                              tag: valueOrDefault<String>(
-                                widget.imageUrl,
-                                'https://www.connectio.com.au/nutri/error.png',
-                              ),
+                              tag: widget.imageUrl,
                               useHeroAnimation: true,
                             ),
                           ),
                         );
                       },
                       child: Hero(
-                        tag: valueOrDefault<String>(
-                          widget.imageUrl,
-                          'https://www.connectio.com.au/nutri/error.png',
-                        ),
+                        tag: widget.imageUrl,
                         transitionOnUserGestures: true,
                         child: OctoImage(
                           placeholderBuilder: OctoPlaceholder.blurHash(
-                            valueOrDefault<String>(
-                              widget.blurHash,
-                              'L9SF;Lay~qof%Mj[M{ay_3j[D%fQ',
-                            ),
+                            widget.blurHash,
                           ),
                           image: NetworkImage(
-                            valueOrDefault<String>(
-                              widget.imageUrl,
-                              'https://www.connectio.com.au/nutri/error.png',
-                            ),
+                            widget.imageUrl,
                           ),
                           width: MediaQuery.sizeOf(context).width * 1.0,
                           height: MediaQuery.sizeOf(context).height * 1.0,
@@ -367,8 +350,7 @@ class _ItemWidgetState extends State<ItemWidget> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             if (valueOrDefault<bool>(
-                              widget.imageUrl ==
-                                      'https://www.connectio.com.au/nutri/error.png'
+                              widget.imageUrl == null || widget.imageUrl == ''
                                   ? true
                                   : false,
                               true,

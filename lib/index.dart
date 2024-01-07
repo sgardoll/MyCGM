@@ -19,5 +19,4 @@ export '/components/pages/details/details_widget.dart' show DetailsWidget;
 export '/components/pages/details_database_item/details_database_item_widget.dart'
     show DetailsDatabaseItemWidget;
 export '/components/pages/daily/daily_widget.dart' show DailyWidget;
-export '/components/pages/details_new/details_new_widget.dart'
-    show DetailsNewWidget;
+export '/details_new/details_new_widget.dart' show DetailsNewWidget;

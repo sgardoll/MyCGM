@@ -80,6 +80,11 @@ class LookupRecord extends FirestoreRecord {
   String get userId => _userId ?? '';
   bool hasUserId() => _userId != null;
 
+  // "imageUrl" field.
+  String? _imageUrl;
+  String get imageUrl => _imageUrl ?? '';
+  bool hasImageUrl() => _imageUrl != null;
+
   void _initializeFields() {
     _userRef = snapshotData['userRef'] as DocumentReference?;
     _nutritionPanel = snapshotData['nutritionPanel'] as String?;
@@ -94,6 +99,7 @@ class LookupRecord extends FirestoreRecord {
         NutrimentsStruct.maybeFromMap(snapshotData['openFoodFacts']);
     _blurHash = snapshotData['blurHash'] as String?;
     _userId = snapshotData['userId'] as String?;
+    _imageUrl = snapshotData['imageUrl'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -141,6 +147,7 @@ class LookupRecord extends FirestoreRecord {
               .toMap(),
           'blurHash': snapshot.data['blurHash'],
           'userId': snapshot.data['userId'],
+          'imageUrl': snapshot.data['imageUrl'],
         },
         LookupRecord.collection.doc(snapshot.objectID),
       );
@@ -189,6 +196,7 @@ Map<String, dynamic> createLookupRecordData({
   NutrimentsStruct? openFoodFacts,
   String? blurHash,
   String? userId,
+  String? imageUrl,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -204,6 +212,7 @@ Map<String, dynamic> createLookupRecordData({
       'openFoodFacts': NutrimentsStruct().toMap(),
       'blurHash': blurHash,
       'userId': userId,
+      'imageUrl': imageUrl,
     }.withoutNulls,
   );
 
@@ -229,7 +238,8 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e1?.googleVisionResponse == e2?.googleVisionResponse &&
         e1?.openFoodFacts == e2?.openFoodFacts &&
         e1?.blurHash == e2?.blurHash &&
-        e1?.userId == e2?.userId;
+        e1?.userId == e2?.userId &&
+        e1?.imageUrl == e2?.imageUrl;
   }
 
   @override
@@ -245,7 +255,8 @@ class LookupRecordDocumentEquality implements Equality<LookupRecord> {
         e?.googleVisionResponse,
         e?.openFoodFacts,
         e?.blurHash,
-        e?.userId
+        e?.userId,
+        e?.imageUrl
       ]);
 
   @override

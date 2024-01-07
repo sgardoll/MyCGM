@@ -48,6 +48,8 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => NutriCirclesModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -159,7 +161,7 @@ class _NutriCirclesWidgetState extends State<NutriCirclesWidget> {
                                 child: SelectionArea(
                                     child: AutoSizeText(
                                   formatNumber(
-                                    widget.energy! / 4.184,
+                                    (widget.energy!) / 4.184,
                                     formatType: FormatType.custom,
                                     format: '####0',
                                     locale: '',

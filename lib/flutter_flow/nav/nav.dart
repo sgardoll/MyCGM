@@ -173,7 +173,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'details',
               builder: (context, params) => DetailsWidget(
                 code: params.getParam('code', ParamType.String),
-                imageUrl: params.getParam('imageUrl', ParamType.String),
               ),
             ),
             FFRoute(
@@ -192,10 +191,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => DailyWidget(),
             ),
             FFRoute(
-              name: 'Details-New',
+              name: 'DetailsNew',
               path: 'detailsNew',
               builder: (context, params) => DetailsNewWidget(
-                imageUrl: params.getParam('imageUrl', ParamType.String),
                 docRef: params.getParam(
                     'docRef', ParamType.DocumentReference, false, ['lookup']),
               ),
@@ -432,11 +430,7 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(
-        hasTransition: true,
-        transitionType: PageTransitionType.fade,
-        duration: Duration(milliseconds: 300),
-      );
+  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {

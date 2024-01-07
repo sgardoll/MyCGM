@@ -6,7 +6,6 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -99,6 +98,8 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
           !anim.applyInitialState),
       this,
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
@@ -538,14 +539,20 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                             _model.doesCodeExist =
                                                 await queryLookupRecordOnce(
                                               queryBuilder: (lookupRecord) =>
-                                                  lookupRecord.where(
-                                                'code',
-                                                isEqualTo:
-                                                    valueOrDefault<String>(
-                                                  _model.barcodeScan,
-                                                  '0',
-                                                ),
-                                              ),
+                                                  lookupRecord
+                                                      .where(
+                                                        'code',
+                                                        isEqualTo:
+                                                            valueOrDefault<
+                                                                String>(
+                                                          _model.barcodeScan,
+                                                          '0',
+                                                        ),
+                                                      )
+                                                      .where(
+                                                        'name',
+                                                        isNotEqualTo: null,
+                                                      ),
                                               singleRecord: true,
                                             ).then((s) => s.firstOrNull);
                                             _shouldSetState = true;
@@ -565,16 +572,19 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                               });
 
                                               context.pushNamed(
-                                                'Details-New',
+                                                'Details',
                                                 queryParameters: {
-                                                  'docRef': serializeParam(
-                                                    _model.doesCodeExist
-                                                        ?.reference,
-                                                    ParamType.DocumentReference,
+                                                  'code': serializeParam(
+                                                    _model.barcodeScan,
+                                                    ParamType.String,
                                                   ),
                                                 }.withoutNulls,
                                               );
                                             } else {
+                                              setState(() {
+                                                _model.loadingText =
+                                                    'Loading  ${_model.barcodeScan}';
+                                              });
                                               _model.buildshipAPI =
                                                   await BuildshipGroup
                                                       .barcodeScanCall
@@ -583,84 +593,29 @@ class _NavBar1WidgetState extends State<NavBar1Widget>
                                                 input: _model.barcodeScan,
                                               );
                                               _shouldSetState = true;
-                                              _model.getOpenFoodFactsName =
-                                                  await OpenFoodFactsCall.call(
-                                                barcode: valueOrDefault<String>(
-                                                  _model.barcodeScan,
-                                                  '0',
-                                                ),
-                                              );
-                                              _shouldSetState = true;
-                                              setState(() {
-                                                _model.loadingText =
-                                                    valueOrDefault<String>(
-                                                  'Found ${OpenFoodFactsCall.productName(
-                                                    (_model.getOpenFoodFactsName
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  ).toString()}',
-                                                  'Finding prtoduct...',
-                                                );
-                                              });
-                                              if (BuildshipGroup.barcodeScanCall
-                                                      .path(
-                                                    (_model.buildshipAPI
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                  ) !=
+                                              if (animationsMap[
+                                                      'containerOnActionTriggerAnimation'] !=
                                                   null) {
-                                                if (animationsMap[
-                                                        'containerOnActionTriggerAnimation'] !=
-                                                    null) {
-                                                  animationsMap[
-                                                          'containerOnActionTriggerAnimation']!
-                                                      .controller
-                                                      .reverse();
-                                                }
-                                                setState(() {
-                                                  _model.loadingItem = false;
-                                                  _model.loadingText =
-                                                      'Opening Camera';
-                                                });
-
-                                                context.pushNamed(
-                                                  'Details-New',
-                                                  queryParameters: {
-                                                    'docRef': serializeParam(
-                                                      functions.getDocRefBuildshipResponse(
-                                                          (_model.buildshipAPI
-                                                                  ?.jsonBody ??
-                                                              '')),
-                                                      ParamType
-                                                          .DocumentReference,
-                                                    ),
-                                                  }.withoutNulls,
-                                                );
-                                              } else {
-                                                setState(() {
-                                                  _model.loadingText =
-                                                      'Error Finding Item';
-                                                });
-                                                await Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 5000));
-                                                if (animationsMap[
-                                                        'containerOnActionTriggerAnimation'] !=
-                                                    null) {
-                                                  await animationsMap[
-                                                          'containerOnActionTriggerAnimation']!
-                                                      .controller
-                                                      .reverse();
-                                                }
-                                                setState(() {
-                                                  _model.loadingItem = false;
-                                                  _model.loadingText =
-                                                      'Opening Camera';
-                                                });
-                                                if (_shouldSetState)
-                                                  setState(() {});
-                                                return;
+                                                animationsMap[
+                                                        'containerOnActionTriggerAnimation']!
+                                                    .controller
+                                                    .reverse();
                                               }
+                                              setState(() {
+                                                _model.loadingItem = false;
+                                                _model.loadingText =
+                                                    'Opening Camera';
+                                              });
+
+                                              context.pushNamed(
+                                                'Details',
+                                                queryParameters: {
+                                                  'code': serializeParam(
+                                                    _model.barcodeScan,
+                                                    ParamType.String,
+                                                  ),
+                                                }.withoutNulls,
+                                              );
                                             }
                                           } else {
                                             setState(() {

@@ -45,6 +45,8 @@ class _POSTInsulinWidgetState extends State<POSTInsulinWidget> {
 
     _model.unitsController ??= TextEditingController();
     _model.unitsFocusNode ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
